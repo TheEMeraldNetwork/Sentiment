@@ -369,6 +369,35 @@ class DashboardGenerator:
                     opacity: 0.8;
                 }}
                 
+                .stock-link {
+                    cursor: pointer;
+                    position: relative;
+                    color: inherit;
+                    text-decoration: none;
+                    display: inline-block;
+                }
+                
+                .stock-link:after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 1px;
+                    bottom: -2px;
+                    left: 0;
+                    background-color: #000;
+                    transform: scaleX(0);
+                    transform-origin: left;
+                    transition: transform 0.3s ease;
+                }
+                
+                .stock-link:hover:after {
+                    transform: scaleX(1);
+                }
+                
+                .stock-link:hover {
+                    color: #000;
+                }
+                
                 @media (max-width: 768px) {{
                     .header-content {{
                         padding: 0 20px;
@@ -660,6 +689,35 @@ class DashboardGenerator:
                     
                     table.dataTable tbody tr:hover td {
                         background: rgba(0,0,0,0.02);
+                    }
+                    
+                    .stock-link {
+                        cursor: pointer;
+                        position: relative;
+                        color: inherit;
+                        text-decoration: none;
+                        display: inline-block;
+                    }
+                    
+                    .stock-link:after {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        height: 1px;
+                        bottom: -2px;
+                        left: 0;
+                        background-color: #000;
+                        transform: scaleX(0);
+                        transform-origin: left;
+                        transition: transform 0.3s ease;
+                    }
+                    
+                    .stock-link:hover:after {
+                        transform: scaleX(1);
+                    }
+                    
+                    .stock-link:hover {
+                        color: #000;
                     }
                     
                     .trend-symbol {
