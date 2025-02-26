@@ -1,0 +1,879 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Axon Enterprise Inc. (AXON) - Articles</title>
+            <style>
+                :root {
+                    --primary-color: #e0e0e0;
+                    --secondary-color: #a0a0a0;
+                    --accent-color: #404040;
+                    --text-color: #2c3e50;
+                    --border-color: #404040;
+                    --hover-color: #f8f9fa;
+                    --dark-bg: #1a1a1a;
+                    --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                }
+                
+                body { 
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: var(--header-gradient);
+                    padding: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    margin-bottom: 30px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .header-title {
+                    color: white;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                
+                .back-btn {
+                    padding: 8px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-1px);
+                }
+                
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+                
+                .article-card {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    border-left: 4px solid transparent;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+                
+                .article-card.positive {
+                    border-left-color: #28a745;
+                }
+                
+                .article-card.negative {
+                    border-left-color: #dc3545;
+                }
+                
+                .article-card.neutral {
+                    border-left-color: #6c757d;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    opacity: 0.8;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .stats-container {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                
+                .stat-card {
+                    text-align: center;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                }
+                
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Axon Enterprise Inc. (AXON)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">45</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                18
+                            </div>
+                            <div class="stat-label">Positive Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                15
+                            </div>
+                            <div class="stat-label">Negative Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                0.07
+                            </div>
+                            <div class="stat-label">Average Sentiment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">The 1-Minute Market Report February 22, 2025</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.54
+                            </span>
+                        </div>
+                        <div class="article-summary">The best performer last week was Asia, led by China. The worst performer was Blockchain, as Bitcoin ended the week at $95,600. Click to read....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Hartford Growth Opportunities Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.38
+                            </span>
+                        </div>
+                        <div class="article-summary">The Hartford Growth Opportunities Fund (I shares) outperformed the Russell 3000 Growth Index during the quarter. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Columbia Convertible Securities Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-23</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Columbia Convertible Securities Fund Institutional Class shares returned 2.38% for Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures: Nvidia Looms After Palantir, Axon, Tesla Lead Market Sell-Off. Here's What To Do.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-22</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures: Nvidia Looms After Palantir, Axon, Tesla Lead Market Sell-Off. Here's What To Do....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Allspring Mid Cap Growth Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.49
+                            </span>
+                        </div>
+                        <div class="article-summary">The Allspring Mid Cap Growth Fund underperformed the Russell Midcap Growth Index during the quarter that ended December 31, 2024. Click here to read more.
+...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Allspring Premier Large Company Growth Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.34
+                            </span>
+                        </div>
+                        <div class="article-summary">The Allspring Premier Large Company Growth Fund underperformed the Russell 1000 Growth Index during the Q2 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Allspring SMID Cap Growth Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.43
+                            </span>
+                        </div>
+                        <div class="article-summary">The Allspring SMID Cap Growth Fund underperformed the Russell 2500 Growth Index during the quarter that ended December 31, 2024. Click here to read more....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Stock Market Indexes Dip, Growth Struggles; Palantir, Axon, Alibaba In Focus: Weekly Review</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.71
+                            </span>
+                        </div>
+                        <div class="article-summary">Stock Market Indexes Dip, Growth Struggles; Palantir, Axon, Alibaba In Focus: Weekly Review...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">How We Left Axon Stock With Profits Before The Market Shock</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">How We Left Axon Stock With Profits Before The Market Shock...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures: S&P 500 Adds To Record Highs; Palantir, Axon, Cava Dive</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.88
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures: S&P 500 Adds To Record Highs; Palantir, Axon, Cava Dive...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">BNY Mellon Small/Mid Cap Growth Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The BNY Mellon Small/Mid Cap Growth Fund (Class A at NAV) returned 7.34%% during the fourth quarter of 2024. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock underperforms Thursday when compared to competitors</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Enterprise Inc. stock underperforms Thursday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures Fall After S&P 500 Hits High Despite Meta, Amazon Slide; This Leader Breaks Out</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures Fall After S&P 500 Hits High Despite Meta, Amazon Slide; This Leader Breaks Out...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock underperforms Wednesday when compared to competitors</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Enterprise Inc. stock underperforms Wednesday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Stock Tumbles On Downgrade Amid Tech Partner Breakup; Time To Sell?</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Stock Tumbles On Downgrade Amid Tech Partner Breakup; Time To Sell?...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures Rise, Market Eyes Highs; New Tesla Model Y Deliveries Sped Up</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.91
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures Rise, Market Eyes Highs; New Tesla Model Y Deliveries Sped Up...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock outperforms competitors on strong trading day</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Enterprise Inc. stock outperforms competitors on strong trading day...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures: Stock Market Eye Record Highs; AI Giants Amazon, Broadcom Near Buy Points</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-16</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.74
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures: Stock Market Eye Record Highs; AI Giants Amazon, Broadcom Near Buy Points...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Broadcom, Axon Lead Five Stocks Near Buy Points With S&P 500 Poised To Break Out</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-15</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.68
+                            </span>
+                        </div>
+                        <div class="article-summary">Broadcom, Axon Lead Five Stocks Near Buy Points With S&P 500 Poised To Break Out...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Stock Market At Pivotal Level; AI Giants Amazon, Broadcom Near Buy Points</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-15</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.66
+                            </span>
+                        </div>
+                        <div class="article-summary">Stock Market At Pivotal Level; AI Giants Amazon, Broadcom Near Buy Points...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">AppLovin Stock Jumps 30% on Earnings. It Has Already Gained More Than 700% in a Year.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-13</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">AppLovin Stock Jumps 30% on Earnings. It Has Already Gained More Than 700% in a Year....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock outperforms competitors despite losses on the day</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Enterprise Inc. stock outperforms competitors despite losses on the day...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Stock Of The Day: Axon Near Buy Point As Cup (Almost) Runneth Over With AI, Drone Success</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Stock Of The Day: Axon Near Buy Point As Cup (Almost) Runneth Over With AI, Drone Success...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Baron Technology Fund Q4 2024 Shareholder Letter</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">During Q4, Baron Technology Fund rose 15.85%, outperforming MSCI ACWI Information Technology Index, which increased 4.28%, and broader S&P 500 Index, which rose 2.41%....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">T-Mobile Leads Four S&P 500 Stocks Near Buy Points In Tricky Market</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-08</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.75
+                            </span>
+                        </div>
+                        <div class="article-summary">T-Mobile Leads Four S&P 500 Stocks Near Buy Points In Tricky Market...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Franklin DynaTech SMA Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">During Q4 2024, global stocks were pressured by investor concerns about economic growth, persistent inflation in some regions and the likelihood of further interest rate cuts in 2025....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Franklin U.S. Focused Growth SMA Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">During Q4 2024, global stocks were pressured by investor concerns about economic growth, persistent inflation in some regions and the likelihood of further interest rate cuts in 2025....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Top Funds Absolutely Adore These 6 Stocks — And Dig Tesla, Too</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Top Funds Absolutely Adore These 6 Stocks — And Dig Tesla, Too...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Stock Looks To Continue Triple-Digit Run As It Nears A Buy Point</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.92
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Stock Looks To Continue Triple-Digit Run As It Nears A Buy Point...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Franklin Small-Mid Cap Growth Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">US stocks collectively rose in the fourth quarter of 2024, with the S&P 500 Index, Dow Jones Industrial Average and NASDAQ Composite Index reaching new record highs....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">This IBD Rating Helped Investors Judge Palantir's Mettle</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.86
+                            </span>
+                        </div>
+                        <div class="article-summary">This IBD Rating Helped Investors Judge Palantir's Mettle...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Enterprise: A Buy Due To International Opportunities Plus Continued Revenue Growth</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.38
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon's Q3 revenue grew 32%, driven by international expansion and new product launches. Read my analysis to learn what to expect in Q4 results and in 2025....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Franklin Convertible Securities Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">US stocks collectively rose in the fourth quarter of 2024, with the S&P 500 Index, Dow Jones Industrial Average and NASDAQ Composite Index reaching new record highs....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Meta Leads Barrage Of Breakouts. Don't Miss This Slew Of Others.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Meta Leads Barrage Of Breakouts. Don't Miss This Slew Of Others....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">AI Data-Center Leader Hits All-Time High. Credit Two Reasons After DeepSeek Carnage.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.67
+                            </span>
+                        </div>
+                        <div class="article-summary">AI Data-Center Leader Hits All-Time High. Credit Two Reasons After DeepSeek Carnage....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Nvidia Gets The Axe As Google, Meta Lead The Resistance</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Nvidia Gets The Axe As Google, Meta Lead The Resistance...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Franklin Growth Opportunities SMA Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-02</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.40
+                            </span>
+                        </div>
+                        <div class="article-summary">The fund underperformed the Russell 3000 Growth Index benchmark in the fourth quarter. US economy appears to be firing on all cylinders heading into 2025, with no signs of a major slowdown....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">FCTR: A Rotating Strategy Going In Circles</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-01</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.46
+                            </span>
+                        </div>
+                        <div class="article-summary">First Trust Lunt U.S. Factor Rotation ETF implements a high-turnover factor strategy. Find out why FCTRâs high costs and weak performance make it a sell....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Baron Asset Fund Q4 2024 Shareholder Letter</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">Baron Asset Fund declined in the fourth quarter of 2024, underperforming its benchmark, the Russell Midcap Growth Index. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures: Tesla, Microsoft, Meta, Fed Decision Loom; 10 New Stock Buys</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures: Tesla, Microsoft, Meta, Fed Decision Loom; 10 New Stock Buys...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Axon Enterprise: Amazing Stock, Amazing Impact</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.34
+                            </span>
+                        </div>
+                        <div class="article-summary">Axon Enterprise is revolutionizing public safety with cutting-edge technology. See why AXON stock is a standout investment in the security and public safety sector....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Conestoga Capital Advisors Q4 2024 Quarterly Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-26</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.53
+                            </span>
+                        </div>
+                        <div class="article-summary">U.S. equity indices generated modest returns in the fourth quarter of 2024, and closed out the full year with double digit returns for the second year in a row....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">These Are The Five Best Stocks To Buy And Watch Now</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2024-11-03</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">These Are The Five Best Stocks To Buy And Watch Now...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Best Growth Stocks To Buy And Research</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2024-10-28</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Best Growth Stocks To Buy And Research...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">See Which Stocks Are  On The IBD Breakout Stocks Index</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2020-07-22</span>
+                            <span>https://www.investors.com</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Get alerts to potential breakout stocks, along with technical analysis of the stock charts to see the best time to buy and what telltale signs to look for....</div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

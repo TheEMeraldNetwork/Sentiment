@@ -1,0 +1,632 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Mondelez International Inc. (MDLZ) - Articles</title>
+            <style>
+                :root {
+                    --primary-color: #e0e0e0;
+                    --secondary-color: #a0a0a0;
+                    --accent-color: #404040;
+                    --text-color: #2c3e50;
+                    --border-color: #404040;
+                    --hover-color: #f8f9fa;
+                    --dark-bg: #1a1a1a;
+                    --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                }
+                
+                body { 
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: var(--header-gradient);
+                    padding: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    margin-bottom: 30px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .header-title {
+                    color: white;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                
+                .back-btn {
+                    padding: 8px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-1px);
+                }
+                
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+                
+                .article-card {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    border-left: 4px solid transparent;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+                
+                .article-card.positive {
+                    border-left-color: #28a745;
+                }
+                
+                .article-card.negative {
+                    border-left-color: #dc3545;
+                }
+                
+                .article-card.neutral {
+                    border-left-color: #6c757d;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    opacity: 0.8;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .stats-container {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                
+                .stat-card {
+                    text-align: center;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                }
+                
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Mondelez International Inc. (MDLZ)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">32</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                11
+                            </div>
+                            <div class="stat-label">Positive Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                8
+                            </div>
+                            <div class="stat-label">Negative Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                -0.03
+                            </div>
+                            <div class="stat-label">Average Sentiment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Columbia Dividend Income Fund Q4 2024 Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Institutional Class shares of Columbia Dividend Income Fund returned -1.34% for Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">New Sargento® Cheese Bakes Blends Mondelēz International's Deeply Rooted Cracker Expertise with the Rich Flavor and Heritage of Real Sargento® Cheese</h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.49
+                            </span>
+                        </div>
+                        <div class="article-summary">With Three Irresistible Flavors, Sargento® Cheese Bakes Are the Latest Innovation to Expand the Mondelēz Snacking PortfolioEAST HANOVER, N.J., Feb. 24, 2025 /PRNewswire/ -- Mondelēz has teamed up......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelez International : Inside Information / Ad Hoc Information - MONDELEZ INTERNATIONAL, INC.</h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">EXECUTION VERSION US$1,500,000,000 364-DAY REVOLVING CREDIT AGREEMENT dated as of February 19, 2025, ......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Mondelez International Inc. Cl A stock outperforms competitors on strong trading day</h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.93
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Inc. Cl A stock outperforms competitors on strong trading day...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">The Kraft Heinz Surprise: Outshining Defensive Packaged Foods Over Next 5 Years</h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.40
+                            </span>
+                        </div>
+                        <div class="article-summary">Kraft Heinz has significantly reduced its net debt from $31B in 2018 to $18.5B, while increasing operating cash flow. See why I rate KHC stock as a buy....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelez International Appoints Naniss Gadel-Rab to Lead the Canada Business</h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">TORONTO, Feb. 19, 2025 /CNW/ - Mondelēz International today announced the appointment of Naniss Gadel-Rab as President, Mondelez Canada Inc., effective March 3, 2025, succeeding Karla Schlieper,......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Mondelez International Inc. Cl A stock underperforms Wednesday when compared to competitors despite daily gains</h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.93
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Wednesday when compared to competitors despite daily gains...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelez International, Inc. (MDLZ) CEO Dirk Van De Put Presents at Consumer Analyst Group of New York (CAGNY) Conference (Transcript)</h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International, Inc. (NASDAQ:MDLZ) Consumer Analyst Group of New York (CAGNY) Conference February 18, 2025 2:00 PM ETCompany ParticipantsDirk Van de......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Parnassus Core Equity Fund Q4 And Annual 2024 Investment Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-02-17</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.46
+                            </span>
+                        </div>
+                        <div class="article-summary">The Parnassus Core Equity Fund returned 0.28% (net of fees) for the quarter, underperforming the S&P 500 Indexâs 2.41%. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">FSTA: Consumer Staples Dashboard For February</h3>
+                        <div class="article-meta">
+                            <span>2025-02-17</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">nan...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Kraft Heinz Plans Price Cuts to Boost Sales. Wall Street Wants More.</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.74
+                            </span>
+                        </div>
+                        <div class="article-summary">Kraft Heinz Plans Price Cuts to Boost Sales. Wall Street Wants More....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Mondelez International Inc. Cl A stock underperforms Tuesday when compared to competitors despite daily gains</h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.92
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Tuesday when compared to competitors despite daily gains...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Where I'd Put $10,000 Right Now - My Best Dividend Picks For Income And Growth</h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">If I were investing $10,000 today, I would focus on undervalued essentials, GARP stocks, and opportunities tied to broader economic trends. Click here to read why....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Lindt & Sprüngli: Rich Valuation But Strong Pricing Power And Growth Prospects Make It A Hold</h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.37
+                            </span>
+                        </div>
+                        <div class="article-summary">Lindt & SprÃ¼ngli remains resilient amid rising cocoa prices, with organic revenue up 7.8% in FY 2024. Find out what justifies a hold rating on LDSVF stock....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Lotus Bakeries: Sweet 2024, But Valuation Is Still Demanding</h3>
+                        <div class="article-meta">
+                            <span>2025-02-09</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">Lotus Bakeries sees growth in sales driven by Biscoff, plans for expansion and debt reduction, aiming for high single-digit growth in its products....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Mondelez's Earnings: Turning Cocoa Challenges Into Sweet Dividends</h3>
+                        <div class="article-meta">
+                            <span>2025-02-08</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.55
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez faces cocoa price pressures but has strong pricing power. Read why MDLZ stock offers a compelling dividend opportunity amid these challenges....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Zbar Launches "Adventure Needs Fuel" Campaign to Support Kids' Active Lives, Power Outdoor Fun, and Unleash the Awesome in Every Kid</h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">New brand platform focuses on sparking and sustaining outdoor adventure for active kids — fueled with delicious, quality ingredientsEMERYVILLE, Calif., Feb. 5, 2025 /PRNewswire/ -- Zbar today......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Hershey: A Falling Knife Or An Opportunity?</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Despite concerns about Hershey's future prospects, the past says that every cocoa crisis has been overcome, leading to strong rebounds in chocolate demand. Learn more on HSY stock here....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Mondelez International Inc. Cl A stock underperforms Tuesday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Tuesday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Mondelez International Expects 2025 Earnings to Drop Amid Soaring Cocoa Costs</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.98
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Expects 2025 Earnings to Drop Amid Soaring Cocoa Costs...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelez International, Inc. (MDLZ) Q4 2024 Earnings Call Transcript</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International, Inc. (NASDAQ:MDLZ) Q4 2024 Earnings Conference Call February 4, 2025 5:00 PM ETCompany ParticipantsShep Dunlap - SVP, IRDirk Van De......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelez International, Inc. 2024 Q4 - Results - Earnings Call Presentation</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The following slide deck was published by Mondelez International, Inc....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">What To Brace For In The Upcoming Job Report</h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">When the Bureau of Labor Statistics reports non-farm payrolls for January on Feb. 7, expect investors to pay little attention to the report. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">My Top 10 High-Yield Dividend Stocks For February 2025</h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.34
+                            </span>
+                        </div>
+                        <div class="article-summary">SPY and VYM kick off 2025 with solid gains. Find out why my top 10 dividend stocks, yielding 3.43%, have delivered an 87.57% return over 51 months....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Mondelez International Inc. Cl A stock underperforms Monday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Monday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">If I Had To Invest $50,000 In The Top 10 F&B Dividend Growth Stocks</h3>
+                        <div class="article-meta">
+                            <span>2025-02-01</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.44
+                            </span>
+                        </div>
+                        <div class="article-summary">Despite weak Consumer Staples performance, this food and beverage portfolio offers 3%+ yield with 8% growth. Read why its scoring factors ensure stability....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">CLIF BAR Announces "Raise Your Bar" Brand Platform and New Bar Flavor to Inspire and Help Fuel Consumers to Achieve Their Goals</h3>
+                        <div class="article-meta">
+                            <span>2025-01-30</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.31
+                            </span>
+                        </div>
+                        <div class="article-summary">Raise Your Bar empowers the pursuit of personal growth while energizing taste buds with the iconic Cookies & Creme flavor EMERYVILLE, Calif., Jan. 30, 2025 /PRNewswire/ -- CLIF BAR is announcing its.....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">BelVita brand introduces belVita Energy Snack Bites to help fuel mid-mornings with wholesome, soft-baked goodness</h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.40
+                            </span>
+                        </div>
+                        <div class="article-summary">New snack comes in two delicious flavor combinations to refuel busy mornings EAST HANOVER, N.J., Jan. 28, 2025 /PRNewswire/ -- The belVita brand today announced the launch of a major product......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelēz International to Present at CAGNY Conference on February 18</h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">CHICAGO, Jan. 28, 2025 -- Mondelēz International, Inc. announced that Dirk Van de Put, Chairman & CEO, and Luca Zaramella, EVP & Chief Financial Officer will present at the annual Consumer......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Mondelez International: Reliable Dividend Growth Stock With Formidable Brand Power</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.33
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International, an American multinational confectionery, snack food, and beverage company, is now a $77 billion (by market cap) confectionary and snack might....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Mondelez International : Press release - MONDELEZ INTERNATIONAL, INC.</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 ___________________________________ FORM......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Mondelez International Inc. Cl A stock underperforms Monday when compared to competitors despite daily gains</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.93
+                            </span>
+                        </div>
+                        <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Monday when compared to competitors despite daily gains...</div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

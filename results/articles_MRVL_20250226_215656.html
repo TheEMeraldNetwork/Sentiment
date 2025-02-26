@@ -1,0 +1,1065 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Marvell Technology Inc. (MRVL) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Marvell Technology Inc. (MRVL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">50</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.04</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f8b4d46c5878fe4282ecc8b7d66309262c3e82d4e72fbd78ceec868bfe96111" target="_blank" rel="noopener noreferrer">AMD's AI Gamble: Bullish Management Vs. Market Skepticism</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Advanced Micro Devices, Inc.'s stock surged to $220 by March 2024 due to AI GPU optimism but halved as gaining market share from NVIDIA proved difficult. Learn more on AMD stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df8d913fe91d1bb1ad59ae8c5fc69d6b8161f146eeec9b23e8cced87953aa26c" target="_blank" rel="noopener noreferrer">Columbia Select Mid Cap Value Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Institutional Class shares of Columbia Select Mid Cap Value Fund returned -3.18% for Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53dc7bdccf7e1760a07eb8e00d7f428d2bac57fd4f40511ac5a0d59528b73255" target="_blank" rel="noopener noreferrer">Columbia Seligman Technology And Information Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Institutional Class shares of Columbia Seligman Technology and Information Fund returned 8.03% for Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5e5732b7aa3c4e753f85bc22d83cbf8abd380210e4dc2c25c74f4969ae9c36c9" target="_blank" rel="noopener noreferrer">Marvell Q4 Preview: XPU Architecture With Integrated Co-Packaged Optics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell's XPU architecture with integrated co-packaged optics enhances connections. Find out why I remain very bullish on MRVL stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af84d548adb4abe5d24780886d91b4c1b3095ffd41d3c2f4009f13a6f6d44f4c" target="_blank" rel="noopener noreferrer">Hartford Growth Opportunities Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">The Hartford Growth Opportunities Fund (I shares) outperformed the Russell 3000 Growth Index during the quarter. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=20902a72da28c0a147bc863729da641fe8972066ca6e5a06d65cfcf7973c0253" target="_blank" rel="noopener noreferrer">Marvell Technology: Promising But Overvalued</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology leads the industry in designing advanced 2nm and 3nm chips for data centers. Read why I rate MRVL stock a Hold now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=afbb9d8c58d0ae32dbc552141a73daccc3aae0e0ac7efa553ea969bf15b7d38a" target="_blank" rel="noopener noreferrer">Allspring Diversified Capital Builder Fund</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary"> The Allspring Diversified Capital Builder Fund  outperformed the Diversified Capital Builder Blended Index during Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d558467bb2959c26d7811505ea423ffd2f176963ff8ee081720f27ecdaa827cc" target="_blank" rel="noopener noreferrer">Nvidia Stock Pauses Despite Debut Of Blackwell. What The King Of AI Chips Needs Now.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia Stock Pauses Despite Debut Of Blackwell. What The King Of AI Chips Needs Now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6aa976f2add37dc8941bf2d40cd55d53398cc15e4972f3c7db91a2c5c3cd509b" target="_blank" rel="noopener noreferrer">Allspring Common Stock Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">The Allspring Common Stock Fund underperformed the Russell 2500 Index during the three-month period that ended December 31, 2024. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=968135c7d2bf8ed9dff373ba0988b6aeaa9d8cd9ec08665aaeaaffba14d0447e" target="_blank" rel="noopener noreferrer">Artisan Global Opportunities Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">The Artisan Global Opportunities Fund portfolio experienced slight weakness in Q4 but delivered a
+strong absolute return in 2024. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ababb7f90d68cfd87d850fd0e66f2c7376ca8e20d9553d8b2a451d3b344e8733" target="_blank" rel="noopener noreferrer">The New Plan for Western Companies Is ABC: ‘Anything But China’</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-17</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The New Plan for Western Companies Is ABC: ‘Anything But China’...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4e726e04320c922f374af58bf2e101fd9cbe88e5cc08696eb1a340cbcffde68" target="_blank" rel="noopener noreferrer">Broadcom and Marvell Could Be the Big Losers If Arm Moves Into Chipmaking. Here’s Why.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-17</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Broadcom and Marvell Could Be the Big Losers If Arm Moves Into Chipmaking. Here’s Why....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2ed6efc84ea85e76f66f60374bed23d2da35252740f7be84ebe2ffc64b4174e7" target="_blank" rel="noopener noreferrer">Janus Henderson Opportunistic Alpha Managed Account Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Janus Henderson Opportunistic Alpha Managed Account Portfolio returned -0.81% 
+(gross) during Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db8ec08a977c3c8d90dc87fb1131f8f08035dda7229460f817288495ec473c9a" target="_blank" rel="noopener noreferrer">Advanced Micro Devices: AI Future Needs More Answers (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">AMD's Q4 earnings showed strong growth, but AI revenue uncertainty persists. Read why AMD stock is a Hold as market conditions and competition create risks....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6f896688f0e143f5cdff4635b1b6a852af78bc3b147abdc3fa53c8cb10faa04f" target="_blank" rel="noopener noreferrer">Janus Henderson Concentrated All Cap Growth Managed Account Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Janus Henderson Concentrated All Cap Growth Managed Account Portfolio returned 3.34% (gross) and the Russell 3000Â® Growth Index returned 6.82%. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a8cede172010270d416f5847ee5e78ae77cfaf4b663649f7d663c8ab02bf57f" target="_blank" rel="noopener noreferrer">Janus Henderson Concentrated Growth Managed Account Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Janus Henderson Concentrated Growth Managed Account Portfolio returned 2.44% (gross) and the Russell 1000Â® Growth Index returned 7.07%. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=204262c3d5dc555e8dc4d7c58a903e08044c6db48de75eb47e2ede8cca54b07c" target="_blank" rel="noopener noreferrer">DeepSeek Isn't New, Nvidia Concerns, Downgrading AMD + 3 Semi Caps</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">Sara Awad from Tech Stock Pros and investing group Tech Contrarians, explains the DeepSeek story and contextualizes Nvidia concerns....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dd52700e6e009d34fbcf28986b397d0b17c430653db9b4a20af29ed485704a10" target="_blank" rel="noopener noreferrer">Janus Henderson Forty Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">The Fund returned 2.18% and the Russell 1000Â® Growth Index returned 7.07%. Stock selection in the industrials and consumer staples sectors contributed to relative performance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b1b5649bb5b1cfaa21cf1c024a1b9b46216ab392a7dca0fa12ee241085b1e777" target="_blank" rel="noopener noreferrer">Invesco Value Opportunities Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">Stock selection in the information technology, industrials and consumer discretionary sectors drove the fundâs relative outperformance. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7824ce9cfe9550c82729dfb2106a6be15657f46094921a9ec0b0e7d7be903f03" target="_blank" rel="noopener noreferrer">Janus Henderson Contrarian Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">The Fund returned -0.64% and the S&P 500Â® Index returned 2.41%. Stock selection in the industrials and information technology sectors contributed to relative performance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=70da64177a2d5a32c3fa0e9ac006e1f735aea3007107e51b0610e0b6cac7d04c" target="_blank" rel="noopener noreferrer">Marvell Technologies: A High-Risk, High-Reward Investment Opportunity In The AI Infrastructure Market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Marvell Technology's AI partnership with AWS and strong data center growth make it a compelling investment....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=131bb9ec5d7ce70e7fb9889085d50c7397fed6460423c4067b15983f1805cf4a" target="_blank" rel="noopener noreferrer">Invesco Equity And Income Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The fund holds high grade bonds as a source of income and to help provide a measure of stability in volatile markets. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6de4a8ccd87063d8f469a77a0fb131266ffd9bb52ba9350c6c657c94a55a2eb2" target="_blank" rel="noopener noreferrer">Invesco Diversified Dividend Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Fund outperformed the Russell 1000 Value Index primarily due to strong stock selection in information technology, while health care, particularly managed health care and pharma detracted....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ab6f38c857544822579e50a6e55e360bfe73cc9c7ff547590a185c945d4eee6" target="_blank" rel="noopener noreferrer">Invesco Growth And Income Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Stock selection in the financials, consumer discretionary, communication services and information technology sectors drove the fundâs relative outperformance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7c34e5ec1886892b43a7d8b9af347c4f7ece1218b33a8431c1e9ba0b668ed284" target="_blank" rel="noopener noreferrer">Fidelity Balanced Fund Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">For the fourth quarter of 2024, the fund's Retail Class shares gained 0.59%, topping the 0.21% advance of the Fidelity Balanced Hybrid Composite Index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bbeeaa5634f2a67e2a58841e6070f9750b7a11f5fc2f4821952532443e1a8a5a" target="_blank" rel="noopener noreferrer">Fidelity Diversified International Fund Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For the fourth quarter, the fund's Retail Class shares returnedÂ -7.11%, outpacing the -8.09% result of the benchmark, the MSCI EAFE Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=035d26e5dbe1c68c8c48fd42bb860bfcb410118a358c736da28598a058339a74" target="_blank" rel="noopener noreferrer">AI Chip Stocks Rise On Latest Data Center Spending Plans</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment negative">
+                                    -0.61
+                                </span>
+                            </div>
+                            <div class="article-summary">AI Chip Stocks Rise On Latest Data Center Spending Plans...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91a89a9e7ce191d380112e7981934b649ca95535610fa7190945e511ebc88c40" target="_blank" rel="noopener noreferrer">Dow Jones Futures Rise; AI Chip Leader Arm Falls, Tesla Skids As Rival Soars</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-06</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Dow Jones Futures Rise; AI Chip Leader Arm Falls, Tesla Skids As Rival Soars...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d6fd6464fdbd1d91b7de98eedd44878468591d611cc3937d047e82b8e76a4c31" target="_blank" rel="noopener noreferrer">The Golden Age Of Customized AI Chips</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidiaâs AI GPUs have long been the standard for training large-language AI models in centralized data centers, thanks to their immense computational power and parallel-processing chops....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fb05d02de70369c66b7c58bda8c33b58b999e8494ac5f77d4e2595b1d7706e7e" target="_blank" rel="noopener noreferrer">Fidelity OTC Portfolio Fund Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">For the quarter, the fund's Retail Class shares gained 8.15%, topping the 6.35% advance of the benchmark, the NASDAQ Composite IndexÂ®. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c4fb8f708c7b58f7d2a1afa368e47406037ee39d34c0642af1952879c1a064d1" target="_blank" rel="noopener noreferrer">Here’s the $280 billion reason that AI-chip stocks will be just fine</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-06</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Here’s the $280 billion reason that AI-chip stocks will be just fine...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3fe7acc1f518c5b79647875f00651e8380ca832b0db7920c13dff2215f8c56ae" target="_blank" rel="noopener noreferrer">Fidelity Blue Chip Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">For Q4 2024, the Fidelity Blue Chip Growth Fund's Retail Class shares gained 9.12%, handily outpacing the benchmark. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=42861ddf080f125bdb3d88c2bea4f196afac0848a8fc96cecf969ed2877898f9" target="_blank" rel="noopener noreferrer">AMD Stock Craters On Soft AI Data Center Business</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-05</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">AMD Stock Craters On Soft AI Data Center Business...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=71d7b4df1fe3ce1a6c0bffab2a3d3e2bff055053abc4b6029dfd3e8de4dc1402" target="_blank" rel="noopener noreferrer">Stocks That May Benefit From An AI Evolution This Year</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Tech stocks are in focus as many of the bellwethers report results, but also because of the potential impact of DeepSeek on the AI sector. Morningstar Research's David Sekera discusses....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9588db7051aa99eb9d912a778eb4f0b7f8fd294deca940aaa8c78562d7a8a97d" target="_blank" rel="noopener noreferrer">Tariffing Our Largest Trading Partners Hurting Stocks? Remember The Pain Trade</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-02</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">Tariffs on major trading partners could initially hurt stocks. Read why I remain bullish and expect strong earnings from S&P 500 stocks....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4ae2bc499f53ead89dd50aab00f97b0ad7e0d61634245b66755c66933a04ee5b" target="_blank" rel="noopener noreferrer">Taiwan Semiconductor Manufacturing: AI Growth Play At A Reasonable Valuation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Despite risks like geopolitical tensions and high capital expenses, TSMC's long-term vision and market leadership make it a compelling investment. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2110cbae761c8aab385de9bcd42acd836bfc1cc053f78cbdb0cfb52e87dbaa28" target="_blank" rel="noopener noreferrer">Lattice Semiconductor: Poised For A Turnaround In A Challenging Market Environment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.69
+                                </span>
+                            </div>
+                            <div class="article-summary">Lattice Semiconductor Corporation's Q4 '24 earnings report amidst macro challenges. New CEO aims for growth with innovative products. Click for my LSCC update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=13c60b8ca4000df6f2c93add3270e29874d39818367e9af8f4747c2c3993e2fd" target="_blank" rel="noopener noreferrer">2025 Semiconductor Outlook: Investor Roadmap</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">As we move through 2025, staying informed and adaptable will be key to capitalizing on the opportunities this pivotal industry presents....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4cabe62c5a330acefee8515a22e2337e56e02fbb3cb289bbe952f50db09d33b1" target="_blank" rel="noopener noreferrer">Why DeepSeek's Progress May Actually Be Good News For AI Chipmakers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-29</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">Why DeepSeek's Progress May Actually Be Good News For AI Chipmakers...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=780aeeca511d74e424605e4b32f642b0b585a0f3a9dc98bae65c0f800e2d649a" target="_blank" rel="noopener noreferrer">Fitch Upgrades Marvell Technology to 'BBB' from 'BBB-'; Outlook Stable</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Fitch Ratings has upgraded the Long-Term Issuer Default and senior unsecured ratings for Marvell Technology Inc. to 'BBB' from 'BBB-'.The Rating Outlook is Stable. The ratings and Outlook reflect......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ba555b462033398baccc10be01459af4dc1f30807dc0fbb61a79c30ba9d4323" target="_blank" rel="noopener noreferrer">Marvell to Showcase Accelerated Infrastructure Silicon at DesignCon 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Delivering Leading-edge Scale Up and Scale Out for AI Data Centers and Cloud InfrastructureSANTA CLARA, Calif., Jan. 28, 2025 /PRNewswire/ -- Marvell Technology, Inc. , a leader in data......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=861fb5a1bc868656a96ee16710e7e55a4ca5c06ca17b9d0fec2fdc64bb0b75f7" target="_blank" rel="noopener noreferrer">Seeking Perspective On DeepSeek</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A Chinese AI start-up claimed its large-language model needs far less computing power than established models. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ef5e7800791d05446f4d13659f88f78dcbe786ee71e088cd3bf55fa26e66ba3" target="_blank" rel="noopener noreferrer">Nvidia and other chip stocks are bouncing. Is now the time to buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.63
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia and other chip stocks are bouncing. Is now the time to buy?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ec6d8325f391e42850e70b05bde43880cacc591b017474d8f798344951d4e7e" target="_blank" rel="noopener noreferrer">As Nvidia Stock Rises, Here’s Why DeepSeek AI Worries Are Overblown</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">As Nvidia Stock Rises, Here’s Why DeepSeek AI Worries Are Overblown...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a79fb5f119d4aa800856a469490fb132775c30dd3c394042074e93fa5e745a12" target="_blank" rel="noopener noreferrer">What's Next For Nvidia, AI Chip Stocks After DeepSeek 'Wake-Up Call'?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">What's Next For Nvidia, AI Chip Stocks After DeepSeek 'Wake-Up Call'?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eeb79e258f0722e34bd6c3fbd5da1c54bd4929e0cc3dffee1031c9130f554b44" target="_blank" rel="noopener noreferrer">These chip stocks are actually gaining as the 'SOX' index heads for worst drop in 5 years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">These chip stocks are actually gaining as the 'SOX' index heads for worst drop in 5 years...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cc91fb64d0ca7f27a45911e6dffe3913e4c0bd1f161d2447cf5e3b8bf1e760c2" target="_blank" rel="noopener noreferrer">These Stocks Moved the Most Today: Nvidia, Broadcom, GE Vernova, Vistra, AT&T, SoFi, Akero, Tesla, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">These Stocks Moved the Most Today: Nvidia, Broadcom, GE Vernova, Vistra, AT&T, SoFi, Akero, Tesla, and More...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b90bb052e974f5fe15c3d4fb47473ab6afb7e65d2cfaba6c0fb37e3a4e7652c3" target="_blank" rel="noopener noreferrer">Nvidia, AI Chip Peers Tumble On DeepSeek Implications</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-27</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia, AI Chip Peers Tumble On DeepSeek Implications...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9405260201fe12d16ac622813366f2672db2382ea4e1aefaffda5347a126561" target="_blank" rel="noopener noreferrer">Nvidia Stock Slashes Nearly $600 Billion in Market Value. What’s Driving the Panic and Why It May Be Overblown.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia Stock Slashes Nearly $600 Billion in Market Value. What’s Driving the Panic and Why It May Be Overblown....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f1b76314da6f3b77a6d233108463effcb30b186b6d93aa5ff80e98d32ea441be" target="_blank" rel="noopener noreferrer">Does DeepSeek spell doomsday for Nvidia and other AI stocks? Here’s what to know.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Does DeepSeek spell doomsday for Nvidia and other AI stocks? Here’s what to know....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

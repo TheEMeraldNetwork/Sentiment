@@ -1,0 +1,668 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>WELL Health Technologies Corp. (WELL) - Articles</title>
+            <style>
+                :root {
+                    --primary-color: #e0e0e0;
+                    --secondary-color: #a0a0a0;
+                    --accent-color: #404040;
+                    --text-color: #2c3e50;
+                    --border-color: #404040;
+                    --hover-color: #f8f9fa;
+                    --dark-bg: #1a1a1a;
+                    --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                }
+                
+                body { 
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: var(--header-gradient);
+                    padding: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    margin-bottom: 30px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .header-title {
+                    color: white;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                
+                .back-btn {
+                    padding: 8px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-1px);
+                }
+                
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+                
+                .article-card {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    border-left: 4px solid transparent;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+                
+                .article-card.positive {
+                    border-left-color: #28a745;
+                }
+                
+                .article-card.negative {
+                    border-left-color: #dc3545;
+                }
+                
+                .article-card.neutral {
+                    border-left-color: #6c757d;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    opacity: 0.8;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .stats-container {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                
+                .stat-card {
+                    text-align: center;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                }
+                
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">WELL Health Technologies Corp. (WELL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">30</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                11
+                            </div>
+                            <div class="stat-label">Positive Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                7
+                            </div>
+                            <div class="stat-label">Negative Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                0.05
+                            </div>
+                            <div class="stat-label">Average Sentiment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Bad Vibes, Positive Results</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-23</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.42
+                            </span>
+                        </div>
+                        <div class="article-summary">US markets slumped as economic concerns grew, but REITs shone with strong earnings and dividends. Check out the real estate weekly review....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Columbia Convertible Securities Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-23</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Columbia Convertible Securities Fund Institutional Class shares returned 2.38% for Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Nvidia The Focus Of Earnings Reports This Week</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-22</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">All eyes on Nvidia as it reports earnings this week. Does DeepSeek impact NVDA in any form? Wait and watch. US Q4 GDP's second estimate is due Friday. See more here....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Inc. stock underperforms Friday when compared to competitors</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower Inc. stock underperforms Friday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Stock: Long-Term Potential Vs. Near-Term Risks</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower excels in senior housing growth, but its high valuation suggests patience. Long-term growth prospects remain strong. See more on WELL stock here....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Always Avoid The Popularity Contests</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Discover why Welltower might be overvalued, Hannon Armstrong offers a safer bet, and Buffett's tips for long-term gains....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower: Strong Business But Expensive (Rating Downgrade)</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.45
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower's price has appreciated by more than 160% since the start of 2021, far outpacing the rest of the real estate sector. Click to read why WELL is a Hold....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">3 High-Quality REITs That Have Become Absurdly Cheap</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.64
+                            </span>
+                        </div>
+                        <div class="article-summary">These three blue-chip REITs are trading at decade-low valuations. Click here to find out more about REIT stocks....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">REIT Earnings Halftime Report</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">REIT earnings shine with 61% beating estimates! Highlights include healthcare & retail strength, robust senior housing, and dividend hikes....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Inflation Isn't Dead Yet</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-16</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">US markets surged despite inflation concerns, with tech stocks leading. Learn why real estate equities varied, with Senior Housing REITs showing strong growth....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Janus Henderson U.S. Real Estate ETF Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-16</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.53
+                            </span>
+                        </div>
+                        <div class="article-summary">The Fund returned -6.46% and the FTSE Nareit Equity REITs Index returned -6.21%. Wyndham Hotels & Resorts and Equinix contributed positively, while Lineage and Public Storage detracted....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Wedbush Upgrades Welltower (WELL)</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-15</span>
+                            <span>Fintel</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">nan...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Inc. stock underperforms Thursday when compared to competitors despite daily gains</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-13</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.91
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower Inc. stock underperforms Thursday when compared to competitors despite daily gains...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower, Inc. (WELL) Q4 2024 Earnings Call Transcript</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower, Inc. (NYSE:WELL) Q4 2024 Earnings Conference Call February 12, 2025 9:00 AM ETCompany ParticipantsMatt McQueen - CLO &amp; General CounselShankh......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Inc. stock outperforms competitors on strong trading day</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower Inc. stock outperforms competitors on strong trading day...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Fidelity Real Estate Income Fund Q4 2024 Review</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-09</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">For the fourth quarter, the fund's Retail Class shares returnedÂ -2.26%, outpacing the -3.91% result of the Fidelity Real Estate Income Composite Index. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower: Well Positioned To Capture Both Cyclical And Secular Growth Inflection</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.32
+                            </span>
+                        </div>
+                        <div class="article-summary">nan...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">NAV Monitor: U.S. Equity REITs End January At 13.8% Median Discount</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.43
+                            </span>
+                        </div>
+                        <div class="article-summary">Publicly listed US equity real estate investment trusts closed Jan. 31 at a median 13.8% discount to their consensus net asset value per share estimates. Click to read....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Baron Durable Advantage Fund Q4 2024 Shareholder Letter</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">Baron Durable Advantage Fund advanced during the fourth quarter of 2024, outpacing its benchmark, the S&P 500 Index....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Inc. stock outperforms competitors despite losses on the day</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower Inc. stock outperforms competitors despite losses on the day...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Ventas Stock Gets Relative Strength Rating Bump</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.74
+                            </span>
+                        </div>
+                        <div class="article-summary">Ventas Stock Gets Relative Strength Rating Bump...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Volatility Is Back</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-02</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.37
+                            </span>
+                        </div>
+                        <div class="article-summary">Real estate equities were among the stronger performers for a third-straight week, buoyed by easing interest rates. Read more to see my thoughts....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Don't Miss This REIT Opportunity: The Silver Tsunami</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-01</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Explore the opportunities in healthcare REITs with a focus on the aging population, despite pricey options. Click for our top picks for changing demographics....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Forget The Fed: A 3-Fund Portfolio That Likely Wins No Matter What</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-30</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The Federal Reserve's path forward on interest rates remains highly uncertain. Check out the three-fund portfolio that should win, no matter what the Fed does....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Baron Asset Fund Q4 2024 Shareholder Letter</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">Baron Asset Fund declined in the fourth quarter of 2024, underperforming its benchmark, the Russell Midcap Growth Index. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Inc. Announces Launch of Private Funds Management Business</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.39
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower Inc. announced the launch of its private funds management business to manage third party capital. The new business will pursue opportunities to invest across the capital structure in the......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Announces Launch of Private Funds Management Business</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">TOLEDO, Ohio, Jan. 29, 2025 /PRNewswire/ -- Welltower Inc. , the world's largest owner of healthcare and wellness infrastructure and a pioneer in the application of data science to real estate, today....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">NorthStar Healthcare Income, Inc. to be Acquired by an affiliate of Welltower for $3.03 Per Share in a $900 Million Transaction</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">TOLEDO, Ohio and KANSAS CITY, Mo., Jan. 29, 2025 /PRNewswire/ -- Welltower® Inc and NorthStar Healthcare Income, Inc. , an internally managed, public, non-listed real estate investment trust  that......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Welltower Inc. stock underperforms Monday when compared to competitors despite daily gains</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.90
+                            </span>
+                        </div>
+                        <div class="article-summary">Welltower Inc. stock underperforms Monday when compared to competitors despite daily gains...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Morning In America</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-26</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">US markets soar in best first-week of a Presidential term since 1985. Click here to find out more about the weekly real estate review....</div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

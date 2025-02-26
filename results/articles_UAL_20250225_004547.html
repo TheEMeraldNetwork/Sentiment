@@ -1,0 +1,596 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>United Airlines Holdings Inc. (UAL) - Articles</title>
+            <style>
+                :root {
+                    --primary-color: #e0e0e0;
+                    --secondary-color: #a0a0a0;
+                    --accent-color: #404040;
+                    --text-color: #2c3e50;
+                    --border-color: #404040;
+                    --hover-color: #f8f9fa;
+                    --dark-bg: #1a1a1a;
+                    --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                }
+                
+                body { 
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: var(--header-gradient);
+                    padding: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    margin-bottom: 30px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .header-title {
+                    color: white;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                
+                .back-btn {
+                    padding: 8px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-1px);
+                }
+                
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+                
+                .article-card {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    border-left: 4px solid transparent;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+                
+                .article-card.positive {
+                    border-left-color: #28a745;
+                }
+                
+                .article-card.negative {
+                    border-left-color: #dc3545;
+                }
+                
+                .article-card.neutral {
+                    border-left-color: #6c757d;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    opacity: 0.8;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .stats-container {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                
+                .stat-card {
+                    text-align: center;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                }
+                
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">United Airlines Holdings Inc. (UAL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">29</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                9
+                            </div>
+                            <div class="stat-label">Positive Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                10
+                            </div>
+                            <div class="stat-label">Negative Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                -0.06
+                            </div>
+                            <div class="stat-label">Average Sentiment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <h3 class="article-title">George Bush Intercontinental Airport - Houston Airports to open new IAH Terminal E Ticketing Lobby; Here's what's different at IAH starting February 24-and why passengers need to pay attention.</h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.50
+                            </span>
+                        </div>
+                        <div class="article-summary">HOUSTON-Travelers at George Bush Intercontinental Airport will see major improvements starting February 24 when the new Terminal E Ticketing Lobby opens-just in time for Spring Break. This......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Singapore Airlines: Too Inconsistent For Investment</h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.29
+                            </span>
+                        </div>
+                        <div class="article-summary">Singapore Airlines' Q2 FY25 net profit surged to SGD 1.6 billion, mainly due to a non-cash gain from the Air India-Vistara merger. Read the earnings review and why I'm upgrading the stock....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">United Airlines Faces A Tough Future</h3>
+                        <div class="article-meta">
+                            <span>2025-02-23</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.26
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines' post-covid growth outperforms many stocks, focusing on international markets. Learn why UAL stock faces challenges despite strong performance....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Allspring Large Cap Core Fund Q4 2024 Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The Allspring Large Cap Core Fund generated a total return of 5.04% for Q4 2024 vs. S&P 500 Index return of 2.41%. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">American Airlines: Only The Start</h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.54
+                            </span>
+                        </div>
+                        <div class="article-summary">American Airlines Group showcases strong Q4 results, EPS growth potential, and expanded AAdvantage program. Click here to read why AAL stock is a Strong Buy....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">United Airlines Holdings Inc. stock underperforms Friday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Holdings Inc. stock underperforms Friday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Allspring Disciplined U.S. Core Fund Q4 2024 Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The Allspring Disciplined U.S. Core Fund returned 4.18% for the quarter. The benchmark S&P 500 Index returned 2.41%. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">United Airlines Holdings Inc. stock underperforms Thursday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Holdings Inc. stock underperforms Thursday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">United Airlines Holdings, Inc. (UAL) Barclays 42nd Annual Industrial Select Conference Transcript</h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Holdings, Inc. (NASDAQ:UAL) Barclays 42nd Annual Industrial Select Conference February 19, 2025 11:35 AM ETCompany ParticipantsKristina......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">United Airlines Holdings Inc. stock outperforms competitors on strong trading day</h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Holdings Inc. stock outperforms competitors on strong trading day...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Tracking Stanley Druckenmiller's Duquesne Family Office Portfolio - Q4 2024 Update</h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Discover the latest strategic moves of Duquesne Family Office's $3.72B portfolio, including new stakes, increased investments, and notable disposals....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Southwest Airlines Stock Has Lagged Competitors. Time for a Catch-Up Trade.</h3>
+                        <div class="article-meta">
+                            <span>2025-02-14</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Southwest Airlines Stock Has Lagged Competitors. Time for a Catch-Up Trade....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Stock Market Today: AppLovin Rockets 38%, Tyler Breaks Out As Indexes Climb (Live Coverage)</h3>
+                        <div class="article-meta">
+                            <span>2025-02-13</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.48
+                            </span>
+                        </div>
+                        <div class="article-summary">Stock Market Today: AppLovin Rockets 38%, Tyler Breaks Out As Indexes Climb (Live Coverage)...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Fidelity Growth Company Fund Q4 2024 Review</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.51
+                            </span>
+                        </div>
+                        <div class="article-summary">For Q4 2024, Fidelity Growth Company Fund's Retail Class (FDGRX) shares gained 7.52%, outpacing the benchmark.Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">United Airlines Holdings Inc. stock underperforms Tuesday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Holdings Inc. stock underperforms Tuesday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">SkyWest: Room To Fly</h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">SkyWest is the largest U.S. regional airline, operating for major carriers like Delta, United, and American. Read why SKYW stock is a Buy....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">United Airlines Holdings Inc. stock outperforms competitors despite losses on the day</h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Holdings Inc. stock outperforms competitors despite losses on the day...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">United to restart service to Tel Aviv, Israel; Flights from New York/Newark to Tel Aviv resume March 15, with second daily flight resuming March 29</h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.71
+                            </span>
+                        </div>
+                        <div class="article-summary">CHICAGO- United is pleased to announce plans to restart New York/Newark to Tel Aviv service on March 15, with a second daily flight planned to begin March 29. This resumption follows a detailed......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Legacy Ridge Capital Partners Equity Fund I 2024 Annual Letter</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Legacy Ridge Capital Partners Equity Fund I  returned 52.4% gross and 40.3% net of performance fees in 2024. Click here to read the full letter. ...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">United Airlines to restart services to Israel</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.60
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines said onTuesday it will restart its service from New York to Tel Aviv onMarch 15, as tensions ease following a ceasefire agreementbetween Israel and Hamas. Western......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">United Airlines Resumes Service to Tel Aviv</h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">United Airlines Resumes Service to Tel Aviv...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Qantas Trades At A Discount, But I Am Downgrading</h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.54
+                            </span>
+                        </div>
+                        <div class="article-summary">Qantas Airways Limited stock has outperformed the market but is now downgraded to hold due to revised guidance and currency risks. Click for this QUBSF update....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">United Airlines flight evacuated after engine sparks fire on wing during takeoff at Houston airport</h3>
+                        <div class="article-meta">
+                            <span>2025-02-02</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">HOUSTON — Passengers were evacuated via slides and stairs from a jetliner at Houston's main airport on Sunday after an engine problem during takeoff caused smoke and fire on the right wing. ......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">8 Stocks & 1 ETF I'm Buying As The Trade Wars Begin</h3>
+                        <div class="article-meta">
+                            <span>2025-02-01</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The stock market's current valuations are elevated, driven by AI optimism, and there's a potential rotation from tech to other sectors to come in 2025. I share what stocks I'm buying now....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Plane Crash: Army Helicopter Was Warned Ahead of Deadly Crash, Audio Shows</h3>
+                        <div class="article-meta">
+                            <span>2025-01-30</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.67
+                            </span>
+                        </div>
+                        <div class="article-summary">Plane Crash: Army Helicopter Was Warned Ahead of Deadly Crash, Audio Shows...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">United Reveals the Power of the 'Booking Boost' to Lift Your Mood</h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.47
+                            </span>
+                        </div>
+                        <div class="article-summary">CHICAGO- United Airlines is celebrating National Plan for Vacation Day with a way to remedy the seasonal blues by teaming up with cognitive scientist Dr. Laurie Santos, host of The Happiness Lab......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Franklin Managed Income Fund Q4 2024 Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">During the quarter, the Fed lowered the federal funds target rate by 25 basis points in November and another 25 bps in December. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">JetBlue Stock Falls 26% After Earnings. The Airline’s Guidance Was Weak.</h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">JetBlue Stock Falls 26% After Earnings. The Airline’s Guidance Was Weak....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">US opens probe into sudden movement on United Airlines flight from Nigeria</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.88
+                            </span>
+                        </div>
+                        <div class="article-summary">The U.S. National Transportation Safety Board said on Monday it is investigating a United Airlines flight on Friday from Lagos, Nigeria to Washington D.C., in which a sudden aircraft movement led to.....</div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

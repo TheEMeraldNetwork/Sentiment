@@ -1,0 +1,632 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Biogen Inc. (BIIB) - Articles</title>
+            <style>
+                :root {
+                    --primary-color: #e0e0e0;
+                    --secondary-color: #a0a0a0;
+                    --accent-color: #404040;
+                    --text-color: #2c3e50;
+                    --border-color: #404040;
+                    --hover-color: #f8f9fa;
+                    --dark-bg: #1a1a1a;
+                    --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                }
+                
+                body { 
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: var(--header-gradient);
+                    padding: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    margin-bottom: 30px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .header-title {
+                    color: white;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                
+                .back-btn {
+                    padding: 8px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-1px);
+                }
+                
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+                
+                .article-card {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    border-left: 4px solid transparent;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+                
+                .article-card.positive {
+                    border-left-color: #28a745;
+                }
+                
+                .article-card.negative {
+                    border-left-color: #dc3545;
+                }
+                
+                .article-card.neutral {
+                    border-left-color: #6c757d;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    opacity: 0.8;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .stats-container {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                
+                .stat-card {
+                    text-align: center;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                }
+                
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Biogen Inc. (BIIB)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">32</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                12
+                            </div>
+                            <div class="stat-label">Positive Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                9
+                            </div>
+                            <div class="stat-label">Negative Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                -0.00
+                            </div>
+                            <div class="stat-label">Average Sentiment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Biogen : to Participate in the TD Cowen 45th Annual Health Care Conference</h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Cambridge, MA, - - Biogen Inc. announced today that Christopher A. Viehbacher, President and Chief Executive Officer, will participate in a fireside chat during the TD Cowen 45th Annual Health Care......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Biogen Inc. stock outperforms competitors on strong trading day</h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. stock outperforms competitors on strong trading day...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Ionis Pharmaceuticals Reports Strong Q4 Earnings After Recent FDA Approval</h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.38
+                            </span>
+                        </div>
+                        <div class="article-summary">Ionis Pharmaceuticals beats Q4 earnings, eyes sHTG market with TRYNGOLZA. Strong pipeline and cash position make it a must-watch. Read more on IONS stock here....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Biogen, Stoke Therapeutics Set Dravet Syndrome Collaboration</h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen, Stoke Therapeutics Set Dravet Syndrome Collaboration...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Stoke Therapeutics and Biogen in pact for treatment for severe form of childhood epilepsy</h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Stoke Therapeutics and Biogen in pact for treatment for severe form of childhood epilepsy...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Parnassus Value Equity Fund Q4 And 2024 Annual Investment Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-02-17</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.44
+                            </span>
+                        </div>
+                        <div class="article-summary">The Parnassus Value Equity Fund returned -1.48% (net) for Q4 2024, outperforming the Russell 1000 Value Indexâs -1.98%. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Q4 Earnings Review: Why I'm Calling Time On This 'Powder Puff' Pharma</h3>
+                        <div class="article-meta">
+                            <span>2025-02-15</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogenâs disappointing Leqembi performance and weak pipeline hurt future growth. Learn why BIIB stock is rated "sell" due to declining drug franchises....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Market darlings Robinhood, Reddit and Applovin deliver earnings after the close</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.61
+                            </span>
+                        </div>
+                        <div class="article-summary">Market darlings Robinhood, Reddit and Applovin deliver earnings after the close...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Biogen 4Q Revenue Tops Wall Street's Estimates</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen 4Q Revenue Tops Wall Street's Estimates...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Biogen Inc. 2024 Q4 - Results - Earnings Call Presentation</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The following slide deck was published by Biogen Inc....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen’s stock slides on soft guidance and a decline in sales of MS drugs</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen’s stock slides on soft guidance and a decline in sales of MS drugs...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Biogen Inc. (BIIB) Q4 2024 Earnings Call Transcript</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) Q4 2024 Earnings Conference Call February 12, 2025 8:30 AM ETCompany ParticipantsTim Power - Head of IRChris Viehbacher -......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Wall Street Lunch: Boom Goes The CPI</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">The January Consumer Price Index jumped +0.5% in January, accelerating from +0.4% in December...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Hammered As Lackluster Guidance Drags On Fourth-Quarter Beat</h3>
+                        <div class="article-meta">
+                            <span>2025-02-12</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.96
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Hammered As Lackluster Guidance Drags On Fourth-Quarter Beat...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Inc. stock underperforms Tuesday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.90
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. stock underperforms Tuesday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">ClearBridge Global Value Improvers Strategy Q4 2024 Commentary</h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.28
+                            </span>
+                        </div>
+                        <div class="article-summary">The ClearBridge Global Value Improvers Strategy outperformed its MSCI World Value benchmark during Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Inc. stock underperforms Thursday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.90
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. stock underperforms Thursday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Biogen Inc. - Update on Regulatory Review of Lecanemab for Early Alzheimer's disease in the European Union</h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">TOKYO, CAMBRIDGE - Eisai Co., Ltd. and Biogen Inc. announced today an update on the ongoing regulatory review of the Marketing Authorization Application for lecanemab as treatment for early AD and......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Inc. stock underperforms Monday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.90
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. stock underperforms Monday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Update on Regulatory Review of Lecanemab for Early Alzheimer’s Disease in the European Union</h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">TOKYO and CAMBRIDGE, Mass., Jan. 31, 2025 -- Eisai Co., Ltd. and Biogen Inc. announced today an update on the ongoing regulatory review of the Marketing Authorization Application for lecanemab as......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Europe to review safety data for Eisai-Biogen Alzheimer's drug</h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The European Commission has requested its medicines regulator to consider safety information on Eisai and Biogen's Alzheimer's drug Leqembi, the agency said on Friday. The safety......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Biogen, Eisai: EC Asks CHMP to Take Another Look at Leqembi</h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen, Eisai: EC Asks CHMP to Take Another Look at Leqembi...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Biogen, Eisai : EC Asks CHMP to Take Another Look at Leqembi</h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.56
+                            </span>
+                        </div>
+                        <div class="article-summary">By Colin Kellaher Biogen and Eisai have hit another bump in their quest to win European regulatory approval of their Alzheimer's drug Leqembi. The companies on Friday said the European......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Inc. stock underperforms Friday when compared to competitors</h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.90
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. stock underperforms Friday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Biogen, Eisai Get FDA Nod for Leqembi IV Maintenance Dosing</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.79
+                            </span>
+                        </div>
+                        <div class="article-summary">By Colin Kellaher Biogen and Eisai have won Food and Drug Administration approval of an intravenous maintenance dosing of their Leqembi drug for early Alzheimer's disease. The companies late......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Sage rejects Biogen's takeover offer, to explore strategic alternatives</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Sage Therapeutics said on Monday that its board has unanimously rejected the takeover offer it received from Biogen and added that its board of directors has initiated a process to explore strategic.....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">Sage Rejects Biogen Bid, Launches Review of Alternatives</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Sage Rejects Biogen Bid, Launches Review of Alternatives...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">Eisai Co., Ltd. - FDA Approves LEQEMBI IV Maintenance Dosing for the Treatment of Early Alzheimer s disease</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.74
+                            </span>
+                        </div>
+                        <div class="article-summary">TOKYO, CAMBRIDGE - Eisai Co., Ltd. and Biogen Inc. announced today that the U.S. Food and Drug Administration has approved the Supplemental Biologics License Application for once every four weeks......</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">Biogen Inc. stock underperforms Monday when compared to competitors despite daily gains</h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.77
+                            </span>
+                        </div>
+                        <div class="article-summary">Biogen Inc. stock underperforms Monday when compared to competitors despite daily gains...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">FDA Approves LEQEMBI® (lecanemab-irmb) IV Maintenance Dosing for the Treatment of Early Alzheimer's Disease</h3>
+                        <div class="article-meta">
+                            <span>2025-01-26</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.33
+                            </span>
+                        </div>
+                        <div class="article-summary">Once every four weeks maintenance dosing may be easier for patients and care partners to continue treatment  Alzheimer's disease progression does not stop after plaque clearance; ongoing treatment......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">FDA Approves LEQEMBI® (lecanemab-irmb) IV Maintenance Dosing for the Treatment of Early Alzheimer’s Disease</h3>
+                        <div class="article-meta">
+                            <span>2025-01-26</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.33
+                            </span>
+                        </div>
+                        <div class="article-summary">Once every four weeks maintenance dosing may be easier for patients and care partners to continue treatment Alzheimer's disease progression does not stop after plaque clearance; ongoing treatment......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">US FDA OKs monthly maintenance dosing for Eisai/Biogen's Alzheimer's drug</h3>
+                        <div class="article-meta">
+                            <span>2025-01-26</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.50
+                            </span>
+                        </div>
+                        <div class="article-summary">The U.S. Food and Drug Administration has approved monthly maintenance dosing for Japan's Eisai and partner Biogen's Alzheimer's drug Leqembi, the companies said on Monday. The drug......</div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

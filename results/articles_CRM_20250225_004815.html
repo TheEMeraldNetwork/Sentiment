@@ -1,0 +1,1536 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Salesforce Inc. (CRM) - Articles</title>
+            <style>
+                :root {
+                    --primary-color: #e0e0e0;
+                    --secondary-color: #a0a0a0;
+                    --accent-color: #404040;
+                    --text-color: #2c3e50;
+                    --border-color: #404040;
+                    --hover-color: #f8f9fa;
+                    --dark-bg: #1a1a1a;
+                    --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                }
+                
+                body { 
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: var(--header-gradient);
+                    padding: 20px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    margin-bottom: 30px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 20px;
+                    position: relative;
+                    z-index: 1;
+                }
+                
+                .header-title {
+                    color: white;
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                
+                .back-btn {
+                    padding: 8px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 4px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    text-decoration: none;
+                    font-size: 14px;
+                    transition: all 0.2s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-1px);
+                }
+                
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 20px;
+                    margin-top: 20px;
+                }
+                
+                .article-card {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                    border-left: 4px solid transparent;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+                
+                .article-card.positive {
+                    border-left-color: #28a745;
+                }
+                
+                .article-card.negative {
+                    border-left-color: #dc3545;
+                }
+                
+                .article-card.neutral {
+                    border-left-color: #6c757d;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    opacity: 0.8;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .stats-container {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                
+                .stat-card {
+                    text-align: center;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                }
+                
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Salesforce Inc. (CRM)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">92</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                27
+                            </div>
+                            <div class="stat-label">Positive Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                26
+                            </div>
+                            <div class="stat-label">Negative Articles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">
+                                -0.03
+                            </div>
+                            <div class="stat-label">Average Sentiment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Columbia Disciplined Growth Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Columbia Disciplined Growth Fund Class A shares returned 4.33% (excluding sales charge) for Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Columbia Disciplined Value Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Columbia Disciplined Large Value Fund Class A shares returned -0.92% (excluding sales charge) for Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce and Google Bring Gemini to Agentforce, Enable More Customer Choice in Major Partnership Expansion</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.34
+                            </span>
+                        </div>
+                        <div class="article-summary">Agentforce will be able to use Google’s Gemini models, allowing agents to work with images, audio, and video, handle more complex tasks using Gemini’s multi-modal capabilities and......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">How DeepSeek Could Benefit Salesforce And Agentforce's Potential (Earnings Preview)</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-24</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.53
+                            </span>
+                        </div>
+                        <div class="article-summary">Salesforce, Inc.'s AI-driven Agentforce boosts productivity, reduces costs, and drives stock gains, with potential for higher revenues. Click for my CRM update....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Wall Street Week Ahead</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-23</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Stay ahead this week with updates on Nvidia earnings, key inflation data, and GDP insights. Discover market trends and top earnings reports....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Columbia Disciplined Core Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-23</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Columbia Disciplined Core Fund Class A shares returned 2.68% (excluding sales charge) for Q4 2024. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Palantir: The Market Has Lost Its Mind</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-22</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.83
+                            </span>
+                        </div>
+                        <div class="article-summary">Palantirâs strong growth doesnât justify its high valuation. Read why PLTR stock is overvalued, with a fair value of $49.95 and speculative price pressure....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Nvidia The Focus Of Earnings Reports This Week</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-22</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">All eyes on Nvidia as it reports earnings this week. Does DeepSeek impact NVDA in any form? Wait and watch. US Q4 GDP's second estimate is due Friday. See more here....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Futures: Nvidia Looms After Palantir, Axon, Tesla Lead Market Sell-Off. Here's What To Do.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-22</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Futures: Nvidia Looms After Palantir, Axon, Tesla Lead Market Sell-Off. Here's What To Do....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">UnitedHealth, Walmart share losses lead Dow's 269-point fall</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.91
+                            </span>
+                        </div>
+                        <div class="article-summary">UnitedHealth, Walmart share losses lead Dow's 269-point fall...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow drops 387 points on losses in UnitedHealth, Amazon.com Inc. shares</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.96
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow drops 387 points on losses in UnitedHealth, Amazon.com Inc. shares...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">UnitedHealth, Walmart share losses lead Dow's 517-point fall</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.89
+                            </span>
+                        </div>
+                        <div class="article-summary">UnitedHealth, Walmart share losses lead Dow's 517-point fall...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">UnitedHealth, Amazon.com Inc. share losses contribute to Dow's nearly 800-point fall</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-21</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">UnitedHealth, Amazon.com Inc. share losses contribute to Dow's nearly 800-point fall...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Is Likely To Beat Earnings Again</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.85
+                            </span>
+                        </div>
+                        <div class="article-summary">Salesforce's growth potential remains strong with focus on cost control, AI expansion, and shareholder value. Discover why CRM offers ~25% upside....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow down 381 points on losses in shares of Walmart, Boeing</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-20</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.96
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow down 381 points on losses in shares of Walmart, Boeing...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Wedbush Securities' Ives On AI, DeepSeek, Palantir, And The Next Big Tech Winners</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Dan Ives, Managing Director and Senior Equity Analyst at Wedbush Securities, shares his expert insights on the future of AI, Big Tech, and stock market trends in 2025....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Inc. stock underperforms Wednesday when compared to competitors</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-19</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">Salesforce Inc. stock underperforms Wednesday when compared to competitors...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Harding Loevner Global Equity ADR Q4 2024 Report</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">Harding Loevner Global Equity ADR composite fell 1.12% (gross) in Q4 2024, compared with the 0.89% decline of the MSCI ACWI Index. Click here to read more....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Harding Loevner Global Developed Markets Equity Q4 2024 Report</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-18</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">The Harding Loevner Global Developed Markets Equity composite fell 1.0% (gross) in Q4 2024, while the MSCI World Index was about flat. Click here to read more....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Parnassus Core Equity Fund Q4 And Annual 2024 Investment Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-17</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.46
+                            </span>
+                        </div>
+                        <div class="article-summary">The Parnassus Core Equity Fund returned 0.28% (net of fees) for the quarter, underperforming the S&P 500 Indexâs 2.41%. Click here to read the full commentary. ...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Weitz Large Cap Equity Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-17</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">For the calendar year, the Fundâs Institutional Class returned +12.84%, while the Russell 1000 Index returned +24.51%. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Parnassus Growth Equity Fund Q4 And 2024 Annual Investment Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-17</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.47
+                            </span>
+                        </div>
+                        <div class="article-summary">The Parnassus Growth Equity Fund returned 4.85% (net) for Q4 2024, underperforming the Russell 1000 Growth Indexâs 7.07%. Click here to read the full commentary....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Mar Vista U.S. Quality Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-16</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.39
+                            </span>
+                        </div>
+                        <div class="article-summary">Mar Vistaâs U.S. Quality strategy returned -0.18% net-of-fees in the fourth quarter of 2024. Russell 1000Â® Index and the S&P 500Â® Index returned +2.74% and +2.41%, respectively....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Mar Vista U.S. Quality Select Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-16</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Mar Vistaâs U.S. Quality Select strategy returned +0.39% net-of-fees in the fourth quarter of 2024. The Russell 1000Â® Index and the S&P 500Â® Index returned +2.74% and +2.41%, respectively....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Mar Vista Global Quality Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-16</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">The MSCI World Net Index climbed 18.7% for the year, marking its second consecutive annual gain above 15%, and capping a remarkable two-year run with a 47% total return....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">HubSpot: Despite Being Fairly Valued, The Expected Growth Is Not Enough</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-15</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">HubSpot is a top CRM with strong AI features but doesn't meet portfolio criteria. Learn why HUBS stock is rated "hold" despite solid financial performance....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Software stocks are on fire. Here’s why the party can keep going this year.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-15</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Software stocks are on fire. Here’s why the party can keep going this year....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow's nearly 125-point fall led by losses for Procter & Gamble, Travelers stocks</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-14</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow's nearly 125-point fall led by losses for Procter & Gamble, Travelers stocks...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">National Retail Federation Looks To Revitalize The Modern Commerce Experience</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-14</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The National Retail Federation event in 2024 was all about artificial intelligence. The same can be said for NRF 2025. Click to read....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Inc. stock outperforms competitors on strong trading day</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-13</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Salesforce Inc. stock outperforms competitors on strong trading day...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Tracking Jeremy Grantham's GMO Capital Portfolio - Q4 2024 Update</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-13</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.46
+                            </span>
+                        </div>
+                        <div class="article-summary">GMO's portfolio update highlights key stock adjustments and forecasts a promising 9.6% return for International Deep Value assets. See more here....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce: Waiting For A Major Catalyst In February</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Learn about Salesforce's anticipated new product Agentforce 2.0 and its impact on share prices....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Invesco Dividend Income Fund Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-11</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.38
+                            </span>
+                        </div>
+                        <div class="article-summary">The fund is balanced across sectors and industries, with a focus on long-term growth areas and companies with sustainable free cash flow and healthy balance sheets....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Monday.com Stock Surges. Software Is the Hot AI Play Now.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Monday.com Stock Surges. Software Is the Hot AI Play Now....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Tracking Ken Fisher's Fisher Asset Management Portfolio - Q4 2024 Update</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-10</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Kenneth Fisher's 13F portfolio grows to $251B in Q4 2024, with top holdings in Apple, Nvidia, Microsoft, Amazon, and Alphabet. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce, Inc. (CRM) – AI-Enhanced CRM Solutions Reshaping Enterprise Efficiency</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-09</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.25
+                            </span>
+                        </div>
+                        <div class="article-summary">We recently published a list of 10 AI Stocks Dominating Wall Street. In this article, we are going to take a look at where Salesforce, Inc. (NYSE:CRM) stands against other AI stocks dominating Wall St...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">The New Wave of AI Is Here</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-09</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The New Wave of AI Is Here...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">One 'Safer' Buy In 10 February Dogs Of The Dow</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-08</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.52
+                            </span>
+                        </div>
+                        <div class="article-summary">Verizon's dividend yield and Merckâs growth lead the Dow Dogs. Read why theyâre set for solid returns, with other top picks closely following in February 2026....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Reflecting On Sales Software Stocks’ Q3 Earnings: ZoomInfo (NASDAQ:ZI)</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">As the craze of earnings season draws to a close, here’s a look back at some of the most exciting (and some less so) results from Q3. Today, we are looking at sales software stocks, starting with Zoom...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Model Portfolio For Capital Appreciation, February '25</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Discover top stock picks for capital appreciation and outperformance, with a focus on profits, dividends, and long-term viability....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Will Palantir Be the World's Most Valuable Software Company?</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">With its explosion on Tuesday following a blowout earnings report, Palantir (NASDAQ: PLTR) crossed a market cap of $200 billion for the first time.  After its surge, the stock is now ahead of more est...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Ascends 33% in Six Months: Is the Stock Still a Buy?</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.56
+                            </span>
+                        </div>
+                        <div class="article-summary">CRM's market leadership, aggressive AI expansion and increasing enterprise IT spending trends create a solid foundation for sustained growth....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Software Stocks Are Surging. Why the Gains Should Keep Coming.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Software Stocks Are Surging. Why the Gains Should Keep Coming....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Shopify's High Valuation Faces A Reality Check - Q4 Earnings Preview</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.85
+                            </span>
+                        </div>
+                        <div class="article-summary">Shopify's stock has rebounded 150% over 5 years despite challenges....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Here is Why Growth Investors Should Buy Salesforce.com (CRM) Now</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-07</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">Salesforce.com (CRM) could produce exceptional returns because of its solid growth attributes....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Robin Washington Named Salesforce’s New COFO Amid Company’s Transformation Into Agentic Era</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Washington brings decades of experience, having held leadership positions at some of the world’s most respected companies....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce just hard-launched a new COFO — battle-tested finance and operations leader Robin Washington</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">A veteran operator and finance chief, Washington will continue serving on the tech giant’s board in her new executive role, the company announced....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Q3 Sales Software Earnings: HubSpot (NYSE:HUBS) Impresses</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.28
+                            </span>
+                        </div>
+                        <div class="article-summary">The end of the earnings season is always a good time to take a step back and see who shined (and who not so much). Let’s take a look at how sales software stocks fared in Q3, starting with HubSpot (NY...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow's nearly 175-point fall led by losses in Honeywell, Salesforce shares</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow's nearly 175-point fall led by losses in Honeywell, Salesforce shares...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce announces its first COFO—a powerful new exec role that combines CFO and COO</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">A seasoned executive and Salesforce board member, Robin Washington will start in the new role on March 21....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Names Board Member As Software Maker's New CFO And COO</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Software maker Salesforce named named a board of directors member, Robin Washington, as its new CFO and COO. Current COO Brian Millham will retire....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">These two stocks can be blamed the Dow's selloff</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.54
+                            </span>
+                        </div>
+                        <div class="article-summary">These two stocks can be blamed the Dow's selloff...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow's nearly 300-point drop led by losses for Honeywell, Salesforce shares</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow's nearly 300-point drop led by losses for Honeywell, Salesforce shares...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow's 175-point fall led by losses in shares of Honeywell, Salesforce</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow's 175-point fall led by losses in shares of Honeywell, Salesforce...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce director named chief of operations, finance</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The software giant is among a growing list of companies that have decided to merge the CFO and COO roles....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce, Workday Are Hiring More Overseas to Save Cash</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.22
+                            </span>
+                        </div>
+                        <div class="article-summary">(Bloomberg) -- Software companies are under pressure to invest in new artificial intelligence capabilities without denting profits. One increasingly popular strategy to keep costs low is to shift hiri...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce, Inc. (CRM) Among Hot Tech Stocks to Buy Right Now</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.56
+                            </span>
+                        </div>
+                        <div class="article-summary">We recently published a list of 15 Hot Tech Stocks to Buy Right Now. In this article, we are going to take a look at where Salesforce, Inc. (NYSE:CRM) stands against other hot tech stocks to buy right...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Why Salesforce Stock Is Sinking Today</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.93
+                            </span>
+                        </div>
+                        <div class="article-summary">Shares of Salesforce (NYSE: CRM) were trading lower on Thursday.  Salesforce stock took a hit after the sales software giant announced on Wednesday evening that longtime President and COO, Brian Millh...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Appoints New CTO, Shakes Up Other Executive Roles</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-06</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.26
+                            </span>
+                        </div>
+                        <div class="article-summary">As Salesforce heads into its new fiscal year and focuses on building and selling AI agents, CEO Marc Benioff is shuffling his executive ranks....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Is Salesforce, Inc. (CRM) the Best Big Tech Stock to Buy According to Analysts?</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">We recently published a list of 15 Best Big Tech Stocks to Buy According to Analysts. In this article, we are going to take a look at where Salesforce, Inc. (NYSE:CRM) stands against other best big te...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Here are the winners and losers from DeepSeek's breakthrough</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Here are the winners and losers from DeepSeek's breakthrough...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce's Longtime Operating Chief Millham to Retire; Washington Named Successor and Financial Chief</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">By Emon Reiser Salesforce has appointed Robin Washington as its incoming chief operating officer and chief financial officer and announced that current Operating Chief Brian Millham would retire......</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Announces Timing of its Fourth Quarter and Full Year Fiscal 2025 Results Conference Call</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">SAN FRANCISCO, February 05, 2025--Salesforce Announces Timing of its Fourth Quarter and Full Year Fiscal 2025 Results Conference Call...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce Appoints Robin Washington as President and Chief Operating and Financial Officer</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">SAN FRANCISCO, February 05, 2025--Salesforce (NYSE: CRM), the world’s #1 AI CRM, today announced that Robin Washington will become President and Chief Operating and Financial Officer (COFO), effective...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce (CRM) Restructures for AI Push – 1,000 Cuts, Thousands of New Hires</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">We recently published a list of 8 AI Stocks Sending Shockwaves on Wall Street Following DeepSeek Scare. In this article, we are going to take a look at where Salesforce, Inc. (NYSE:CRM) stands against...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce’s Longtime Operating Chief Millham to Retire; Washington Named Successor and Financial Chief</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-05</span>
+                            <span>Yahoo</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Operating Chief Brian Millham to exit after more than 25 at the company. Incoming CFO Robin Washington has served on Salesforce’s board since 2013....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">FDN: Picking Stocks With High Internet Revenue</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">FDN holds a portfolio of 40 stocks focused on large companies in internet commerce. Find out why FDN ETF may be more useful for tactical allocation strategies....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Oakmark U.S. Large Value Strategy Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The portfolioâs return was 2.03% (net) for the reporting period vs. Russell 1000 Value Index that returned -1.98% for the same period. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Oakmark Global Strategy Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The portfolioâs return was -3.89% (net) for the reporting period vs. MSCI World Index that returned -0.16% for the same period. Read more here....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Palantir Stock Jumps to a New High on Earnings. What Got the Market So Excited.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.57
+                            </span>
+                        </div>
+                        <div class="article-summary">Palantir Stock Jumps to a New High on Earnings. What Got the Market So Excited....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Palantir Shows the AI Trade Is Alive and Well. 2 Stocks That Could Benefit.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.88
+                            </span>
+                        </div>
+                        <div class="article-summary">Palantir Shows the AI Trade Is Alive and Well. 2 Stocks That Could Benefit....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow Jones Stocks: Apple, Nvidia Rally; Amazon Hits New High</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-04</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.76
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow Jones Stocks: Apple, Nvidia Rally; Amazon Hits New High...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Don't Overpay For SpaceX</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-03</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Discover why SpaceX's recent achievements make it a compelling investment but caution against overpaying is crucial....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">What Moved Markets This Week</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-02-01</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.30
+                            </span>
+                        </div>
+                        <div class="article-summary">U.S. stocks end a tough week as DeepSeek rattles tech stocks and the Fed Holds interest rates steady. Read more about this week's major events on Wall Street....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Anrok Announces Anrok for Salesforce Revenue Cloud on Salesforce AppExchange</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.39
+                            </span>
+                        </div>
+                        <div class="article-summary">SAN FRANCISCO - Anrok today announced it has launched Anrok for Salesforce Revenue Cloud on Salesforce AppExchange, a leading enterprise marketplace for partner apps and experts, empowering customers....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Buy 1 Safer Ideal January Dog Of 35 Barron's Pro-Picked 2025 Dividends</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-31</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">Get insights into top dividend stock picks for 2025 from Barronâs Roundtable, with potential gains ranging from 19.46% to 35.09%....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Microsoft Stock Is Having Its Worst Day Since 2022. The Case for Buying Now.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-30</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.85
+                            </span>
+                        </div>
+                        <div class="article-summary">Microsoft Stock Is Having Its Worst Day Since 2022. The Case for Buying Now....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Market Reactions To The DeepSeek Market Sell-Off</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.88
+                            </span>
+                        </div>
+                        <div class="article-summary">The release of DeepSeekâs open-source AI chatbot caused a sharp sell-off in Nvidia and Broadcom, shifting market sentiment in favor of AI users....</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">NVIDIA Corp., Boeing share losses contribute to Dow's 150-point fall</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.95
+                            </span>
+                        </div>
+                        <div class="article-summary">NVIDIA Corp., Boeing share losses contribute to Dow's 150-point fall...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">ServiceNow Stock Falls as Revenue Comes In Shy of Estimates. AI Demand Stays Strong.</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-29</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.97
+                            </span>
+                        </div>
+                        <div class="article-summary">ServiceNow Stock Falls as Revenue Comes In Shy of Estimates. AI Demand Stays Strong....</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Veeva Systems: Forget The Short-Term Volatility; The Long Term Is Promising</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">nan...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Boeing, Salesforce share gains lead Dow's 115-point jump</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.89
+                            </span>
+                        </div>
+                        <div class="article-summary">Boeing, Salesforce share gains lead Dow's 115-point jump...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow's 225-point rally highlighted by gains for Salesforce, Boeing stocks</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.88
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow's 225-point rally highlighted by gains for Salesforce, Boeing stocks...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">7 software stocks that could benefit as AI gets cheaper to run</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.83
+                            </span>
+                        </div>
+                        <div class="article-summary">7 software stocks that could benefit as AI gets cheaper to run...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow's 114-point rally led by gains in NVIDIA Corp., Salesforce shares</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.90
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow's 114-point rally led by gains in NVIDIA Corp., Salesforce shares...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce.Com: Don't Pay This Premium In The Late Phases Of The Bull Market (Downgrade)</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.58
+                            </span>
+                        </div>
+                        <div class="article-summary">Analyst downgrades Salesforce to a sell rating due to slowing growth in key segments and AI posing a risk to revenue model....</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Transcript : Salesforce, Inc. - Special Call</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-28</span>
+                            <span>Finnhub</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.41
+                            </span>
+                        </div>
+                        <div class="article-summary">Presenter SpeechNikki Borkovic Hello, and welcome Li from Sydney Australia on this thundery, I guess, a rain full day in Sydney -- thank you for joining myself here today and our brilliant panel of......</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Salesforce, Johnson & Johnson share gains contribute to Dow's nearly 150-point jump</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.94
+                            </span>
+                        </div>
+                        <div class="article-summary">Salesforce, Johnson & Johnson share gains contribute to Dow's nearly 150-point jump...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow turns positive as tech rout continues</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.77
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow turns positive as tech rout continues...</div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">AI Software Leaders Hit Buy Points While Nvidia, Chip Stocks Crash On China Tidal Wave</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>DowJones</span>
+                            <span class="article-sentiment negative">
+                                Sentiment: -0.78
+                            </span>
+                        </div>
+                        <div class="article-summary">AI Software Leaders Hit Buy Points While Nvidia, Chip Stocks Crash On China Tidal Wave...</div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">Dow up 265 points on gains in shares of Salesforce, Johnson & Johnson</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-27</span>
+                            <span>MarketWatch</span>
+                            <span class="article-sentiment positive">
+                                Sentiment: 0.92
+                            </span>
+                        </div>
+                        <div class="article-summary">Dow up 265 points on gains in shares of Salesforce, Johnson & Johnson...</div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <h3 class="article-title">
+                            <a href="#" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Growth Portfolios Q4 2024 Commentary</a>
+                        </h3>
+                        <div class="article-meta">
+                            <span>2025-01-26</span>
+                            <span>SeekingAlpha</span>
+                            <span class="article-sentiment neutral">
+                                Sentiment: 0.00
+                            </span>
+                        </div>
+                        <div class="article-summary">The Portfolios and the Russell 1000 Growth Index are coming off two years of historically robust performance. Read more here....</div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,1854 @@
+
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Market Sentiment Analysis</title>
+                <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+                <style>
+                    :root {
+                        --primary-color: #e0e0e0;
+                        --secondary-color: #a0a0a0;
+                        --accent-color: #404040;
+                        --text-color: #2c3e50;
+                        --border-color: #404040;
+                        --hover-color: #f8f9fa;
+                        --dark-bg: #1a1a1a;
+                        --header-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+                        --modal-bg: rgba(0, 0, 0, 0.95);
+                        --modal-content-bg: #1a1a1a;
+                        --link-color: #4a90e2;
+                        --link-hover: #357abd;
+                    }
+                    
+                    body { 
+                        font-family: 'Segoe UI', Arial, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        color: var(--text-color);
+                        background-color: #f5f6fa;
+                    }
+                    
+                    .container {
+                        max-width: 1400px;
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    
+                    .header {
+                        background: var(--header-gradient);
+                        padding: 20px 0;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                        margin-bottom: 30px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    
+                    .header::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+                        pointer-events: none;
+                    }
+                    
+                    .header-content {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        max-width: 1400px;
+                        margin: 0 auto;
+                        padding: 0 20px;
+                        position: relative;
+                        z-index: 1;
+                    }
+                    
+                    .header-title {
+                        color: white;
+                        margin: 0;
+                        font-size: 20px;
+                        font-weight: 400;
+                        letter-spacing: 0.5px;
+                    }
+                    
+                    .header-controls {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }
+                    
+                    .date-display {
+                        padding: 6px 10px;
+                        border: 1px solid rgba(255,255,255,0.2);
+                        border-radius: 4px;
+                        background: rgba(255,255,255,0.1);
+                        font-size: 13px;
+                        color: white;
+                        text-align: center;
+                        min-width: 90px;
+                        backdrop-filter: blur(5px);
+                    }
+                    
+                    .refresh-btn {
+                        padding: 6px 12px;
+                        border: 1px solid rgba(255,255,255,0.2);
+                        border-radius: 4px;
+                        background: rgba(255,255,255,0.1);
+                        color: white;
+                        cursor: pointer;
+                        font-size: 13px;
+                        transition: all 0.2s ease;
+                        backdrop-filter: blur(5px);
+                    }
+                    
+                    .refresh-btn:hover {
+                        background: rgba(255,255,255,0.2);
+                        transform: translateY(-1px);
+                    }
+                    
+                    .card {
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        margin-bottom: 30px;
+                        padding: 20px;
+                    }
+                    
+                    .card-header {
+                        margin: -20px -20px 20px;
+                        padding: 15px 20px;
+                        border-bottom: 1px solid var(--border-color);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .card-title {
+                        margin: 0;
+                        color: var(--primary-color);
+                        font-size: 18px;
+                        font-weight: 600;
+                    }
+                    
+                    .legend {
+                        background: #f8f9fa;
+                        border-radius: 6px;
+                        padding: 10px 15px;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                        color: var(--secondary-color);
+                    }
+                    
+                    table.dataTable {
+                        border-collapse: separate;
+                        border-spacing: 0;
+                        width: 100%;
+                        background: white;
+                        border-radius: 8px;
+                    }
+                    
+                    table.dataTable thead th {
+                        background: #f8f9fa;
+                        color: var(--primary-color);
+                        font-weight: 600;
+                        padding: 12px 15px;
+                        border-bottom: 2px solid var(--border-color);
+                    }
+                    
+                    table.dataTable tbody td {
+                        padding: 12px 15px;
+                        border-bottom: 1px solid var(--border-color);
+                        font-size: 14px;
+                    }
+                    
+                    table.dataTable tbody tr:hover {
+                        background-color: var(--hover-color);
+                    }
+                    
+                    .trend-symbol {
+                        font-weight: 600;
+                        margin-left: 6px;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                        font-size: 12px;
+                    }
+                    
+                    .trend-up { 
+                        color: #fff;
+                        background: #28a745;
+                    }
+                    
+                    .trend-down { 
+                        color: #fff;
+                        background: #dc3545;
+                    }
+                    
+                    .trend-stable { 
+                        color: #fff;
+                        background: #6c757d;
+                    }
+                    
+                    .trend-new { 
+                        color: #fff;
+                        background: #007bff;
+                    }
+                    
+                    .dataTables_wrapper .dataTables_filter {
+                        margin-bottom: 15px;
+                    }
+                    
+                    .dataTables_wrapper .dataTables_filter input {
+                        border: 1px solid var(--border-color);
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        margin-left: 10px;
+                    }
+                    
+                    .dataTables_wrapper .dataTables_length select {
+                        border: 1px solid var(--border-color);
+                        border-radius: 6px;
+                        padding: 6px 10px;
+                    }
+                    
+                    .dataTables_wrapper .dataTables_info {
+                        padding-top: 15px;
+                        color: var(--secondary-color);
+                    }
+                    
+                    .dataTables_wrapper .dataTables_paginate .paginate_button {
+                        padding: 6px 12px;
+                        margin: 0 2px;
+                        border-radius: 4px;
+                        border: 1px solid var(--border-color);
+                    }
+                    
+                    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                        background: var(--accent-color);
+                        color: white !important;
+                        border-color: var(--accent-color);
+                    }
+                    
+                    .stock-link {
+                        color: var(--text-color);
+                        text-decoration: none;
+                        position: relative;
+                        cursor: pointer;
+                    }
+                    
+                    .stock-link:after {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        height: 1px;
+                        bottom: -2px;
+                        left: 0;
+                        background-color: var(--text-color);
+                        transform: scaleX(0);
+                        transform-origin: bottom right;
+                        transition: transform 0.3s ease;
+                    }
+                    
+                    .stock-link:hover:after {
+                        transform: scaleX(1);
+                        transform-origin: bottom left;
+                    }
+                    
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: var(--modal-bg);
+                        z-index: 1000;
+                        opacity: 0;
+                        transition: opacity 0.3s ease;
+                    }
+                    
+                    .modal.show {
+                        display: block;
+                        opacity: 1;
+                    }
+                    
+                    .modal-content {
+                        position: relative;
+                        background: var(--modal-content-bg);
+                        width: 80%;
+                        max-width: 800px;
+                        margin: 50px auto;
+                        padding: 30px;
+                        border-radius: 8px;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+                        color: white;
+                        transform: translateY(-20px);
+                        transition: transform 0.3s ease;
+                    }
+                    
+                    .modal.show .modal-content {
+                        transform: translateY(0);
+                    }
+                    
+                    .modal-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        padding-bottom: 15px;
+                        border-bottom: 1px solid rgba(255,255,255,0.1);
+                    }
+                    
+                    .modal-title {
+                        margin: 0;
+                        font-size: 24px;
+                        font-weight: 400;
+                        letter-spacing: 0.5px;
+                    }
+                    
+                    .modal-close {
+                        background: none;
+                        border: none;
+                        color: white;
+                        font-size: 24px;
+                        cursor: pointer;
+                        opacity: 0.7;
+                        transition: opacity 0.2s ease;
+                    }
+                    
+                    .modal-close:hover {
+                        opacity: 1;
+                    }
+                    
+                    .article-list {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                    }
+                    
+                    .article-item {
+                        padding: 15px;
+                        margin-bottom: 15px;
+                        background: rgba(255,255,255,0.05);
+                        border-radius: 6px;
+                        transition: background 0.2s ease;
+                    }
+                    
+                    .article-item:hover {
+                        background: rgba(255,255,255,0.1);
+                    }
+                    
+                    .article-title {
+                        font-size: 16px;
+                        margin: 0 0 10px;
+                        color: #fff;
+                    }
+                    
+                    .article-meta {
+                        font-size: 12px;
+                        color: rgba(255,255,255,0.6);
+                        display: flex;
+                        gap: 15px;
+                    }
+                    
+                    .article-sentiment {
+                        padding: 2px 8px;
+                        border-radius: 4px;
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                    
+                    .sentiment-positive {
+                        background: rgba(40,167,69,0.2);
+                        color: #28a745;
+                    }
+                    
+                    .sentiment-negative {
+                        background: rgba(220,53,69,0.2);
+                        color: #dc3545;
+                    }
+                    
+                    .sentiment-neutral {
+                        background: rgba(108,117,125,0.2);
+                        color: #6c757d;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <div class="header-content">
+                        <h1 class="header-title">Market Sentiment Analysis</h1>
+                        <div class="header-controls">
+                            <div class="date-display" title="Report Date">{timestamp[:8]}</div>
+                            <button class="refresh-btn" onclick="window.location.reload()">
+                                <span>Refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Sentiment Overview</h2>
+                        </div>
+                        <div class="legend">
+                            Trend Indicators: U (Up) | D (Down) | S (Stable) | N (New)
+                        </div>
+                        <table id="sentiment-table" class="display">
+                            <thead>
+                                <tr>
+                                    <th>Ticker</th>
+                                    <th>Company</th>
+                                    <th>Last Week</th>
+                                    <th>Last Month</th>
+                                    <th>Articles</th>
+                                    <th>Sentiment Change</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            
+                <div id="articleModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title"></h3>
+                            <button class="modal-close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="article-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            
+                    <script>
+                        articlesData['GOOGL'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">GOOGL</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('GOOGL', 'Alphabet Inc.')">Alphabet Inc.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.05 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">245</td>
+                        <td class="number">-0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['AMZN'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">AMZN</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('AMZN', 'Amazon.com Inc.')">Amazon.com Inc.</span>
+                        </td>
+                        <td class="number">-0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.02 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">250</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-up'>UP</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['AMTM'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">AMTM</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('AMTM', 'Amentum Holdings Inc.')">Amentum Holdings Inc.</span>
+                        </td>
+                        <td class="number">0.17 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.43 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">3</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['ARCO'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">ARCO</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('ARCO', 'Arcos Dorados Holdings Inc.')">Arcos Dorados Holdings Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">1</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['AXON'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">AXON</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('AXON', 'Axon Enterprise Inc.')">Axon Enterprise Inc.</span>
+                        </td>
+                        <td class="number">-0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.08 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">45</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['BILL'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">BILL</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('BILL', 'BILL Holdings Inc.')">BILL Holdings Inc.</span>
+                        </td>
+                        <td class="number">0.44 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">17</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['BIIB'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">BIIB</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('BIIB', 'Biogen Inc.')">Biogen Inc.</span>
+                        </td>
+                        <td class="number">0.27 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">32</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['BRZE'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">BRZE</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('BRZE', 'Braze Inc.')">Braze Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">2</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['AVGO'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">AVGO</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('AVGO', 'Broadcom Inc.')">Broadcom Inc.</span>
+                        </td>
+                        <td class="number">-0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">209</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CLDX'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CLDX</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CLDX', 'Celldex Therapeutics Inc.')">Celldex Therapeutics Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">1</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CVE'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CVE</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CVE', 'Cenovus Energy Ltd.')">Cenovus Energy Ltd.</span>
+                        </td>
+                        <td class="number">0.23 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.20 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">5</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CG'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CG</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CG', 'Centerra Gold Inc.')">Centerra Gold Inc.</span>
+                        </td>
+                        <td class="number">0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.09 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">21</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CHMI'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CHMI</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CHMI', 'Cherry Hill Mortgage Investment Corporation')">Cherry Hill Mortgage Investment Corporation</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.10 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">3</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CIVI'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CIVI</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CIVI', 'Civitas Resources Inc.')">Civitas Resources Inc.</span>
+                        </td>
+                        <td class="number">0.30 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.30 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">5</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CMPS'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CMPS</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CMPS', 'COMPASS Pathways plc')">COMPASS Pathways plc</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">2</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['STZ'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">STZ</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('STZ', 'Constellation Brands Inc.')">Constellation Brands Inc.</span>
+                        </td>
+                        <td class="number">0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.06 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">78</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['COUR'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">COUR</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('COUR', 'Coursera Inc.')">Coursera Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">-0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">7</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['DHR'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">DHR</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('DHR', 'Danaher Corporation')">Danaher Corporation</span>
+                        </td>
+                        <td class="number">0.11 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.05 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">74</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['DDOG'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">DDOG</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('DDOG', 'Datadog Inc.')">Datadog Inc.</span>
+                        </td>
+                        <td class="number">0.35 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">16</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['DVN'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">DVN</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('DVN', 'Devon Energy Corporation')">Devon Energy Corporation</span>
+                        </td>
+                        <td class="number">0.10 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">37</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['DXCM'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">DXCM</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('DXCM', 'DexCom Inc.')">DexCom Inc.</span>
+                        </td>
+                        <td class="number">0.12 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.18 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">13</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['EVH'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">EVH</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('EVH', 'Evolent Health Inc.')">Evolent Health Inc.</span>
+                        </td>
+                        <td class="number">-0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.08 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">8</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['FSLR'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">FSLR</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('FSLR', 'First Solar Inc.')">First Solar Inc.</span>
+                        </td>
+                        <td class="number">-0.45 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.22 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">18</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['G'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">G</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('G', 'Assicurazioni Generali S.p.A.')">Assicurazioni Generali S.p.A.</span>
+                        </td>
+                        <td class="number">-0.10 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.17 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">6</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['HAL'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">HAL</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('HAL', 'Halliburton Company')">Halliburton Company</span>
+                        </td>
+                        <td class="number">0.77 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.07 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">12</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['HQY'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">HQY</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('HQY', 'HealthEquity Inc.')">HealthEquity Inc.</span>
+                        </td>
+                        <td class="number">0.05 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">8</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['HBM'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">HBM</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('HBM', 'Hudbay Minerals Inc.')">Hudbay Minerals Inc.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">3</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['IDYA'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">IDYA</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('IDYA', 'IDEAYA Biosciences Inc.')">IDEAYA Biosciences Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.14 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">12</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['IMCR'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">IMCR</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('IMCR', 'Immunocore Holdings plc')">Immunocore Holdings plc</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">3</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['IMVT'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">IMVT</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('IMVT', 'Immunovant Inc.')">Immunovant Inc.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">1</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['INSW'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">INSW</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('INSW', 'International Seaways Inc.')">International Seaways Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.07 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">2</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['LW'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">LW</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('LW', 'Lamb Weston Holdings Inc.')">Lamb Weston Holdings Inc.</span>
+                        </td>
+                        <td class="number">-0.63 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.16 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">11</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['LVO'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">LVO</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('LVO', 'LiveOne Inc.')">LiveOne Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.45 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">4</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['LKQ'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">LKQ</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('LKQ', 'LKQ Corporation')">LKQ Corporation</span>
+                        </td>
+                        <td class="number">0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.16 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">11</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MRVL'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MRVL</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MRVL', 'Marvell Technology Inc.')">Marvell Technology Inc.</span>
+                        </td>
+                        <td class="number">0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">47</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MA'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MA</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MA', 'Mastercard Incorporated')">Mastercard Incorporated</span>
+                        </td>
+                        <td class="number">-0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">86</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['META'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">META</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('META', 'Meta Platforms Inc.')">Meta Platforms Inc.</span>
+                        </td>
+                        <td class="number">-0.02 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">249</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-up'>UP</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MU'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MU</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MU', 'Micron Technology Inc.')">Micron Technology Inc.</span>
+                        </td>
+                        <td class="number">-0.16 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.12 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">80</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MSFT'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MSFT</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MSFT', 'Microsoft Corporation')">Microsoft Corporation</span>
+                        </td>
+                        <td class="number">0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">248</td>
+                        <td class="number">-0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MDXG'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MDXG</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MDXG', 'MiMedx Group Inc.')">MiMedx Group Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">1</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MNMD'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MNMD</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MNMD', 'Mind Medicine (MindMed) Inc.')">Mind Medicine (MindMed) Inc.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.06 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">5</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['MDLZ'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">MDLZ</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('MDLZ', 'Mondelez International Inc.')">Mondelez International Inc.</span>
+                        </td>
+                        <td class="number">0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">32</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['NVDA'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">NVDA</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('NVDA', 'NVIDIA Corporation')">NVIDIA Corporation</span>
+                        </td>
+                        <td class="number">-0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">249</td>
+                        <td class="number">0.01</td>
+                        <td class="text"><span class='trend-up'>UP</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['PACS'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">PACS</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('PACS', 'PACS Group Inc.')">PACS Group Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">-0.39 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">1</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['PFGC'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">PFGC</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('PFGC', 'Performance Food Group Company')">Performance Food Group Company</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">-0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">5</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['PRU'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">PRU</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('PRU', 'Prudential Financial Inc.')">Prudential Financial Inc.</span>
+                        </td>
+                        <td class="number">0.39 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.17 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">23</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['RCKT'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">RCKT</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('RCKT', 'Rocket Pharmaceuticals Inc.')">Rocket Pharmaceuticals Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.77 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">1</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['RCI'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">RCI</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('RCI', 'Rogers Communications Inc.')">Rogers Communications Inc.</span>
+                        </td>
+                        <td class="number">0.01 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.12 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">5</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['CRM'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">CRM</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('CRM', 'Salesforce Inc.')">Salesforce Inc.</span>
+                        </td>
+                        <td class="number">-0.31 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">92</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['SHOP'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">SHOP</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('SHOP', 'Shopify Inc.')">Shopify Inc.</span>
+                        </td>
+                        <td class="number">-0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.06 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">36</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['SLP'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">SLP</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('SLP', 'Simulations Plus Inc.')">Simulations Plus Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">-0.11 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">2</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['SLB'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">SLB</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('SLB', 'Schlumberger Limited')">Schlumberger Limited</span>
+                        </td>
+                        <td class="number">0.07 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.11 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">34</td>
+                        <td class="number">0.01</td>
+                        <td class="text"><span class='trend-up'>UP</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['GPCR'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">GPCR</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('GPCR', 'Structure Therapeutics Inc.')">Structure Therapeutics Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.21 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">2</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['SMCI'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">SMCI</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('SMCI', 'Super Micro Computer Inc.')">Super Micro Computer Inc.</span>
+                        </td>
+                        <td class="number">-0.03 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.05 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">109</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['SPB'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">SPB</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('SPB', 'Superior Plus Corp.')">Superior Plus Corp.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.14 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">6</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['SNDX'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">SNDX</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('SNDX', 'Syndax Pharmaceuticals Inc.')">Syndax Pharmaceuticals Inc.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">2</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['TNC'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">TNC</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('TNC', 'Tennant Company')">Tennant Company</span>
+                        </td>
+                        <td class="number">0.14 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.14 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">4</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['TX'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">TX</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('TX', 'Ternium S.A.')">Ternium S.A.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">6</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['TSLA'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">TSLA</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('TSLA', 'Tesla Inc.')">Tesla Inc.</span>
+                        </td>
+                        <td class="number">-0.08 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.13 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">246</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['TCOM'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">TCOM</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('TCOM', 'Trip.com Group Limited')">Trip.com Group Limited</span>
+                        </td>
+                        <td class="number">-0.24 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.07 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">9</td>
+                        <td class="number">-0.06</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['TRVG'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">TRVG</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('TRVG', 'trivago N.V.')">trivago N.V.</span>
+                        </td>
+                        <td class="number">0.19 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.18 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">3</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['TWLO'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">TWLO</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('TWLO', 'Twilio Inc.')">Twilio Inc.</span>
+                        </td>
+                        <td class="number">0.30 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.27 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">18</td>
+                        <td class="number">0.04</td>
+                        <td class="text"><span class='trend-up'>UP</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['UBER'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">UBER</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('UBER', 'Uber Technologies Inc.')">Uber Technologies Inc.</span>
+                        </td>
+                        <td class="number">0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.11 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">101</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['UAL'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">UAL</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('UAL', 'United Airlines Holdings Inc.')">United Airlines Holdings Inc.</span>
+                        </td>
+                        <td class="number">-0.04 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">-0.06 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">29</td>
+                        <td class="number">-0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['UPWK'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">UPWK</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('UPWK', 'Upwork Inc.')">Upwork Inc.</span>
+                        </td>
+                        <td class="number">0.00 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.02 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">8</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['UTZ'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">UTZ</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('UTZ', 'Utz Brands Inc.')">Utz Brands Inc.</span>
+                        </td>
+                        <td class="number">0.10 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.08 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">5</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['WELL'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">WELL</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('WELL', 'WELL Health Technologies Corp.')">WELL Health Technologies Corp.</span>
+                        </td>
+                        <td class="number">-0.11 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">0.05 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">30</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-up'>UP</span></td>
+                    </tr>
+                
+                    <script>
+                        articlesData['XPO'] = [];
+                    </script>
+                    <tr>
+                        <td class="text">XPO</td>
+                        <td class="text">
+                            <span class="stock-link" onclick="showArticles('XPO', 'XPO Inc.')">XPO Inc.</span>
+                        </td>
+                        <td class="number"></td>
+                        <td class="number">0.26 <span class='trend-symbol trend-new'>N</span></td>
+                        <td class="number">7</td>
+                        <td class="number">0.00</td>
+                        <td class="text"><span class='trend-down'>DOWN</span></td>
+                    </tr>
+                
+                    </tbody>
+                </table>
+                
+                <div class="section-header">Stocks without Sentiment Data</div>
+                <table id="missing-data-table" class="display">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Company</th>
+                            <th>Sector</th>
+                            <th>Missing Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            
+                    <tr>
+                        <td>ADEN</td>
+                        <td>ADENTRA Inc.</td>
+                        <td>Industrial</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>AAV</td>
+                        <td>Advantage Energy Ltd.</td>
+                        <td>Energy</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>ASTH</td>
+                        <td>Astrana Health Inc.</td>
+                        <td>Healthcare</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>BDGI</td>
+                        <td>Badger Infrastructure Solutions Ltd.</td>
+                        <td>Industrial</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>BRNG</td>
+                        <td>WisdomTree Brent Oil</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>CURA</td>
+                        <td>Curaleaf Holdings Inc.</td>
+                        <td>Healthcare</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>DIRUN</td>
+                        <td>Dream Industrial Real Estate Investment Trust</td>
+                        <td>Real Estate</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>EIF</td>
+                        <td>Exchange Income Corporation</td>
+                        <td>Industrial</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>EMV</td>
+                        <td>iShares MSCI EM Min Volatility ETF</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>AGED</td>
+                        <td>iShares Ageing Population ETF</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>IWDA</td>
+                        <td>iShares Core MSCI World ETF</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>KNT</td>
+                        <td>K92 Mining Inc.</td>
+                        <td>Basic Materials</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>OGC</td>
+                        <td>OceanaGold Corporation</td>
+                        <td>Basic Materials</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>RNO</td>
+                        <td>Renault SA</td>
+                        <td>Consumer Cyclical</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>RLX</td>
+                        <td>RLX Technology Inc.</td>
+                        <td>Consumer Defensive</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>RCIB</td>
+                        <td>Rogers Communications Inc.</td>
+                        <td>Communication Services</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>TSU</td>
+                        <td>Trisura Group Ltd.</td>
+                        <td>Financial Services</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>WCP</td>
+                        <td>Whitecap Resources Inc.</td>
+                        <td>Energy</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    </tbody>
+                </table>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Companies Without Data</h2>
+                    </div>
+                    <table id="missing-data-table" class="display">
+                        <thead>
+                            <tr>
+                                <th>Ticker</th>
+                                <th>Company</th>
+                                <th>Sector</th>
+                                <th>Missing Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                    <tr>
+                        <td>ADEN</td>
+                        <td>ADENTRA Inc.</td>
+                        <td>Industrial</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>AAV</td>
+                        <td>Advantage Energy Ltd.</td>
+                        <td>Energy</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>ASTH</td>
+                        <td>Astrana Health Inc.</td>
+                        <td>Healthcare</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>BDGI</td>
+                        <td>Badger Infrastructure Solutions Ltd.</td>
+                        <td>Industrial</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>BRNG</td>
+                        <td>WisdomTree Brent Oil</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>CURA</td>
+                        <td>Curaleaf Holdings Inc.</td>
+                        <td>Healthcare</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>DIRUN</td>
+                        <td>Dream Industrial Real Estate Investment Trust</td>
+                        <td>Real Estate</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>EIF</td>
+                        <td>Exchange Income Corporation</td>
+                        <td>Industrial</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>EMV</td>
+                        <td>iShares MSCI EM Min Volatility ETF</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>AGED</td>
+                        <td>iShares Ageing Population ETF</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>IWDA</td>
+                        <td>iShares Core MSCI World ETF</td>
+                        <td>ETF</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>KNT</td>
+                        <td>K92 Mining Inc.</td>
+                        <td>Basic Materials</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>OGC</td>
+                        <td>OceanaGold Corporation</td>
+                        <td>Basic Materials</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>RNO</td>
+                        <td>Renault SA</td>
+                        <td>Consumer Cyclical</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>RLX</td>
+                        <td>RLX Technology Inc.</td>
+                        <td>Consumer Defensive</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>RCIB</td>
+                        <td>Rogers Communications Inc.</td>
+                        <td>Communication Services</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>TSU</td>
+                        <td>Trisura Group Ltd.</td>
+                        <td>Financial Services</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    <tr>
+                        <td>WCP</td>
+                        <td>Whitecap Resources Inc.</td>
+                        <td>Energy</td>
+                        <td>Sentiment</td>
+                    </tr>
+                
+                    </tbody>
+                </table>
+                </div>
+                <script>
+                    // Modal functionality
+                    const modal = document.getElementById('articleModal');
+                    const modalTitle = modal.querySelector('.modal-title');
+                    const modalBody = modal.querySelector('.article-list');
+                    const closeBtn = modal.querySelector('.modal-close');
+                    
+                    function showArticles(ticker, company) {
+                        modalTitle.textContent = `${company} (${ticker}) - Recent Articles`;
+                        modalBody.innerHTML = '';
+                        
+                        const articles = articlesData[ticker] || [];
+                        if (articles.length === 0) {
+                            modalBody.innerHTML = '<p>No recent articles found.</p>';
+                        } else {
+                            articles.forEach(article => {
+                                const sentimentClass = article.sentiment > 0.2 ? 'positive' : 
+                                                     article.sentiment < -0.2 ? 'negative' : 'neutral';
+                                                     
+                                const li = document.createElement('li');
+                                li.className = 'article-item';
+                                li.innerHTML = `
+                                    <h4 class="article-title">${article.title}</h4>
+                                    <div class="article-meta">
+                                        <span>${article.date}</span>
+                                        <span>${article.source}</span>
+                                        <span class="article-sentiment sentiment-${sentimentClass}">
+                                            Sentiment: ${article.sentiment.toFixed(2)}
+                                        </span>
+                                    </div>
+                                `;
+                                modalBody.appendChild(li);
+                            });
+                        }
+                        
+                        modal.classList.add('show');
+                    }
+                    
+                    closeBtn.onclick = () => modal.classList.remove('show');
+                    window.onclick = (e) => {
+                        if (e.target === modal) modal.classList.remove('show');
+                    };
+                    
+                    // Close on escape key
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') modal.classList.remove('show');
+                    });
+                    
+                    $(document).ready(function() {
+                        $('#sentiment-table').DataTable({
+                            order: [[2, 'desc']],
+                            pageLength: 25,
+                            scrollY: '60vh',
+                            scrollCollapse: true,
+                            responsive: true,
+                            columnDefs: [
+                                {
+                                    targets: [0, 1, 6],
+                                    className: 'text'
+                                },
+                                { 
+                                    targets: [2, 3, 5],
+                                    className: 'number',
+                                    render: function(data, type, row) {
+                                        if (type === 'sort') {
+                                            let match = data.match(/([-+]?[0-9]*\.?[0-9]+)/);
+                                            return match ? parseFloat(match[0]) : -999999;
+                                        }
+                                        return data;
+                                    }
+                                },
+                                { 
+                                    targets: [4],
+                                    className: 'number'
+                                }
+                            ],
+                            language: {
+                                search: "🔍 Filter:",
+                                lengthMenu: "Show _MENU_ companies",
+                                info: "Displaying _START_ to _END_ of _TOTAL_ companies",
+                                infoEmpty: "No companies to display",
+                                infoFiltered: "(filtered from _MAX_ total companies)"
+                            },
+                            dom: '<"table-controls"lf>rt<"table-footer"ip>'
+                        });
+                        
+                        $('#missing-data-table').DataTable({
+                            order: [[0, 'asc']],
+                            pageLength: 10,
+                            scrollY: '30vh',
+                            scrollCollapse: true,
+                            responsive: true,
+                            language: {
+                                search: "🔍 Filter:",
+                                lengthMenu: "Show _MENU_ companies",
+                                info: "Displaying _START_ to _END_ of _TOTAL_ companies",
+                                infoEmpty: "No companies to display",
+                                infoFiltered: "(filtered from _MAX_ total companies)"
+                            }
+                        });
+                        
+                        // Keyboard shortcuts
+                        $(document).keydown(function(e) {
+                            // Ctrl/Cmd + F for search
+                            if ((e.ctrlKey || e.metaKey) && e.keyCode == 70) {
+                                e.preventDefault();
+                                $('.dataTables_filter input').first().focus();
+                            }
+                            // Ctrl/Cmd + R for refresh
+                            if ((e.ctrlKey || e.metaKey) && e.keyCode == 82) {
+                                e.preventDefault();
+                                window.location.reload();
+                            }
+                        });
+                    });
+                </script>
+            </body>
+            </html>
+            
