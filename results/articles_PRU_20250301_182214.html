@@ -1,0 +1,695 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Prudential Financial Inc. (PRU) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Prudential Financial Inc. (PRU)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">27</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.21</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a69931c86d2e09dd6d83aec07746fd5e49a58aacd11624f201291b07740f7b3f" target="_blank" rel="noopener noreferrer">PGIM Closed End Funds Declare Distributions for March, April, and May 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">PGIM High Yield Bond Fund, Inc. , PGIM Global High Yield Fund, Inc. and PGIM Short Duration High Yield Opportunities Fund declared today monthly distributions for March, April, and May 2025. The......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=544dddf6c36c25b575f69019843a62ef0d7c955a868dcef5093306b72030df82" target="_blank" rel="noopener noreferrer">3 Ideal Buys From 50 'Safer' Dividends In 100 February Barron's Sustainable Dogs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Four dividend-paying companies meet the Dogcatcher ideal, with annual dividends from a $1K investment exceeding their share prices. Click here for a detailed review....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cea95d12209bafc7e733dcf651acb5fabf77a5a82e21578b7f58d3439698682e" target="_blank" rel="noopener noreferrer">Pat Hynes Named President of Prudential Advisors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Pat Hynes has been named president of Prudential Advisors, where he will lead Prudential Financial, Inc.’s retail and advice arm. This business comprises more than 2,800 financial advisors and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af9a53a33f762ae9fdb0ef511a364f1492e30f1e7e11f4af79ed4b1f5c53706e" target="_blank" rel="noopener noreferrer">Prudential advances Wednesday, outperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential advances Wednesday, outperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d767ea9270ec819cc06ffabb67207de7f46664f93ed32389c033dc533b8d5d35" target="_blank" rel="noopener noreferrer">CIM Group Closes $57.5 Million Loan on 533,000-Square-Foot Houston Industrial Property Portfolio to Creation Equity and PGIM Real Estate</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">LOS ANGELES - CIM Group announced today that its CIM Real Estate Debt Solutions business, on behalf of a CIM-managed fund, has closed a $57.5 million whole loan to Creation Equity and PGIM Real Estate...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c72a36679e44a4e4c254a33cb73abe71aff39ebe97c1fc2e7cce33b17fb53873" target="_blank" rel="noopener noreferrer">Manulife: 8% Total Yield And Asia Growth A Winning Formula</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">Manulife's hybrid model excels, with strong growth in Asia and robust profitability. Click here to find out why MFC stock is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8146afd664116fc5793789ad276ff2835eca685959d036532b2a838595a49a00" target="_blank" rel="noopener noreferrer">‘We’re in This for the Long Game.’ How the 100 Most Sustainable Companies Are Handling Anti-ESG Campaigns.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">‘We’re in This for the Long Game.’ How the 100 Most Sustainable Companies Are Handling Anti-ESG Campaigns....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3b4ae757959ecf928cc51d2102fd67190183b660ffb1b36dc729172757a581af" target="_blank" rel="noopener noreferrer">Prudential rises Thursday, outperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential rises Thursday, outperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ff7fa65165e1656560e108d020ca94f79ab602906340a3366063a6ca14dc7d8e" target="_blank" rel="noopener noreferrer">Prudential Launches OneLeave™ to Help Simplify and Improve the Workplace Leave Experience</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Under the OneLeave brand, Prudential builds on its market-leading absence and disability capabilities to help employers minimize extended absences while providing a better experience for employees......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48b7d9785cac3d445c0ead588e3091a03b6fd91c6632e9bd338d50ce187f3343" target="_blank" rel="noopener noreferrer">Prudential falls Wednesday, underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential falls Wednesday, underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aa7424d3db0f42869f524c323aaf0def10ff39880c21def7165c5bd08fd12b1a" target="_blank" rel="noopener noreferrer">Prudential Financial Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-18</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=59ab27c195251cd9e5c1d7021f94f47974e74b4b8f113135e9ddea8acec9d76f" target="_blank" rel="noopener noreferrer">Coca-Cola, Home Depot And Walmart Among 10 Companies To Announce Dividend Increases In Second Half Of February</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Februaryâs dividend increases slow, but major companies like Coca-Cola and Walmart are still raising dividends. Find out which 10 companies are increasing payouts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3acea7cc51bdcb9c373ce23879f115d113dfb33a319dd16aaa11fed2d48e3604" target="_blank" rel="noopener noreferrer">17 Upcoming Dividend Increases, Including 3 Kings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover this week's top Dividend Kings with over 50 years of rising dividends. Learn strategies for steady income and outperforming benchmarks....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f145041cd0d3107f9152fea5ad534085a6eab8f7764aa51fab86109c7fd7673d" target="_blank" rel="noopener noreferrer">Prudential rises Wednesday, outperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-12</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential rises Wednesday, outperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=23ab0addfae680a385515a2e23c2fb633c9726271beaaea25cb1c656a835bcda" target="_blank" rel="noopener noreferrer">Prudential rises Monday, outperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-10</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential rises Monday, outperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ebb5855658be2188cb46a1151f5e454658ea20e0f7b982d32ceaac3a9f70d1ac" target="_blank" rel="noopener noreferrer">Prudential Financial: Back In The Buy Column Now (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential possesses a rock-solid balance sheet and sports a safe and market-beating yield approaching 5%. Read why I upgrade PRU stock from hold to buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=450fdd4915daefa4b2d863ad148618665374525f5d5fa3e8a28182ab7e73729d" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of February 9</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay informed on the latest dividend activity for top companies with this weekly summary. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e3f134a4621263207e07e06b93724ef99a7481e1e931c6ad5c6509577f536fc8" target="_blank" rel="noopener noreferrer">Prudential falls Friday, underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential falls Friday, underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d9205772700b11a80282d2a00f413765b4bd835953a84db79eb39e8f944165b3" target="_blank" rel="noopener noreferrer">Prudential Financial: Mixed Results Persist In Q4</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial shares have been a moderate performer, with mixed quarterly results. See why I do not see much upside in PRU beyond collecting a dividend....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2d28793edd7b10609cbc65d22cbccd69698c48a2be709943cd3b09c55b62ff5c" target="_blank" rel="noopener noreferrer">Prudential Financial, Inc. 2024 Q4 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Prudential Financial, Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5b0db6a817f148432d546714f6c94437a60b797718a8a9a397a1ce8430d32229" target="_blank" rel="noopener noreferrer">Prudential Financial, Inc. (PRU) Q4 2024 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial, Inc. (NYSE:PRU) Q4 2024 Earnings Conference Call February 5, 2025 11:00 AM ETCompany ParticipantsBob McLaughlin - Vice President,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e9e477ab7d9185f7cbf61d05a7970d0ee94d986e089588bfa0f015b3c84f33f" target="_blank" rel="noopener noreferrer">Prudential Financial : Fourth Quarter 2024 Earnings Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-05</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Corrected Transcript 05-Feb-2025 Prudential Financial, Inc. Q4 2024 Earnings Call ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a1373327c79bf356f2a6e3d9390c1aeb0b11be736d2a7bf6fd9ea0e58c7d60e0" target="_blank" rel="noopener noreferrer">Prudential Financial Swings to 4Q Loss</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Swings to 4Q Loss...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f5cad760d5fd645c36a6238ee26434d847ccd6b742c47a4a9f22663f9247bfbf" target="_blank" rel="noopener noreferrer">A Tried-and-True Tactic to Stay Invested—Even in Tumultous Times</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A Tried-and-True Tactic to Stay Invested—Even in Tumultous Times...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8b49f19af62e0e07b6a52d48be0a886bc8a0766ba13b4d866f4324be24dc1a5" target="_blank" rel="noopener noreferrer">PepsiCo, Cisco Among 19 Companies To Announce Dividend Increases In First Half Of February</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">Get ready for a busy February with 19 dividend increase announcements expected, including 10%+ increases from Sherwin-Williams and Genuine Parts Co. Click to read....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=35a1492b4dbb3ee8309207e88bf194b7ada162558d3fe2e8b3189dc6528c2fb4" target="_blank" rel="noopener noreferrer">LPL Stock Rises on Earnings Beat as Advisor Head Count Nears 30,000</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-31</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">LPL Stock Rises on Earnings Beat as Advisor Head Count Nears 30,000...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=695e9feabe9f58540e27b95c1dbce7762d6508b6bdbca15e1b6bfd59e2b6809b" target="_blank" rel="noopener noreferrer">Prudential Financial Recognized as 2025 Industry Leader by Fortune’s List of Most Admired Companies</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential ranked No. 1 in Insurance: Life & Health industry......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

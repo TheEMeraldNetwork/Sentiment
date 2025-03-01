@@ -1,0 +1,343 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Tennant Company (TNC) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Tennant Company (TNC)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.29</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d1ad04ba319cc3c5b9725d0c00fcd5010cc3a8675291277e8fe0612340cb75c" target="_blank" rel="noopener noreferrer">2025 Dividend Kings - Off To A Strong Start</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">The Dividend Kings are outperforming the S&P 500 in 2025, up 4% YTD versus 1.39% for SPY. Check out the list of dividend kings that are attractive....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a8c82c4cd9278367d42979b1bea036d6603660a218b35afe735a39f1681bed8" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of February 23</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay updated with weekly dividend changes for Dividend Champions, Contenders & Challengers. Explore ex-dividend dates, pay dates and more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30295a71a8c4096df5c97fe23dbd02f21aa1546b73777f61b610be2e8b89325f" target="_blank" rel="noopener noreferrer">Mairs & Power Small Cap Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">In 2024, the Mairs & Power Small Cap Fund was up 7.25%, slightly underperforming the S&P Small Cap 600 Total Return benchmark....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=626aeadd6a7c078a18715ecca122cbaefca2882e3443e6344d9f6795082ebc93" target="_blank" rel="noopener noreferrer">Tennant Company (TNC) Q4 2024 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bf6fb1524f8d8e9795f1908891dcca82cdf0ce4dc2100c4dadfe7a732cd2b813" target="_blank" rel="noopener noreferrer">Tennant Company 2024 Q4 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Tennant Company in conjunction with their 2024 Q4 earnings call....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
