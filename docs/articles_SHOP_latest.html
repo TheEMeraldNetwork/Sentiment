@@ -1,0 +1,840 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Shopify Inc. (SHOP) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Shopify Inc. (SHOP)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">36</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.07</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=12f99051ab75176698da48399b15c88c298d14556e1797372b9cd142190233dc" target="_blank" rel="noopener noreferrer">RiverPark Long/Short Opportunity Fund Q4 2024 Investor Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ddbec00d8a8c022f1f35bc4bc91a520aeffbdc05b81c75238e19a5ad12c0ca02" target="_blank" rel="noopener noreferrer">Does Shopify Stock Deserve A Spot On Your Shopping List? (Technical Analysis)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify stock shows bullish near-term trends but faces long-term concerns. Strong Q4 results offset by slowing growth guidance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5511d1a8d4c691c4e155eccb6a17ed42bdb776068d28e71821c9e0d6298e87c0" target="_blank" rel="noopener noreferrer">Baron Global Advantage Fund Q4 2024 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.44
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Global Advantage Fund advanced during the fourth quarter of 2024, outperforming its benchmark, the MSCI ACWI Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c0920229c44e8591d305504ad91f7a280dbac09fdab5d6e8a2c4f12bfdd6717" target="_blank" rel="noopener noreferrer">A Question Of Quality, If I Could Only Own Six Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A concentrated portfolio of high-quality stocks can outperform diversification. Click here to see the top picks and strategies inspired by Buffett and Munger....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4430825b6d67f5fb93b25f22e8941332ed0706b408639da42fbb0e8c3a43f97c" target="_blank" rel="noopener noreferrer">The Stocks And ETFs Driving Trump's Tariff Target Markets</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Conversations about Trumpâs tariffs, despite two of them being placed on hold for now, continue to dominate market discussions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=daffea439688b0c9a18b9c24310cd59b64513cd4a6e9c346e5ea9de1e1d37877" target="_blank" rel="noopener noreferrer">BNY Mellon Small/Mid Cap Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The BNY Mellon Small/Mid Cap Growth Fund (Class A at NAV) returned 7.34%% during the fourth quarter of 2024. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=968135c7d2bf8ed9dff373ba0988b6aeaa9d8cd9ec08665aaeaaffba14d0447e" target="_blank" rel="noopener noreferrer">Artisan Global Opportunities Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">The Artisan Global Opportunities Fund portfolio experienced slight weakness in Q4 but delivered a
+strong absolute return in 2024. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73044fe2bb331bd49e72251e4b2d8220893979953ea05993eb70c1e819947010" target="_blank" rel="noopener noreferrer">Shopify: Increased Commerce/Fintech Penetration In Booming Market - Upgrade To Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify's unified solutions have continued to drive its growth flywheel and cross-selling opportunities. See why I upgrade SHOP stock from hold to buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ad5d590b9cc26494f6bdd195f07ec3ec7d83ad81d43bda70a7c27c8f77b2ea57" target="_blank" rel="noopener noreferrer">Shopify's Growth Story: Direct-To-Consumer Enabler For Independent Brands</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify's recovery post-pandemic is impressive, with revenue growth outpacing costs. Check out what makes SHOP stock a very compelling investment story....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0de1ca7b2164a7721ca697580e3fe9e50620552a89def40411751ded3a5d94d" target="_blank" rel="noopener noreferrer">American Century International Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Non-U.S. developed markets stocks finished the fourth quarter lower. Political uncertainty in some of the largest European economies has diminished their growth outlook....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86244982fd147fb9ae3d2798e4f5c718b5e915a6c2254348aa6d0e9e23456865" target="_blank" rel="noopener noreferrer">Shopify (SHOP) Price Target Increased by 11.07% to 135.43</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-18</span>
+                                <span>Fintel</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=42b6fb474620e52b060b89888dac1c57a939f8cb235fc923fcf61f25695682f9" target="_blank" rel="noopener noreferrer">National Retail Federation Looks To Revitalize The Modern Commerce Experience</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The National Retail Federation event in 2024 was all about artificial intelligence. The same can be said for NRF 2025. Click to read....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e32333d12f4eca09b77328aab8edb340e72d15507e47ff06bf8c02bbff92bc39" target="_blank" rel="noopener noreferrer">Tariffs Won't Be As Bad As Expected For Shopify - Reiterating Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify Inc. reported its Q4 earnings this month amidst a heavy tariff war and a lot of uncertainty. See why I reiterate my buy rating on SHOP stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dd52700e6e009d34fbcf28986b397d0b17c430653db9b4a20af29ed485704a10" target="_blank" rel="noopener noreferrer">Janus Henderson Forty Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">The Fund returned 2.18% and the Russell 1000Â® Growth Index returned 7.07%. Stock selection in the industrials and consumer staples sectors contributed to relative performance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1322b73c1e16915ce7d06800bfa11bc6b9d10842c39a64e02df505433a358e8c" target="_blank" rel="noopener noreferrer">Shopify: Unfavorable Risk Profile</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.13
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify posted strong Q4'24 results with GMV growth, FCF margin expansion and robust core segment performance. High valuation limits upside. See more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a1d7b2061f09df704d3fabadfe4960f90fed4fa60af793feffde1dbb2ecd4246" target="_blank" rel="noopener noreferrer">Shopify: Raising My Price Target On Accelerating Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify's Q4 report shows accelerated growth, with 31% y/y revenue growth. See why SHOP stock remains a strong buy with a $138 price target....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4daae6f72966d6efc37ccccadc169056e416a5acd5a4a2d0e2df4644efaf8d7" target="_blank" rel="noopener noreferrer">Smart Savings: How AI Is Helping Companies Do More With Less</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Artificial intelligence is no longer a futuristic add-on but a critical cost-avoidance tool, with companies prioritizing AI investments over hiring to enhance efficiency and scalability....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=263e661e1aa87ff8b8dce4259d71cb41bd0e4c2beb13d5fcf846e4e290aabbc8" target="_blank" rel="noopener noreferrer">Shopify Inc. 2024 Q4 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Shopify Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb4f98edd7448aed417484f5146399ccc5398b177a580d88c6acf3170591ade5" target="_blank" rel="noopener noreferrer">Shopify Inc. (SHOP) Q4 2024 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify Inc. (NYSE:SHOP) Q4 2024 Earnings Conference Call February 11, 2025 8:30 AM ETCompany ParticipantsCarrie Gillard - Director of Investor......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6aa8701b44746a155ec74cc630c08ad1c01196cfa9cbbc39e99c2603526a6066" target="_blank" rel="noopener noreferrer">Wall Street Lunch: Apple To Bring AI To IPhones In China</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Apple (AAPL) is working with Alibaba (BABA) to bring artificial intelligence features to iPhones in China....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=071849bcbb73239bb7f241dcbbddc19f39b46050c2c90626c9f5f1da36484d98" target="_blank" rel="noopener noreferrer">Wall Street Week Ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay informed on upcoming economic data releases and earnings reports with Wall Street Breakfast, now available as a daily podcast on Seeking Alpha, iTunes,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=525fb5c6227a36042e04ceb1fde2894a5f63eb685316ff76ecaa664ae5f1af29" target="_blank" rel="noopener noreferrer">Consumer Companies In Focus Next Week As McDonald's, Coca-Cola, Unilever Report Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">This week's earnings releases include consumer companies. A number of IPOs are set to begin trading and Jan. CPI data will be released on Wednesday. See more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f6ac3f7b42f153a1bb582a0587ed236b5d85ff695e68a6b0b574cfe15b1ea80c" target="_blank" rel="noopener noreferrer">Franklin DynaTech SMA Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">During Q4 2024, global stocks were pressured by investor concerns about economic growth, persistent inflation in some regions and the likelihood of further interest rate cuts in 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=79802dfc19e4925c30417f8e2847dd3771a1cd53e0df804f860a8717bf42bd06" target="_blank" rel="noopener noreferrer">Shopify's High Valuation Faces A Reality Check - Q4 Earnings Preview</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify's stock has rebounded 150% over 5 years despite challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c139527f79f67467a64bda95bc4cf946bd14a86df821a94ce35e8fc3cb5c417d" target="_blank" rel="noopener noreferrer">Franklin International Growth Equity ADR SMA Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">International equities declined in the fourth quarter of 2024 in US-dollar terms, in part due to the strength of the US dollar. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c25ea71d27140269b0430a32f361b78dc01cbd4cd622ce936110385ee5519a69" target="_blank" rel="noopener noreferrer">Tracking Cathie Wood's ARK Invest 13F Portfolio - Q4 2024 Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ARK Invest's 13F portfolio value increased by ~10% to ~$12B this quarter. Check out the top holdings and new stakes of the portfolio....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b13051d7a90585426e7bdda3ce86ef8133ba2dda9a4e1590cff96b915dc9c780" target="_blank" rel="noopener noreferrer">Baron Opportunity Fund Q4 2024 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Opportunity Fund increased in the fourth quarter of 2024, outperforming its benchmark, the Russell 3000 Growth Index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ba9f5aaf2e14d9695b7ab572980a6eece18c403cf17c83f1cde7aaf53e79fa6" target="_blank" rel="noopener noreferrer">Baron Fifth Avenue Growth Fund Q4 2024 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Fifth Avenue Growth Fund increased during the fourth quarter of 2024, outperforming its benchmark, the Russell 1000 Growth Index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eb7ef1006b5babcde297a17d29ecaccbfcf74774e5783ae4debce6092734ed0c" target="_blank" rel="noopener noreferrer">Shopify Should Beat Q4 Earnings, But Tariff Risks Are A Concern</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Shopify's cost-cutting measures and improved free cash flow have helped the stock rebound, but tariff risks and economic slowdown remain concerns. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=65c2c017703fbba2687fdbfc619c6ef9d9664b5648773335c55909e25c7a08d7" target="_blank" rel="noopener noreferrer">Wall Street Breakfast Podcast: Tariff Battles Begin</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Stock index futures slumped on Monday, after President Donald Trump authorized tariffs on Canada, Mexico and analysts say look set to spark a trade war....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=462db8c0e73753c67855c6ee69972b70ce92214f93a51ec0b246dda915b00a27" target="_blank" rel="noopener noreferrer">BARK, Inc.: Making Progress</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-02</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">BARK, Inc. is consolidating its brands under one platform to enhance cross-selling. Read more to see a full investment analysis of BARK stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c24a81fd2fe77e1fb954c07094e0ab0b4ca48581de40e07f8e4651b5778626c7" target="_blank" rel="noopener noreferrer">Tracking Baillie Gifford's 13F Portfolio - Q4 2024 Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Baillie Gifford's 13F portfolio shows changes in top holdings like Amazon and NVIDIA, with increased stakes in SEA Ltd. Read more on the portfolio here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1e0b9cb4b5ae426a2c899785c70eefd739d3ef520e80daf74113941cd7091db2" target="_blank" rel="noopener noreferrer">ClearBridge International Growth ADR Portfolios Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">The benchmark MSCI EAFE Index declined 8.11% in the quarter while the MSCI Emerging Markets Index fell 8.01%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10c2667fa8f58a10267eb5ef8aa12a23b59df536a561f721ebd67d84854d37a9" target="_blank" rel="noopener noreferrer">5 Largest Portfolio Holdings: Fundamentals Don't Change As Rapidly As Stock Prices</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Weâve outlined the historical annual returns of our 5 largest holdings. How have the fundamentals translated into longer-term performance? Click here to find out. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=65c3cb19890fcca91720b1a7aa24e100e5295e539de00b5c2b04661624de7e2f" target="_blank" rel="noopener noreferrer">Franklin International Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Unlike in the U.S., where moderating inflation has been accompanied by resilient GDP growth, Europe and the U.K. continue to face recession risks. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ab2a917b4b93185cd96b4507b663104df10168e8dd3392f46a3769f69cd5578a" target="_blank" rel="noopener noreferrer">Rowan Street 2024 Year-End Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-01-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
