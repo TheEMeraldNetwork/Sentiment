@@ -1,0 +1,423 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Evolent Health Inc. (EVH) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Evolent Health Inc. (EVH)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.22</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=280f4ec62eece0375711bba23820ac33817b8e1fce95c58104501d9b7f672270" target="_blank" rel="noopener noreferrer">Fidelity Small Cap Value Fund Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">The fund's Retail Class shares returned -0.68% for the three months, versus -1.06% for the Russell 2000Â® Value Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8416aed8b2435bfc3e868319c899fc956513de2c05487f2d8c9b71872dcf6757" target="_blank" rel="noopener noreferrer">Evolent Health: Health Insurance Headwinds Aren't Helping Business - Rating Downgrade</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Evolent Health faces volatility with missed targets and 2024 guidance cuts. Click here for a full investment analysis of EVH stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8f60f011ee33826ac194ec15bdacbfc619cdbbeab447c8d6dd31b2eca612339e" target="_blank" rel="noopener noreferrer">Carillon Eagle Small Cap Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Small-cap stocks posted mixed and underwhelming results in the fourth quarter as they fell short of their strong rebound in the previous quarter. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=92dd3485faf0f8a524606aed0034df8cfd23fdf8f703e993912a4e84ebe7bca2" target="_blank" rel="noopener noreferrer">Hartford Healthcare Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">The Hartford Healthcare Fund (I share) underperformed the S&P Composite 1500 Health Care Index during the quarter. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=17ead8b579ea7c631566e0540eee95961a35ad756a9cbd7427c88be5095c8a73" target="_blank" rel="noopener noreferrer">Columbia Convertible Securities Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Columbia Convertible Securities Fund Institutional Class shares returned 2.38% for Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ecaabd3648089820fd67745ccf3d1ceb8a73d1cbc34212f8306b5beda2dadb48" target="_blank" rel="noopener noreferrer">Evolent Announces Fourth Quarter and Full Year 2024 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Revenue of $646.5 million for the three months ended December 31, 2024 and $2,554.7 million for the year ended December 31, 2024, representing 16.3% and 30.1% growth over 2023, respectively.Net loss.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=470e28cdf644f6cc038e926d910fcc7794ea558e0d6ccbaca03b48e20db5bd55" target="_blank" rel="noopener noreferrer">Evolent Health: Q4 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">ARLINGTON, Va. — ARLINGTON, Va. — Evolent Health Inc. on Thursday reported a loss of $22.8 million in its fourth quarter. The Arlington, Virginia-based company said it had a loss of 27 cents......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=507b8d42625e987fc97761ba0a9327de4db1094ebcb003f202fbee0514feda20" target="_blank" rel="noopener noreferrer">Evolent Health, Inc. (EVH) Q4 2024 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Evolent Health, Inc. (NYSE:EVH) Q4 2024 Earnings Conference Call February 20, 2025 5:00 PM ETCompany ParticipantsSeth Frank - Vice President, Investor......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df17cafb47bfda914704a5fc8d36d847a97e6e8af6b1303fda9ceeed2d96d3cb" target="_blank" rel="noopener noreferrer">Evolent Health, Inc. 2024 Q4 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Evolent Health, Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8d12f7b384ab51b6201feed668c66f44ff04f047c067055c3cecf3db68f67479" target="_blank" rel="noopener noreferrer">Invesco Main Street Small Cap Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">There was no significant change to fundâs overall positioning during the quarter as we sought to keep most sector, factor and other macro-related exposures similar to Russell 2000 Index....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
