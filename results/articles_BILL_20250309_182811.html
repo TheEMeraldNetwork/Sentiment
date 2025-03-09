@@ -1,0 +1,519 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>BILL Holdings Inc. (BILL) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">BILL Holdings Inc. (BILL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.15</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6ee609a8ad5514568c6aeffadf6b050f94d0a01a2807850bb595b6ff83fccd38" target="_blank" rel="noopener noreferrer">Fidelity Stock Selector Mid Cap Fund Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">For the final quarter of 2024, the fund's Retail Class shares gained 0.06%, trailing the 0.34% advance of the benchmark S&P MidCap 400Â® Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8f60f011ee33826ac194ec15bdacbfc619cdbbeab447c8d6dd31b2eca612339e" target="_blank" rel="noopener noreferrer">Carillon Eagle Small Cap Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Small-cap stocks posted mixed and underwhelming results in the fourth quarter as they fell short of their strong rebound in the previous quarter. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=520696b3bf005b59de8e40e159da7ccc7be85563994f81ca8b75126cb0a8ef4f" target="_blank" rel="noopener noreferrer">1 Spectacular Growth Stock Down 84% You Might Regret Not Buying on the Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.18
+                                </span>
+                            </div>
+                            <div class="article-summary">Bill.com (NYSE: BILL) offers a portfolio of software products designed to help small and mid-sized businesses (SMBs) handle their accounts payable, accounts receivable, and expense management workflow...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f0f7239f3167c23fc06bb51589fa3859c177d8be325e833cfcb3f33fcce53c9e" target="_blank" rel="noopener noreferrer">BILL to Participate in Upcoming Investor Conference</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">SAN JOSE, Calif., February 26, 2025--BILL (NYSE:BILL), a leading financial operations platform for small and midsize businesses (SMBs), announced today its participation in the Morgan Stanley Technolo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=90d7314f5f4b2de3e72d6dcb7ebb2d2792d7b0d8aebdea3b55bca23bf6aee7a8" target="_blank" rel="noopener noreferrer">BILL Holdings, Inc. (BILL): Among the Technology Stocks with Insider Buying in 2024</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 10 Technology Stocks with Insider Buying in 2024. In this article, we are going to take a look at where BILL Holdings, Inc. (NYSE:BILL) stands against the other tech...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5511d1a8d4c691c4e155eccb6a17ed42bdb776068d28e71821c9e0d6298e87c0" target="_blank" rel="noopener noreferrer">Baron Global Advantage Fund Q4 2024 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.44
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Global Advantage Fund advanced during the fourth quarter of 2024, outperforming its benchmark, the MSCI ACWI Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f25b4fc508fdc67a02063938913b5a18b449c147561b283565316353385c6dcb" target="_blank" rel="noopener noreferrer">BILL Holdings - A Good Entry Point Again</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">BILL's recent stock decline looks unjustified and may represent a strong buying opportunity for growth investors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a4b97752f42bcf45b7ecfee18da2f1948779c74da60d60b0449efa85ce867282" target="_blank" rel="noopener noreferrer">Down -25.33% in 4 Weeks, Here's Why BILL Holdings (BILL) Looks Ripe for a Turnaround</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.17
+                                </span>
+                            </div>
+                            <div class="article-summary">The heavy selling pressure might have exhausted for BILL Holdings (BILL) as it is technically in oversold territory now. In addition to this technical measure, strong agreement among Wall Street analy...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c1f26cdd2d02ea6c8164444fe142a8af99f9b08b645d4002009394435f393d7" target="_blank" rel="noopener noreferrer">Undercovered Dozen: Woodward, Manhattan Associates, Denison Mines, Veren +</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Explore investment opportunities in undercovered stocks like Take-Two Interactive, BILL Holdings, and Leidos Holdings with potential for growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c111dcec72aaf173cbb3f92cfbf9a805aa15fde99cb1b9ed882e01c60d4a5d6e" target="_blank" rel="noopener noreferrer">BILL Holdings Second Quarter 2025 Earnings: EPS Beats Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">BILL Holdings ( NYSE:BILL ) Second Quarter 2025 Results Key Financial Results Revenue: US$362.6m (up 14% from 2Q 2024......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea0ed098603123ae393a4d48b0ffefb0d55df9c1c3fe0ace5e18d96dc3dd479e" target="_blank" rel="noopener noreferrer">Bill price target lowered to $77 from $95 at Keefe Bruyette</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">Keefe Bruyette analyst Sanjay Sakhrani lowered the firm’s price target on Bill (BILL) to $77 from $95 and keeps a Market Perform rating on the shares. The firm remains on the sidelines until there are...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2d4a9ae69383ab3c71e2aa7fe172fe8aeb51f94aeee45d78c003cf69a956a559" target="_blank" rel="noopener noreferrer">Bill Holdings Posts Great Earnings. Why the Stock Is Down 33%.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Bill Holdings Posts Great Earnings. Why the Stock Is Down 33%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b3c85a08ff6451615309b7eb8f7f2873ab67af9fd981c3edeeda3461859d9569" target="_blank" rel="noopener noreferrer">Bill.com stock sinks 28% as Q3 guidance disappoints</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Bill Com (NYSE:BILL) shares tumbled more than 28% in premarket trading Friday after the financial operations platform provider issued weaker-than-expected guidance for the third quart...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=120884691dd46218bd73ee9bc01bac71ffc831df0bafe459847132fd3b8046af" target="_blank" rel="noopener noreferrer">BILL Holdings: Stock Plunges Post Q2 Earnings, A Great Dip To Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">I find Bill Holdings' (BILL) significantly lower valuation amid a raised guidance outlook to be quite appealing. Read why I upgraded my rating to Strong Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3da58eb83a5b6caa9fc0bed3830d60ed9a5a148f6bf2b60f389a1a56c77f507b" target="_blank" rel="noopener noreferrer">Why Bill.com (BILL) Stock Is Falling Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of payments and billing software maker Bill.com (NYSE:BILL) fell 34.7% in the morning session after the company reported weak fourth-quarter results. Revenue was just in line, although operatin...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e05f4590ffb55d64838904e13a50dfa1eb6e88254dd426600ef1076f44702832" target="_blank" rel="noopener noreferrer">Investors Who 'Two-Timed' This IBD 50 Stock Saved Themselves A 30% Crash</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Bill Holdings tried to break out ahead of earnings. The IBD 50 stock plunged 30% on earnings on Friday, triggering a sell signal....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
