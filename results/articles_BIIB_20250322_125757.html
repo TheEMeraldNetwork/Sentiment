@@ -1,0 +1,791 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Biogen Inc. (BIIB) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Biogen Inc. (BIIB)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">33</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.17</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3882ad9cb06040d6a8d4b62eb6a9cff7c522e288ebc39b5f55f5e7bfa53f6994" target="_blank" rel="noopener noreferrer">Biogen Inc. stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=370855ca130143ac73cb2156615c7ece21d4cd6f212c64a49957eb6fdfbb65e5" target="_blank" rel="noopener noreferrer">Biogen Inc. (BIIB) Stifel 2025 Virtual CNS Forum Conference (Transcript)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) Stifel 2025 Virtual CNS Forum Conference March 18, 2025 10:15 AM ETCompany ParticipantsPriya Singhal - Head of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3b08a6d96462a8385638204ebe77b1c9554991529cab6c7f5335ff903caf237e" target="_blank" rel="noopener noreferrer">Biogen Canada's Skyclarys Approved By Health Canada To Treat Friedreich's Ataxia In Patients 16 Years Of Age And Older</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc: * BIOGEN CANADA: HEALTH CANADA APPROVES SKYCLARYS TO TREATFRIEDREICH'S ATAXIA IN PATIENTS 16 YEARS OF AGE AND OLDERSource text:Further company coverage: ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7db764bc075edcac6e68b53aa1091ba89289a24b98fe1b2e195eb1221af589c6" target="_blank" rel="noopener noreferrer">Robinhood, Home Depot, and More Stocks for the ‘Silver Tsunami’ of Older Shoppers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Robinhood, Home Depot, and More Stocks for the ‘Silver Tsunami’ of Older Shoppers...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=50ce28934705859f25b678dfe2b97d74e33fb2a303d230fc72b67034a56bea08" target="_blank" rel="noopener noreferrer">Can BIIB's New Drugs Revive Growth as Multiple Sclerosis Sales Fall?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen believes that some of its new drugs, Leqembi, Skyclarys and Zurzuvae, have the potential to revive long-term growth. Can Biogen achieve this goal?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1abe98a94a5099519afa678fad5327d6aa411241faf00be9fb4307183a812db2" target="_blank" rel="noopener noreferrer">Eli Lilly Reverses Its Recent Upswing On Broader Market Woes. Is It A Sell?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Eli Lilly stock has sold off alongside the broader market over the last week, undercutting its moving averages. Is LLY stock a sell?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=82271ce54ea5345b9142c7d260fc5faf0b5c2e296a6299fa7ec4c963996eda9d" target="_blank" rel="noopener noreferrer">Why Is Biogen (BIIB) Up 1.1% Since Last Earnings Report?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen (BIIB) reported earnings 30 days ago. What's next for the stock? We take a look at earnings estimates for some clues....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df483530e6c6ec9628ca2140df1d11a3209339b128ea65778b2593da11d334ea" target="_blank" rel="noopener noreferrer">Biogen begins dosing in trial of felzartamab for kidney transplant patients with AMR</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">In Part A of the trial, subjects will be given nine intravenous infusions of either the drug or placebo over a six-month period....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=19a27ed80ed2ea9b06cc5af44147043a2de6ed981e306358ea3b37dd855c8749" target="_blank" rel="noopener noreferrer">BIIB Starts Felzartamab Phase III Study in AMR in Kidney Transplant</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">BIIB's TRANSCEND phase III study on felzartamab in adult kidney transplant recipients diagnosed with late AMR is set to enroll approximately 120 patients....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d65557b14f2672254399427444822260c1d808fe9b97c76cef4b5cf429234aa1" target="_blank" rel="noopener noreferrer">Biogen Initiates Phase 3 Study of Felzartamab for the Treatment of Late Antibody-Mediated Rejection (AMR) in Kidney Transplant Patients</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Global Phase 3 TRANSCEND study will evaluate the efficacy and safety of felzartamab, as compared to placebo, in adults with late AMRAMR is a leading cause of kidney transplant loss, with approximately...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=29cb35fc3b571081085a2157fee9e4eae1a9ec147f388a13d39323234e3c1d6c" target="_blank" rel="noopener noreferrer">Biogen : to Participate in the Stifel 2025 Virtual CNS Forum</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Cambridge, MA, - - Biogen Inc. announced today that Priya Singhal, M.D., M.P.H., Head of Development, will participate in a fireside chat during the Stifel 2025 Virtual CNS Forum. The webcast will be....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7aa90a5cc6a2f3f15d5a24704c1392509d323f335b2f8af54d24ec57e5807423" target="_blank" rel="noopener noreferrer">Biogen Inc. (BIIB) Management presents at Leerink Global Healthcare Conference 2025 (Transcript)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) Leerink Global Healthcare Conference 2025 March 10, 2025 11:20 AM ETCompany ParticipantsAlisha Alaimo - President of North......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81b2942b352a432f4c8934f624e12169c63abda471c2d5a524050f1bd70c8ce0" target="_blank" rel="noopener noreferrer">ClearBridge All Cap Growth Strategy Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge All Cap Growth Strategy underperformed its Russell 3000 Growth Index benchmark in the fourth quarter. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c39c08333bfd717d2dcf27690d16d8be309b83c4b86567ce53b94b0bbbd5e9a8" target="_blank" rel="noopener noreferrer">Biogen Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-06</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=82bbd52bc58ecde29b96b3aee27a412881e4675b0c0d9a83b77b63f7b01b89a6" target="_blank" rel="noopener noreferrer">New tau candidates, including an RNA therapy from Voyager, drive a multi-pronged Alzheimer’s approach</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Voyager Therapeutics’ progress with drug candidates targeting tau marks a step in how the industry is walking multiple paths toward new therapeutic options....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bf3d3aaa5243b3de10cfaa81ff83ac2811884fc583c45040e5b074a96ae6edc2" target="_blank" rel="noopener noreferrer">Tariffs Send Investors to Safety of Food, Drug and Utility Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">As market turmoil picks up, industries selling products that consumers rely on regardless of economic conditions are emerging as safe havens.  Healthcare, utilities, and consumer staples rallied, exte...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91fd3637d015fbc0901c58c8a6aeb1bac6d1731cf01a72917a61cb15ad535e54" target="_blank" rel="noopener noreferrer">Biogen : Eisai Receives Regulatory Review Outcome for Lecanemab as a Treatment for Early Alzheimer’s Disease in Australia</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">TOKYO and CAMBRIDGE, Mass., March 3, 2025 - Eisai Co., Ltd. and Biogen Inc. announced today that the Therapeutic Goods Administration of Australia has confirmed the initial decision to decline the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1cfe2a983cb0cfd9bb2d06937f8b092ad94613d4f2bea208da29f72973aafc87" target="_blank" rel="noopener noreferrer">Do You Own 15 Stocks Morningstar Calls The Top 'Wealth Destroyers?'</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Do You Own 15 Stocks Morningstar Calls The Top 'Wealth Destroyers?'...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a8ff92ce0fe62bf79d8f931df48a039226748d5675f9a10e1a33016af06de885" target="_blank" rel="noopener noreferrer">3 Reasons BIIB is Risky and 1 Stock to Buy Instead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Shareholders of Biogen would probably like to forget the past six months even happened. The stock dropped 31.4% and now trades at $140.49. This was partly driven by its softer quarterly results and mi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=84b2de5e1dc7132122621811f6145c56e2731e74012cf0800d4aa3895e0f2efe" target="_blank" rel="noopener noreferrer">Biogen Inc. (BIIB) CEO Chris Viehbacher presents at TD Cowen 45th Annual Health Care Conference (Transcript)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) TD Cowen 45th Annual Health Care Conference March 3, 2025 9:10 AM ETCompany ParticipantsChris Viehbacher - CEOConference Call......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ee89c0cbe9506e056ebf3d083277e9ebea494a171c6235d0e9374fc1537447f6" target="_blank" rel="noopener noreferrer">Under The Microscope: Looking For Opportunity Among Healthcare's Underperformers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Many stocks in the healthcare sector have trailed the wider markets, but are there pockets of opportunity? TD Asset Management's Ram Sampath discusses....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a04df2d01d1d8b5cc07f2ab62407287e96a0ef46fc3076f5eb5d5f261ff8834" target="_blank" rel="noopener noreferrer">EU regulator not updating opinion on Eisai-Biogen's Alzheimer's drug</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">European Union's human medicines committee said on Friday it is not updating its opinion on Eisai and Biogen's Alzheimer's drug Leqembi, after it recommended its approval in November. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5ab8089bc309eab58ee5a9e4dfdbddc3b1c7dd726beb7a05c9750c56c0b42e9a" target="_blank" rel="noopener noreferrer">EU regulator completes safety review of Eisai-Biogen's Alzheimer's drug without changes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The European Union's drugs regulator said on Friday it concluded a review into the safety of Eisai and Biogen's Alzheimer's drug Leqembi without finding the need for any changes to the drug's status.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9eb307e4db3dfa9c42f14ffc0a0fe75e28c9d0eb255d91053ff3bd8f88e257d1" target="_blank" rel="noopener noreferrer">Biogen : The Committee for Medicinal Products for Human Use (CHMP) Reaffirms Positive Opinion for Lecanemab in Early Alzheimer’s Disease</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">TOKYO and CAMBRIDGE, Mass., February 28, 2025 - Eisai Co., Ltd. and Biogen Inc. announced today that the Committee for Medicinal Products for Human Use of the European Medicines Agency has......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ae068a80e66ed4412af28fdede036c89edc9efa1912c8261f048e45d500fc1de" target="_blank" rel="noopener noreferrer">Biogen, Eisai: CHMP Reaffirms Backing of Leqembi Alzheimer's Drug</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen, Eisai: CHMP Reaffirms Backing of Leqembi Alzheimer's Drug...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be78faba6a29d22c37f5d1fe51c42446080a58ce0bfea13271def4feeafd7b4e" target="_blank" rel="noopener noreferrer">Biogen, Eisai : CHMP Reaffirms Backing of Leqembi Alzheimer's Drug</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">By Colin Kellaher Biogen and Eisai said the European Medicines Agency's Committee for Medicinal Products for Human Use has reaffirmed its recommended approval of their Alzheimer's drug Leqembi.......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=67d5571436f76834b82eaa99ac7df2d7ed6d3c15ff9c1f4f575ea7ae7fc4d07a" target="_blank" rel="noopener noreferrer">The Committee for Medicinal Products for Human Use (CHMP) Reaffirms Positive Opinion for Lecanemab in Early Alzheimer's Disease</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Eisai Co., Ltd. (Headquarters: Tokyo, CEO: Haruo Naito, "Eisai") and Biogen Inc. (Nasdaq: BIIB, Corporate headquarters: Cambridge, Massachusetts, CEO: Christopher A. Viehbacher, "Biogen") announced to...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b49f962f627f1665d614d75198e399ec2db6f521a9c90fdc497f9d42746bdc43" target="_blank" rel="noopener noreferrer">Why Novartis Remains A 'Buy' After Beating Expectations Again</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">Novartis' dividend yield currently stands at 3.58%, which is significantly higher than that of the healthcare sector. Read why I maintain my Buy rating on NVS....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd3e53aee7e5f71cce93657ab9b4cba33d1c31355a75060830526cb4598ac635" target="_blank" rel="noopener noreferrer">Biogen Inc. (BIIB): Among the Stocks That Will Go to The Moon According to Analysts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 15 Stocks That Will Go to The Moon According to Analysts. In this article, we are going to take a look at where Biogen Inc. (NASDAQ:BIIB) stands against the other st...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1bd4f5f8bd08de3bfa512d8c1495784973c8974a9e45da89c577c73c12083298" target="_blank" rel="noopener noreferrer">Pfizer Hires Top FDA Official Just Weeks After She Leaves Agency</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Pfizer Hires Top FDA Official Just Weeks After She Leaves Agency...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1d0fd8c8b5dc7475dbcf06900281d80b3055f6042a4d103cbbc0ae2b9ec6af81" target="_blank" rel="noopener noreferrer">Biogen : to Participate in the TD Cowen 45th Annual Health Care Conference</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Cambridge, MA, - - Biogen Inc. announced today that Christopher A. Viehbacher, President and Chief Executive Officer, will participate in a fireside chat during the TD Cowen 45th Annual Health Care......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=378e1260615827cfc4d736e9f230f9e257e5ccbb065b2a2af43c15902e68981a" target="_blank" rel="noopener noreferrer">NHS England's Transition From Biogen's Drug To Sandoz's Biosimilar Sparks Alarm As Multiple Sclerosis Patients Report Severe Effects</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">A cost-saving effort by NHS England to transition multiple sclerosis (MS) patients from Biogen Inc’s (NASDAQ:BIIB) Tysabri (natalizumab) to the biosimilar drug Tyruko has led to significant side effec...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c128a264118052ee430c9904a94da86505cddc069de407857b31fe3f11696bf3" target="_blank" rel="noopener noreferrer">Biogen Inc. (BIIB): Among the Cheap Pharmaceutical Stocks to Buy According to Analysts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 10 Cheap Pharmaceutical Stocks to Buy According to Analysts. In this article, we are going to take a look at where Biogen Inc. (NASDAQ:BIIB) stands against the other...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

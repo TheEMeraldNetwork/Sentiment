@@ -1,0 +1,695 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>XPO Inc. (XPO) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">XPO Inc. (XPO)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">27</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.04</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f1191e63a5286473925d4c53069a4139d7a09f3c84b39fd18cf619299307cf1" target="_blank" rel="noopener noreferrer">FedEx’s worse-than-feared outlook triggers price-target cuts — and one downgrade to sell</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">FedEx’s worse-than-feared outlook triggers price-target cuts — and one downgrade to sell...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8cf17a55665a368fd4d852737dba3e9cd546159b2e6434818812d3c2102e731" target="_blank" rel="noopener noreferrer">Three XPO Leaders Named 2025 'Pros to Know' by Supply & Demand Chain Executive Magazine</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.61
+                                </span>
+                            </div>
+                            <div class="article-summary">Greenwich, Conn. - XPO , a leading provider of freight transportation in North America, announced today that three of its leaders have been named 2025 'Pros to Know' by Supply & Demand Chain Executive...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d8784d22bea3ed274b8fbf01ad0b906bf98eee4a387bb44446a63b9cf00e4e8b" target="_blank" rel="noopener noreferrer">Three XPO Leaders Named 2025 “Pros to Know” by Supply & Demand Chain Executive Magazine</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">GREENWICH, Conn., March 17, 2025 -- XPO , a leading provider of freight transportation in North America, announced today that three of its leaders have been named 2025 “Pros to Know” by Supply......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=615bb7351b4ce2105be2ef371c86781002e029eca7cd705ef8becee5dcc5a50b" target="_blank" rel="noopener noreferrer">3 Mid-Cap Stocks in Hot Water</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Mid-cap stocks have the best odds of scaling into $100 billion corporations thanks to their tested business models and large addressable markets. But the many opportunities in front of them attract si...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8dac81f0e10dfee08d23af004c86a5e1bac2cc7d4c06fdb637ad5d352c971d93" target="_blank" rel="noopener noreferrer">Q4 Earnings Highs And Lows: Covenant Logistics (NYSE:CVLG) Vs The Rest Of The Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.67
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q4 earnings season comes to a close, it’s time to take stock of this quarter’s best and worst performers in the ground transportation industry, including Covenant Logistics (NYSE:CVLG) and its ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d5cb30a5d27b70cb79b2583b1469e403f9ab706acab38259481625caad45542f" target="_blank" rel="noopener noreferrer">Truist Securities Initiates Coverage of XPO (XPO) with Buy Recommendation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Fintel</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=25b72c7108a7144ced52cb2bfecd6e7496d485de7550615b39d30e999b84eeb8" target="_blank" rel="noopener noreferrer">Invesco Small Cap Equity Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Both the fund and benchmark had positive returns for the quarter with the fund returning more than the index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c06cf98eed1840413027d7be7f0db196be962cfc16d362067300970355fb64ec" target="_blank" rel="noopener noreferrer">Fidelity Select Industrials Portfolio Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For the three months ending December 31, 2024, the industrials sector, as measured by the MSCI U.S. IMI Industrials 25/50 Index, returned -1.72%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7485d42cf1ba5d9b5de68e242041199ab5d486d2148b8817f22e95456c22b284" target="_blank" rel="noopener noreferrer">ClearBridge SMID Cap Growth Strategy Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge SMID Cap Growth Strategy outperformed its Russell 2500 Growth Index benchmark during the fourth quarter. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6adaae3a769e9d40ffe26df4d8806a625f98469920875350e32c335d3879da67" target="_blank" rel="noopener noreferrer">Beacon Stock Is Rising. A Deal Looks Imminent.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-10</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Beacon Stock Is Rising. A Deal Looks Imminent....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6ee609a8ad5514568c6aeffadf6b050f94d0a01a2807850bb595b6ff83fccd38" target="_blank" rel="noopener noreferrer">Fidelity Stock Selector Mid Cap Fund Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">For the final quarter of 2024, the fund's Retail Class shares gained 0.06%, trailing the 0.34% advance of the benchmark S&P MidCap 400Â® Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e228e271dbbbed2936b7823e7f004835066d03686b38d9a2512caef77fed81c" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Value ESG Strategy Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge Large Cap Value ESG Strategy outperformed its Russell 1000 Value Index benchmark during the fourth quarter. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=da24d378b82cffb6fdbce7e26c22aaa4e90bb3c44308696776b801d63a882a63" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Value Strategy Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge Large Cap Value Strategy outperformed its Russell 1000 Value Index benchmark during the fourth quarter. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dda11c798805c73ecedf6adcc2d1a65c621b4b1b54704a1d452ac754ece64434" target="_blank" rel="noopener noreferrer">XPO sees improvement in February, tonnage still down y/y</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Less-than-truckload carrier XPO’s February tonnage decline isn’t as bad as the headline result suggests. The post XPO sees improvement in February, tonnage still down y/y appeared first on FreightWave...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1666fbf06261048940f4d439deca51b0ab0406caba4a7cac2d8e0ef2e03c2b54" target="_blank" rel="noopener noreferrer">Winners And Losers Of Q3: Heartland Express (NASDAQ:HTLD) Vs The Rest Of The Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Wrapping up Q3 earnings, we look at the numbers and key takeaways for the ground transportation stocks, including Heartland Express (NASDAQ:HTLD) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8595316c1a3456037bb0073d5c739a3fe5142b37975ce0b3147ed5335ecbf6e5" target="_blank" rel="noopener noreferrer">XPO Provides North American LTL Operating Data for February 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">GREENWICH, Conn., March 04, 2025 (GLOBE NEWSWIRE) -- XPO (NYSE: XPO), a leading provider of freight transportation in North America, today reported certain preliminary LTL segment operating metrics fo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=683b9c7f8e3482f5b42d9d80cd965d04a323d646cbe7e75331d55219df022ec1" target="_blank" rel="noopener noreferrer">Q4 Earnings Highlights: Schneider (NYSE:SNDR) Vs The Rest Of The Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Let’s dig into the relative performance of Schneider (NYSE:SNDR) and its peers as we unravel the now-completed Q4 ground transportation earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=88885dc65c2660dc713339e26bbe070609c0226136bd01373d91eaeefdf8bfd9" target="_blank" rel="noopener noreferrer">Ground Transportation Q4 Earnings: XPO (NYSE:XPO) is the Best in the Biz</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Let’s dig into the relative performance of XPO (NYSE:XPO) and its peers as we unravel the now-completed Q4 ground transportation earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e496cc837cc2b22b0c24aec6f14da6882d25b8c84db46935fcfdb0b0744f6a18" target="_blank" rel="noopener noreferrer">XPO, Inc. (XPO): Jim Cramer Says ‘Wall Street Just Gave Up’ on This Freight Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.47
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of Jim Cramer on 10 Stocks With The Biggest Declines Last Week. In this article, we are going to take a look at where XPO, Inc. (NYSE:XPO) stands against other stocks with...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d5e072ccd47148baa21d4ab1341db8dc8fd48b33cf546337142cb75713352b6e" target="_blank" rel="noopener noreferrer">Ground Transportation Stocks Q4 In Review: ArcBest (NASDAQ:ARCB) Vs Peers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q4 earnings season comes to a close, it’s time to take stock of this quarter’s best and worst performers in the ground transportation industry, including ArcBest (NASDAQ:ARCB) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7d873aebe911c7ca934976ed6c52d5d7dbb36087853ee8a26028bb44564db7e2" target="_blank" rel="noopener noreferrer">Stifel Upgrades XPO (XPO)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Fintel</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b9695a98c50f6e44fdafbc053a2f9eee49f34c2c29fbfa30aea8f1e1b5d6b1d2" target="_blank" rel="noopener noreferrer">Ground Transportation Stocks Q4 Recap: Benchmarking Universal Logistics (NASDAQ:ULH)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how Universal Logistics (NASDAQ:UL...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ccfd59a201830290fd7b2b9833087ddf1cbb7d59d3c0d93944b0a15991066b7f" target="_blank" rel="noopener noreferrer">Q4 Earnings Roundup: RXO (NYSE:RXO) And The Rest Of The Ground Transportation Segment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how RXO (NYSE:RXO) and the rest of...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5e549b8e16388b9647552ecaac2e75b63b04b905e9c14f2edb708f0b980e2714" target="_blank" rel="noopener noreferrer">Unpacking Q4 Earnings: Werner (NASDAQ:WERN) In The Context Of Other Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Quarterly earnings results are a good time to check in on a company’s progress, especially compared to its peers in the same sector. Today we are looking at Werner (NASDAQ:WERN) and the best and worst...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec1ff3e13f106df7a281eaaa20126e2605794118d8980505db9a35576e1a9ef1" target="_blank" rel="noopener noreferrer">Winners And Losers Of Q4: Old Dominion Freight Line (NASDAQ:ODFL) Vs The Rest Of The Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how Old Dominion Freight Line (NAS...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=370ea037322b31842bc2dfe1fc84744be97c73d61419382a5b2ae5fd72c19af2" target="_blank" rel="noopener noreferrer">Q4 Rundown: Hertz (NASDAQ:HTZ) Vs Other Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Earnings results often indicate what direction a company will take in the months ahead. With Q4 behind us, let’s have a look at Hertz (NASDAQ:HTZ) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ab72a11edd1122ef8d558505c351dbbbd63be37ae7c0316de5e66292a3fbf3d6" target="_blank" rel="noopener noreferrer">Ground Transportation Stocks Q4 In Review: Werner (NASDAQ:WERN) Vs Peers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Wrapping up Q4 earnings, we look at the numbers and key takeaways for the ground transportation stocks, including Werner (NASDAQ:WERN) and its peers....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

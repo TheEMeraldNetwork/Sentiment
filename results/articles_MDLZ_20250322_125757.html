@@ -1,0 +1,840 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Mondelez International Inc. (MDLZ) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Mondelez International Inc. (MDLZ)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">36</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.10</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a00a20610d7c0e7c3f3efd7fa8ee5ab49b5686743cf4228ce0455695ca1bb661" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of March 23</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay updated with weekly dividend activity for Champions, Contenders, and Challengers. Learn about changes, ex-dividend dates, and upcoming pay dates....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=667df602af18cf4e2e85d4da697681e0c63b2847d0aa65ecdf8f629e6c941193" target="_blank" rel="noopener noreferrer">Mondelez International Inc. Cl A stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fe11fccefad920397ae12f7f4e4eda84c9f64cb98b126478d861edcec76868c3" target="_blank" rel="noopener noreferrer">BlackRock Global Dividend Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">BlackRock Global Dividend Fund posted returns of -4.66% (Institutional shares) and -4.64% (Investor A shares, without sales charge) for the fourth quarter of 2024....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7c552f08a06792aaf3c85b5506b9bafcf8aba11a6d2cc9419d3086884b8231da" target="_blank" rel="noopener noreferrer">CLIF BAR to Power Athletes as the Official Energy Bar of the Boston Marathon presented by Bank of America</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">CLIF BAR's multi-year partnership with the Boston Athletic Association® will help support athletes as they raise their bar and push past barriers to achieve new levels of performance EMERYVILLE,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd50179b94113d0dc419cb9d0623a447ba88bb62be22e10b51b7c7a00c523703" target="_blank" rel="noopener noreferrer">Mondelez International Inc. Cl A stock underperforms Monday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Monday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6418ac731f4d7a0d0be1d37e60fc5a96812fcd7bf7e88be6575878e2ebfc379d" target="_blank" rel="noopener noreferrer">Kraft Heinz (KHC) Up 3.2% Since Last Earnings Report: Can It Continue?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Kraft Heinz (KHC) reported earnings 30 days ago. What's next for the stock? We take a look at earnings estimates for some clues....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a005f66119dcfb896b311abfbd7fe994709e18f6e0e7db117180b69eb6c9687" target="_blank" rel="noopener noreferrer">Mondelez, Lotus Bakeries launch first product from licensing tie-up</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">In June last year, the companies said they would develop new products combining Biscoff biscuits with Mondelez’s chocolate brands such as Cadbury and Milka....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=efa561ba78f82bcd0e356572413df49f7ed225486b2330fb3d785576ded38169" target="_blank" rel="noopener noreferrer">Tariffs Pressure Mega-Caps: Moat Stocks Show Resilience</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">In February, U.S. equity markets navigated a turbulent month, marked by a noticeable shift in investor risk appetite that gained momentum starting around mid-month....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53248ba2747fc0905329a664fa29539bc89b0402e754fd40e9710404d1054de4" target="_blank" rel="noopener noreferrer">Mondelez International (NASDAQ:MDLZ) Seems To Use Debt Quite Sensibly</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Legendary fund manager Li Lu (who Charlie Munger backed) once said, 'The biggest investment risk is not the volatility......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53e0954df0e06a68ccab6741e217db5bf1250969c99a1e294091f71f882b9d8d" target="_blank" rel="noopener noreferrer">Parnassus Core Equity Fund Sold Mondelez International (MDLZ) for Better Opportunities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Parnassus Investments, an investment management company, released the “Parnassus Core Equity Fund” fourth quarter 2024 investor letter. A copy of the letter can be downloaded here. In the fourth quart...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=99a1c811f73de6b9603b353df1ddaa18b75f9effbabfd1eee790798a0f125088" target="_blank" rel="noopener noreferrer">Mondelēz Returns to March Madness® With a New TV Spot Featuring Superstars Juju Watkins and Jackson Shelstad</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelēz, an Official Corporate Partner of the NCAA® for over a decade, is partnering with a new roster of NCAA athletes and offering fans a chance to win a VIP trip to the 2026 NCAA Men's or Women's ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=90f1fa463ff5d8a11364d42b95bc63d66a1d14e91142ffc0fa9095cf79e2ebae" target="_blank" rel="noopener noreferrer">Mondelez International: Recently Announced Share Buyback Plan Raises Questions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez's Q4 earnings showed cost struggles, disappointing revenue, and declining profit margins, with concerning overreliance on price increases. Learn more on MDLZ stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c240385f798488ec2dc028624cff378d719e9e57f86ef81ce03e97b287961bf2" target="_blank" rel="noopener noreferrer">Lotus Bakeries signs ice-cream deal with Froneri</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Starting next year, Froneri will handle the production, marketing and distribution of the ice cream in several European countries, with more markets planned for 2027 and 2028....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=434b8e456eb9f60b185a17d548a4cf8dfeb8678a0d5d5cf6a74bb28fa2297665" target="_blank" rel="noopener noreferrer">Mondelez: Sweet Gains, Bitter Costs, And A Pricey Valuation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez sees 4.3% organic growth in 2024 but faces margin pressures from soaring cocoa costs. Discover 2025 outlook & strategies for stabilization....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f9135531586be5c57b359c5ccbe12d71e555e4e727b0c206d857eb4565dc8602" target="_blank" rel="noopener noreferrer">Hershey: Cocoa Headwinds Are Priced-In, But There Is A Catch</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.17
+                                </span>
+                            </div>
+                            <div class="article-summary">Hershey's stock faces cost headwinds in 2025 and short-term volatility. Click here to find out why I rate HSY stock a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a0454ee1429f639c9c9b610f0d76fc890c2a60e2657d2000805e864328fcb250" target="_blank" rel="noopener noreferrer">After losing 3.2% in the past year, Mondelez International, Inc. (NASDAQ:MDLZ) institutional owners must be relieved by the recent gain</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights Institutions' substantial holdings in Mondelez International implies that they have significant influence......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3aa227f0615c91c898a8cbb6f8abc6b743f2dbcea917e718d9d794d992661c38" target="_blank" rel="noopener noreferrer">Is Mondelez International, Inc. (MDLZ) the Best Performing Dividend Stock to Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 14 Best Performing Dividend Stocks To Buy Now. In this article, we are going to take a look at where Mondelez International, Inc. (NASDAQ:MDLZ) stands against the ot...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=69b201f3414d9dea706ed1a960d23edfdeba4c15827f2a1b053947626ada2b25" target="_blank" rel="noopener noreferrer">Mondelez International Inc. Cl A stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-07</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc. Cl A stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6caafacc801445b043a462002a75c320a63875b0455e8a201afb758a151be2c8" target="_blank" rel="noopener noreferrer">Why Is Mondelez (MDLZ) Up 15.4% Since Last Earnings Report?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez (MDLZ) reported earnings 30 days ago. What's next for the stock? We take a look at earnings estimates for some clues....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=349fcd51f7a092c9bb265c662d53d8e44785e7172f69e6fa9c0a9c7e228287aa" target="_blank" rel="noopener noreferrer">Mondelez International (NasdaqGS:MDLZ) Launches Glowing Sour Patch Kids And Swedish Fish Candy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International (NasdaqGS:MDLZ) has experienced a 13% increase in share price over the last month, during which several key events unfolded. The launch of the SOUR PATCH KIDS Strawberry-Waterme...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c370775da1ff9eddf4ee06deab07cbba701a437e822023418c2a4e54d8dd5559" target="_blank" rel="noopener noreferrer">SOUR PATCH KIDS® Introduces Glow Ups: The First-Ever Gummy Candy that Glows Under Blacklight</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The SOUR PATCH KIDS brand is lighting up the candy aisle with its latest innovation: SOUR PATCH KIDS Strawberry-Watermelon Glow Ups, the first-ever gummy candy that glows under blacklight. Coated with...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5d147705335c3b2ab0444c50ddd4dcef9de6f6945beff2aa2551fe73a0e570b8" target="_blank" rel="noopener noreferrer">Mondelēz International’s SnackFutures Ventures to Unveil Top Trends Shaping the Future of Snacking</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Expert panel at Expo West will discuss insights, innovations, disruptions in snackingInnovation and investment opportunities include permissible indulgence, “better-for-you” bakery and supply chain te...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bee1ee15035b9f6c2916a3a279c15a83638204e30e3a55c61f1e7f76b0061443" target="_blank" rel="noopener noreferrer">Mondelez International (MDLZ): Among the Best Sugar Stocks to Buy According to Analysts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 7 Best Sugar Stocks to Buy According to Analysts. In this article, we are going to take a look at where Mondelez International, Inc. (NASDAQ:MDLZ) stands against other ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed0df16a3b51e65fe99a1fef50e982d41f72aaf98de0e5ec1035aacb3d6288da" target="_blank" rel="noopener noreferrer">Jim Cramer Says Mondelez International, Inc. (MDLZ) ‘Should Buy Everybody’</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published an article titled Jim Cramer Discusses These 12 Stocks & Says Late Selloffs Are Deliberate. In this article, we are going to take a look at where Mondelez International, Inc. (NA...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=70ae0bc38ad89dd634ab47fab8fe2fcaa4a50cf0d29db0fb18ba36c9544a1613" target="_blank" rel="noopener noreferrer">Mondelez International's (NASDAQ:MDLZ) investors will be pleased with their 30% return over the last five years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">When you buy and hold a stock for the long term, you definitely want it to provide a positive return. Furthermore......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fbf91038825b1871e48aad09950f4440c789181c6f282e1f73937ebc0bd42ffb" target="_blank" rel="noopener noreferrer">Mondelez: Cocoa Prices And Tariffs Weigh On Strong Business Performance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-01</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez shows improved performance, though risks are priced in. Find out why MDLZ stock is a buy even with potential margin pressures and tariff impacts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7196350c345d85fd962f3e4d56de85e5436805dc7f112d544787468735c13dd9" target="_blank" rel="noopener noreferrer">Elfun Trusts Exits Mondelez International Inc, Impacting Portfolio by -1.21%</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Exploring Key Moves in Elfun Trusts (Trades, Portfolio)' Fourth Quarter 2024 N-PORT Filing...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6cc2f38defc222b975c361fb889de9e1b3d1cfb1ac88ed8befe92d6c79ede36c" target="_blank" rel="noopener noreferrer">Mondelēz International Names Norberto Chaclin Executive Vice President, Chief R&D Officer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">CHICAGO, Feb. 28, 2025 (GLOBE NEWSWIRE) -- Mondelēz International (Nasdaq: MDLZ) today announced the appointment of Norberto Chaclin as Executive Vice President and Chief Research & Development Office...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b71f8fc26ba4f4f23da958b8ebef231a47ff8250ba48449acdee27d47e5910ea" target="_blank" rel="noopener noreferrer">How Mondelez Will Sell America on Sour Patch Kids That Glow Under a Blacklight</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez is giving its Sour Patch Kids candy a glow-up. A version of the brand will contain a flavorless turmeric-extract “confetti” so it gives off a fluorescent glow under a blacklight....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1fa32f56f510b0699a99f2dc41b37cbec24d890ab75cf27671898e1d4c8d0d70" target="_blank" rel="noopener noreferrer">Shelton Equity Income Strategy Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">During the fourth quarter, the Equity Income Portfolio underperformed the CBOE BuyWrite Index by 5.50%, delivering a gross return of 0.28% (-0.05% net) compared to the BXM return of 5.78%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6cb93e7c65442a53d0e5446b92011284aa2093222087c789ca1e6b60ab3443fc" target="_blank" rel="noopener noreferrer">RITZ Crackers Introduces Swicy New Flavor: Hot Honey</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">The RITZ Brand is excited to announce the launch of its newest flavor innovation: Hot Honey. This new flavor is sure to excite taste buds everywhere and stand out among the increasingly popular swicy ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=712bdbf6ff26876ba20b43ef010c2f165ae8a0261b7c844089b2f5a9c9a4686a" target="_blank" rel="noopener noreferrer">10 Undervalued Dividend Growth Stocks: February 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=369b0d4f7df570e328865349cf6db51f8334ceaaecb1211fafe021f4b172669c" target="_blank" rel="noopener noreferrer">Columbia Select Large Cap Equity Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Columbia Select Large Cap Equity Fund Institutional Class shares returned 3.31% for
+the three months ending 12/31/2024. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4fb2ba289dc911d2ffc3f50d8dc7e2158e47042abde7d0b7b284ce352cacdecf" target="_blank" rel="noopener noreferrer">Columbia Dividend Income Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Institutional Class shares of Columbia Dividend Income Fund returned -1.34% for Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=457939b5a7e788eaea7ff3c2bca09e524ae53c35a6b0cb9c56c3ac27b273d55a" target="_blank" rel="noopener noreferrer">New Sargento® Cheese Bakes Blends Mondelēz International's Deeply Rooted Cracker Expertise with the Rich Flavor and Heritage of Real Sargento® Cheese</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">With Three Irresistible Flavors, Sargento® Cheese Bakes Are the Latest Innovation to Expand the Mondelēz Snacking PortfolioEAST HANOVER, N.J., Feb. 24, 2025 /PRNewswire/ -- Mondelēz has teamed up......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4ae4ba6baca08c56fce5722b6c45c3ba1a523e9d0c376b84699fc9858a3121a" target="_blank" rel="noopener noreferrer">Mondelez International : Inside Information / Ad Hoc Information - MONDELEZ INTERNATIONAL, INC.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">EXECUTION VERSION US$1,500,000,000 364-DAY REVOLVING CREDIT AGREEMENT dated as of February 19, 2025, ......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,855 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Schlumberger Limited (SLB) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Schlumberger Limited (SLB)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">37</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.07</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=948015906b085db8c8604a245646533ce08c3be34092bb34aae619e7aa35d245" target="_blank" rel="noopener noreferrer">Schlumberger Ltd. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger Ltd. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d5e4a3892440573f2848b749f9d04ac1ec6e29ac77dd91334364eba993f0f1b2" target="_blank" rel="noopener noreferrer">SLB announces successful early tender results and amendment of Exchange Offer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">HOUSTON, March 13, 2025--Schlumberger Limited ("SLB") (NYSE: SLB) today announced the early tender results and the amendment of the previously announced offers by Schlumberger Holdings Corporation, an...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7ae2fc94f3632c288ab68a64c597731f9e7a6a6f36d46ba9d1aeab93a236bb35" target="_blank" rel="noopener noreferrer">Here is What to Know Beyond Why Schlumberger Limited (SLB) is a Trending Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching Schlumberger (SLB) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=39947a933a59d6fbc7d4180f4c2b75110dfcaab4f98575418c170fd5a898deb8" target="_blank" rel="noopener noreferrer">Fidelity Select Energy Portfolio Q4 2024 Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5dce5fa877f1fc3925964c2baa73a4f5f436d30cab704d4e58eef320d9cc05e9" target="_blank" rel="noopener noreferrer">Schlumberger Ltd. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger Ltd. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7485d42cf1ba5d9b5de68e242041199ab5d486d2148b8817f22e95456c22b284" target="_blank" rel="noopener noreferrer">ClearBridge SMID Cap Growth Strategy Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge SMID Cap Growth Strategy outperformed its Russell 2500 Growth Index benchmark during the fourth quarter. Click here to read the full commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=95026076264e63cb80330ee8cc006e53aa50207ed1dd3569b51bdfe7e5aaf4ed" target="_blank" rel="noopener noreferrer">Is Schlumberger (SLB) the Most Undervalued Large Cap Stock to Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 12 Most Undervalued Large Cap Stocks to Buy Now. In this article, we are going to take a look at where Schlumberger (NYSE:SLB) stands against other most undervalued lar...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=62c9fa80562fb3b63a94244d58759e68194e1fe48289f13d8b535cf0e6208e4f" target="_blank" rel="noopener noreferrer">6 Ideal Buys From 14 'Safer' March Dividends On Bloomberg 2025 Watch List Of 50</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c430c360ca97d2a810c20ef277fe104d65d4b527e55d6048e2a7971413ba46b6" target="_blank" rel="noopener noreferrer">Is Schlumberger (SLB) a Buy as Wall Street Analysts Look Optimistic?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Based on the average brokerage recommendation (ABR), Schlumberger (SLB) should be added to one's portfolio. Wall Street analysts' overly optimistic recommendations cast doubt on the effectiveness of t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a37427158133e23c5bf86ca5a622a3d29ad89a6976136202a9877c8f9217a3e7" target="_blank" rel="noopener noreferrer">Schlumberger (SLB) Declines More Than Market: Some Information for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger (SLB) closed the most recent trading day at $39.08, moving -1.86% from the previous trading session....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1cfe2a983cb0cfd9bb2d06937f8b092ad94613d4f2bea208da29f72973aafc87" target="_blank" rel="noopener noreferrer">Do You Own 15 Stocks Morningstar Calls The Top 'Wealth Destroyers?'</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Do You Own 15 Stocks Morningstar Calls The Top 'Wealth Destroyers?'...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0cd6c198c44115c2623a6861382be1db234671296e747f679d05205ac2564027" target="_blank" rel="noopener noreferrer">Should You Invest in Schlumberger Limited (SLB)?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Ariel Investments, an investment management company, released its “Ariel Focus Fund” fourth-quarter 2024 investor letter. A copy of the letter can be downloaded here. Small cap issues fell in December...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3d90ea60c1abf42b9aa56057b9e3ee226bd862cabe2f6fc171b71613c7efe73c" target="_blank" rel="noopener noreferrer">Schlumberger Ltd. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger Ltd. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d862f156c2533e59761ff40d76b2e91e85cd9e6f0e26d75084a41b6111a454a7" target="_blank" rel="noopener noreferrer">Schlumberger: Modestly Undervalued and Growing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">The outlook has changed but Schlumberger's valuation hasn't...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4a8e9fa752f0df95f0280a1d9a70bd3fdafcffd2328547244773fa143578f315" target="_blank" rel="noopener noreferrer">Is Schlumberger Limited (SLB) the Best Water Stock to Buy According to Hedge Funds?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 Best Water Stocks to Buy According to Hedge Funds. In this article, we are going to take a look at where Schlumberger Limited (NYSE:SLB) stands against other best wa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e10fd017060a755272fd426264cb10a23c90b22eaa96979699c1dbe7fab1138e" target="_blank" rel="noopener noreferrer">Schlumberger Limited (SLB): Among the Best Stocks to Buy Before Spring</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 10 Best Stocks to Buy Before Spring. In this article, we are going to take a look at where Schlumberger Limited (NYSE:SLB) stands against the other stocks to buy bef...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1324f2584a7b31e203da509b836b8fba83f2fc02d2834e44cbb675621e710b87" target="_blank" rel="noopener noreferrer">Ave Maria Value Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Ave Maria Value Fund had a total return of 4.82% for the three months ended December 31, 2024. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a10c14383f2115762f0e072f63b1270c3a2e3a3baf035bfaddb39f861964b91" target="_blank" rel="noopener noreferrer">John Hancock Disciplined Value Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">The John Hancock Disciplined Value Fund outperformed the benchmark for 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bdd1e7fc2d87fcee41037776393f21a4ccaaa384eb1a18023baa078a81fa91fa" target="_blank" rel="noopener noreferrer">Schlumberger Ltd. stock underperforms Friday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger Ltd. stock underperforms Friday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e588b1bcceedf7ea663ea0e71fa5a691b8c3e303b5106c9c78f0d5fc3b60f8e2" target="_blank" rel="noopener noreferrer">SLB Announces Debt Exchange Offer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, February 27, 2025--Schlumberger Limited ("SLB") (NYSE: SLB) today announced that Schlumberger Holdings Corporation, an indirect wholly owned subsidiary of SLB ("SHC"), has commenced offers t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5ed15c062a6caf61c3d2df537efc6cbd57fbe8e7ddec92ba716c1fba4cc5990a" target="_blank" rel="noopener noreferrer">Is Trending Stock Schlumberger Limited (SLB) a Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Recently, Zacks.com users have been paying close attention to Schlumberger (SLB). This makes it worthwhile to examine what the stock has in store....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0202dfbbe94b3d1986d3c3914847e4b8fe39eccad227a3c39d77894070c32d48" target="_blank" rel="noopener noreferrer">ChampionX On Track For Acquisition By Schlumberger</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">ChampionX Corporation sees solid growth in Production Chemical Technologies, backed by strong profitability and a Schlumberger acquisition. Click for my CHX update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1f621d1f1657a6922380fd53af6cda55d99a0fe8cc1c7a7191e50274417abbc4" target="_blank" rel="noopener noreferrer">Ariel Investments Focus Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the trailing one-year period, Ariel Focus Fund increased +13.48%, underperforming both the Russell 1000 Value and S&P 500 Indices, which returnedÂ +14.37% and +25.02%, respectively....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=56cae9a7777f28328bafda7c253cf6f8bb069c1a8e83279dc7c7f17b515f8554" target="_blank" rel="noopener noreferrer">SLB provides update on planned acquisition of ChampionX</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HOUSTON, February 25, 2025--SLB (NYSE: SLB) today announced that, in connection with SLB’s planned acquisition of ChampionX, all applicable waiting periods under the U.S. Hart-Scott-Rodino (HSR) Antit...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a6a3e909a129deb6271a812748ac7c027401d09a1a8ced058bac942a5365d24c" target="_blank" rel="noopener noreferrer">Schlumberger Ltd. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger Ltd. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=82cfde752c5b1f16b3188b83fecd980c62674f40dd7258b02cddd34d14864af6" target="_blank" rel="noopener noreferrer">Bullish On Schlumberger For The Long Run: Key Levels To Watch (Technical Analysis)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger shows favorable risk-reward opportunities. Learn why SLB stockâs fundamentals and Elliott Wave analysis suggest a potential rally to new highs....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=da4cf7a97e6f4adbd311307750df2ebc2ced188314d0ac1b22414e0c2fc84227" target="_blank" rel="noopener noreferrer">Schlumberger : GRI Alignment (gri 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">SLB 2024 Sustainability Report The Global Reporting Initiative This report references SLB's 2024 Form 10-K and 2025 Proxy Statement. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f04de682e4de39a6d9d9c8595aa76b29192cdfc0a970bbd60540e743c5208c1" target="_blank" rel="noopener noreferrer">Schlumberger : SASB Alignment (sasb 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">SLB 2024 Sustainability Report 39 ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91744c4d1e676abcb408e3df94b755b1a52e2ccdce9c6b60553e35c716621d68" target="_blank" rel="noopener noreferrer">Schlumberger : Performance Data (performance data 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">SLB 2024 Sustainability Report 2024 Performance Data We commissioned an external third party to perform attest procedures with......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b899848c1d507b35911e12624b05740fd406879846baba60d93d7c9ef9828547" target="_blank" rel="noopener noreferrer">Schlumberger : TCFD Alignment (tcfd 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">SLB 2024 Sustainability Report 45 ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3b6ff4b5221d43966a0abaec8b07deac03305d1894d5468add2c2490987c00b1" target="_blank" rel="noopener noreferrer">Schlumberger : Executive Summary (executive summary 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For a balanced planet 2024 Executive Summary SLB 2024 Executive Summary ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4545477bc5174838ea52d7dd69637e5d485c6bd7b92139dd1c35f0a6b2f7a473" target="_blank" rel="noopener noreferrer">Schlumberger : Report of Independent Accountants (report independent accountants 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Report of Independent Accountants To the Management of Schlumberger Limited We have reviewed the accompanying management assertion of Schlumberger Limited ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d554ce70ae862967902316679198b6996680cc51d62fd90aaa29881660c0f820" target="_blank" rel="noopener noreferrer">Schlumberger : 2024 Sustainability Report (sustainability report 2024)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For a balanced planet 2024 Sustainability Report SLB 2024......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a59fa1930228b9ae3f75a78b76364b135b813a5b30ef17670fc68d85de561a74" target="_blank" rel="noopener noreferrer">Schlumberger (SLB) Stock Moves -0.5%: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">In the latest trading session, Schlumberger (SLB) closed at $41.53, marking a -0.5% move from the previous day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aea6e9af28b6f15e4e6fcc70e1cb49908fc8e7872efcf10d9c28fd6ad62205c1" target="_blank" rel="noopener noreferrer">Ariel Investments Focused Value Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">In the fourth quarter, Ariel Focused Value outperformed the Russell 1000 Value Index, marginally falling -0.76% gross of fees (-0.85% net of fees) versus -1.98% for its primary benchmark....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b89fd5cbc69cc46f18c5c94a1fb0398727f33e3eaa566fceb35d1bd7ec7dba7f" target="_blank" rel="noopener noreferrer">Schlumberger: Energy Diversification, Some AI, Shareholder-Friendly Company</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumberger has underperformed since Q3 2023 but shows value with recent earnings beats. Check out why I reiterate a buy rating on SLB stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=942ad67f8903a6068a017b67f0dfb7957c66ad90123993b1bb6d9d0a87e47a99" target="_blank" rel="noopener noreferrer">Exxon, SLB in Talks with Chile on Lithium Expansion Amid Rising Demand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">Exxon Mobil and SLB are exploring lithium opportunities in Chile as demand for EV battery materials rises....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,679 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>HealthEquity Inc. (HQY) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">HealthEquity Inc. (HQY)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">26</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.08</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3993961c38a98e99a1bb4371405ec763ebe825c837110af9e564e49f2aea8372" target="_blank" rel="noopener noreferrer">The Davenport Small Cap Focus Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Davenport Small Cap Focus Fund (DSCPX) closed the year with a 0.35% gain for the fourth quarter of 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8f81827abb6ec00be306ef52a83e31acbe2c243bf3d6f7d992305822a81d2a8e" target="_blank" rel="noopener noreferrer">Invesco Health Care Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Stock selection in life science tools & services, pharmaceuticals and distributors detracted from relative performance, as did an overweight in health care facilities....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c89c3d89595a61e9cdbf0ee018af00d91c10c14683f45ed0a2d335dcf60567bf" target="_blank" rel="noopener noreferrer">HealthEquity: Selling Off On Uncertainties</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">HealthEquity stock drops after mixed Q4 results despite 18.8% revenue growth. Click here to find out why HQY stock is a Hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d2b772f98b9e0ec4df60207ef947e3e197390e3d3ab8cb307ac756e81d8f4137" target="_blank" rel="noopener noreferrer">HealthEquity Assist™: A new suite of integrated benefit solutions that drive deeper engagement, deliver cost savings, and increase transparency for employee benefits</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">DRAPER, Utah, March 18, 2025 -- HealthEquity, Inc. HealthEquity, the nation’s largest Health Savings Account administrator, today announced the launch of HealthEquity Assist™, a suite of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8fafd5896a0724852a65cf5b87fd7f7551cc05af462b2e0608a08e0fa3d04033" target="_blank" rel="noopener noreferrer">HealthEquity Reports Fiscal Year and Fourth Quarter Ended January 31, 2025 Financial Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Highlights of the fiscal year include: Revenue of $1.20 billion, an increase of 20% compared to $999.6 million in FY24.Net income of $96.7 million, an increase of 74% compared to $55.7 million......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed3f0232d95cb0cc43880fef5bcd1233683d3a6e1f3712caed624b261a38bb7d" target="_blank" rel="noopener noreferrer">HealthEquity: Fiscal Q4 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">DRAPER, Utah — DRAPER, Utah — HealthEquity Inc. on Tuesday reported fiscal fourth-quarter earnings of $26.4 million. On a per-share basis, the Draper, Utah-based company said it had profit of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7d76b151e68dfc8428d85e227b3cb7b8ec4b9d99b009361a594000394049bc8e" target="_blank" rel="noopener noreferrer">HealthEquity, Inc. (HQY) Q4 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HealthEquity, Inc. (NASDAQ:HQY) Q4 2025 Earnings Conference Call March 18, 2025 4:30 PM ETCompany ParticipantsRichard Putnam - Investor RelationsScott......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bcba015345b5b6496f52c06072dca28e9de372f2d2fc0c9e160486f1f039214d" target="_blank" rel="noopener noreferrer">HealthEquity: Robust Growth, But No Margin Of Safety</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">HealthEquity is down 15%, presenting a buying opportunity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=948ab6794b5f8c40c90d1669eaa78f0e01934363765345dee1f523e4f762f055" target="_blank" rel="noopener noreferrer">Wall Street Week Ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay updated on market-moving events with insights on Fed rate decisions, dot plots, tariff impacts, housing trends, and key earnings like Nike & FedEx....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5818dd31a08d2dfcc5b0dfa064b7e6e5fcbf176eb02ea1821b52e47fcb2e2c25" target="_blank" rel="noopener noreferrer">Wasatch Ultra Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">In a volatile fourth quarter, the Wasatch Ultra Growth FundâInvestor Class returned 0.94% and slightly underperformed the benchmark Russell 2000Â® Growth Index, which rose 1.70%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=44e898c3c392e3d6d7a3d393bccc5d9259cbd3ded25d32e7f3a2f9ca89d482ac" target="_blank" rel="noopener noreferrer">Wasatch U.S. Select Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">The Wasatch U.S. Select FundâInvestor Class gained 0.24% but underperformed the benchmark Russell 3000Â® Growth Index, which was up 6.82%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e65dcc3e7239725492318e7733adcb1a8e5a7cf017e38e71186a6189f3896c1e" target="_blank" rel="noopener noreferrer">Nike, FedEx To Report Results As Investors Await Fed's Latest Economic Projections</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay ahead with Seeking Alpha's Wall Street Week Ahead! Get key insights on upcoming events, earnings, IPOs, and market trends to make informed decisions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10adb355d198570f2e866dea429eeafb45904e935346a45b5014b6a089076728" target="_blank" rel="noopener noreferrer">Gear Up for HealthEquity (HQY) Q4 Earnings: Wall Street Estimates for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Evaluate the expected performance of HealthEquity (HQY) for the quarter ended January 2025, looking beyond the conventional Wall Street top-and-bottom-line estimates and examining some of its key metr...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df8aae0917e9ad8a85f480ce2c2e47ccbc6034c3e6460c75b0eadcef2b3a979e" target="_blank" rel="noopener noreferrer">HealthEquity Community Foundation Announces First Grant Recipients and Opens Next Funding Cycle</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Charitable non-profits nationwide receive grants to advance healthcare, financial literacy, mental health, and basic human needs; Applicants encouraged to apply for next round of fundingDRAPER, Utah, ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d8069b71a3cad2fd0b9ce4452d597b693ff4eadf21b322f35527347bbdced27c" target="_blank" rel="noopener noreferrer">HealthEquity, Inc. (HQY): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on HealthEquity, Inc. (HQY) on Substack by Francesco Ferrari. In this article, we will summarize the bulls’ thesis on HQY. HealthEquity, Inc. (HQY)’s share was trading ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fcd15d8bcb70801298124f0b71bdeb59898cab82139fc856aa2dacff030ec837" target="_blank" rel="noopener noreferrer">Here's Why You Should Retain HealthEquity Stock in Your Portfolio Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">HQY's sustained strength in HSAs raises optimism about the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=36cff9414ee2ae862a515e6fc9eb47d12a6f5256e69c062347a5a83c1a5de326" target="_blank" rel="noopener noreferrer">Wasatch Core Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Wasatch Core Growth FundâInvestor Class gained 0.76% but underperformed the benchmark Russell 2000Â® Growth Index, which was up 1.70%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81d6f1e426c008e1d02f6a2b16ddaa5127fc09e4a4eb68aa6cea5be3bce3a14f" target="_blank" rel="noopener noreferrer">Wasatch Long/Short Alpha Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Wasatch Long/Short Alpha Fund - Investor Class was down -8.28% and underperformed the benchmark Russell 2500â¢ Index, which returned 0.62%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a3548df48e7c3c689909d2b2ba1e55a14a891c0740d1ae822bcb24c67bdad22a" target="_blank" rel="noopener noreferrer">Wasatch Small Cap Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">The Wasatch Small Cap Growth FundâInvestor Class gained 5.50% and outperformed the benchmark Russell 2000Â® Growth Index, which was up 1.70%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9355c95a75dbc8d34c5966b0ab22b2b8b7d956584f984e58c7efdf4b1910faaa" target="_blank" rel="noopener noreferrer">Here's Why We Think HealthEquity (NASDAQ:HQY) Is Well Worth Watching</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The excitement of investing in a company that can reverse its fortunes is a big draw for some speculators, so even......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=04b2ab1f3e67d5e187062bfeb3f4a32d76cd842af2e8811ef1f7a56056bd586d" target="_blank" rel="noopener noreferrer">Here's Why HealthEquity (HQY) is a Strong Growth Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Zacks Style Scores offers investors a way to easily find top-rated stocks based on their investing style. Here's why you should take advantage....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ce00027abcae4b59d39108b8d5596398e7aa3579d3e66f67f38ab60b0f2c152a" target="_blank" rel="noopener noreferrer">Forbes and U.S. News & World Report Agree: HealthEquity is One of America’s Best Places to Work</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Forbes recognized HealthEquity as one of America’s Dream Employers for 2025, while U.S. News & World Report named them one of the Best Companies to Work For in 2025DRAPER, Utah, Feb. 27, 2025 (GLOBE N...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2e5f5e7d56d1283a7be9a9991532bb0a7bb271154059312f779503ce1266bc8e" target="_blank" rel="noopener noreferrer">MD or HQY: Which Is the Better Value Stock Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MD vs. HQY: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6aa976f2add37dc8941bf2d40cd55d53398cc15e4972f3c7db91a2c5c3cd509b" target="_blank" rel="noopener noreferrer">Allspring Common Stock Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">The Allspring Common Stock Fund underperformed the Russell 2500 Index during the three-month period that ended December 31, 2024. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7ea2fc902d049812b3a50f061f23cb3212538902e615571a0c27a98f5861cafc" target="_blank" rel="noopener noreferrer">The Path Forward: How Commuting Impacts the Return to Office Experience</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Commuting expenses are on employees’ minds, and with more employees returning to the office, commuter benefits can ease the transitionDRAPER, Utah, Feb. 20, 2025 (GLOBE NEWSWIRE) -- HealthEquity, a le...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b937735c97113099a12193f720a1603f8e6bdbb2de8252e8ac088293a68d6cbc" target="_blank" rel="noopener noreferrer">Madison Small Cap Fund Q4 2024 Investment Strategy Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">The fourth quarter closed out a successful year for the Madison Small Cap Fund, delivering solid absolute and relative returns for the fourth quarter and the full year....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

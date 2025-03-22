@@ -1,0 +1,679 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>LKQ Corporation (LKQ) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">LKQ Corporation (LKQ)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">26</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.07</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4ffbe1f7a66f4780fc4bfeff16314907d1fa622447b8dc8f60584054c1d6f878" target="_blank" rel="noopener noreferrer">LKQ Corp. stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corp. stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3bc389e9243caaf668be5e5c8258269a93f2418f94d5786b92d574b09846907b" target="_blank" rel="noopener noreferrer">LKQ Corp. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corp. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=97bfdc74d180942a346436d7feb413bf001cefaf61fef7351cf77165dcf097a3" target="_blank" rel="noopener noreferrer">Nomination Committee’s proposal for Board Members in MEKO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MEKO's Nomination Committee proposes the re-election of board members Eivor Andersson, Marie Björklund, Kenny Bräck, Magnus Håkansson, Helena Skåntorp, Robert Reppa, Jörn Werner, and Dominick......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=94854e469c1ca0c6612e6eb24e74b1400e13ffbe068430dcf3748bde799a4c21" target="_blank" rel="noopener noreferrer">LKQ Corp. stock underperforms Thursday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-13</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corp. stock underperforms Thursday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af25f93e53fe7f1e773ff0037867baa60423f67af71d6142972c64e09084390a" target="_blank" rel="noopener noreferrer">LKQ Corp. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-12</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corp. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1f83f0d36d8ec97c91dfc23dc1684b9f0a51b3448a7a8d673954173508b22387" target="_blank" rel="noopener noreferrer">3 Auto Replacement Stocks to Benefit From Industry Trends</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">With the Zacks Auto Replacement Parts industry being ranked favorably, stocks like LKQ, DORM and SMP are worth considering....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81f3928c23155e3f3dc418952648e10ecf499632f4d372a8417a0a1495b73895" target="_blank" rel="noopener noreferrer">3 Stocks Under $50 Walking a Fine Line</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">Stocks in the $10-50 range offer a sweet spot between affordability and stability as they’re typically more established than penny stocks. But their headline prices don’t guarantee quality, and invest...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f730f152d1f2a6e1a6f19cc53b4ce31db5aab5d7a76b7398ab84df04cd3e3383" target="_blank" rel="noopener noreferrer">LKQ Corporation: Valuation To Stay Rangebound (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation faces challenges with declining North American performance and minimal European growth. See why I downgrade LKQ from buy to hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2bc920f639ab50fe2983a17623e632e788029bbbc22723092b1d8a6115a7a5ed" target="_blank" rel="noopener noreferrer">Some May Be Optimistic About LKQ's (NASDAQ:LKQ) Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.14
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation's ( NASDAQ:LKQ ) recent soft profit numbers didn't appear to worry shareholders, as the stock price......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=544dddf6c36c25b575f69019843a62ef0d7c955a868dcef5093306b72030df82" target="_blank" rel="noopener noreferrer">3 Ideal Buys From 50 'Safer' Dividends In 100 February Barron's Sustainable Dogs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Four dividend-paying companies meet the Dogcatcher ideal, with annual dividends from a $1K investment exceeding their share prices. Click here for a detailed review....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=967fb3de9a0d21a179c8920c348c0cfc85b434b38590453176cb83285c8b637e" target="_blank" rel="noopener noreferrer">Delaware Law Alert: The Delaware Supreme Court Further Validates Forfeiture-for-Competition Provisions—What It Means For M&A Deals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">In a notable holding, the Delaware Supreme Court has confirmed that forfeiture-for-competition provisions generally are not subject to reasonableness review, greatly enhancing the likelihood of their....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d5d4cdf7a4d697463b1b4ce71a4c0f496d9470670a68e722031c1a0c654c1c2a" target="_blank" rel="noopener noreferrer">LKQ (NASDAQ:LKQ) Is Due To Pay A Dividend Of $0.30</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation ( NASDAQ:LKQ ) will pay a dividend of $0.30 on the 27th of March. This means the annual payment is 3.0......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2677a5d84419d62a165359ae566d54a1f76be18293916449922a51571abfa430" target="_blank" rel="noopener noreferrer">LKQ Corporation (NASDAQ:LKQ) Yearly Results: Here's What Analysts Are Forecasting For This Year</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors in LKQ Corporation ( NASDAQ:LKQ ) had a good week, as its shares rose 3.5% to close at US$40.49 following the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d939ffdf0f031b57aa16b0c02474256e075ef87d361b4c32b1a87ebdbcd04dfc" target="_blank" rel="noopener noreferrer">Q4 2024 LKQ Corp Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Q4 2024 LKQ Corp Earnings Call...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c80f26690827bc51b308072d509460d6e0c6e1ae8e70d12c9ea36dec2c03cc33" target="_blank" rel="noopener noreferrer">LKQ Corp (LKQ) Q4 2024 Earnings Call Highlights: Record European Margins and Strategic ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corp (LKQ) navigates revenue declines with strategic expansions and shareholder returns, achieving record European EBITDA margins....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d81c40c3245f952061845a15101648316d9b02327fd46c22db9512d92fe18dc4" target="_blank" rel="noopener noreferrer">Allspring Special Mid Cap Value Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">The Allspring Special Mid Cap Value Fund underperformed the Russell Midcap Value Index during the fourth quarter of 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b55ebbb5a9f8ad6ead5bbdbed9b31feb0e04d9ca55558c30869848400c72f7c1" target="_blank" rel="noopener noreferrer">LKQ Full Year 2024 Earnings: EPS Misses Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ ( NASDAQ:LKQ ) Full Year 2024 Results Key Financial Results Revenue: US$14.4b (up 3.5% from FY 2023). Net income......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=670c23d889b510b2117369b2917ce46bb9e5d9350360e87922704c9de4ddd961" target="_blank" rel="noopener noreferrer">Here's Why You Should Retain LKQ Stock in Your Portfolio Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ is set to gain from acquisitions, restructuring plans and expansion initiatives despite headwinds from repairable claims....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a30facdee0c9cd0f03171810e1c3cb5169290571e83ee98fcd1445564ae7993" target="_blank" rel="noopener noreferrer">LKQ Corporation Announces Results for Fourth Quarter and Full Year 2024</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Fourth quarter revenue of $3.4 billion; annual revenue of $14.4 billionFourth quarter organic revenue for parts and services decreased 3.6%; annual decreased 2.2%Fourth quarter diluted EPS2 of $0.60;....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85011be6adba4b5a11ed4343cf0e765e1b8f5f823db6637f06aac3d453dd691e" target="_blank" rel="noopener noreferrer">LKQ : Fourth Quarter 2024 Earnings Conference Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">FEBRUARY 20, 2025 Fourth Quarter and Full Year 2024 Earnings Call Presentation Opening Remarks JUSTIN......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b962f6a70f6c508fada2ddf1f58597db2d5b4545eed3e22e0b61f0ca0cd71b07" target="_blank" rel="noopener noreferrer">LKQ Corporation 2024 Q4 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by LKQ Corporation in conjunction with their 2024 Q4 earnings call....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=80ec3e421f5e02d27aefa2c0f3289f047d06ffb7ff4006f4190d443bc38a0af5" target="_blank" rel="noopener noreferrer">LKQ Corporation (LKQ) Q4 2024 Earnings Conference Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation (NASDAQ:LKQ) Q4 2024 Earnings Conference Call February 20, 2025 8:00 AM ETCompany ParticipantsJoe Boutross - VP of IRJustin Jude - President......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=913658fb4a4e8c69a3ab74f7d6a57bfa17b3ae112472a12f987630f7846627c3" target="_blank" rel="noopener noreferrer">LKQ (NASDAQ:LKQ) Misses Q4 Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">Automotive parts company LKQ (NASDAQ:LKQ) missed Wall Street’s revenue expectations in Q4 CY2024, with sales falling 4.1% year on year to $3.36 billion. Its non-GAAP profit of $0.80 per share was 7.8%...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=41e4bdfc1d1c8b049201a905600956834a39e92281614a7a6eafe50654df68cb" target="_blank" rel="noopener noreferrer">LKQ: Q4 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">The average estimate of seven analysts surveyed by Zacks Investment Research was for earnings of 75 cents per share. The vehicle components company posted revenue of $3.36 billion in the period, which...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b9877f2a88695750c03b629eeddf1222a4560d123701c912e3a3a5298693f1ad" target="_blank" rel="noopener noreferrer">LKQ Q4 Earnings: Sales Growth Stalls, EPS Beats, Europe Shines And More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.11
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation (NASDAQ:LKQ) shares are trading higher in the premarket session on Thursday. The company reported fourth-quarter adjusted earnings per share of 80 cents, beating the street view of 74 ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f2a9aeaa10094fa085d8cc9177a77af6965870c7dcb8ff0ebf7983ed9cde5b6" target="_blank" rel="noopener noreferrer">LKQ Q4 Earnings Surpass Expectations, Revenues Decline Y/Y</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ reports mixed fourth-quarter results and expects 2025 parts and services organic revenue growth in the range of 0-2% year over year....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
