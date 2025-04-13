@@ -1,0 +1,919 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>DIAMONDBLACK ENERGY INC. (FANG) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">DIAMONDBLACK ENERGY INC. (FANG)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">41</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.01</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d3bb00925f8e99d1270f9dd8cc364709bfbfffb5226fb2ee05a2c960a3ba6530" target="_blank" rel="noopener noreferrer">Viper Energy: Fast-Growing And Now High-Yield</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Viper Energy targets low-cost, fast-developing acreage with strong operators and resilient income potential. Learn why VNOM stock is a strong buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f0b379fdf1556717f6b002436843b2b0901d2ba9056f72739bac8d852367f76" target="_blank" rel="noopener noreferrer">Diamondback (FANG) Soars 13.2%: Is Further Upside Left in the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback (FANG) witnessed a jump in share price last session on above-average trading volume. The latest trend in earnings estimate revisions for the stock doesn't suggest further strength down the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=38a6da418887ba64badfa7feb8ed9ce26bc9f4b6797d4f9d7fb862914bd423a8" target="_blank" rel="noopener noreferrer">Diamondback Energy: Big Dividend Yield And A Lot Of Room For Capital Appreciation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy stands out with strong profitability, a 5%+ yield, and strategic growth amid oil sector volatility. Learn more about FANG stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d83ee88f8651e95c28fd3c4fdaa66930caa22612ef688edead8153b84009af4b" target="_blank" rel="noopener noreferrer">Texas Oil Executives Are Frustrated at Trump for Crushing Crude Prices</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- The angry mutterings at the Permian Basin Petroleum Association’s “Spring Swing” golf tournament this week weren’t all about missed putts or lost balls. The Texas oilmen on the fairways...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e9e123b2ea1db04bd3e524e4298f5669e229f45a6fff6bf75a211f6946af3b21" target="_blank" rel="noopener noreferrer">Diamondback Energy Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=72f29de91fa51674246bd9bdead5a05f4b879794e834f6a63a2fb749be4682d5" target="_blank" rel="noopener noreferrer">Diamondback Energy (FANG) Gains As Market Dips: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest trading day saw Diamondback Energy (FANG) settling at $124.53, representing a +0.94% change from its previous close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a0f4ba8f981573e80f1408994ad39305f0a922fb8a919d47f5e31080fee1e496" target="_blank" rel="noopener noreferrer">Sector Update: Energy Stocks Advance Pre-Bell Tuesday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Energy stocks were advancing pre-bell Tuesday, with The Energy Select Sector SPDR Fund (XLE) up 2.8%...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81d37eefbdd2ff05122ea252f9c6514b89caa83934a340c09291cc15c48406f5" target="_blank" rel="noopener noreferrer">Diamondback Energy price target lowered to $174 from $204 at UBS</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">UBS lowered the firm’s price target on Diamondback Energy (FANG) to $174 from $204 and keeps a Buy rating on the shares. The firm sees Energy viewed as a recession downside play, the analyst tells inv...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1bd462149368856a7cfd273ee79ee781178ed784fc5aba218ca1874462bcbbf3" target="_blank" rel="noopener noreferrer">Diamondback Challenges U.S. Tariffs to Protect the Shale Industry</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.17
+                                </span>
+                            </div>
+                            <div class="article-summary">FANG's top executive demands an explanation on U.S. tariffs, urging the administration to protect shale producers as oil prices dip and trade tensions rise....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1d4d6887ed778acc4235019dd53faae46b7a694294ceba56c2b62216d5bd588" target="_blank" rel="noopener noreferrer">Diamondback Energy Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fc7967ee4eb4ec945f479fbde6f8e7b2ed40277b612bba4a263fcaf93b4b4f18" target="_blank" rel="noopener noreferrer">Diamondback Energy: Fast-Growing Dividend Now Has A Tempting Yield</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy, Inc. is undervalued, with strong growth through acquisitions and dividends. Click for my updated look at FANG stock prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=43eceb1a09a4cda42fbb8df4804db05ab167ab0ab67ee31d7aa0a9b9b4eea88c" target="_blank" rel="noopener noreferrer">Diamondback Energy Has A Major Power Play At Hand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy drives growth with rising natural gas demand, strategic acquisitions, and shareholder returns. Click here to read why FANG stock is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bc39854febb5ea957d912a164e2340c809988ce2fdcf8a90b9bd122e85c3a910" target="_blank" rel="noopener noreferrer">These 2 Oils-Energy Stocks Could Beat Earnings: Why They Should Be on Your Radar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors looking for ways to find stocks that are set to beat quarterly earnings estimates should check out the Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a8494678a1a9c2e916d648b725061bef38d3d8a406733696b43f2d4f867c2598" target="_blank" rel="noopener noreferrer">Ted Cruz Urges Trump to Listen to ‘Angel’ Elon Musk on Trade</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Senator Ted Cruz extended his critique of President Donald Trump’s tariffs and said there are “angels and demons” vying for influence as the White House plans to impose the steepest US ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=015d67a18b182ab32d53f056915ef43c236e26e03a18fe325efcf7decf58651c" target="_blank" rel="noopener noreferrer">Oil Price in Freefall Reorders Global Energy Landscape</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- The plunge in oil prices over the past two days following the twin shocks of President Donald Trump’s tariffs and the surprise boost in production from OPEC+ has altered the global ener...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0901c7173fa56aeb5fcf86982a5c2e5d297f5c3299e87c6b1dfafeb52aad5016" target="_blank" rel="noopener noreferrer">SCHD Alternative Strategy: Weathered March Better Than The S&P 500</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">The 4-factor dividend growth strategy is up 7% YTD in 2025, outperforming SCHD by 7.35%. Find out how itâs delivered a 16.97% CAGR since launch....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e6d63b68e353beb410bd729117ea5fd01112beb53e0e035d2edeea76c5ef6a54" target="_blank" rel="noopener noreferrer">Diamondback Energy Inc. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy Inc. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b4c294d53978e1cc2d3d11df3f85d2bf4d8b7867c32fbc039d5b37525db8067f" target="_blank" rel="noopener noreferrer">Diamondback Energy (NasdaqGS:FANG) Appoints New Underwriters for US$1.2 Billion Debt Financing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy (NasdaqGS:FANG) recently unveiled significant changes in its financial activities, including appointing new co-lead underwriters for a $1.2 billion debt financing initiative. This c...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4af4cd4067e54ea401a72061f2ec14443462313f0b1fc099f0c426e1d0272587" target="_blank" rel="noopener noreferrer">Diamondback Energy: Double-Digit FCF Yield From The Original 'FANG' Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">Explore Diamondback Energy, Inc.'s 14% FCF yield, strong Permian Basin operations, and rising production. Click for more on FANG stock prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a7cd090e7ae9257cc24a0b3da9e3d4f25ce7b7820ee288d953410cd6e01dec3" target="_blank" rel="noopener noreferrer">Double Eagle Energy, Tumbleweed Royalty form new entities with $2.5bn in equity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The entities retain commitments from Double Eagle management, Elda River Capital Management, Apollo Global Management affiliates and other strategic partners....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e71f08697968053cd12c92673f5cf72e5a2351894057c455b0e12a8857b66490" target="_blank" rel="noopener noreferrer">Diamondback Energy Inc. stock underperforms Thursday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy Inc. stock underperforms Thursday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1fb00a48cbf2cc2b309f2b40547383bc970c5fc20d4bdb3f1966ff23472a0915" target="_blank" rel="noopener noreferrer">Diamondback Energy (NASDAQ:FANG) shareholders have earned a 40% CAGR over the last five years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">For many, the main point of investing in the stock market is to achieve spectacular returns. And highest quality......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e1cc864af3da70fa7e765674246348f6bc9f599a11ed5ab575bb9a3f41d772bf" target="_blank" rel="noopener noreferrer">Sector Update: Energy Stocks Lean Lower Premarket Wednesday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Energy stocks were leaning lower premarket Wednesday, with The Energy Select Sector SPDR Fund (XLE)...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b6626909f4767adde880a32f88b59d79ee70825ae5bd5fa435523dce29c38a1b" target="_blank" rel="noopener noreferrer">Diamondback Energy, Inc. Announces Closing of Double Eagle Acquisition</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MIDLAND, Texas, April 01, 2025 (GLOBE NEWSWIRE) -- Diamondback Energy, Inc. (NASDAQ: FANG) (“Diamondback” or “the Company”) today announced that it has completed its previously announced acquisition o...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0c7f1374df7da843dc2df56f21e337efeea74cbb6970a9da9eeb74e41193af0" target="_blank" rel="noopener noreferrer">4 Prominent Permian Basin Stocks Worth Keeping on Your Radar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">EOG, FANG, XOM and CVX are well-positioned to benefit from the Permian Basin's ongoing expansion, making them must-watch for energy-focused investors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4a837106200712c56c05a236f81767b73065781fc97f2fcc0dafff075fe29681" target="_blank" rel="noopener noreferrer">Upstream Energy Companies to Watch Following Q4 Earnings Beat</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Companies like EOG, FANG and DVN displayed solid operational and financial performances, supported by record production levels, cost management and shareholder returns....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b70249682eb5c91fffaec496a68cb37a1bc3fc50e33c3749181a2c72f98fa5fc" target="_blank" rel="noopener noreferrer">Is Diamondback Energy, Inc. (NASDAQ:FANG) a High-Growth Non-Tech Stock That Is Profitable in 2025?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 12 High Growth Non-Tech Stocks That Are Profitable in 2025. In this article, we are going to take a look at where Diamondback Energy, Inc. (NASDAQ:FANG) stands against ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db63a44cde8cb7bfcff1e58e31ccf3cae1c0ed7c8b1e06b1b50c7cb576d44158" target="_blank" rel="noopener noreferrer">Buy, Baby, Buy: My 12 Favorite Energy Stocks For What's Next</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=808228b92b4eeb80b0061479d035840513a906428981385925ce82c44cb9351b" target="_blank" rel="noopener noreferrer">LandBridge Invites Tech Investors To Unlock The Permian Basin</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Permian Basin, the premier U.S. shale-oil production region, is rapidly developing into much more complex territory.  Already a stronghold for wind and solar power, it has recently become home to ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3ffcecc84166fff5c3106570a94bef09f5f4c94cb72b7e02cc322e21cba3927e" target="_blank" rel="noopener noreferrer">An Oil Stock Riding the ‘Dune Express’ to Success in an Uncertain Energy Rally</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">An Oil Stock Riding the ‘Dune Express’ to Success in an Uncertain Energy Rally...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=722f54a8ba2c2710d7719515b15d8030fbe0ba213440a7469723595b043628c6" target="_blank" rel="noopener noreferrer">RSPA: New Option Income ETF With Low Fees</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Invesco S&P 500 Equal Weight Income Advantage is a new derivative income ETF with a current yield of over 9%. Click here to read an analysis of RSPA ETF now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f53b293a8b43fa3642ba06f59a95651e1f5598f7ce03c8909dfea4435968a113" target="_blank" rel="noopener noreferrer">Diamondback (FANG) Up 6.4% Since Last Earnings Report: Can It Continue?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback (FANG) reported earnings 30 days ago. What's next for the stock? We take a look at earnings estimates for some clues....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=889e00e223144bc9d39901fa6fc2bdbf990e035acf48f65f9b430cce8e39d4c5" target="_blank" rel="noopener noreferrer">Diamondback Energy Inc. stock rises Monday, still underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-24</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.73
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy Inc. stock rises Monday, still underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a19d65a23aa1a649d80c835ea56dd3899ef57fdc8a94b889b6eaa4a1ff741ca3" target="_blank" rel="noopener noreferrer">Diamondback Energy (FANG) Rises But Trails Market: What Investors Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy (FANG) closed the most recent trading day at $161.01, moving +1.58% from the previous trading session....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53fb7cdd8da23bc8448a85a5604a5138d977a13b616c28f8d46d983c8a95c4e6" target="_blank" rel="noopener noreferrer">BlackRock Core Bond Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">BlackRock Core Bond Fund posted returns of -3.35% (Institutional shares) and -3.29% (Investor A shares, without sales charge) for the fourth quarter of 2024....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=25fb2fb964217f390346d65661debe1396ca46d02354ab287bb56e7a6b2f88f4" target="_blank" rel="noopener noreferrer">BlackRock Total Return Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">BlackRock Total Return Fund posted returns of -3.23% (Institutional shares) and -3.40% (Investor A shares, without sales charge) for the fourth quarter of 2024....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4c259f89076db4efbfc697726f84bd80e68d862ae9bf179a291ecb8043d0c5ad" target="_blank" rel="noopener noreferrer">Diamondback Energy Inc. stock underperforms Wednesday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy Inc. stock underperforms Wednesday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5807768dcd10e978e390eb33f87355ab84c2bfd83c63a939988ee6c6c01fd7bf" target="_blank" rel="noopener noreferrer">Diamondback Energy, Inc. Schedules First Quarter 2025 Conference Call for May 6, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MIDLAND, Texas, March 19, 2025 (GLOBE NEWSWIRE) -- Diamondback Energy, Inc. (NASDAQ: FANG) (“Diamondback”), today announced that it plans to release first quarter 2025 financial results on May 5, 2025...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5c40c6ed6d891b72febe53f233b95b96717a9cf9b2f7ee47734adb7be329064f" target="_blank" rel="noopener noreferrer">Viper Energy, Inc., a Subsidiary of Diamondback Energy, Inc., Schedules First Quarter 2025 Conference Call for May 6, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MIDLAND, Texas, March 19, 2025 (GLOBE NEWSWIRE) -- Viper Energy, Inc. (NASDAQ: VNOM) (“Viper”), a subsidiary of Diamondback Energy, Inc. (NASDAQ: FANG) (“Diamondback”), today announced that it plans t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e9d00ada5a5441d3f4f377a58c7a48d288e446e4850d6f1afc9421a10e6134b5" target="_blank" rel="noopener noreferrer">Diamondback Energy (FANG) Advances While Market Declines: Some Information for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Diamondback Energy (FANG) concluded the recent trading session at $155, signifying a +1.29% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2110acb48195e823103abc0e6024bd1527bb0533f44217bc4d4ed85ec0d57e33" target="_blank" rel="noopener noreferrer">US Shale Oil Production Will Decline If WTI Hits The $50s, It's Like Decline Baby Decline</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why US shale oil production faces challenges ahead, with plateauing growth, weather impacts, and potential production drops at $50/bbl WTI. Click for more....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

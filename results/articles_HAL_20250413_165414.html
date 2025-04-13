@@ -1,0 +1,711 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Halliburton Company (HAL) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Halliburton Company (HAL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.12</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c4a19c7cdfda8b9e7762dfa4eb37a0f026cebe85ac036c6e3901a8d174401cf" target="_blank" rel="noopener noreferrer">4 Energy Stocks to Gain Despite Oilfield Service Industry Woes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Strict capital discipline by upstream energy companies is acting as a dampener, making the outlook for the Zacks Oil and Gas- Field Services industry gloomy. SLB, HAL, BKR and AROC are expected to sur...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b902a05dc781cb19d7f6406058bfc14d14f1027c9bc932eeb02d1e1d0dca5913" target="_blank" rel="noopener noreferrer">Strength Seen in Baker Hughes (BKR): Can Its 10.7% Jump Turn into More Strength?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Baker Hughes (BKR) was a big mover last session on higher-than-average trading volume. The latest trend in earnings estimate revisions might not help the stock continue moving higher in the near term....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a95733a03d9091f2947c73f45516e33f13fd514d0ef5edff99a4fde35888e0ef" target="_blank" rel="noopener noreferrer">Halliburton Co. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton Co. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e3fac3a0eab4f7dfee4de9706880cb972fc9afa353c2a3b38897a86ed8b6c8cf" target="_blank" rel="noopener noreferrer">Is Halliburton Company (NYSE:HAL) Among the Best Geothermal Stocks to Buy According to Hedge Funds?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 Best Geothermal Stocks to Buy According to Hedge Funds. In this article, we are going to take a look at where Halliburton Company (NYSE:HAL) stands against other bes...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57d4beeb3eb775b4c966d7ffabea2b8792a915a3816408ac00266a8754c197a8" target="_blank" rel="noopener noreferrer">Halliburton Co. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton Co. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91fd094c6593c8ae3efcf7940bf38b7bc7c00b9d8434bdc4159b587506f1d402" target="_blank" rel="noopener noreferrer">Halliburton: Pullback Is Indicative Of An Expected Recession</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton Company faces pressure from tariffs & OPEC production. Click for potential HAL stock rebound scenarios & macro trends impacting US onshore activity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b4ec09d182e78c2310ac466ba3846ff2cf08cb2457ca5e465abb7e0df73f847a" target="_blank" rel="noopener noreferrer">AXPC, EQT, Halliburton, and Range Resources Welcome Interior Secretary Doug Burgum to Pennsylvania Site Showcasing American Energy Leadership and Innovation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HOUSTON, April 04, 2025--The American Exploration and Production Council (AXPC), in partnership with EQT Corporation (EQT), Halliburton Company (Halliburton), and Range Resources, on Thursday hosted D...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1c26cd1b8567bb1ca9c5af6635827370329515745b0b9f0ff3f55c2d8ce57cef" target="_blank" rel="noopener noreferrer">Halliburton : Interior Secretary Burgum visits Pennsylvania ZEUS® frac site</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HOUSTON - April 4, 2025 - The American Exploration and Production Council , in partnership with EQT Corporation , Halliburton Company , and Range Resources, on Thursday hosted Department of the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4adf7988a0bd9e26cbde5603a8ac3272280fdabadeee2278ce7458ae91638cf8" target="_blank" rel="noopener noreferrer">Halliburton Co. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton Co. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a20f6329cebfb8eef6948e8ac2b72d127d586efae3212051b29c7824cd46909" target="_blank" rel="noopener noreferrer">Halliburton (NYSE:HAL) Faces 7% Price Drop Over Last Month Amid Broader Market Turmoil</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton (NYSE:HAL) experienced a 7% decline in its share price over the last month, coinciding with broader market turmoil. The Dow Jones Industrial Average fell 4% while Halliburton's operations,...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=27c5e859266b0452ed83b686f4a56839a07056f31d4bc389444ef4c4ed6600d0" target="_blank" rel="noopener noreferrer">Oil Prices Are Crashing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Energy prices are getting slammed by fears of a global economic slowdown stemming from President Trump's tariff plan, and OPEC and its market allies are piling pressure onto the U.S. energy industry b...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be6631c984bce6151356bbda0fc185dbfbb865fd5cd7f407577326db7d9684b1" target="_blank" rel="noopener noreferrer">Halliburton Co. stock underperforms Thursday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton Co. stock underperforms Thursday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=abe82bd549aa1c884b2581c5b8fca3e47c4ec7e558bd5613ddc88a1a5f4bf301" target="_blank" rel="noopener noreferrer">Oil Prices Tumbled to Worst Day in Nearly Three Years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Energy prices got slammed by fears of a global economic slowdown stemming from President Trump's tariff plan, and OPEC and its market allies piled pressure onto the U.S. energy industry by open up the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b00bf74e462d3356407763c9a089f7972ebc2215409c2e698cd7149e59e0a26" target="_blank" rel="noopener noreferrer">Why One of the Market’s Favorite Dividend ETFs Just Got a Lot Riskier</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-02</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Why One of the Market’s Favorite Dividend ETFs Just Got a Lot Riskier...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2992c7dc9f4c1337c62424ecfa5903b4f792900ad894f40386c8a2c6f0e5d924" target="_blank" rel="noopener noreferrer">Trump's Liberation Day: What's Working In A Tariff Tantrum?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-02</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Explore strong-performing sectors like oil & gas, waste management, and REITs while avoiding tariff-sensitive stocks. Click for my exclusive tariff picks....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4058f1cd3daeb9ae3683c1567b92dda6870387a856b6c3dd2037b37aa741714" target="_blank" rel="noopener noreferrer">Halliburton : Our Material Sustainability Topics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-01</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">Sustainability Commitments Topics Climate Change Commitments ▪ Achieve a 40% reduction......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cc6b89a2297222ebb9ec4506d5e45cb6a0041b3b8b2ab78c0e1a6e548f3de6b8" target="_blank" rel="noopener noreferrer">Halliburton : 2024 ASR Limited Assurance Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-01</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HALLIBURTON COMPANY Statement of Greenhouse Gas Emissions for the year ended December 31, 2024 Statement of Energy Consumption for......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1102e5081e9644959af40d12d94dd97b9c2c42ace5434e40da4f1e333362a96c" target="_blank" rel="noopener noreferrer">March Madness: SCHD Dividend Bracketology (Part 1)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Looking beyond SCHD? Look at dividend champion holdings within this well-known fund....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1ef57dc0dc25bc2efd999004f2cc0f25114b2e70e9c700325df8d726a22aba9f" target="_blank" rel="noopener noreferrer">Halliburton Co. stock underperforms Monday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-31</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Halliburton Co. stock underperforms Monday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e6881163690bed5b094bb6d484f8064a937c634c5fa694109f2a60fbc0233f6" target="_blank" rel="noopener noreferrer">Halliburton: Balanced Growth Amid Energy Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b63689871e8717ed1a9e703680cdd02519abed865455776e902f84164b1c0e93" target="_blank" rel="noopener noreferrer">Zacks Market Edge Highlights: Opendoor Technologies, Wayfair, AppLovin, Chipotle Mexican Grill and Halliburton</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Opendoor Technologies, Wayfair, AppLovin, Chipotle Mexican Grill and Halliburton are part of the Zacks Market Edge blog....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f0cf08bf2289088c63bb89c717e92c229144c1b2fab7fd0a2ff5be47b1227782" target="_blank" rel="noopener noreferrer">Halliburton (HAL) Advances While Market Declines: Some Information for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">In the closing of the recent trading day, Halliburton (HAL) stood at $25.70, denoting a +0.04% change from the preceding trading day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9d0076c8741a7ac691aaf5d2fc0c693113931a0da139725221341bcaef26b27d" target="_blank" rel="noopener noreferrer">3 Top Tips for New Stock Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Tracey Ryniec, Zacks Senior Stock Strategist, shares her top investing secrets and favorite stock charts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=413b268b9f1fb57928e0ee76aac3bcd55a216c52021a39c1d1b12702cdb4a27d" target="_blank" rel="noopener noreferrer">Schlumberger: One Of My Biggest Contrarian Plays For 2025 Is Outperforming The Market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Schlumbergerâs growth is supported by strong fundamentals and AI advancements. Learn why SLB stockâs low valuation and growth outlook make it a strong buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=427054416067b02596914fef7b487efd61af33aa92d507f56e37322d1acfa502" target="_blank" rel="noopener noreferrer">Halliburton's Struggles Continue: Why the Stock Remains a Sell</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">HAL's reliance on North America has become a liability as industry conditions deteriorate....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=817499eab1961efb0950d0e7528b591864c3c69a40e50926cdb462edf813fe85" target="_blank" rel="noopener noreferrer">Halliburton First Quarter 2025 Earnings Conference Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HOUSTON, March 20, 2025--Halliburton Company (NYSE: HAL) will host a conference call on Tuesday, April 22, 2025, to discuss its first quarter 2025 financial results. The call will begin at 8:00 a.m. C...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=12facc9cd68087adc7dd0910f69703455b75d9dd9485b9e29e42e4cd7bdb4da7" target="_blank" rel="noopener noreferrer">Halliburton (HAL) Stock Moves -0.87%: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">In the latest trading session, Halliburton (HAL) closed at $25, marking a -0.87% move from the previous day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1b5888e0bd69e39fcb07c30dcdfab5bb391086c099d683d6f85e8168d31755c" target="_blank" rel="noopener noreferrer">Oceaneering Wins Department of Defense Contract for Maritime Tech</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">OII secures the largest-ever defense contract from the Department of Defense, validating its expertise in maritime mobility and engineering solutions....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
