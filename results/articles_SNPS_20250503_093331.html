@@ -1,0 +1,855 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>SYNOPSYS INC. (SNPS) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">SYNOPSYS INC. (SNPS)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">37</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.02</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b48dbd2cff0c8dbc6419e04b093f0bcc482dd43fdd89c8135bb13d137bc9ace3" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Growth ESG Portfolios Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-01</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.40
+                                </span>
+                            </div>
+                            <div class="article-summary">The mega cap growth trade stalled as the chaotic introduction of tariffs accompanied by fears of a slowing U.S. economy and higher inflation. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48b89f7d40eac49df5bcba3946c18edfdd115433d1e4f8404ee048280a0ba8d0" target="_blank" rel="noopener noreferrer">Synopsys (SNPS) Gains But Lags Market: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys (SNPS) concluded the recent trading session at $459.36, signifying a +0.08% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=37c07573f09b97efab7d7716a298353354e4467b8888d3ec73742f939247fb0e" target="_blank" rel="noopener noreferrer">Investors Heavily Search Synopsys, Inc. (SNPS): Here is What You Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching Synopsys (SNPS) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4777d1093e87a14df62c8046130e86746a78550592dfcc51a616b39754e74653" target="_blank" rel="noopener noreferrer">ClearBridge Global Value Improvers Strategy Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6c17033151b1bf166f032b85890d34248092bd7bef1b5e4a760af45f2fd9ba7e" target="_blank" rel="noopener noreferrer">Chip Design Hits AI Crossover Point</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">AI-powered tools can drive impressive improvements in chip performance and energy efficiency. This has also led to significant growth in use of AI-powered capabilities in chip design tools....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a52e66959ff9184a85ff685c724acf7969b8503c17bdb463f23a1285cd6286c" target="_blank" rel="noopener noreferrer">Synopsys, Inc. (SNPS): Among Billionaire Andreas Halvorsen’s Stock Picks With Huge Upside Potential</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of Billionaire Andreas Halvorsen’s 10 Stock Picks With Huge Upside Potential. In this article, we are going to take a look at where Synopsys, Inc. (NASDAQ:SNPS) stands aga...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=029b8ddd00f8fd1d8228f4effe34740d7372bf86bace91c53421e9aaef62c07d" target="_blank" rel="noopener noreferrer">Synopsys and Intel Foundry Propel Angstrom-Scale Chip Designs on Intel 18A and Intel 18A-P Technologies</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">At today's Intel Foundry Direct Connect 2025 event, Synopsys, Inc. (Nasdaq: SNPS) announced broad EDA and IP collaborations with Intel Foundry, including availability of its certified AI-driven digita...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33a368154674486e321dc03f31389620339200aaf352ed7ee9f758eea2c305bf" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=503fdef7b5a5f213d6ea883708e781a359ba7a685b413c45820d035018a37918" target="_blank" rel="noopener noreferrer">Intel CEO Lip-Bu Tan charts foundry roadmap</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Intel Corporation (NASDAQ:INTC) CEO, Lip-Bu Tan reaffirmed the company’s commitment to becoming a leading global foundry player, laying out a focused roadmap at the Direct Connect Con...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5382aa45a906d8a8f0fd4f09e661c99fde4fdc5a873e332a6b84cee15c72c09" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Growth Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index declined 4.27% while the benchmark Russell 1000 Growth Index (RLG) fell 9.97%, trailing its value counterpart by over 1,200 basis points....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2e92a8f7b937927939ca9347888da879ca6c08a86154d429849d4b2c6ffde3b5" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Growth Portfolios Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index declined 4.27% while the benchmark Russell 1000 Growth Index (RLG) fell 9.97%. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=72b72547600e60cc944cabfd4fcbf1d1ba92707506cb1f5b0d6bf2ca96fdc0e9" target="_blank" rel="noopener noreferrer">Synopsys (SNPS) Surpasses Market Returns: Some Facts Worth Knowing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest trading day saw Synopsys (SNPS) settling at $447.07, representing a +1.86% change from its previous close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be6a034c23984a796385b2df10fc30e51a44b04605f52f9b433dc8b5beae416b" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock underperforms Thursday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock underperforms Thursday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e2d58d240adb473488d0c383aa9d469f933e85e2d0024902bce6e4660b7d5d25" target="_blank" rel="noopener noreferrer">Synopsys (NasdaqGS:SNPS) Advances AI Chip Design With TSMC Collaborations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys (NasdaqGS:SNPS) experienced a 1.58% price increase over the last week amidst its partnership with TSMC, aimed at advancing semiconductor innovations in AI and RF technologies. While improveme...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=23208ce3cb3f160eb40a146c4519b9e7fcaaf5467f076a457d4b123295ec86b0" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock underperforms Wednesday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-23</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock underperforms Wednesday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ab8884e14e15660a207a0ae365a7f62df73bf0689fec957aac6396839f6dec56" target="_blank" rel="noopener noreferrer">Synopsys and TSMC Usher In Angstrom-Scale Designs with Certified EDA Flows on Advanced TSMC A16 and N2P Processes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys, Inc. (Nasdaq: SNPS) announced today its ongoing close collaboration with TSMC to deliver robust EDA and IP solutions for TSMC's most advanced processes and advanced packaging technologies to...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e06ed0414d2d987cce2db2243f3e03cb8d4d440275ea961c4215753df9261b4d" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1585517a2e0c4077f0f039c982192f221078ecaf18d21cacf143378f0559ae29" target="_blank" rel="noopener noreferrer">These 15 tech stocks could rocket up to 85% in a year — and analysts love them</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia and Alphabet are among the tech stocks that garner mostly bullish ratings from analysts — and have high upside to the average price target....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec5e7a531447d41a9a46c1c7c597474be9a2b5c620774b09ee62947a414f98ff" target="_blank" rel="noopener noreferrer">Is It Worth Investing in Synopsys (SNPS) Based on Wall Street's Bullish Views?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Based on the average brokerage recommendation (ABR), Synopsys (SNPS) should be added to one's portfolio. Wall Street analysts' overly optimistic recommendations cast doubt on the effectiveness of this...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c5189dd8b42af9a519ef3613f04950db6bcd7a26e0c63edf1d6ebf6d5011e51" target="_blank" rel="noopener noreferrer">Buy This Market-Crushing Tech Stock Down 20% for Huge AI Upside</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.13
+                                </span>
+                            </div>
+                            <div class="article-summary">AI tech stock Cadence is holding its ground at some key technical levels, and it might be ready to break out of a holding pattern if its first quarter 2025 earnings results and guidance impress on Mon...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=de5d31c72812ba45b72c2653f48f4adb840a3733774362ab524189b41785f8a0" target="_blank" rel="noopener noreferrer">Dodge & Cox Income Fund Q1 2025 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d48b36b729dfc726e4655e6bf0e0eba14a4afb53d413974475f50fda95baef52" target="_blank" rel="noopener noreferrer">Dodge & Cox Global Bond Fund Q1 2025 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">During the first quarter of 2025, global fixed income markets benefited from declining interest rates in several major markets and a weakening U.S. dollar....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=acf847f45f547f8b7dfd5ff5dd70ffc8497b0ec76d1669c810db06499ef23c54" target="_blank" rel="noopener noreferrer">Here is What to Know Beyond Why Synopsys, Inc. (SNPS) is a Trending Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys (SNPS) has received quite a bit of attention from Zacks.com users lately. Therefore, it is wise to be aware of the facts that can impact the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3cf56e9f642275a76bd5662759e05ee26edf3d14057c2add47f704507aacb74b" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-16</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dfad4f22fffaa07b14779cc94cc0ebfb4b434ce102eba9b0d875a6036d56d2d0" target="_blank" rel="noopener noreferrer">Three Stocks That May Be Trading Below Their Estimated Value In April 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.09
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last 7 days, the United States market has risen by 5.8%, contributing to a 4.8% climb over the past year, with earnings forecasted to grow by 14% annually. In this environment of growth, iden...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a75b64498f4d08bcebee725f4bc2d3bffdab3280bb58eb81696cf9e8712729dc" target="_blank" rel="noopener noreferrer">Exploring 3 High Growth Tech Stocks In The US Market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">The United States market has experienced a notable uplift, climbing by 5.8% over the past week and showing a 4.8% increase over the last year, with earnings projected to grow by 14% annually in the co...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eed54e5294b7f3c4459ac917f3b9fe7afeac38435fa38c8862bcca6e606bd3e7" target="_blank" rel="noopener noreferrer">Synopsys (SNPS) Ascends But Remains Behind Market: Some Facts to Note</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys (SNPS) concluded the recent trading session at $421.88, signifying a +0.16% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e1482822139534b3cf52f21a40eba7b71687da970c3c2ff83e4d40f14f065caa" target="_blank" rel="noopener noreferrer">ClearBridge Appreciation ESG Strategy Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Marketâs sector performance exhibited a defensive posture in Q1 with health care, consumer staples, utilities and real estate the top-performing industries, outside of energy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9dce9a7e0cb758c599555c55ee64d26c6885c4334e8b06c537fed55dc1ed5daf" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Growth ESG Strategy Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge Large Cap Growth ESG Strategy outperformed its Russell 1000 Growth Index benchmark in the first quarter. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e58d8fea207318e5b38db03b92742426c06e883c28060ab416f07201113a0b27" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock underperforms Friday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock underperforms Friday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=47b863498be919626b9d4f556de587484e046820dc03d838f212637abf0f4236" target="_blank" rel="noopener noreferrer">Synopsys (NasdaqGS:SNPS) Announces Collaboration With NVIDIA</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys (NasdaqGS:SNPS) recently announced a collaboration with NVIDIA aimed at significantly accelerating chip design processes, alongside issuing substantial senior notes to fund its acquisition of...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81d4d3a61aaafc2da3222af0919477ef53bfb90c6cd0e33b405530f2f6ecfa32" target="_blank" rel="noopener noreferrer">Synopsys, Inc. (SNPS): Among Stocks with Buy Ratings that Hedge Funds Love</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 15 Stocks with Buy Ratings that Hedge Funds Love. In this article, we are going to take a look at where Synopsys, Inc. (NASDAQ:SNPS) stands against other stocks with bu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c69b5e153b6dc7a2862371c27cfac24c4922c2a5cde7a7d0a8608ac3ed11fbf" target="_blank" rel="noopener noreferrer">Here’s Why ClearBridge Large Cap Growth Strategy Initiated a Position in Synopsys (SNPS)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">ClearBridge Investments, an investment management company, released its “ClearBridge Large Cap Growth Strategy” first quarter 2025 investor letter. A copy of the letter can be downloaded here. The maj...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=80be56a32d96216effee072c15bb219513bdd6dfb22e03ea35104072819c70db" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Growth Strategy Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge Large Cap Growth Strategy outperformed its Russell 1000 Growth Index benchmark in Q1 2025. Click here to read the full letter. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0aca65c21c722026af67985582dbb9ee167c2964e4bdb8fdfdd232f9b018748f" target="_blank" rel="noopener noreferrer">Synopsys (SNPS) Registers a Bigger Fall Than the Market: Important Facts to Note</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys (SNPS) reachead $380.90 at the closing of the latest trading day, reflecting a -1.86% change compared to its last close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fbc49d44412d373143c4af0664799faeb72d673748991c2f92a678a47527f48f" target="_blank" rel="noopener noreferrer">Should You Hold on to SNPS Stock Despite its 7% Dip in a Month?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys' AI innovations and strong partner base make the stock worth holding amid the macroeconomic and regulatory challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed2259eb0c84c2bb9e330d9aed3df787ae613654ccbc0997c12fb876a3a7bc5c" target="_blank" rel="noopener noreferrer">Synopsys Inc. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Synopsys Inc. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

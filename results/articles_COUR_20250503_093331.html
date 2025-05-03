@@ -1,0 +1,631 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Coursera Inc. (COUR) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Coursera Inc. (COUR)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">23</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.16</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2bcf73395d2017592e2fdea4a933e5c4be08042bef27c82ec7e45752de07502" target="_blank" rel="noopener noreferrer">Duolingo (DUOL) To Report Earnings Tomorrow: Here Is What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Language-learning app Duolingo (NASDAQ:DUOL) will be reporting results tomorrow after the bell. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b6a8e2ad4ea906e1118a2de7dcbf00c78a4eb9f3b856aa7101f99f67154df8d1" target="_blank" rel="noopener noreferrer">Roku (ROKU) To Report Earnings Tomorrow: Here Is What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Streaming TV platform Roku (NASDAQ: ROKU) will be reporting earnings tomorrow after market hours. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2b61182bee80b6448bd6f60942bcc1adbab8b29c5108eee4592a647492d7f3e8" target="_blank" rel="noopener noreferrer">Udemy (UDMY) Reports Earnings Tomorrow: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Online learning platform Udemy (NASDAQ:UDMY) will be reporting earnings tomorrow after market hours. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c37e5c3920e55932d0ae3298f402dc27e9cfd1226c3e93f7759a4b2edf5de84" target="_blank" rel="noopener noreferrer">eBay Earnings: What To Look For From EBAY</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Online marketplace eBay (NASDAQ:EBAY) will be announcing earnings results tomorrow after the bell. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be10e7a2fc98ecd55d6ad4f0ac7fbd4608ab0895d4a9c8e763276078f80bfc08" target="_blank" rel="noopener noreferrer">What To Expect From Etsy’s (ETSY) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Online marketplace Etsy (NASDAQ:ETSY) will be reporting results tomorrow before the bell. Here’s what to look for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=77f2f248e179c13c3e8992c5ffa7ff2f3c972c8f4eb6125563e40bab7a46e60b" target="_blank" rel="noopener noreferrer">Booking (BKNG) Reports Earnings Tomorrow: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Online travel agency Booking Holdings (NASDAQ:BKNG) will be reporting results tomorrow after the bell. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d06277af35d4da6a026a6f391e234fb3c70e4c0c60a81d309a8959276dce143e" target="_blank" rel="noopener noreferrer">Coursera: Great Momentum With Content Expansion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Courseraâs strong Q1, scalable model, and low valuation support long-term upside despite retention softness and macro headwinds. Learn why COUR stock is a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d6aa8fe710fb5f7f865566dd311d3694e3a4319a9aa0bb385115ca6147f353e5" target="_blank" rel="noopener noreferrer">Coursera First Quarter 2025 Earnings: Beats Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Coursera ( NYSE:COUR ) First Quarter 2025 Results Key Financial Results Revenue: US$179.3m (up 6.1% from 1Q 2024). Net......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=29f1b2cdbb9858b2705ef16fbb60bdd64004abc80aa8d79494a0c47ddaa3bedf" target="_blank" rel="noopener noreferrer">Compared to Estimates, Coursera (COUR) Q1 Earnings: A Look at Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Although the revenue and EPS for Coursera (COUR) give a sense of how its business performed in the quarter ended March 2025, it might be worth considering how some key metrics compare with Wall Street...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=de8b370afbe21b7d044a31430856e708417dd716b11344f8d6a8f332977ee6c0" target="_blank" rel="noopener noreferrer">Coursera, Inc. (COUR) Q1 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Coursera, Inc. (NYSE:COUR) Q1 2025 Earnings Conference Call April 24, 2025 5:00 PM ETCompany ParticipantsCam Carey - Head of Investor RelationsGreg Hart -......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=31b728cfa271a0cdfd8fb73b0de3390e62d767d44c953354a2044377034b16db" target="_blank" rel="noopener noreferrer">Coursera, Inc.'s (NYSE:COUR) Intrinsic Value Is Potentially 99% Above Its Share Price</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights Using the 2 Stage Free Cash Flow to Equity, Coursera fair value estimate is US$15.32 Current share price......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5386eb0cf8a34eaeb923f0214a15062ca9596e8b533914b30f602215ffda0139" target="_blank" rel="noopener noreferrer">Coursera Shares Rise After 1Q Beat, Better-Than-Expected Revenue View</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">By Roshan Fernandez Shares of Coursera climbed after the online course provider reported first-quarter results and revenue guidance that beat Wall Street expectations. Shares advanced 13% to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=da6f87da8cf3e259c7aa0118be25ad3a0aa998b0aedf18cf18832bddc39648e3" target="_blank" rel="noopener noreferrer">Coursera Inc (COUR) Q1 2025 Earnings Call Highlights: Record Learner Growth and Strategic Shifts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Coursera Inc (COUR) reports a 6% revenue increase and sets a Q1 record with over 7 million new learners, while navigating challenges in its degrees segment....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=038e6787bed89ed9c4d80fd68e16c12b39b11a8a07253ba55c40490ecc049ba3" target="_blank" rel="noopener noreferrer">Coursera : Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Shareholder Letter Q1 2025 Results Summary Key Financial Measures ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b841943f9a6570d55d7a1ec463b20843194d2012c2ee45b4497384397bb4d009" target="_blank" rel="noopener noreferrer">Coursera Reports First Quarter 2025 Financial Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MOUNTAIN VIEW, Calif., April 24, 2025--Coursera Reports First Quarter 2025 Financial Results...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=576fe9e2662fd0674c988d9ddec01e142cdffab9f86855b34d205e6aca36df1d" target="_blank" rel="noopener noreferrer">Coursera: Q1 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">MOUNTAIN VIEW, Calif. AP) — Coursera Inc (COUR) on Thursday reported a loss of $7.8 million in its first quarter. On a per-share basis, the Mountain View, California-based company said it had a loss o...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a243305652256a3b12c1a76c07aec941252646d8cf82a5fd8bd205298138267d" target="_blank" rel="noopener noreferrer">Coursera (NYSE:COUR) Exceeds Q1 Expectations, Next Quarter’s Sales Guidance is Optimistic</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Online learning platform Coursera (NYSE:COUR) reported revenue ahead of Wall Street’s expectations in Q1 CY2025, with sales up 6.1% year on year to $179.3 million. Guidance for next quarter’s revenue ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8af31e670edeca59a5e50360040e28a533d84e1f49680cd09997f23b6c114402" target="_blank" rel="noopener noreferrer">Coursera (COUR) Q1 Earnings and Revenues Beat Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Coursera (COUR) delivered earnings and revenue surprises of 50% and 2.58%, respectively, for the quarter ended March 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3f1a21ee172d3464ff891a0c567abbd187e8bb3a1e786acd4f2377b9ad65c2b6" target="_blank" rel="noopener noreferrer">What To Expect From Coursera’s (COUR) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Online learning platform Coursera (NYSE:COUR) will be announcing earnings results tomorrow after market close. Here’s what investors should know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f7022856a854cd05b2d63817e1d096cc60fbdf838a7152c6192430fab5835e71" target="_blank" rel="noopener noreferrer">Growth Without The Premium: 6 Value Stocks For April</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8cde4f2a4b93f0524a94f9815bb7bf61feecc4780ed983175180ebacd43cba42" target="_blank" rel="noopener noreferrer">Alternatives To A Harvard Education: 3 Best Education Stocks To Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Harvardâs tax-exempt status is being threatened after the Trump Administration freezes $2B in federal funding after the university rejects DEI demands. Learn more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f736142aec7058d5bed240a9750ffc543fabc0f65270100fef861a9b6e490db4" target="_blank" rel="noopener noreferrer">QuantaSing: Dirt-Cheap Chinese EdTech Betting On The Silver Economy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0877333db0ecd21896cd48d110d4ee3e36d98017bebfea58621ccc42d25cc53" target="_blank" rel="noopener noreferrer">Coursera to Announce First Quarter 2025 Financial Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MOUNTAIN VIEW, Calif., April 10, 2025--Coursera to Announce First Quarter 2025 Financial Results...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
