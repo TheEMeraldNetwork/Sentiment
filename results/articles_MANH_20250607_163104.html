@@ -1,0 +1,695 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>MANHATTAN ASSOCIATES INC. (MANH) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">MANHATTAN ASSOCIATES INC. (MANH)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">27</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.12</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8277aa6192728a90db22de660c958e0c75bdb43a5f9523792fbe15bc25c326f9" target="_blank" rel="noopener noreferrer">3 Mid-Cap Stocks with Mounting Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Mid-cap stocks have the best odds of scaling into $100 billion corporations thanks to their tested business models and large addressable markets. But the many opportunities in front of them attract si...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a06f650378680babaf8066da14e085493e505f7f06ece247faea29d9f54ff9fd" target="_blank" rel="noopener noreferrer">Manhattan Associates Transforms Enterprise Selling with Enterprise Promise & Fulfill™</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Manhattan Associates Inc. (NASDAQ: MANH), the global leader in supply chain commerce solutions, today announced the launch of Enterprise Promise & Fulfill™, a breakthrough cloud-native solution that t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=79a0251af90361ee794272c69635beb34825c9f8a408074095b23aebbf25f665" target="_blank" rel="noopener noreferrer">Manhattan Associates Inc. Announces the Launch of Enterprise Promise & Fulfill</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Man Manhattan Associates Inc. announced the launch of Enterprise Promise & Fulfill??, a breakthrough cloud-native solution that transforms traditional order management by augmenting existing ERP......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6905febc91d7750f434e27b8d451d909bc22ab19f8b9af8a974b14e51e56afad" target="_blank" rel="noopener noreferrer">What To Expect From Guidewire’s (GWRE) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Insurance industry-focused software maker Guidewire (NYSE:GWRE) will be reporting earnings tomorrow afternoon. Here’s what investors should know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2cfebdd46490467ca55a1def594d2dcae815b4952a293eb2187056ab6b5d2ee7" target="_blank" rel="noopener noreferrer">Manhattan Recognizes its Valued Partners at Momentum 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">ATLANTA, June 02, 2025--Manhattan announces it's 2025 Manhattan Value Partner (MVP) Excellence Awards....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1621e04d549d70d8dd23285f5f26abb220f5f0e4756d475e29c7659883138c65" target="_blank" rel="noopener noreferrer">A Lego approach helps prepare Manhattan Associates’ TMS for tariff chaos</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Manhattan Associates is touting a TMS feature it likens to Lego bricks as it gets customers ready for an uncertain era of tariffs. The post A Lego approach helps prepare Manhattan Associates’ TMS for ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a799bf503e0ae90ad3d33a3fea2ce85d1616a07842731a9725dd0a7f6196bffe" target="_blank" rel="noopener noreferrer">Byte-Sized AI: Manhattan Associates Commits to Agentic for Logistics, Salesforce Buys Informatica</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Veho and Rivr teamed on an e-commerce delivery robot; Pallet scored a Series B round; Manhattan plans to launch agents for supply chain....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4de1c4e7c1c73b116b1a1f43920672e584af5c344ed029bd60555a249bfdbcd3" target="_blank" rel="noopener noreferrer">Manhattan Associates Launches Supply Chain Commerce Solutions on Google Cloud Marketplace</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">LONDON, May 28, 2025--Manhattan Associates Inc. (NASDAQ: MANH), the global leader in supply chain commerce, today announced an expanded go-to-market (GTM) partnership with Google Cloud. All Manhattan ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5e4a11b0adb2b458975af40c59d959ff57f432534eafe2ade26fda9c5dea465e" target="_blank" rel="noopener noreferrer">Baird Mid Cap Growth Equity Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">For the quarter, the Baird Mid Cap Growth portfolio produced a negative return of -9.6%, net of fees, trailing the Russell Midcap Growth decline of -7.1%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c3d80ae0bd26f056bcb26b83759c76b430c70c7f417556ab56f573c934af6d35" target="_blank" rel="noopener noreferrer">1 Cash-Producing Stock with Exciting Potential and 2 to Be Wary Of</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Generating cash is essential for any business, but not all cash-rich companies are great investments. Some produce plenty of cash but fail to allocate it effectively, leading to missed opportunities....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aa3b8c3b4d56961e7da93e1db3b38a06bcc1a517b778f094c0b9277c9e15c5a2" target="_blank" rel="noopener noreferrer">Manhattan Associates Unveils Agentic AI Innovation at Momentum 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Kicking off Momentum 2025, Manhattan Associates Inc. (NASDAQ: MANH) today announced sweeping Agentic AI support within Manhattan Active® solutions that includes intelligent, autonomous digital agents ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea008dc94c90ac693890334b51d77befbc1374e95d5650097abae6187003f04a" target="_blank" rel="noopener noreferrer">3 Software Stocks Walking a Fine Line</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Software is eating the world, and virtually no business is left untouched by it. Companies bringing it to life have been rewarded with high valuation multiples that make fundraising easier, but they h...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=45fc343eac9cc9fe98b26144157d0c262dc59ae9ba83baf5033e62373e1ca647" target="_blank" rel="noopener noreferrer">As shippers adjust to tariffs, the message at Momentum is: Don’t forget the TMS</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Transportation management systems are going to play a big role for shippers dealing with tariff wars, says logistics expert Bart De Muynck. The post As shippers adjust to tariffs, the message at Momen...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=61f978ca69ff8075f5b1c15345301bb73c739b2059a1dc2b6a84f4fef2d305d5" target="_blank" rel="noopener noreferrer">Manhattan Recognizes Pioneers in Supply Chain Commerce</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LAS VEGAS, May 22, 2025--Manhattan announces winners of its prestigious customer awards at Momentum 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ca2e289324185e111e7cd28181f1b241c8ebaaeff944a885872b8daf3dbd3d6" target="_blank" rel="noopener noreferrer">With EPS Growth And More, Manhattan Associates (NASDAQ:MANH) Makes An Interesting Case</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">The excitement of investing in a company that can reverse its fortunes is a big draw for some speculators, so even......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2b27da09dc0fec74eebe9aa68bb42b5ea0b496193cdc3aa777c7d3c5eddda120" target="_blank" rel="noopener noreferrer">Manhattan and Shopify Deliver Seamless Omnichannel Shopping Experiences with Latest Order Management Collaboration</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LONDON, May 21, 2025--Manhattan Associates Inc. (NASDAQ: MANH), a global leader in supply chain commerce solutions, today announced at its annual customer and partner gathering Momentum that a connect...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4c594dfbe6abd0e5b65fd8481cdf77a63caaf09d9993265400c2b13728c23085" target="_blank" rel="noopener noreferrer">Manhattan Associates Inc. Unveils Agentic AI Innovation at Momentum 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Manhattan Associates Inc. announced sweeping Agentic AI support within Manhattan Active®? solutions that includes intelligent, autonomous digital agents to revolutionize supply chain commerce......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=de2038d3ce8bb99ff5172eb66dad9c0368d6b8aec196430163f9b74aab0d6e94" target="_blank" rel="noopener noreferrer">Manhattan Associates rolls out new supply chain offerings at CEO’s debut</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">In Las Vegas, Manhattan Associates introduced new CEO Eric Clark to its giant annual meeting of customers and partners. The post Manhattan Associates rolls out new supply chain offerings at CEO’s debu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0dd47f40ca7e40201323a7fd34279307729cf170e57103e1707e1f1505cc2586" target="_blank" rel="noopener noreferrer">3 Volatile Stocks with Mounting Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Volatility cuts both ways - while it creates opportunities, it also increases risk, making sharp declines just as likely as big gains. This unpredictability can shake out even the most experienced inv...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=269b4c731ef2de1bb9571d47f8a3c265eba4bb39542850d88473a81f7049e9be" target="_blank" rel="noopener noreferrer">Manhattan Associates Appoints Eddie Capel As Executive Chairman</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Manhattan Associates Inc: * MANHATTAN ASSOCIATES ANNOUNCES CHANGES TO BOARD OFDIRECTORS * MANHATTAN ASSOCIATES INC - EDDIE CAPEL APPOINTED EXECUTIVECHAIRMAN OF MANHATTAN......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f7a82eca3a9f47d40e11d843397aa9ef66c4f7d5bf8eb2e83402c846a3c6d6de" target="_blank" rel="noopener noreferrer">Manhattan Associates Announces Changes to Board of Directors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ATLANTA, May 13, 2025--Manhattan announces changes to its Board of Directors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2f4441a9deecff0196184b9c027050b0088b9e11191fca898e20ce5eb6380fee" target="_blank" rel="noopener noreferrer">Manhattan Associates Celebrates Seventeenth Consecutive Year as a Leader in the Gartner(R) Magic Quadrant for WMS</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">ATLANTA - Manhattan Associates Inc., a global leader insupply chain commerce solutions, today announced that it has been named a Leader inGartner Magic Quadrant for Warehouse Management Systemsfor the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33d6406c7b8bc1e6084610af4a109c6b779c6052386d9a36b7adb23614ad1ede" target="_blank" rel="noopener noreferrer">Invesco Main Street Mid Cap Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2583943c3013a06a08fd36c490f6bb2f0b46f3a51b6faa7976b6acdd3beb6219" target="_blank" rel="noopener noreferrer">Manhattan Associates Celebrates Seventeenth Consecutive Year as a Leader in the Gartner® Magic Quadrant™ for WMS</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">ATLANTA, May 09, 2025--Manhattan has been named a Leader in Gartner's Magic Quadrant for WMS for the 17th Year in a Row...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a065741ea788bf72c850c51890abb8e7508e31aaa6717061eaeb3657ded94c89" target="_blank" rel="noopener noreferrer">Pet Supplies Plus Synchronizes Business Functions with Manhattan Active Supply Chain Planning</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Man Manhattan Associates Inc. announced that Pet Supplies Plus has selected Manhattan Active Supply Chain Planning to unify every aspect of its supply chain functions, providing a unified platform......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=88ac5b422530c1906eb2b8edec3785c8f38aaefacc2826c475c65993904af344" target="_blank" rel="noopener noreferrer">Franklin Small-Mid Cap Growth Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">The Franklin Small-Mid Cap Growth Fund underperformed the Russell Midcap Growth Index benchmark in the first quarter of 2025. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b1dcefa6437de571a03dfd6e6d4c539ecd3c5d52b5f4750fc693e16f20ddcb6d" target="_blank" rel="noopener noreferrer">Pet Supplies Plus Synchronizes Business Functions with Manhattan Active® Supply Chain Planning</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">ATLANTA, May 08, 2025--Manhattan Associates Inc. (NASDAQ: MANH) announced today that Pet Supplies Plus, a leading retailer of pet food and supplies, has selected Manhattan Active® Supply Chain Plannin...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

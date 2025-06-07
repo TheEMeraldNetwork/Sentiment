@@ -15,12 +15,20 @@ from transformers import pipeline
 import finnhub
 import time
 import shutil
+import logging
 from utils.db.sentiment_history import SentimentHistoryDB
 
 # Add project root to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.config.ticker_config import load_master_tickers, get_yfinance_ticker
 from utils.config.api_providers_config import FINNHUB_KEY
+
+# Setup logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 class SentimentAnalyzer:
     def __init__(self):
@@ -35,15 +43,33 @@ class SentimentAnalyzer:
         # Initialize history database
         self.history_db = SentimentHistoryDB()
         
-        # Initialize Finnhub client
-        self.finnhub_client = finnhub.Client(api_key=FINNHUB_KEY)
+        # Initialize Finnhub client with error handling
+        try:
+            if not FINNHUB_KEY:
+                raise ValueError("Finnhub API key is not configured")
+            self.finnhub_client = finnhub.Client(api_key=FINNHUB_KEY)
+            # Test the API key with a simple request
+            self.finnhub_client.quote('AAPL')
+            logger.info("Successfully initialized Finnhub client")
+        except Exception as e:
+            logger.error(f"Failed to initialize Finnhub client: {e}")
+            raise ValueError(
+                "Failed to initialize Finnhub client. Please check your API key configuration:\n"
+                "1. Set the FINNHUB_KEY environment variable, or\n"
+                "2. Add it to utils/config/api_keys.json"
+            )
         
         # Initialize sentiment model
-        self.sentiment_model = pipeline(
-            "sentiment-analysis",
-            model="ProsusAI/finbert",
-            tokenizer="ProsusAI/finbert"
-        )
+        try:
+            self.sentiment_model = pipeline(
+                "sentiment-analysis",
+                model="ProsusAI/finbert",
+                tokenizer="ProsusAI/finbert"
+            )
+            logger.info("Successfully initialized sentiment model")
+        except Exception as e:
+            logger.error(f"Failed to initialize sentiment model: {e}")
+            raise
         
     def get_company_news(self, ticker: str) -> List[Dict]:
         """Get news from Finnhub for a company"""

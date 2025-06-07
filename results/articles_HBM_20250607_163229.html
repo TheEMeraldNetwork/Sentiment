@@ -1,0 +1,615 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Hudbay Minerals Inc. (HBM) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Hudbay Minerals Inc. (HBM)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">22</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.32</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c231b1c5ce43d25dc91e2b70a55a3a3c42bb2dc0ee63f5ed766861dbf4b21997" target="_blank" rel="noopener noreferrer">Hudbay Provides an Update on Manitoba Operations due to Wildfire Evacuation Order</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, June 04, 2025 (GLOBE NEWSWIRE) -- Hudbay Minerals Inc. (“Hudbay” or the “Company”) (TSX, NYSE: HBM) continues to respond to the evolving wildfire situation in northern Manitoba and is working...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=696e211e1c8e38cbceb4cb070843583fe51e3ab8730a73240eb1d0f51086bab7" target="_blank" rel="noopener noreferrer">Canada's Hudbay Minerals pauses Snow Lake operations due to wildfires</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Additionally, exploration activities in the Flin Flon and Snow Lake regions have been paused as fire mitigation efforts are underway, the company added.  The company said it believes its infrastructur...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=67de1a6167325c334bd2f3bd71e5bf004cd8f666192eb07819ccfa0d1f64f259" target="_blank" rel="noopener noreferrer">Hudbay Provides an Update on the Wildfire Situation near Flin Flon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, May 29, 2025 (GLOBE NEWSWIRE) -- Hudbay Minerals Inc. (“Hudbay” or the “Company”) (TSX, NYSE: HBM) is responding to the evolving wildfire situation in northern Manitoba and is working closely...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a513d672b9a2c4c86cafd26728a41c115c29463bebc022b9962dd7f55f72045" target="_blank" rel="noopener noreferrer">Hudbay Minerals Responds to Manitoba Wildfires, Prioritizes Employee Safety</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals (HBM.TO) after trade Thursday said it is actively responding to the wildfire situati...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eb7da9841b03aa1d4f7b251051fb073fd7e10b9b1132603ccd8b7798d442a63d" target="_blank" rel="noopener noreferrer">Hudbay Receives TSX Approval for Normal Course Issuer Bid</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, May 28, 2025 (GLOBE NEWSWIRE) -- Hudbay Minerals Inc. (“Hudbay” or the “company”) (TSX, NYSE: HBM), announced today that the Toronto Stock Exchange (the “TSX”) has approved its notice of inte...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c06b129a73879bbc3b0e12db085f5d60e407a1a275102b0b7b6e75ff2f4f9da5" target="_blank" rel="noopener noreferrer">Hudbay Announces Election of Directors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, May 20, 2025 (GLOBE NEWSWIRE) -- Hudbay Minerals Inc. (“Hudbay” or the “Company”) (TSX, NYSE: HBM) today announced that each of the nine individuals nominated for election as a director of Hu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5c0e394e12cef2e90efaa46a5b20af56693b1d4b2e8e606f176ab8679241d8d7" target="_blank" rel="noopener noreferrer">Canadian Gold to acquire Hudbay Minerals’ Tartan West property in Canada</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">This option could bolster the company's plans to revive the Tartan mine by adding high-grade gold resources....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a2ad38692b2d485b5cd19242097413f5798491aa7a44337e96eb7ffb7a03d209" target="_blank" rel="noopener noreferrer">Hudbay Minerals' (TSE:HBM) Solid Profits Have Weak Fundamentals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.19
+                                </span>
+                            </div>
+                            <div class="article-summary">Unsurprisingly, Hudbay Minerals Inc.'s ( TSE:HBM ) stock price was strong on the back of its healthy earnings report......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8c3651af3fef82e5de5e8890ed01853d0904da2db1a1d2bb62c4efbd458a9d83" target="_blank" rel="noopener noreferrer">Canadian Gold Options Tartan West Property From Hudbay Minerals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Canadian Gold (CGC.V) on Friday said it reached an option agreement with Hudbay Minerals (HBM.TO) t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=96c826007cfc0ffb3cef914d318144f52a0d2fa32262d1fd41e20756fe6237cf" target="_blank" rel="noopener noreferrer">Five TSX stocks that reported earnings, and what analysts are saying</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- A busy earnings week for Canadian equities brought better-than-expected results for some, and renewed caution for others. From miners turning in record profits to renewable energy fir...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5baaccdb1e6ea1157913974c82195806048e90cfddcb4c5c8166cc9d1b5dba82" target="_blank" rel="noopener noreferrer">Results: Hudbay Minerals Inc. Exceeded Expectations And The Consensus Has Updated Its Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals Inc. ( TSE:HBM ) investors will be delighted, with the company turning in some strong numbers with its......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81b0371cae7d8766d2e9a73bf2083eca09c6c7365ae791c42229e3736de58c08" target="_blank" rel="noopener noreferrer">Hudbay Minerals First Quarter 2025 Earnings: Beats Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals ( TSE:HBM ) First Quarter 2025 Results Key Financial Results Revenue: US$594.9m (up 13% from 1Q 2024......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=43f38e83d94362427ecb6e247e839cab3711b5b21bb663521389125d08c69720" target="_blank" rel="noopener noreferrer">Hudbay Minerals Inc (HBM) Q1 2025 Earnings Call Highlights: Strong Cash Flow and Record Low ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals Inc (HBM) reports robust Q1 2025 results with significant free cash flow, industry-leading margins, and strategic asset acquisitions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5bdb52873e3dd26607c1fb5f8a127f42c216925a3d0d51ce8896af297d1a409d" target="_blank" rel="noopener noreferrer">Company News for May 13, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Companies in The News Are: NRG,FOX,AUPH,HBM...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3d4925129a14a94736c5dcdb3490835262ab2dde5b2216d1cbcddee96fbbd8ad" target="_blank" rel="noopener noreferrer">HudBay Minerals: Q1 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO (AP) — HudBay Minerals Inc. HBM) on Monday reported first-quarter profit of $100.4 million. On a per-share basis, the Toronto-based company said it had net income of 25 cents....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=75dd37efec448f74d2507f99b119560d1a20389f62feec4913eca16b8b22774b" target="_blank" rel="noopener noreferrer">Hudbay Minerals Q1 Adjusted Earnings per Share Jumps, Beats Analysts' Estimate; Announces Up to 5% Share Buyback</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals (HBM.TO) on Monday reported a jump in first-quarter adjusted earnings and better-tha...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f11a18e13fa32347e492b61aedcceca067201e1dd31e0ffb3c2c7385efa2ca7" target="_blank" rel="noopener noreferrer">HudBay Minerals (HBM) Beats Q1 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">HudBay Minerals (HBM) delivered earnings and revenue surprises of 140% and 14.73%, respectively, for the quarter ended March 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=315448d6bc6c0f5f6d67d2570f3156c822d31c2ef336b4f8f8acb8f1ef2871b9" target="_blank" rel="noopener noreferrer">Hudbay Minerals Inc. 2025 Q1 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ef7b05eea9bd98fe642c91453a10c82a1deb9bac31cb5c4d22c35bc90d9736ca" target="_blank" rel="noopener noreferrer">Compared to Estimates, HudBay Minerals (HBM) Q1 Earnings: A Look at Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">While the top- and bottom-line numbers for HudBay Minerals (HBM) give a sense of how the business performed in the quarter ended March 2025, it could be worth looking at how some of its key metrics co...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=305b466aaff344c893e5a450ce45bf8a7b88197656af17305daef76fda002c36" target="_blank" rel="noopener noreferrer">Hudbay Minerals Inc. (HBM) Q1 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec44e2219291980200e9142b04967ce981fcdff16a0b6a2b21680e81351d2a1e" target="_blank" rel="noopener noreferrer">HudBay Minerals (HBM) Surpasses Market Returns: Some Facts Worth Knowing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">HudBay Minerals (HBM) closed the most recent trading day at $7.62, moving +1.87% from the previous trading session....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7bced4dfb59824b55d91248365a3ddbc165197ceacb11bda193696743cbba82f" target="_blank" rel="noopener noreferrer">Wheaton Precious Metals Corp. (WPM) Q1 Earnings and Revenues Surpass Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Wheaton Precious Metals (WPM) delivered earnings and revenue surprises of 10% and 13.36%, respectively, for the quarter ended March 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

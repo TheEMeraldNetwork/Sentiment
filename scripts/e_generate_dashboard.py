@@ -170,7 +170,7 @@ class DashboardGenerator:
         negative_count = sum(1 for s in sentiment_scores if s < -0.2)
         neutral_count = len(sentiment_scores) - positive_count - negative_count
         
-        html_template = f"""
+        html_template = f'''
         <!DOCTYPE html>
         <html>
         <head>
@@ -369,35 +369,6 @@ class DashboardGenerator:
                     opacity: 0.8;
                 }}
                 
-                .stock-link {
-                    cursor: pointer;
-                    position: relative;
-                    color: inherit;
-                    text-decoration: none;
-                    display: inline-block;
-                }
-                
-                .stock-link:after {
-                    content: '';
-                    position: absolute;
-                    width: 100%;
-                    height: 1px;
-                    bottom: -2px;
-                    left: 0;
-                    background-color: #000;
-                    transform: scaleX(0);
-                    transform-origin: left;
-                    transition: transform 0.3s ease;
-                }
-                
-                .stock-link:hover:after {
-                    transform: scaleX(1);
-                }
-                
-                .stock-link:hover {
-                    color: #000;
-                }
-                
                 @media (max-width: 768px) {{
                     .header-content {{
                         padding: 0 20px;
@@ -456,7 +427,7 @@ class DashboardGenerator:
                 </div>
                 
                 <div class="articles-grid">
-        """
+        '''
         
         # Add articles
         for article in valid_articles:
@@ -467,7 +438,7 @@ class DashboardGenerator:
             if article_text:
                 article_text = f"{article_text[:200]}..."
             
-            html_template += f"""
+            html_template += f'''
                     <div class="article-card {sentiment_class}">
                         <div class="article-content">
                             <h3 class="article-title">
@@ -483,14 +454,14 @@ class DashboardGenerator:
                             <div class="article-summary">{article_text}</div>
                         </div>
                     </div>
-            """
+            '''
         
-        html_template += """
+        html_template += '''
                 </div>
             </div>
         </body>
         </html>
-        """
+        '''
         
         # Save the article page
         output_path = self.results_dir / f"articles_{ticker}_{timestamp}.html"
@@ -543,7 +514,7 @@ class DashboardGenerator:
             no_data = df[~df.index.isin(has_data.index)]
             
             # Generate HTML
-            html_template = """
+            html_template = r'''
             <!DOCTYPE html>
             <html>
             <head>
@@ -748,18 +719,6 @@ class DashboardGenerator:
                         .card-header {
                             padding: 20px;
                         }
-                        
-                        table.dataTable {
-                            display: block;
-                            overflow-x: auto;
-                            -webkit-overflow-scrolling: touch;
-                        }
-                        
-                        table.dataTable thead th,
-                        table.dataTable tbody td {
-                            white-space: nowrap;
-                            padding: 12px 15px;
-                        }
                     }
                 </style>
             </head>
@@ -780,9 +739,6 @@ class DashboardGenerator:
                         <div class="card-header">
                             <h2 class="card-title">Sentiment Overview</h2>
                         </div>
-                        <div class="legend">
-                            Trend Indicators: U (Up) | D (Down) | S (Stable) | N (New)
-                        </div>
                         <table id="sentiment-table" class="display">
                             <thead>
                                 <tr>
@@ -796,7 +752,7 @@ class DashboardGenerator:
                                 </tr>
                             </thead>
                             <tbody>
-            """
+            '''
             
             # Add modal template
             html_template += """
@@ -818,26 +774,9 @@ class DashboardGenerator:
             
             # Add rows for stocks with data
             for _, row in has_data.iterrows():
-                # Format sentiment with trend symbols
-                trend_7d = 'N' if pd.isna(row.get('trend_7d')) else row.get('trend_7d')[0].upper()
-                trend_30d = 'N' if pd.isna(row.get('trend_30d')) else row.get('trend_30d')[0].upper()
-                
-                trend_7d_class = {
-                    'U': 'trend-up',
-                    'D': 'trend-down',
-                    'S': 'trend-stable',
-                    'N': 'trend-new'
-                }.get(trend_7d, '')
-                
-                trend_30d_class = {
-                    'U': 'trend-up',
-                    'D': 'trend-down',
-                    'S': 'trend-stable',
-                    'N': 'trend-new'
-                }.get(trend_30d, '')
-                
-                sentiment_7d = f"{row.get('last_week_sentiment', ''):.2f} <span class='trend-symbol {trend_7d_class}'>{trend_7d}</span>" if pd.notna(row.get('last_week_sentiment')) else ''
-                sentiment_30d = f"{row.get('last_month_sentiment', ''):.2f} <span class='trend-symbol {trend_30d_class}'>{trend_30d}</span>" if pd.notna(row.get('last_month_sentiment')) else ''
+                # Format sentiment values without trend symbols
+                sentiment_7d = f"{row.get('last_week_sentiment', ''):.2f}" if pd.notna(row.get('last_week_sentiment')) else ''
+                sentiment_30d = f"{row.get('last_month_sentiment', ''):.2f}" if pd.notna(row.get('last_month_sentiment')) else ''
                 
                 # Add historical trend info
                 if pd.notna(row.get('sentiment_change')):
@@ -864,10 +803,10 @@ class DashboardGenerator:
                         articlesData['{row['ticker']}'] = [
                             ${','.join([
                                 f"""{{
-                                    "title": "{article['title'].replace('"', '\\"')}",
-                                    "date": "{article['date']}",
-                                    "source": "{article['source']}",
-                                    "sentiment": {article['sentiment']},
+                                    "title": "{str(article.get('title', '')).replace('"', '\\"') if pd.notna(article.get('title')) else ''}",
+                                    "date": "{article.get('date', '')}",
+                                    "source": "{article.get('source', '')}",
+                                    "sentiment": {article.get('sentiment', 0)},
                                     "url": "{article.get('url', '#')}"
                                 }}"""
                                 for article in articles_data

@@ -6,6 +6,7 @@ Maps original tickers to their variants across different exchanges.
 from typing import Dict, List
 import json
 from pathlib import Path
+import pandas as pd
 
 # Exchange suffixes for different geographies
 EXCHANGE_SUFFIXES = {
@@ -94,29 +95,29 @@ def get_yfinance_ticker(ticker: str) -> str:
         'BF.A': 'BF-A',
         'BF.B': 'BF-B'
     }
-    return yf_mappings.get(ticker, ticker)
+    return yf_mappings.get(ticker, ticker.replace('.', '-'))
 
-def load_master_tickers() -> Dict[str, Dict[str, str]]:
-    """
-    Load master ticker list with company information.
-    Returns a dictionary mapping ticker to company info.
-    """
-    # Try to load from config file
-    config_path = Path(__file__).parent / 'tickers.json'
-    if config_path.exists():
-        with open(config_path) as f:
-            return json.load(f)
-    
-    # Default tickers if no config file exists
-    return {
-        'AAPL': {'name': 'Apple Inc.', 'sector': 'Technology'},
-        'MSFT': {'name': 'Microsoft Corporation', 'sector': 'Technology'},
-        'GOOGL': {'name': 'Alphabet Inc.', 'sector': 'Technology'},
-        'AMZN': {'name': 'Amazon.com Inc.', 'sector': 'Consumer Cyclical'},
-        'META': {'name': 'Meta Platforms Inc.', 'sector': 'Technology'},
-        'NVDA': {'name': 'NVIDIA Corporation', 'sector': 'Technology'},
-        'TSLA': {'name': 'Tesla Inc.', 'sector': 'Consumer Cyclical'},
-        'JPM': {'name': 'JPMorgan Chase & Co.', 'sector': 'Financial Services'},
-        'V': {'name': 'Visa Inc.', 'sector': 'Financial Services'},
-        'JNJ': {'name': 'Johnson & Johnson', 'sector': 'Healthcare'}
-    } 
+def load_master_tickers() -> dict:
+    """Load master ticker list from CSV file"""
+    try:
+        # Read the master ticker file
+        master_file = Path('master name ticker.csv')
+        if not master_file.exists():
+            raise FileNotFoundError("Master ticker file not found")
+            
+        # Read CSV with semicolon delimiter
+        df = pd.read_csv(master_file, delimiter=';')
+        
+        # Convert to dictionary format
+        tickers_dict = {}
+        for _, row in df.iterrows():
+            tickers_dict[row['Ticker']] = {
+                'name': row['Name'],
+                'sector': 'N/A'  # Can be extended later if needed
+            }
+            
+        return tickers_dict
+        
+    except Exception as e:
+        print(f"Error loading master tickers: {e}")
+        return {} 

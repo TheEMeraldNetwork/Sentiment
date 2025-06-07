@@ -1,0 +1,1095 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Lamb Weston Holdings Inc. (LW) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Lamb Weston Holdings Inc. (LW)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">52</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.04</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c39d8062f252368717bcfdf6ed392aa69d1a1d2ad0baf729acedad0ccf64781f" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings (NYSE:LW) May Have Issues Allocating Its Capital</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">If you're looking for a multi-bagger, there's a few things to keep an eye out for. Firstly, we'd want to identify a......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c4be06b3ccd68ea12ec2eb840cd231b294f0484f52d483115d273120a9d7691c" target="_blank" rel="noopener noreferrer">Earnings To Watch: Kellanova (K) Reports Q1 Results Tomorrow</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Packaged foods company Kellanova (NYSE:K) will be announcing earnings results tomorrow before market hours. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5886cfd45b93a3d32d358da3abe591b70d4c03aa0824e9a6cc16a341d159694d" target="_blank" rel="noopener noreferrer">Earnings To Watch: Utz (UTZ) Reports Q1 Results Tomorrow</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Snack food company Utz Brands (NYSE:UTZ) will be announcing earnings results tomorrow morning. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21a75fe7a776b03ee59378548dbd72cede0dae10b22f25c634ce8ca98c20b220" target="_blank" rel="noopener noreferrer">Hershey (HSY) Q1 Earnings Report Preview: What To Look For</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Chocolate company Hershey (NYSE:HSY) will be announcing earnings results tomorrow before the bell. Here’s what to look for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c00ffc8ed90ead3334f0c0b8fce07be566cb830841a9460ddf6f1e82ec99f63" target="_blank" rel="noopener noreferrer">In this French fry factory, waste is not done</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Copyright © ChangeInc 2023Without water and energy, it is difficult to make frozen fries. But that doesn't mean the production process can't be more sustainable. Lamb Weston, one of the world's......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b99257a8775a50cd52ad63d58a93bde5fd0b325c3d8170c0329b82f03fc305d4" target="_blank" rel="noopener noreferrer">Fresh Del Monte Produce (FDP) Q1 Earnings: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Fresh produce company Fresh Del Monte (NYSE:FDP) will be reporting earnings tomorrow morning. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=881a4047e1b3e2c0d39e8d7ac9ec3c0ec435a0a624a6a701ddd10e000ebacefe" target="_blank" rel="noopener noreferrer">Lancaster Colony (LANC) Q1 Earnings Report Preview: What To Look For</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Specialty food company Lancaster Colony (NASDAQ:LANC) will be announcing earnings results tomorrow before market hours. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=278329b03eb761fe3ea9c4a61620d8691ac64cb165a630bc904d577d5a2d1cf6" target="_blank" rel="noopener noreferrer">Pilgrim's Pride Earnings: What To Look For From PPC</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Chicken producer Pilgrim’s Pride (NASDAQ:PPC) will be announcing earnings results tomorrow after market close. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a0fa35025221ddcaeaee65f3e671ff42c25e4f1d62e2cb06303dc27827514e2" target="_blank" rel="noopener noreferrer">3 Reasons LW is Risky and 1 Stock to Buy Instead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston’s stock price has taken a beating over the past six months, shedding 33.1% of its value and falling to $51.75 per share. This may have investors wondering how to approach the situation....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=77ca39367d6cbc35781bd1133219dcd82f0dc23fefbe7218a4bbe2834c9d1ce2" target="_blank" rel="noopener noreferrer">What To Expect From Kraft Heinz’s (KHC) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Packaged foods company Kraft Heinz (NASDAQ:KHC) will be reporting earnings tomorrow morning. Here’s what to look for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=809a6b5d758ebfe7d9324bc03882c731963e6e5dae8a9a75cd3ff644da97dbe8" target="_blank" rel="noopener noreferrer">Mondelez (MDLZ) Q1 Earnings: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Packaged snacks company Mondelez (NASDAQ:MDLZ) will be reporting results tomorrow after market close. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0ae04a7053bc9db5bf3cd3b9a9aeb6869cdb3d1e6da0c05067404387889dc845" target="_blank" rel="noopener noreferrer">Earnings To Watch: Medifast (MED) Reports Q1 Results Tomorrow</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Wellness company Medifast (NYSE:MED) will be reporting results tomorrow after market hours. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b34c72a59c0d5de8dc49f3fbd3162faa29e43f0b5bce37bcaaaf0c3e91069a3c" target="_blank" rel="noopener noreferrer">1 Profitable Stock with Exciting Potential and 2 to Ignore</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">A company with profits isn’t always a great investment. Some struggle to maintain growth, face looming threats, or fail to reinvest wisely, limiting their future potential....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=34f64e78a0b9034bca1cc4422cf1ddc9626496a9c98f3b93c41afa790a2b5b95" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of April 27</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Stay updated with weekly dividend insights! Learn about changes in dividends, upcoming ex-dividend dates, and pay dates for Champions, Contenders, and Challengers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6ee0aed07e4aa42d3f8c0f67daa19437d80e94374cdce92075d57f24b4bd5dc7" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc. stock rises Tuesday, still underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.73
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc. stock rises Tuesday, still underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bfd43bc1c9b0e99a9c1ecdb65ba9e1d4d1afe32166c0bf9348d58845245478cc" target="_blank" rel="noopener noreferrer">USANA (USNA) Reports Earnings Tomorrow: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Health and wellness products company USANA Health Sciences (NYSE:USNA) will be announcing earnings results tomorrow afternoon. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=36d03ad0a552b38541fff036286454ee9562d891393428c65d6ad5e5b2dd97b3" target="_blank" rel="noopener noreferrer">Kimberly-Clark Earnings: What To Look For From KMB</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Household products company Kimberly-Clark (NYSE:KMB) will be announcing earnings results tomorrow before market hours. Here’s what investors should know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=22a316e3b9b43fb833ff8b3d73ce4d32dfcbd0751d37bbd107dacc73a084d3ec" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df72db18853d19574e0986e8ac26807e6da4d980e8280315c0b7c4cce77c3b38" target="_blank" rel="noopener noreferrer">RSPS: Consumer Staples Dashboard For April</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=45f4f713a591c453daa2fadae6dca002a8dbbb94ea60899823ca50222a58f266" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings (LW): Among the Best Packaged Food Stocks to Buy Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 Best Packaged Food Stocks to Buy Now. In this article, we are going to take a look at where Lamb Weston Holdings, Inc. (NYSE:LW) stands against other best packaged f...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=153486c75eff14f3c06a38233e0d043c3c056b312a13f3de16e6b78f5070e1f6" target="_blank" rel="noopener noreferrer">Lamb Weston (LW) Recently Broke Out Above the 50-Day Moving Average</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">When a stock breaks out above the 50-Day simple moving average, good things could be on the horizon. How should investors react?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3d1618384ed31f470a0197c9d75a9be765d0ae2c5d00ec1ec36966fd0aaf422b" target="_blank" rel="noopener noreferrer">Lamb Weston (LW) Crossed Above the 20-Day Moving Average: What That Means for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Is it a good or bad thing when a stock surpasses resistance at the 20-day simple moving average?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=35535e3cea80b09456684a0cb073c03b1717d2f8f368e5df3aa2bd24396ed4a2" target="_blank" rel="noopener noreferrer">ClearBridge Value Strategy Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=56aaed0c8429ac127ed5973b3dbaa84aa6b352d080d16d75509529d3f99cd90f" target="_blank" rel="noopener noreferrer">The Zacks Analyst Blog Highlights Lamb Weston, Centene, The Kroger, First Solar and American Water Works</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston, Centene, The Kroger, First Solar and American Water Works are included in this Analyst Blog....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=250582c2cfb32ee13a6e67b48c154e14fae7506a31d9baae2cf18d1f664f18f2" target="_blank" rel="noopener noreferrer">What Moved Markets This Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Learn how Wall Street fared this week, including the impact of U.S. President Donald Trump's sweeping reciprocal tariffs announcement....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a6d9de19c396701d482892fc3ddcb18bd7765e7a83f5a8f9f7304c93cdc7cd9a" target="_blank" rel="noopener noreferrer">5 Relatively Secure And Cheap Dividend Stocks, Yields Up To 8% (April 2025)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">We discuss five discounted, large-cap dividend stocks for stable growth and income. Read here for our filtering process for top DGI picks....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c115e522bf8d93a17060a2780ebb1a90f9b2c86c12ab5ff75bbea402e6fe146c" target="_blank" rel="noopener noreferrer">Q3 2025 Lamb Weston Holdings Inc Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Q3 2025 Lamb Weston Holdings Inc Earnings Call...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b71b20b3d01dd53aaed13387c67ed717e5ac4080ed6eca1f1c9d8c6aaaa9d3e0" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc (LW) Q3 2025 Earnings Call Highlights: Strong Volume Growth Amid ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc (LW) reports a 9% volume increase and outlines strategic initiatives to drive long-term growth despite market headwinds....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fc6425b5740aec8c2a7c44d2293c04ae7de8e199f1666aa60b9b466736d24cc9" target="_blank" rel="noopener noreferrer">Company News for Apr 4, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Companies In The News Are: RH, LW, AYI, MSM....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f68eb4fcaa1947ccc0d79c3edf13206ca9d9bf45ea6898ee965ab0a9a65ae661" target="_blank" rel="noopener noreferrer">Lamb Weston: Restructuring Plan Could Make It A Takeover Target</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston's restructuring and attractive valuation could make it a takeover target for a larger food company. Find out why I consider LW a long-term stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f53eab33fddb97c3558e8521946b689da0bebb3184390c8c759d097e500bf7c0" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Third Quarter 2025 Earnings: Beats Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings ( NYSE:LW ) Third Quarter 2025 Results Key Financial Results Revenue: US$1.52b (up 4.3% from 3Q......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=292a739bd3fa731c79d67307b0797bba2f10aab0447a22af2293244b4ef16cbb" target="_blank" rel="noopener noreferrer">5 S&P 500 Stocks Unscathed by the Market Mayhem</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 shed about $2.4 trillion in market cap in yesterday's trading session. Still, stocks like LW, CNC, KR, FSLR and AWK showed strength....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=688c6e0cff2e0aef387c05e9c1d1419bbac6ae99acd8a2f722f5cc96508d6755" target="_blank" rel="noopener noreferrer">Lamb Weston May Keep Cutting Prices To Win Back Market Share, But Demand Recovery Remains Uncertain</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">J.P. Morgan analyst Ken Goldman reiterated the Neutral rating on Lamb Weston Holdings, Inc. (NYSE:LW) on Thursday, raising the price forecast from $65 to $66. Goldman cited medium-term risks tied to a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eec3507da78506eca9b00df888f833b7c17a46e8490d42d1a3478ba56d173738" target="_blank" rel="noopener noreferrer">Lamb Weston 3Q Sales Grow as Turnaround Continues, Maintains FY 2025 Outlook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston 3Q Sales Grow as Turnaround Continues, Maintains FY 2025 Outlook...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=168cfbd07e5b8671b188d4c2749a856bcebde2d204dfe9af9acc06670bf8d81e" target="_blank" rel="noopener noreferrer">Lamb Weston Reports Third Quarter Fiscal 2025 Results; Reaffirms Fiscal Year 2025 Outlook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">EAGLE, Idaho, April 03, 2025--Lamb Weston Holdings, Inc. (NYSE: LW) announced today its results for the third quarter of fiscal 2025 and reaffirmed its full year financial targets for fiscal 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=344c4423325103aa3b352908069f436efb6c9fb20b2b7d754d60b752a5ad9089" target="_blank" rel="noopener noreferrer">Lamb Weston: Fiscal Q3 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">EAGLE, Idaho (AP) — Lamb Weston Holdings Inc. LW) on Thursday reported fiscal third-quarter profit of $146 million. On a per-share basis, the Eagle, Idaho-based company said it had profit of $1.03....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=102a21382d5a811b38c1c6e8fe3cc03b1ad97367ac2dbeddda5a4aaba9a63a4a" target="_blank" rel="noopener noreferrer">Lamb Weston’s (NYSE:LW) Q1: Beats On Revenue, Full-Year Outlook Slightly Exceeds Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Potato products company Lamb Weston (NYSE:LW) beat Wall Street’s revenue expectations in Q1 CY2025, with sales up 4.3% year on year to $1.52 billion. The company’s full-year revenue guidance of $6.4 b...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9771f335816c03ec8985714892dc79a7d29d61e4140731d735d43ce2072bd59a" target="_blank" rel="noopener noreferrer">Lamb Weston Stock Surges as Potato Giant's Results Top Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston shares jumped Thursday after the potato processing giant's latest quarterly results came in above expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec52dbfc2c0ad2a3646c41f95000738057eaf8446899a6a6a26969f83cd977c8" target="_blank" rel="noopener noreferrer">Lamb Weston (LW) Tops Q3 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston (LW) delivered earnings and revenue surprises of 26.44% and 1.36%, respectively, for the quarter ended February 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=87b87f61cd6fc4e281b0e0a62e70198e3d3ef94ac867a6810d59fb56393b0928" target="_blank" rel="noopener noreferrer">Lamb Weston Affirms Full-Year Outlook Following Fiscal Third-Quarter Beat</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston (LW) posted better-than-expected fiscal third-quarter results on Thursday as volume gain...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d68bca36d58f6f1716d5fab21eeb069daecf6a892d3dcc25e12b30d29e4dc47a" target="_blank" rel="noopener noreferrer">Lamb Weston and SBA Communications Are Rising on Day When Most Stocks Aren’t</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston is the biggest gainer in the S&P 500 as the broader market slides as President Donald Trump’s tariffs stoke recession fears....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6934585966f61b6d369229119589aee8705cee0b05f62beafef4abd8408f72f8" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings, Inc. 2025 Q3 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a8767418979cb45185c3924249eaa5a63522c764d3fc2d90c1f39438fbb886c4" target="_blank" rel="noopener noreferrer">ConAgra & Lamb Weston rise, Best Buy falls: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Julie Hyman and Madison Mills take a look at some of the trending tickers of the day and analyze why the stocks are moving. ConAgra Brands (CAG) and Lamb Weston (LW) are both trading in the green afte...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3533dee0ec124720d0d15603372d2a729654f66ae00e676b6da8c8e61081c657" target="_blank" rel="noopener noreferrer">Top Stock Movers Now: Apple, Target, Lamb Weston, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">U.S. equities are plunging at midday, dragged lower by the Trump administration's sweeping reciprocal tariffs. The Dow Jones Industrial Average, S&P 500, and Nasdaq all plummeted....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=590a6eab709fd6261aa7bc8d41ad5d47d6b9c097cb6925d4aad1ba89a3ecee33" target="_blank" rel="noopener noreferrer">Wall Street Stunned: Lamb Weston Jumps 8% in Shocking Frozen Fry Comeback</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">After a brutal 50% plunge, the potato giant roars back with an earnings beat and a $450M reset plan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=43feebf8aa4317934c3d2650799093f46bb78bd531811f7320752cc51b71d040" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings, Inc. (LW) Q3 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=18f351c9efe83350db3c18080e7228aa81c0d0a728c79541e9f345f3554862e9" target="_blank" rel="noopener noreferrer">Medical device stocks, oil futures, Lamb Weston: Market Minute</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Josh Lipton goes over some of the top stories on this segment of Market Minute. Medical device stocks like GE Healthcare (GEHC) and Intuitive Surgical (ISRG) saw losses, while pharmaceutical companies...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f57ab0882a5b1d37612cb12eb44e395004096d9025d533fa7641bd6e86d9b6ca" target="_blank" rel="noopener noreferrer">Potatoes, discount chains and drugmakers offer havens in stock-market bloodbath</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Potatoes, discount chains and drugmakers offer havens in stock-market bloodbath...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a8664d4a2dff755d9ac5b518acce6225ebe238236f5a036c29a6a15ee8256d79" target="_blank" rel="noopener noreferrer">Lamb Weston Q3 Earnings Beat Estimates, Sales Grow on Strong Volume</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">LW's third-quarter fiscal 2025 results reflect higher sales on an improved volume trend and operational improvements. However, earnings declined year over year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c813e40a9106af44bdd45726e5727783540e8650fa4510e8847ea080324ed543" target="_blank" rel="noopener noreferrer">Sector Update: Consumer Stocks Mixed Late Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Consumer stocks were mixed late Thursday afternoon, with the Consumer Staples Select Sector SPDR Fun...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b619891a9b7612bb6e47125e5e37aee9ad088fe10f625feef68fdf52a1924545" target="_blank" rel="noopener noreferrer">Why Consumer Staples Stocks Lamb Weston, Conagra, and Philip Morris Rallied Today Even as the Market Plunged</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of consumer staples giants Lamb Weston (NYSE: LW), Conagra (NYSE: CAG), and Philip Morris International (NYSE: PM) all rallied today, up 9.7%, 1.5%, and 4%, respectively.  Lamb Weston is a larg...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a43b16f91e91c249d68144c55d882d08791135688c8a0f2c984b6790cf75c2d4" target="_blank" rel="noopener noreferrer">S&P 500 Gains & Losses Today: Index Dives After Trump Unleashes Far-Reaching Tariffs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 plunged 4.8% on Thursday, April 3, 2025, after the Trump administration imposed expansive tariffs on imports from countries across the world....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
