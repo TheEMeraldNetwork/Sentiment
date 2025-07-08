@@ -1,0 +1,503 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Cenovus Energy Inc. (CVE) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Cenovus Energy Inc. (CVE)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.13</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c80cf1dccf2c142a0cc92a44a4b09ff2cbbc76d645c00097455823267e5cd13" target="_blank" rel="noopener noreferrer">Cenovus Energy: A Little More Deleveraging</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Cenovus Energy is boosting buybacks, redeeming preferreds, and raising its dividend despite short-term output impacts. See why CVE stock is a strong buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e62d56e8d036ad9be1b2d2ada19912d41f7b3876888521818afb396a8f8f20ed" target="_blank" rel="noopener noreferrer">Canadian Natural Resources Has It All: Value, Growth, And Dividend Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Canadian Natural Resources is a large diversified Canadian energy giant, with a strong portfolio of long-life, low-decline assets. Read why CNQ remains a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eb2bc0bb9ee1e9b5258b336a285d9b540603bc0e4103949f7ce6f837d9f02bcf" target="_blank" rel="noopener noreferrer">Cenovus Energy: One Of My Favorite Value Stocks In Energy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">Cenovus Energy has low-cost, long-life oil sands assets and a diversified portfolio. Read why CVE stock is a top pick for long-term value investors in energy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a280cea09258857d888a09b290d4eac7ce38f38f58fcf15572b6b5f13df22085" target="_blank" rel="noopener noreferrer">Cenovus Energy (CVE) Stock Dips While Market Gains: Key Facts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.19
+                                </span>
+                            </div>
+                            <div class="article-summary">Cenovus Energy (CVE) closed at $13.65 in the latest trading session, marking a -1.16% move from the prior day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8dce340dd9e4002ee06015bfde4374b2fb94c475e6093115c0eabb6962c9231c" target="_blank" rel="noopener noreferrer">Cenovus Resumes Full Production at Christina Lake</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Cenovus Energy Inc. (NYSE:CVE) is one of the 12 Best Natural Gas Stocks to Buy According to Analysts. Cenovus Energy Inc. (NYSE:CVE) recently revealed that it has now safely restored production at its...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=12b25beeea4b4bb08dd5e0d344670fcac301b9020d03e939c3af592e32b97cdf" target="_blank" rel="noopener noreferrer">Get In Before It's Obvious: The Biggest Bull Market Of The Decade Could Already Be Underway</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">The markets are struggling. Read why I believe we may be in the early innings of a major, underappreciated commodity bull market....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4ed4823b8fb4e87d3511b891c54257173f2dd862daa3aaefef5592acb48dce55" target="_blank" rel="noopener noreferrer">Cenovus Energy (CVE) Ascends While Market Falls: Some Facts to Note</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Cenovus Energy (CVE) closed at $14.83 in the latest trading session, marking a +2.84% move from the prior day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7c76f5571b746e9f951412ee4db3aa435e36023fd62ccade54c16eea9e8e32a7" target="_blank" rel="noopener noreferrer">CVE Makes Complete Output Restoration at Christina Lake Site</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Cenovus Energy fully restores production at its key Christina Lake site after wildfire-related shutdowns in Alberta....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=19b2c7ead29d96eb01373a083b63aaa696e68be3a6767d70f669006499fe5066" target="_blank" rel="noopener noreferrer">Cenovus Energy restores full production at Christina Lake</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">CALGARY, Alberta, June 12, 2025 (GLOBE NEWSWIRE) -- Cenovus Energy Inc. (TSX: CVE) (NYSE: CVE) has now safely ramped up production at its Christina Lake oil sands asset following wildfire activity in ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b218c2742d76136a0b6c804e90405c15f24b3a5a29e6d7c994f7a79ef3dd339" target="_blank" rel="noopener noreferrer">Canada's Cenovus Energy restarts production at Christina Lake oil sands</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Wildfires across Alberta in May disrupted operations for several oil producers such as Cenovus, Canadian Natural Resources and MEG Energy, prompting temporary shutdowns and evacuations at multiple sit...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4c65230fe0c5b3ce48cf372188680d4a9772f88b0a4e0b1316dd214de88a7976" target="_blank" rel="noopener noreferrer">Sector Update: Energy Stocks Lean Lower Premarket Thursday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Energy stocks were leaning lower premarket Thursday with the Energy Select Sector SPDR Fund (XLE) do...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=61e8a3528b6129744e9c38963290d9f1e9bca353a99633c05c4e1cad32fedb9b" target="_blank" rel="noopener noreferrer">Sector Update: Energy Stocks Rise Thursday Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Energy stocks advanced Thursday afternoon, with the NYSE Energy Sector Index rising 0.4% and the Ene...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=812a9690e2eed58953891cd25fa2f351564e91a5970d33c10c98c5b9581b0306" target="_blank" rel="noopener noreferrer">Cenovus CEO Defends Canada-US Energy Ties Amid Tariff Threats</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.61
+                                </span>
+                            </div>
+                            <div class="article-summary">CVE CEO defends Canada's vital oil role in U.S. energy supply, urging policy reform over tariff retaliation amid rising tensions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4508427f22ece69e042e6bd87fe07d60c70c3f0bbd576ef28c9892b4a25c5ed6" target="_blank" rel="noopener noreferrer">Why Investors Should Consider Selling Suncor Energy Stock Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">SU is exposed to oil market volatility, rising capex, regulatory changes and energy transition risks, which could affect profitability and long-term strategy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9ca4eca73501e2449d256e63b92800db590ec9459f75a6569ee7ad464b808e28" target="_blank" rel="noopener noreferrer">US depends on Canadian oil, despite Trump's comments, Cenovus CEO says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">CALGARY (Reuters) -The U.S. relies on Canadian oil imports, despite comments to the contrary by U.S. President Donald Trump, Cenovus Energy CEO said on Tuesday.  Trump has threatened on-again, off-aga...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

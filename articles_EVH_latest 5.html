@@ -1,0 +1,471 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Evolent Health Inc. (EVH) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Evolent Health Inc. (EVH)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.32</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cabdfc1bbe442549b9790c2ed2f337a4b7855c3d489204952d32d90c3baae162" target="_blank" rel="noopener noreferrer">Evolent reiterates Q2 and full year guidance for Adjusted EBITDA</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Notes accelerating 2026 revenue bookings forecastSecures incremental non-dilutive financingWASHINGTON, June 20, 2025 /PRNewswire/ -- Evolent Health, Inc. , a company focused on achieving better......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=143cdc1c78c99d0f3f8f86a082eb919a318ff8e9cdea3304d3598ac656f36cbd" target="_blank" rel="noopener noreferrer">3 Russell 2000 Stocks Facing Headwinds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Small-cap stocks in the Russell 2000 (^RUT) can be a goldmine for investors looking beyond the usual large-cap names. But with less stability and fewer resources than their bigger counterparts, these ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f0e5f2867f221628e31533904b305afc5b5787f5542ca7e09b51f0b979c1595" target="_blank" rel="noopener noreferrer">Q1 Rundown: Omnicell (NASDAQ:OMCL) Vs Other Healthcare Technology for Providers Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how Omnicell (NASDAQ:OMCL) and the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3a6d2bdc19c6685790ba64b2ef581f2e93dd65c3fecbc53a24ed112d76b4bb0e" target="_blank" rel="noopener noreferrer">EVH Q1 Earnings Call: Oncology Navigation Launch and AI Automation Drive Strategic Focus</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">Healthcare solutions company Evolent Health (NYSE:EVH) reported Q1 CY2025 results exceeding the market’s revenue expectations, but sales fell by 24.4% year on year to $483.6 million. Revenue guidance ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0e1be14f7079b0e74975ea5d08f82236580f18e1b86b8c607e3a9acb726037a8" target="_blank" rel="noopener noreferrer">Healthcare Technology for Providers Stocks Q1 Teardown: Astrana Health (NASDAQ:ASTH) Vs The Rest</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">Looking back on healthcare technology for providers stocks’ Q1 earnings, we examine this quarter’s best and worst performers, including Astrana Health (NASDAQ:ASTH) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8fd8b35777a6be22e2b3adcbeaab92849b6f2750cf4d1be61bd66f7dccef77f8" target="_blank" rel="noopener noreferrer">3 Stocks Under $10 in the Doghouse</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Stocks trading in the $1-10 range are generally smaller players with less risk than their penny stock counterparts. But that doesn’t mean the underlying businesses are cheap, and we advise caution as ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d73ad2e061cbe2bf3be545541ab2d7801026aac9aeca605d0a0c45a52aa3b290" target="_blank" rel="noopener noreferrer">Evolent Health - Reaffirms 2025 Revenue Guidance Of $2.06 Bln To $2.11 Bln - SEC Filing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">Evolent Health Inc: * REAFFIRMS 2025 REVENUE GUIDANCE OF $2.06 BILLION TO $2.11BILLION - SEC FILING * REAFFIRMS Q2 2025 REVENUE GUIDANCE OF $440 MILLION TO $470MILLION -......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=beeec6776e11bde6d5608844525293252203e8657a7b509b3b8b58f4f91ac580" target="_blank" rel="noopener noreferrer">Q1 Earnings Outperformers: Phreesia (NYSE:PHR) And The Rest Of The Healthcare Technology for Providers Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Looking back on healthcare technology for providers stocks’ Q1 earnings, we examine this quarter’s best and worst performers, including Phreesia (NYSE:PHR) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b13287057dfca057692fc52e883c3d1fd95e770a3352d78225a783a62f0f7730" target="_blank" rel="noopener noreferrer">3 Value Stocks Walking a Fine Line</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The low valuation multiples for value stocks provide a margin of safety that growth stocks rarely offer. However, the challenge lies in determining whether these cheap assets are genuinely undervalued...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=41c19bd404f7f202294f2d2d46195f655f678bc51309afdaf006f55f3e6cc4c1" target="_blank" rel="noopener noreferrer">Evolent Health, Amphastar Pharmaceuticals, Iridium, and Magnite Stocks Trade Up, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks jumped in the afternoon session after the major indices rebounded (Nasdaq +2.0%, S&P 500 +2.0%) as President Trump postponed the planned 50% tariff on European Union imports, shifti...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=68e8b9f004e160127f013075dbe070260e77e0dba13b9035af1a848ab63cd0c4" target="_blank" rel="noopener noreferrer">Reflecting On Healthcare Technology for Providers Stocks’ Q1 Earnings: Evolent Health (NYSE:EVH)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q1 earnings season wraps, let’s dig into this quarter’s best and worst performers in the healthcare technology for providers industry, including Evolent Health (NYSE:EVH) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3ef8f4d07b25ac34d79e97bcb857097a824fc418ca416a897cbe645b6fd1d125" target="_blank" rel="noopener noreferrer">Unpacking Q1 Earnings: Hims & Hers Health (NYSE:HIMS) In The Context Of Other Healthcare Technology Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Looking back on healthcare technology stocks’ Q1 earnings, we examine this quarter’s best and worst performers, including Hims & Hers Health (NYSE:HIMS) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3fdec7e91a5fa7887da89d18b8d53612ad568dacbcb95debc748583559ec0bb1" target="_blank" rel="noopener noreferrer">Guardant Health, Evolent Health, Charles River Laboratories, Avantor, and Lumen Stocks Trade Down, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks fell in the afternoon session after the major indices pulled back (Nasdaq -1.3%, S&P 500 - 1.4%) as Treasury yields rose, reflecting market anxiety over a draft federal budget that ...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

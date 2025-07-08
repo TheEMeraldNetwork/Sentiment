@@ -1,0 +1,999 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>WELL Health Technologies Corp. (WELL) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">WELL Health Technologies Corp. (WELL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">46</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.12</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fd9b227b5b98c73e5ceb68b161b9bbde153bf74fb7fb81ab2e0433164c67b38c" target="_blank" rel="noopener noreferrer">Why Welltower Inc (WELL) Is Surging In 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of Why These 15 Real Estate Stocks Are Surging In 2025. In this article, we are going to take a look at where Welltower Inc (NYSE:WELL) stands against other real estate st...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e7f92fa1caf39a8943d92ad05dbd0304ed97af87c87b0bb33d4c0677011d2aac" target="_blank" rel="noopener noreferrer">Welltower Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-01</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5fc3e01cfe94c5fbdb1d75e56ecad1aa63649bfd50085e361b182d4e2bcb7867" target="_blank" rel="noopener noreferrer">Q1 2025 Welltower Inc Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Q1 2025 Welltower Inc Earnings Call...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2366f95715e0750c7f6fce75a3dd942bd9cb6c1961431e1e41dbe322a88ee9ce" target="_blank" rel="noopener noreferrer">Welltower Inc (WELL) Q1 2025 Earnings Call Highlights: Strong FFO Growth and Strategic ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc (WELL) reports impressive financial performance with a 19% FFO per share growth and strategic acquisitions, while navigating macroeconomic challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fddd54dd7ea6c711796228050f5b6bae254ff32357810a7c7ca211ef2a728928" target="_blank" rel="noopener noreferrer">Welltower Stock: Q1 Earnings Reinforce Strength And Expansion Efforts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9ccbd4e82ae1090143ab6b16db5cf824e0e479c3cc46e60aa934037df7a2df66" target="_blank" rel="noopener noreferrer">Here's What Key Metrics Tell Us About Welltower (WELL) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The headline numbers for Welltower (WELL) give insight into how the company performed in the quarter ended March 2025, but it may be worthwhile to compare some of its key metrics to Wall Street estima...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57ba16b7a446bd0e712be55586e0150bc4ec3769960dae5bf1509d4998af4599" target="_blank" rel="noopener noreferrer">Baron Real Estate Income Fund Q1 2025 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Real Estate Income Fund declined in the first quarter of 2025, underperforming its benchmark, the MSCI USA IMI Extended Real Estate Index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2728b8dd39d5f47d9f54636872ef005ca8f4ac5e6f9c7e84b076347217d13b95" target="_blank" rel="noopener noreferrer">Baron Real Estate Fund Q1 2025 Top Contributors And Detractors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Real Estate Fund declined in Q1 of 2025. Who were the top leaders and laggards? Click here to find out. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=15ec138ad613250994a158cdcf9b11a4e922494e7d6f629eb7a90eea7ed62eef" target="_blank" rel="noopener noreferrer">Welltower, Inc. (WELL) Q1 2025 Earnings Conference Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower, Inc. (NYSE:WELL) Q1 2025 Earnings Conference Call April 29, 2025 9:00 AM ETCompany ParticipantsMatt McQueen - Chief Legal Officer &amp; General......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d66aa4652e39e7c2ceb0e2478316e258c8c56e193bfa5b2398f957e1a05ffb49" target="_blank" rel="noopener noreferrer">Welltower's Q1 FFO & Revenues Beat Estimates, Same Store NOI Rises</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">WELL's Q1 FFO outshines estimates, driven by a rise in revenues. Same Store NOI improves year over year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9a40c885a7a85c19c4e2bc23d8f4cd84d6ff0748522b7dab83842c9e12bf414e" target="_blank" rel="noopener noreferrer">Welltower Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a05139c19275e86b591af3d13102761bb8c888becc0ca01ed20da6c1f161363a" target="_blank" rel="noopener noreferrer">Welltower (NYSE:WELL) Increases Dividend And Raises 2025 Earnings Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower (NYSE:WELL) recently reaffirmed its dividend and raised earnings guidance for 2025, suggesting strong financial stability and optimism in its outlook. These announcements coincide with the c...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86938b6d3e7222adce07274a9f0395bb3968cd51fbafc154a7707c1d9f6c0e3f" target="_blank" rel="noopener noreferrer">Franklin Convertible Securities Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">IT sector convertibles remained a core fund focus, at 21.03% of total net assets at quarter-end, and were a notable area of weakness. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e913878aa9935667c1a932b739799cb5efbdee46c622d22dc70ef83cb232522b" target="_blank" rel="noopener noreferrer">Baron Real Estate Fund Q1 2025 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Real Estate Fund declined in the first quarter of 2025, underperforming its benchmark, the MSCI US REIT Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b3efe45af721ab637ee72692b24aff9a6c155961f027c8c8f153f2b70ccd57e4" target="_blank" rel="noopener noreferrer">Welltower : Q1 (1Q25 Supplement 99.2 FINAL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">‌Supplenehtal IhforMâtloh ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6bf03a7da311eb096c761dcb4473c4af3462a4f201e2db147d3321054436389b" target="_blank" rel="noopener noreferrer">Welltower Reports First Quarter 2025 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. (NYSE:WELL) today announced results for the quarter ended March 31, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2dfda8ca92af58883fa7ce17a0d7fae2c429586246d74e7d723785fa91d84d98" target="_blank" rel="noopener noreferrer">Welltower: Q1 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The real estate investment trust, based in Toledo, Ohio, said it had funds from operations of $787.2 million, or $1.20 per share, in the period. The average estimate of six analysts surveyed by Zacks ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=24dc0885f17452283f45c4a3d48cd3ffa30d639c7fba9a25572699b20240519a" target="_blank" rel="noopener noreferrer">Welltower Issues Business Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower® Inc. (NYSE: WELL) has issued the following business update which can be found at:...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d95f65a3a375c29cd626c82b0eded408beb064e164f1ec9c3ccb622aa51cc781" target="_blank" rel="noopener noreferrer">Welltower forecasts annual FFO above estimates on strong demand for senior housing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">The REIT owns housing, outpatient medical centers and healthcare properties with a focus on older adults and assisted living.  The company now sees 2025 normalized FFO, a key performance measure for R...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fe518b299963ea9cb65ec51a6d726d93442b2b4a5a107a227bcbff9f797827b8" target="_blank" rel="noopener noreferrer">Welltower (WELL) Q1 FFO and Revenues Surpass Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower (WELL) delivered FFO and revenue surprises of 4.35% and 2.12%, respectively, for the quarter ended March 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a4a1cc30432a56e824be2fedb4f6fbbf4f7d76759ff7f3838eb7c89cbae2cd4" target="_blank" rel="noopener noreferrer">RLTY: Discounted And Beaten-Down</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.08
+                                </span>
+                            </div>
+                            <div class="article-summary">Explore why RLTY REITs remain a solid investment despite market pressure....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b03330a58b8eb2fbf7e2dcfbc56afd4c941d6f4e27a94ff6566f2d19374b2473" target="_blank" rel="noopener noreferrer">4 REITs Poised to Shine Bright in the Upcoming Earnings Reports</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">REITs support diverse real and virtual activities, and WELL, EQIX, EQR, and WPC are likely to reflect that strength in their upcoming earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=efe86149485282032f6158ee947245f9943374e373ee4b29f184f0a653e074f2" target="_blank" rel="noopener noreferrer">Purcell & Lefkowitz LLP Announces Shareholder Investigation of Welltower Inc. (NYSE: WELL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-23</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, April 23, 2025 /PRNewswire/ -- Purcell & Lefkowitz LLP announces that it is investigating Welltower Inc. on behalf of the company's shareholders.  The investigation seeks to determine......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6ad29169165327f4656924d2010c4a617ebb82647f4eba77f7ee009560ea3c50" target="_blank" rel="noopener noreferrer">Ahead of Welltower (WELL) Q1 Earnings: Get Ready With Wall Street Estimates for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Besides Wall Street's top -and-bottom-line estimates for Welltower (WELL), review projections for some of its key metrics to gain a deeper understanding of how the company might have fared during the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb3c22e0b6f7fdc925258926d0217d3d72ce4f0e564206f858b9d9d379233491" target="_blank" rel="noopener noreferrer">Senior housing is so scarce that many older adults are buying before they even need it</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">More than 564,000 new senior-housing units are needed to meet demand by 2030 — but only 191,000 will be added at current development rates....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=490824f5f30374011c9863ee83dddf3f42e019165a22ca006805608c9be529bc" target="_blank" rel="noopener noreferrer">Welltower Inc. stock rises Tuesday, still underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock rises Tuesday, still underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5f52f688bcd531c59a5e697ad1331381a114f03c1834746274d9b5fd6616b7b5" target="_blank" rel="noopener noreferrer">Welltower Gears Up to Report Q1 Earnings: What's in the Cards?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">WELL's Q1 earnings are likely to have benefited from the rise in the aging population and its healthcare expenditure. Yet, high interest expenses are a concern....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c25422ab0c6840b8a4c4ec030f19ccf8d15498792596efe9b217839bc6b417d8" target="_blank" rel="noopener noreferrer">The State Of REITs: April 2025 Edition</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fabd88f469ec3f1e4d953cb6bc0fd303856771c45f61bb6fa3e351e742b2938e" target="_blank" rel="noopener noreferrer">Welltower Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2365fb4082fdb454e9fa8cef205fb19b95bc0be8269c3e9f3563fdcbd688c8c3" target="_blank" rel="noopener noreferrer">Powell On The Hot Seat</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7305707b6db34b3c5e4b7d42752fc660df7f2e5b4bec572e5e52a03dbce44e70" target="_blank" rel="noopener noreferrer">RQI: 8% Yield, 5% Discount Contrarian Play</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a2d6e1201444598e5cfbbbe146403103835f008304243bac43661e43e6d58c71" target="_blank" rel="noopener noreferrer">Welltower : Proxy card (Proxy Card)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">WELLTOWER INC. 4500 DORR STREET TOLEDO, OHIO 43615 SCAN TO w VIEW MATERIALS &VOTE ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eed1cb7f11938344b2df47f25d461b5d4b117756137ffda2ec7a06777ad187e5" target="_blank" rel="noopener noreferrer">Welltower : Proxy notice (Proxy Notice)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Your Vote Counts! WELLTOWER INC. 2025 Annual Meeting Vote by May 21, 2025 11:59 PM ET ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33f26145319eeccc87521d56db59bdf2bd8e244169ae83136a8442d50fedf5a1" target="_blank" rel="noopener noreferrer">Terreno Realty Expands Portfolio With Property Buyout in Redmond</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Terreno's acquisition of industrial properties is likely to aid it in banking on solid industrial real estate market tailwinds....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f1ec5c040b5a5fcf6a0cbf914abf3c149db5286fb21b50c0014a9d0c671bb9f" target="_blank" rel="noopener noreferrer">Why Camden Property Remains a Solid Hold in the Current Market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">CPT to benefit from its well-diversified portfolio, technology upgrades and a strong balance sheet, but elevated supply levels and sustained high interest rates ail....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aebf31c748ffb4ce036f4376807653b04bda6ea5c3d2b4f90ed7c11fe0d2538a" target="_blank" rel="noopener noreferrer">Healthpeak Properties: Defensive REIT With Strong Dividend And Post-Merger Upside</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6c7e1cc3a5ee2db52a3975f300b96e19b075737ebc9c2434b420f6ebad6a3997" target="_blank" rel="noopener noreferrer">Welltower Inc. stock rises Wednesday, still underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock rises Wednesday, still underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3417a925a6c5d1e011d1709d4d32e1c4d369070f685e102e8acd026a633c3a4f" target="_blank" rel="noopener noreferrer">Wells Fargo Upgrades Welltower (WELL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Fintel</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5e4b0e3f8183589764febc9b6a1071a651a4b1b4047bf5620bc41be33b30524b" target="_blank" rel="noopener noreferrer">Plymouth Industrial Boosts Growth With Healthy Leasing Activity in Q1</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">PLYM drives growth with healthy leasing activity and strategic acquisitions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=057840d57b6256708d522723a544fdd07b59f92c0d44669c3acffafe89c48cae" target="_blank" rel="noopener noreferrer">Welltower Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2cf7655e0320a5d360b22590b0c666743cf2c652fbad64bd71aac9ac682a319c" target="_blank" rel="noopener noreferrer">PSA Eyes Australian Market, Offers to Acquire Abacus Storage King</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">PSA's plan for international expansion appears strategically aligned, as Australia and New Zealand offer an established, fast-growing self-storage market....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=32e15d990cb01ea850621ca823b8e34446fa3b7b5ddfe937521ce635b18e2421" target="_blank" rel="noopener noreferrer">Tariff Tantrum</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=67dbdf205d3d5d31819c71273e82f6bdfdf6818947614e45bbb5387d24de9df3" target="_blank" rel="noopener noreferrer">Alpine Income's Q1 Investments Total $79.2M, Dispositions Reach $11.7M</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">PINE provides an update on its Q1 investment and disposition activities, which display its prudent capital-management practices....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c57415add482a5e14c70e9fd68dc086ed6298cbdea05d02cbf596abc77586ac" target="_blank" rel="noopener noreferrer">Welltower Inc. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Welltower Inc. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=070b00afc65fb589792621a2ec190413e6422c71589eb2d4888fe9ffe1499ada" target="_blank" rel="noopener noreferrer">2 REITs To Buy Before They Get Bought Out</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">REITs are priced at large discounts to their net asset values. This is leading to more and more M&A transactions. Check out 2 REITs to buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f7cbe91bdc84b1794fef6751940b9ccb551f5203c5d58fa05699e340e85c6342" target="_blank" rel="noopener noreferrer">UMH Properties Provides Q1 Operating Update, Sees Occupancy Gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">UMH's occupancy growth, strategic acquisitions and consistent dividend increases highlight its resilience and growth potential....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

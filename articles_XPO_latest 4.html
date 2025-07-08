@@ -1,0 +1,519 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>XPO Inc. (XPO) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">XPO Inc. (XPO)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.05</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dee754165fbd69675732d6f1911365604e379475ad87ae17850c311f61551e82" target="_blank" rel="noopener noreferrer">Ground Transportation Stocks Q4 Teardown: Heartland Express (NASDAQ:HTLD) Vs The Rest</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Let’s dig into the relative performance of Heartland Express (NASDAQ:HTLD) and its peers as we unravel the now-completed Q4 ground transportation earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=946ea52a0750a1a545bb7d841994a9952a229841fe5be5aa8f8e9f7e3506e591" target="_blank" rel="noopener noreferrer">Q4 Earnings Outperformers: Knight-Swift Transportation (NYSE:KNX) And The Rest Of The Ground Transportation Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how Knight-Swift Transportation (N...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b55b549ac5fdddf7b3d5c2140afc24d20fe50ef4fd4d9dec26a46108e63d2626" target="_blank" rel="noopener noreferrer">XPO Sponsors Pat Tillman Foundation's Annual Pat's Run for Second Year in a Row</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO , a leading provider of freight transportation in North America, is proud to sponsor the Pat Tillman Foundation's 21st annual Pat's Run for the second year in a row.The event, on Saturday, April.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ce99f17846597f1edfc712a061c3f7488a3b163ac513817fdf167a3da178c03b" target="_blank" rel="noopener noreferrer">Ground Transportation Stocks Q4 Results: Benchmarking Landstar (NASDAQ:LSTR)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q4 earnings season wraps, let’s dig into this quarter’s best and worst performers in the ground transportation industry, including Landstar (NASDAQ:LSTR) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8509fac60c3caa2559ff59c9f27a5e68c9ca935018e5211caf6fa5d53f0b1b6" target="_blank" rel="noopener noreferrer">XPO (XPO): Buy, Sell, or Hold Post Q4 Earnings?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO currently trades at $104.96 per share and has shown little upside over the past six months, posting a small loss of 2.4%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f13fa47e1fa6ad020e8b63558c235931a57a7624dca0c37a2f9292c5269eb834" target="_blank" rel="noopener noreferrer">Two XPO Leaders Named 2025 Top Women to Watch in Transportation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Olivia Raymond and Jamie Sheffield recognized for their leadership and impact in the freight transportation industryGREENWICH, Conn., March 31, 2025 (GLOBE NEWSWIRE) -- XPO (NYSE: XPO), a leading prov...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f155fbcec07f5938e4cac22836e85b023051be0f507787ae1d934dcacea1af4c" target="_blank" rel="noopener noreferrer">XPO Announces $750 Million Share Repurchase Authorization</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">GREENWICH, Conn., March 27, 2025 (GLOBE NEWSWIRE) -- XPO (NYSE: XPO), a leading provider of freight transportation in North America, today announced that its Board of Directors has authorized the repu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eb3cfeaaae997159fb975e89835db4d41f3140daad96a75d388cbbf735e581d2" target="_blank" rel="noopener noreferrer">XPO Named One of America's Most Innovative Companies by Fortune</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO , a leading provider of freight transportation in North America, today was named to Fortune's list of America's Most Innovative Companies for 2025. XPO is the only pure play LTL carrier on the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4e256b8c452164768bb01ca08ccbcdf494c88ba84432ee4b66e0bae074d66b99" target="_blank" rel="noopener noreferrer">Columbia Select Mid Cap Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Institutional Class shares of Columbia Select Mid Cap Growth Fund returned 8.25% for Q4 2024. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1978fbcd4cd086ca1acf38f67402d30def438bccbd47be4e7f3b71fe245d500" target="_blank" rel="noopener noreferrer">ClearBridge Large Cap Value Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Our quality bias in materials and utilities stood out the most in a quarter that saw a reversal of some of 2024âs themes....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fd119dc59f3016323bc1e6184579deef5ecc1debf0b600093071c3b68f90bf63" target="_blank" rel="noopener noreferrer">Columbia Small Cap Growth Fund Q4 2024 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For Q4 2024, the Columbia Small Cap Growth Fund returned 3.94%. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e31a7ca73ac955b047bd12a189bb2a60a966daee42d81213c39bab30506251d7" target="_blank" rel="noopener noreferrer">XPO Named One of America’s Most Innovative Companies by Fortune</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">GREENWICH, Conn., March 26, 2025 (GLOBE NEWSWIRE) -- XPO (NYSE: XPO), a leading provider of freight transportation in North America, today was named to Fortune’s list of America’s Most Innovative Comp...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f1191e63a5286473925d4c53069a4139d7a09f3c84b39fd18cf619299307cf1" target="_blank" rel="noopener noreferrer">FedEx’s worse-than-feared outlook triggers price-target cuts — and one downgrade to sell</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">FedEx’s worse-than-feared outlook triggers price-target cuts — and one downgrade to sell...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8cf17a55665a368fd4d852737dba3e9cd546159b2e6434818812d3c2102e731" target="_blank" rel="noopener noreferrer">Three XPO Leaders Named 2025 'Pros to Know' by Supply & Demand Chain Executive Magazine</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.61
+                                </span>
+                            </div>
+                            <div class="article-summary">Greenwich, Conn. - XPO , a leading provider of freight transportation in North America, announced today that three of its leaders have been named 2025 'Pros to Know' by Supply & Demand Chain Executive...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=67c4f89eb4af42602eb97c327c7293fe9fd01fc5fda484f6d4c9a85cab7f21e0" target="_blank" rel="noopener noreferrer">Three XPO Leaders Named 2025 “Pros to Know” by Supply & Demand Chain Executive Magazine</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">GREENWICH, Conn., March 17, 2025 (GLOBE NEWSWIRE) -- XPO (NYSE: XPO), a leading provider of freight transportation in North America, announced today that three of its leaders have been named 2025 “Pro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=615bb7351b4ce2105be2ef371c86781002e029eca7cd705ef8becee5dcc5a50b" target="_blank" rel="noopener noreferrer">3 Mid-Cap Stocks in Hot Water</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Mid-cap stocks have the best odds of scaling into $100 billion corporations thanks to their tested business models and large addressable markets. But the many opportunities in front of them attract si...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

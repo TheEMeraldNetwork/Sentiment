@@ -1,0 +1,583 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Coeur Mining Inc. (CDE) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Coeur Mining Inc. (CDE)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.16</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=145856aa4b7d56c0c814854680875d4dbc3e25c4aa6f4c3b823470d3f1e8f9d7" target="_blank" rel="noopener noreferrer">Coeur Mining, Inc. (NYSE:CDE) is largely controlled by institutional shareholders who own 74% of the company</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights Given the large stake in the stock by institutions, Coeur Mining's stock price might be vulnerable to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb2cbbdfa4e7fe96aeae4caf1cefd555c136f7795284ffd40e1f27601dd5559d" target="_blank" rel="noopener noreferrer">Are Industrial Products Stocks Lagging  Andritz (ADRZY) This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.64
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how Andritz (ADRZY) and Greif (GEF) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b87167a86449a157388f01fc0e052e59c179ec0c7e01e9a98d0a62f77a32bdcd" target="_blank" rel="noopener noreferrer">Has Aris Mining Corporation (ARMN) Outpaced Other Basic Materials Stocks This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.05
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how Aris Mining Corporation (ARMN) and Coeur Mining (CDE) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eda7cd784c304591ff47be4e7b1bd691bd42d291eb3eba3504f57f013c9b3d89" target="_blank" rel="noopener noreferrer">Is Apollo Commercial Real Estate Finance (ARI) Stock Outpacing Its Finance Peers This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how Apollo Commerical Finance (ARI) and Berkeley Group Holdings PLC Unsponsored ADR (BKGFY) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=26151dbb500793a6f58de33d9f5cc800f539647a87fa05469310a85f32bdce03" target="_blank" rel="noopener noreferrer">Is Atmos Energy (ATO) Outperforming Other Utilities Stocks This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.61
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how Atmos Energy (ATO) and UGI (UGI) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3a8e10c3f3b84b1b36e3cdfd39b667c65bba46bb3770668be9197df1600d173d" target="_blank" rel="noopener noreferrer">Coeur Mining : RBC Capital Markets Global Mining & Materials Conference Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RBC Capital Markets Global Mining & Materials Conference June 2025 NYSE: CDE ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0fef85f393539a58257e89efff0076558acdfcf96a37d633d1ffcf0676f65d9e" target="_blank" rel="noopener noreferrer">Will PAAS Unlock More Value Through Its MAG Silver Acquisition?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Pan American Silver to acquire MAG Silver in $2.1B deal, gaining 44% stake in Juanicipio and boosting reserves, output and cash flows....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=60c26478f163bbd0fead9ba78324ae1d62d8ca80875e74d49244e8f59b7632a2" target="_blank" rel="noopener noreferrer">Coeur to Participate in the RBC Capital Markets Global Mining & Materials Conference</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">CHICAGO, June 11, 2025--Coeur Mining, Inc.’s ("Coeur" or the "Company") (NYSE: CDE) Chairman, President and Chief Executive Officer, Mitchell J. Krebs, and Senior Vice President and Chief Financial Of...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8dd370282c8fa062ddb97136ceb5235bdaef98e32402d98526f14efe48881937" target="_blank" rel="noopener noreferrer">Can Coeur Mining (CDE) Run Higher on Rising Earnings Estimates?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Coeur Mining (CDE) shares have started gaining and might continue moving higher in the near term, as indicated by solid earnings estimate revisions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d9eb67a647b4e0585b9caf7eb1350b5201267c61fd3ee41f2d7038b902a4f19f" target="_blank" rel="noopener noreferrer">4 Non-Ferrous Metal Mining Stocks to Watch in a Promising Industry</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">The outlook of the Zacks Mining - Non Ferrous industry is promising, backed by strong demand. Stocks like FCX, CDE, LEU and ERO are poised to benefit from this....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c2210597d64a9821646fc968a4f14e3cb942622ad7562538f8885471aa622138" target="_blank" rel="noopener noreferrer">Are You Looking for a Top Momentum Pick? Why Coeur Mining (CDE) is a Great Choice</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Does Coeur Mining (CDE) have what it takes to be a top stock pick for momentum investors? Let's find out....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f6fbe66bca469bd0d02143aedadecc6661e23d8b13ecb4a53299ff000774c2c1" target="_blank" rel="noopener noreferrer">Coeur Mining: Last Amongst Equals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-01</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Coeur Mining's Q1-25 results and recent moves highlight challenges with share dilution and growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cbc4628f643a8a3398e8b843f5d02eac9afe1d58c8e499de2e4fc8f6ccb6eb19" target="_blank" rel="noopener noreferrer">Is FrancoNevada (FNV) Outperforming Other Basic Materials Stocks This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.63
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how Franco-Nevada (FNV) and Coeur Mining (CDE) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e04c9a735f982bfd39a2b7be28bdd722ff4af40e7e63c74e61b9c9fd119eed0c" target="_blank" rel="noopener noreferrer">Why Coeur Mining, Inc. (CDE) Soared On Wednesday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of While Market Bleeds, These 10 Firms Soar. In this article, we are going to take a look at where Coeur Mining, Inc. (NYSE:CDE) stands against other best-performing stock...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a00506c2b401c3140b1293373fb3db23c514960d39c7119dfc65b6ebedd5b7bf" target="_blank" rel="noopener noreferrer">Coeur Mining (CDE) Just Flashed Golden Cross Signal: Do You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Should investors be excited or worried when a stock's 50 -day simple moving average crosses above the 200-day simple moving average?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5019171b0bec7f20f82785638d05b41c8923ec87d279309c937b873203ebdcda" target="_blank" rel="noopener noreferrer">Coeur Mining : Raymond James London Silver Conference</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Raymond James London Silver Conference May 2025 NYSE: CDE ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=abb13c2a951104d6329293ceb7dd4c69e2afff08a01adacba930a99ff9e17aca" target="_blank" rel="noopener noreferrer">Coeur Mining (NYSE:CDE) Announces US$75 Million Share Buyback Plan</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Coeur Mining (NYSE:CDE) recently announced a buyback plan authorized by its Board of Directors, allowing the company to repurchase up to $75 million worth of shares by May 31, 2026. This move, coupled...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cca2f4a5aa174ebf1e75607489eb54f6415a1ca9758b01f1e0976ad112aa952a" target="_blank" rel="noopener noreferrer">Coeur Announces Stock Repurchase Program</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.40
+                                </span>
+                            </div>
+                            <div class="article-summary">CHICAGO, May 27, 2025--Coeur Mining, Inc. ("Coeur" or the "Company") (NYSE: CDE) today announced that its Board of Directors has authorized a $75 million share repurchase program ("the Program"), effe...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d9d124e931dfac694d4022a4430f30b61eebeb9e190176f8977ab4870b4eb6d2" target="_blank" rel="noopener noreferrer">Coeur to Participate in the Raymond James London Silver Conference</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">CHICAGO - Coeur Mining, Inc.'s Chairman, President and Chief Executive Officer, Mitchell J. Krebs, will participate in the Raymond James Silver Conference in London, United Kingdom on Wednesday, May.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d6cfa4d9423e2beec56a9329c02a98cb6ad91ece8f2ce137eb94fbe6f2967769" target="_blank" rel="noopener noreferrer">All You Need to Know About Coeur Mining (CDE) Rating Upgrade to Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Coeur Mining (CDE) might move higher on growing optimism about its earnings prospects, which is reflected by its upgrade to a Zacks Rank #2 (Buy)....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,695 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Hudbay Minerals Inc. (HBM) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Hudbay Minerals Inc. (HBM)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">27</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.25</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7572e605f6f9180842dfd20ee61d8d9d6ffeb6be6d7d4950b81fdeb145eaa3fb" target="_blank" rel="noopener noreferrer">Is New Gold (NGD) Outperforming Other Basic Materials Stocks This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.04
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how New Gold (NGD) and HudBay Minerals (HBM) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10bd3f0e0cac9149bd2e1da25c159f92e379848e7336119a395428a601e9ae50" target="_blank" rel="noopener noreferrer">HudBay Minerals (HBM) Stock Sinks As Market Gains: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">In the most recent trading session, HudBay Minerals (HBM) closed at $10.83, indicating a -1.19% shift from the previous trading day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ca67be89be3645c6aad1ed33e6d05a609e85bdf857bdc8c8c35eb1f85846a717" target="_blank" rel="noopener noreferrer">Zacks.com featured highlights include Hudbay Minerals, StoneCo, Centene and CVS Health</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">HBM, STNE, CNC, and CVS stand out for low P/CF ratios and strong value scores as investors seek quality in a cautious market....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dd513f1373edd5eada8cecfa21311c262de13cce75f93f0d04552b9868874cc1" target="_blank" rel="noopener noreferrer">4 Top Stocks With Strong Interest Coverage for the Second Half of 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Strong interest coverage ratios make HBM, STRL, MOH, and VRT standout picks for navigating debt and driving earnings growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b9bb3be0db1db30195a2cdade0f8f259daff831a0556fc28ea14412292b4e004" target="_blank" rel="noopener noreferrer">Is HudBay Minerals (HBM) Stock Undervalued Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Here at Zacks, our focus is on the proven Zacks Rank system, which emphasizes earnings estimates and estimate revisions to find great stocks. Nevertheless, we are always paying attention to the latest...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cb4168e0130da416d1302e6ebb67c31cf86b2aa57aa5102fae9ba21ec35ed273" target="_blank" rel="noopener noreferrer">Hudbay, Capstone, First Quantum Among RBC Capital Markets' Preferred Base Metals Equities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals (HBM.TO), Capstone Copper (CS.TO) and First Quantum Minerals (FM.TO) are among RBC C...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=38dbd83a16c2bcc0f050805abbf9f033792d62fe92808d99cb0205c4633ec35e" target="_blank" rel="noopener noreferrer">4 Value Stocks to Invest in for the Second-Half 2025 Market Shift</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay, StoneCo, Centene, and CVS stand out as top value picks for H2 2025 with strong cash flow and growth prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=18401760fb2986f09e9136aee7b6a234752692a6061d91c9db3d49d6fd7a8f1f" target="_blank" rel="noopener noreferrer">Finding the Best Value Stocks to Buy in July</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Walking investors through how to screen for stocks that offer the winning combination of compelling value and improving earnings outlooks, ideal for buying in July and beyond....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9019978d903faf69f211536d8869f5ea3523f613b1b5c8ae1229cacedeabe3fb" target="_blank" rel="noopener noreferrer">Hudbay Resumes Snow Lake Operations After Wildfire Evacuation Order</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals Inc. (NYSE:HBM) is among the 11 Best Copper Stocks to Buy Now. It has restarted operations in Snow Lake after the evacuation order was removed on June 14, 2025. The Lalor mine has resu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=80db537b690015e33f70729763914a232854caba7061d5b7e72b1b2f14c7b73e" target="_blank" rel="noopener noreferrer">Best Value Stocks to Buy for June 30th</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">EBMT, HBM and SHBI made it to the Zacks Rank #1 (Strong Buy) value stocks list on June 30, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=04d194f8ee991bda047011a387079dfb80d974e32a972176da77ee169c80aca2" target="_blank" rel="noopener noreferrer">New Strong Buy Stocks for June 30th</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HBM, SHBI, NGG, EBMT and GEF have been added to the Zacks Rank #1 (Strong Buy) List on June 30, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3be8a8f542fac0e029c839286e596ef2bb9930b3e440d1c0fe41d50731b6b55e" target="_blank" rel="noopener noreferrer">HBM vs. WPM: Which Stock Should Value Investors Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">HBM vs. WPM: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=967acd4202f2e03f5615ecd4c838b39b356ba4865a35dac7f7f2d20cfde8e7d6" target="_blank" rel="noopener noreferrer">Is HudBay Minerals (HBM) a Solid Growth Stock? 3 Reasons to Think "Yes"</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">HudBay Minerals (HBM) is well positioned to outperform the market, as it exhibits above-average growth in financials....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1e48346de82561e502b6e7a887c7d08fbe27879d858c1e82ed8345f836e3cda" target="_blank" rel="noopener noreferrer">Hudbay Minerals: Record Results And New Projects At A Bargain Price</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5c096df4f008a5a4401c5ca0d10d89bf18f81a8b2dd9d3369f5cc73fe6c1477" target="_blank" rel="noopener noreferrer">Mining Sector Unites to Support Manitoba Wildfire Relief with C$1.25 Million Donation to the Canadian Red Cross</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, June 26, 2025 (GLOBE NEWSWIRE) -- In response to the devastating wildfires impacting communities across northern Manitoba, three leading mining companies that operate in the region— Vale Base...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f709420407cc4efc1d4b4f0509e8d77c2e200a508b354d55d68c32d9106a895f" target="_blank" rel="noopener noreferrer">Want Better Returns? Don't Ignore These 2 Basic Materials Stocks Set to Beat Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors looking for ways to find stocks that are set to beat quarterly earnings estimates should check out the Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c86d14016bef849450063b1efe32207c48017991152e2f275e6147e0063f2f6" target="_blank" rel="noopener noreferrer">HudBay Minerals (HBM) Upgraded to Buy: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">HudBay Minerals (HBM) might move higher on growing optimism about its earnings prospects, which is reflected by its upgrade to a Zacks Rank #2 (Buy)....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fc897c5020a278e414a25bec4332f5f9070ba36cc832d146caba3c10d5929ae1" target="_blank" rel="noopener noreferrer">Here's Why HudBay Minerals (HBM) Fell More Than Broader Market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.10
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest trading day saw HudBay Minerals (HBM) settling at $9.72, representing a -1.62% change from its previous close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=935057a61916dbae327b9f7b26360383bcf8c6d2c1fe405e284351f7659d4e63" target="_blank" rel="noopener noreferrer">Is HudBay Minerals (HBM) Stock Outpacing Its Basic Materials Peers This Year?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">Here is how HudBay Minerals (HBM) and MAG Silver (MAG) have performed compared to their sector so far this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ad162727893d8c40d6a07b21f91268906a857a1c6765a50baa043954b0c45b29" target="_blank" rel="noopener noreferrer">Is HudBay Minerals (HBM) a Great Value Stock Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Here at Zacks, our focus is on the proven Zacks Rank system, which emphasizes earnings estimates and estimate revisions to find great stocks. Nevertheless, we are always paying attention to the latest...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8e35eb55ee400f3e1c2229e99831a01a310faca62c376e97862e5b7ed7b97fb" target="_blank" rel="noopener noreferrer">Hudbay Minerals Maintained at Outperform Rating With a $14.50 Price Target at National Bank of Canada</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">National Bank of Canada maintained its outperform rating and $14.50 price target on the shares of Hu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98f671d890eb84250270216f49c863bbe0e0fa0812a5b69ea8d8bc773da8324a" target="_blank" rel="noopener noreferrer">Hudbay Minerals Restarts Snow Lake Operations Post Wildfire Disruption</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.09
+                                </span>
+                            </div>
+                            <div class="article-summary">HBM restarts Snow Lake operations post-wildfire, keeping the 2025 mine guidance on track....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9be3711e14360997f9bd2626d1d1fe55c495af7cd6e686da609f1b168e2616f" target="_blank" rel="noopener noreferrer">HudBay Minerals (HBM) Is Up 0.73% in One Week: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Does HudBay Minerals (HBM) have what it takes to be a top stock pick for momentum investors? Let's find out....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=84f89153491dbe958de8b6a58c82a7c987fb6dd232bd7200e67904b7e69434df" target="_blank" rel="noopener noreferrer">Hudbay Resumes Snow Lake Operations Following Wildfire Evacuation Order</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, June 16, 2025 (GLOBE NEWSWIRE) -- Hudbay Minerals Inc. (“Hudbay” or the “Company”) (TSX, NYSE: HBM) has resumed operations in Snow Lake following the lifting of evacuation orders in the Snow ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=68c53448f25d7bc9d64dd2046d01aac94379b7e92304b1c84329caf2d7904d0f" target="_blank" rel="noopener noreferrer">Hudbay Minerals Resuming Snow Lake Operations Following Wildfire Evacuation Order</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Hudbay Minerals (HBM.TO) on Monday said it resumed operations at its Snow Lake operations in Manitob...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b3a389edfaa130b6791808cf59c04473f64f96241bab5b52b03fe07a7760be45" target="_blank" rel="noopener noreferrer">Does Hudbay Minerals (TSE:HBM) Deserve A Spot On Your Watchlist?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The excitement of investing in a company that can reverse its fortunes is a big draw for some speculators, so even......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9248ea9deb833b58813d58cfcba1580aa7ea38c2529011a9c9dd9209ba9ed23e" target="_blank" rel="noopener noreferrer">Hudbay Selects Local Firms to Advance Copper World Feasibility Study</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Copper World, Inc., a wholly-owned subsidiary of Hudbay Minerals Inc. ("Hudbay"), today announced the selection of several companies to conduct feasibility studies and drive early-stage project develo...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
