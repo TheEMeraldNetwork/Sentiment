@@ -1,0 +1,1095 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Biogen Inc. (BIIB) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Biogen Inc. (BIIB)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">52</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">29</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.26</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a9deb6742e45552bbbbddc4dc2a16a7bf439ff9790bdabce9967547b739fbfa" target="_blank" rel="noopener noreferrer">Barclays Upgrades Ionis Pharmaceuticals (IONS) Stock, Raises PT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Ionis Pharmaceuticals, Inc. (NASDAQ:IONS) is one of the 11 Best Mid-cap Healthcare Stocks to Buy According to Hedge Funds. Barclays upgraded the company’s stock to “Overweight” from “Equal Weight” wit...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e78da2ce431b58e52329cf08a3b757f34971eafabfed5f3792a78b5720949952" target="_blank" rel="noopener noreferrer">Biogen and Stoke Therapeutics Announce Presentation of Data from Studies of Zorevunersen, an Investigational Medicine for Dravet syndrome, at the 16th European Paediatric Neurology Society (EPNS) Congress</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">– Data from an analysis designed to evaluate the potential effects of the Phase 3 zorevunersen dosing regimen showed improvements in cognition and behavior at Week 68 – – These findings support the in...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d994501e0e688984803a3cb1ba3bd12f30c5e488b78383ffe1343a5946ff519" target="_blank" rel="noopener noreferrer">Stoke Therapeutics and Biogen Announce Presentation of Data from Studies of Zorevunersen, an Investigational Medicine for Dravet syndrome, at the 16th European Paediatric Neurology Society (EPNS) Congress</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">BEDFORD, Mass., & CAMBRIDGE, Mass., July 10, 2025--Stoke Therapeutics, Inc. (Nasdaq: STOK), a biotechnology company dedicated to restoring protein expression by harnessing the body’s potential with RN...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=929f97c6bdcdd4fa431bb3d4412d41a8d45eed1de58551371d292a056251e790" target="_blank" rel="noopener noreferrer">RBC Capital Maintains a Buy on Biogen (BIIB) With a $208 PT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) is one of the 13 Cheap Healthcare Stocks with Huge Upside Potential. In a report released on July 7, Brian Abrahams from RBC Capital maintained a Buy rating on Biogen Inc. (N...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d84c62315f787a10c240290d27b94089bb9068a43581f030d65a81770747f2e8" target="_blank" rel="noopener noreferrer">US FDA approves gradual dosing for Lilly Alzheimer's drug</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. Food and Drug Administrationapproved changing the prescribing information for Eli Lilly'sAlzheimer's drug Kisunla to allow more gradual dosing tolower the risk of a potentially dangerous......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1483c8a951161335aa0d8e77aa67301597654a341db15f76c721977cdbb4a6ff" target="_blank" rel="noopener noreferrer">DNLI's BLA for Hunter Syndrome Drug Gets FDA's Priority Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Denali's lead drug for Hunter syndrome wins FDA Priority Review, marking a key step toward commercial-stage status....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2606d029d00c63211b437f9ce0c044abe459c0b4a972802a7a61ebb77e7f6d43" target="_blank" rel="noopener noreferrer">Biogen estimated charge to impact eps by ($0.26) per share for q2</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc:Biogen Inc - estimated charge to impact eps by per share for q2 - SEC filingBiogen Inc - expects $46 million expense for bought research and development in q2 2025 - SEC filing......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76d38852d004544646e52b90fa07e427e070b22a9b207e1f6ab953f732d134dd" target="_blank" rel="noopener noreferrer">Biogen : Preliminary Q2 2025 Acquired IPRD & Licensing Income</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">‌UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e901e538d15fcecb5b53608674d9c74a9fdbcaa69ed28869e8c49e767e2bec68" target="_blank" rel="noopener noreferrer">Ionis Pharmaceuticals (IONS) Moves 9.1% Higher: Will This Strength Last?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Ionis Pharmaceuticals (IONS) was a big mover last session on higher-than-average trading volume. The latest trend in earnings estimate revisions might not help the stock continue moving higher in the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eddb1804046442fce8fc81ada6ac4ce666824a7b09ee5f5330ba099ad06954c0" target="_blank" rel="noopener noreferrer">3 Reasons BIIB is Risky and 1 Stock to Buy Instead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the past six months, Biogen’s stock price fell to $125.58. Shareholders have lost 16.3% of their capital, which is disappointing considering the S&P 500 has climbed by 5.7%. This might have inves...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=065d3bd2b2359a15da5b3d0762f8a615d917683cc0f0ac3781c6d23a179a7c2f" target="_blank" rel="noopener noreferrer">Biogen Begins Phase III Felzartamab Study for Third Kidney Disease</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">BIIB begins phase III dosing of felzartamab primary membranous nephropathy study, targeting a tough-to-treat condition with no approved therapies....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b379302d6de81f621e3c126694bf877871f310569635559ea6ab59e1ae6c66b4" target="_blank" rel="noopener noreferrer">Biogen Inc.(NasdaqGS: BIIB) added to Russell 1000 Defensive Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. added to Russell 1000 Defensive Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=616e996e9017aa0853683e18d7569f51801d799b96336df19f98f4d51d833135" target="_blank" rel="noopener noreferrer">Biogen Initiates Phase 3 Study of Felzartamab for the Treatment of Primary Membranous Nephropathy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Global Phase 3 PROMINENT study will evaluate the efficacy and safety of felzartamab, as compared to tacrolimus, in adults with primary membranous nephropathy (PMN)There are currently no therapies spec...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aa3fd58b3af4e34e4d99f93669cc36a6924b778285e9f813fadfcf28a283837d" target="_blank" rel="noopener noreferrer">RBC says Lilly could blaze trail and Biogen could pull ahead in Alzheimer’s market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- RBC Capital Markets analysts believe Eli Lilly’s upcoming TRAILBLAZER-3 trial data on Kisunla could unlock a vast, largely untapped segment of the Alzheimer’s treatment market and pav...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1ae7614f475c00531f3dbe2acbf715de5078e4f06d6d3394596db612a35b334f" target="_blank" rel="noopener noreferrer">AbbVie to buy Capstan for up to $2.1 billion in immunology push</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -AbbVie said on Monday it would acquire privately held cell therapy developer Capstan Therapeutics in a deal worth up to $2.1 billion, expanding its product pipeline with experimental treatm...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bac0270fc1de8e13b851d6489d29ff73601c38b92c3a806b4ae7dbd818ae1284" target="_blank" rel="noopener noreferrer">Biogen Inc.(NasdaqGS: BIIB) added to Russell 1000 Value-Defensive Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.62
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. added to Russell 1000 Value-Defensive Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=45e7283659a02c97a0616cca407ed56f0cbdc445e71df4a0202448c9c4b171c7" target="_blank" rel="noopener noreferrer">Biogen Inc. Initiates Phase 3 Study of Felzartamab for the Treatment of Primary Membranous Nephropathy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. announced the initiation of dosing in the global clinical study, PROMINENT. The Phase 3 study will evaluate the efficacy and safety of the investigational drug felzartamab compared to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7aa0460938b178cfe7ff3a271ec592aa31557e2ed62c6a983953884d2ed0e41b" target="_blank" rel="noopener noreferrer">BIOGEN : TO REPORT SECOND QUARTER 2025 FINANCIAL RESULTS JULY 31, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Cambridge, Mass.- Biogen Inc. today announced it will report second quarter 2025 financial results Thursday, July 31, 2025, before the financial markets open. Following the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8b841b49e467eedbb83f8658fce9de0cf506867c295a73ef82f62f1a87c5e35" target="_blank" rel="noopener noreferrer">S&P 500 Stocks: Screening For Long-Term Winners, My List Of 13</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A shift away from big tech dominance is fueling interest in under-the-radar S&P 500 stocks with alpha potential. Find out why stock-picking is making a comeback....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b4312990b1e53f7e6820b12d9eebefd419acdb918ad558314580b421c8ed6686" target="_blank" rel="noopener noreferrer">Biogen Advances Once-Yearly SMA Therapy Salanersen to Phase 3 After Positive Phase 1 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) is one of the most undervalued US stocks according to analysts. On June 25, Biogen announced positive topline results from an interim analysis of its Phase 1 study for salane...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1750506322093600e8cc302d3c220d7c1b3877871c0499e2efe8d3ffe37e6f9b" target="_blank" rel="noopener noreferrer">Biogen highlights ‘promising’ results for higher-dose nusinersen in SMA trials</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen (BIIB) announced new data that it says reinforce the clinical impact of nusinersen across a broad spectrum of individuals affected by spinal muscular atrophy. These latest findings from Part C ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e9fc244962285d27818551b0bf6a2b038f7a2927fe78cc084d3021ebc8108a4c" target="_blank" rel="noopener noreferrer">New Data for Nusinersen Underscore Biogen’s Commitment to Advancing Clinical Research to Improve Outcomes in SMA</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">New analyses from DEVOTE Part C further characterize the improvements in motor function in participants with SMA who transitioned to the investigational higher dose regimen of nusinersen from 12 mg SP...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c30a809f024a3f93f766f041a7bce74afa24d0c824855a850b368803e524aee5" target="_blank" rel="noopener noreferrer">Biogen Inc. Announces New Data for Nusinersen Underscore Biogen's Commitment to Advancing Clinical Research to Improve Outcomes in SMA</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. announced new data that reinforce the clinical impact of nusinersen across a broad spectrum of individuals affected by spinal muscular atrophy . These latest findings from Part C of the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91cfff372e8aa4a887791999919b3430d59aacec39f289b1840fba9db369024a" target="_blank" rel="noopener noreferrer">5 Revealing Analyst Questions From Biogen’s Q1 Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen’s first quarter results outpaced Wall Street’s expectations, prompting a positive market reaction. Management highlighted the expanding contribution from its newer neurology and rare disease pr...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f5cab6aadc4cc476ee8796607671730907ad5e7bb681e1cfd33176010cb1b7d4" target="_blank" rel="noopener noreferrer">Denali Therapeutics: Navigating Through Recent Setbacks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=434516bd824c3d1076c26cb9d25c6f392bd42be9a1308427eb71bf5171300774" target="_blank" rel="noopener noreferrer">Biogen to Advance Investigational Spinal Muscular Atrophy Asset to Registrational Studies Based on Positive Interim Phase 1 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Salanersen (BIIB115/ION306) is a novel antisense oligonucleotide (ASO) with the potential to achieve high efficacy and once yearly dosing in spinal muscular atrophy (SMA)Interim Phase 1 data show chil...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d8112563459e015b2d757bf76ca532f1ea8b33aa7276e63e0d5354366c7fcae1" target="_blank" rel="noopener noreferrer">Ionis announces Biogen to advance salanersen into SMA registrational studies based on positive interim Phase 1 results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.76
+                                </span>
+                            </div>
+                            <div class="article-summary">CARLSBAD, Calif., June 25, 2025--Ionis Pharmaceuticals, Inc. (Nasdaq: IONS) today announced that its partner, Biogen, shared positive topline results from the Phase 1 study of salanersen (ION306/BIIB1...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5933734a69830cc0d0d61813206e32f1c564b53a9e30255180dc0f7c77c7dafd" target="_blank" rel="noopener noreferrer">Oligonucleotide Synthesis Market Research and Global Forecast Report 2025-2030: Rising Emphasis on Advancing Drug Delivery and Scalable Synthesis Technologies for Oligonucleotide-Based Therapeutics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">The oligonucleotide synthesis market is forecasted to grow from USD 10.5 billion in 2025 to USD 24.7 billion by 2030 (CAGR of 18.6%). Key drivers include increasing demand for synthesized oligonucleot...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ce3d1fe66b61efebbbe8331394b083fa223a2085fb3356e3cdd574143eb28d1" target="_blank" rel="noopener noreferrer">Biogen’s Friedreich’s Ataxia Campaigns Earn 4 Cannes Lions Pharma Nominations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) is one of the best S&P 500 stocks with huge upside potential. As of June 16, Biogen emerged as a prominent contender at the Cannes Lions International Festival of Creativity ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4569d36647df4301c694aba83afa2c3e48e6cdf2a6d6709978ea28d34091e4c6" target="_blank" rel="noopener noreferrer">Biogen scores Cannes Festival win with dark humored campaign</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.67
+                                </span>
+                            </div>
+                            <div class="article-summary">The company’s unique campaign for a rare, terminal illness nabbed millions of views and a spot on the main stage at the Cannes Lions Festival of Creativity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=931ed0b7e78a6f314c4ca0c78207bae003bbc81608ddccc0057aeef54e90e903" target="_blank" rel="noopener noreferrer">Biogen: Investors Are Missing The Bigger Picture</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen is an intriguing stock that occupies one of the leading positions in the central nervous system therapeutic market. Read more on BIIB stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ead721171471cd8070bcc12bb663b8afd49c83bdbaa0a947f175adb45797394a" target="_blank" rel="noopener noreferrer">Biogen Launches Phase 3 Pediatric Trial Of Omaveloxolone For Friedreich Ataxia.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) is among the 11 Best Genomics Stocks to Buy According to Hedge Funds. It has begun dosing in the global Phase 3 BRAVE trial to test omaveloxolone (SKYCLARYS®) in children age...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aca5d67fcbd0f3286119150b0f26ab33f9526dae16eaeee9b4c29282c07e7864" target="_blank" rel="noopener noreferrer">Ionis (IONS) Announces Leadership Transition as R&D Veteran Richard Geary Prepares to Retire</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Ionis Pharmaceuticals, Inc. (NASDAQ:IONS) is one of the 10 biotech stocks screaming a buy. On June 12, the company announced the upcoming retirement of Richard Geary, Ph.D., its executive vice preside...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e9479e4add711224ea8bea7f18235d31ab0d90d0cfbd714f3fa974dbf498ffcb" target="_blank" rel="noopener noreferrer">Biogen starts dosing in Phase III trial of Friedreich ataxia therapy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The trial aims to assess the safety, pharmacodynamics, efficacy, and pharmacokinetics of the therapy in nearly 255 subjects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f390a8c5e439f2b9784a6dd23eed484e40011aa2b11d99e329f717a4a50a3b80" target="_blank" rel="noopener noreferrer">Biogen Inc Initiates Phase 3 Pediatric Study of Omaveloxolone for the Treatment of Friedreich Ataxia</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. announced the initiation of dosing in the BRAVE study, a global Phase 3 clinical trial. The BRAVE study will evaluate the efficacy and safety of omaveloxolone in children with Friedreich.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a9180bd7d02f1c9c1fe8855714656f55e8a8d290868a380c3c9dc77b1745b62f" target="_blank" rel="noopener noreferrer">Biogen Initiates Phase 3 Pediatric Study of Omaveloxolone for the Treatment of Friedreich Ataxia</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Global Phase 3 BRAVE study will evaluate the efficacy and safety of omaveloxolone in children 2 to <16 years old with Friedreich ataxia, a rare neurodegenerative disorderBRAVE study will explore the p...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7181103317f95e019e4fb5b35d7040ff84952b6684810f7dccc685786f680136" target="_blank" rel="noopener noreferrer">H.C. Wainwright sees potential competition for Sage from Biogen</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">H.C. Wainwright analyst Douglas Tsao says that while a takeover of Sage Therapeutics (SAGE) comes as no surprise, but a deal with Supernus (SUPN) is unexpected, and “leaves open the door for additiona...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0ad2e92c40632fbf0a4d0550ea11ff0cc4ddb1c12d7fa2e21b1aebc634b6789e" target="_blank" rel="noopener noreferrer">21GRAMS Wins Its First Gold Lion for Branded Pharma Campaign at Cannes Lions International Festival of Creativity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">CANNES, France & NEW YORK, June 18, 2025--21GRAMS Named No. 2 Healthcare Agency and Real Chemistry Ranked No. 2 Healthcare Network at Cannes Lions International Festival of Creativity...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3226d261de07a5bc2f138fb81f7b88ae6a65968b8080612979fc6ef6cb7de477" target="_blank" rel="noopener noreferrer">Maxion Therapeutics Appoints Dr. Stefan Härtle as Chief Development Officer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Cambridge, UK, 17 June 2025 – Maxion Therapeutics (“Maxion”), a biotechnology company developing antibody-based KnotBody® drugs for ion channel and G protein coupled receptor (GPCR)-driven diseases, t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dd08a992e71b0b2b7d198729e9d5b314c14b5a8324e30ffd37ff51cf60a0252a" target="_blank" rel="noopener noreferrer">Biogen Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3f8dac17c4a9a3d7a6768d96791db41f86a97b685610ce68665ca1d6bf746979" target="_blank" rel="noopener noreferrer">SAGE to be Acquired by Supernus Pharmaceuticals in $795 Million Deal</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">SUPN inks deal to acquire Sage Therapeutics for up to $795 million, securing rights to depression drug Zurzuvae....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=60767a67e291a846633e1d00db4e64ce83a2af5a20489afa45309ea47496aac5" target="_blank" rel="noopener noreferrer">Supernus enters depression drug market with up to $795 million Sage deal</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">Supernus Pharmaceuticalswill acquire Sage Therapeutics in a deal worth up to$795 million, gaining access to the only postpartum depressionpill approved in the United States, the companies said......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e8308bd99ce787593d343064c0bfc939cfe451b4b0532e0ebc07d8b5c14933cf" target="_blank" rel="noopener noreferrer">Sage, following Setbacks, to sell to Supernus for $561M</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">In what one analyst described as an “unremarkable” outcome, the brain drug developer is being acquired for just $8.50 per share, plus non-guaranteed additional payouts, after a series of stumbles that...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6b1eedda9c38b5d71db8b5755b69a9897e880afb66630dd315494a7d449fff24" target="_blank" rel="noopener noreferrer">Beleaguered Sage Snapped Up In Deal Worth Up To $561 Million</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.64
+                                </span>
+                            </div>
+                            <div class="article-summary">Supernus Pharmaceuticals agreed Monday to buy beleaguered biotech Sage Therapeutics in a deal worth up to $561 million....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91f85fdcb8c190e075ef3f8f99231b7897062bb487712d81d2115f61d739b2e0" target="_blank" rel="noopener noreferrer">Supernus makes depression drug play with $795m Sage buyout</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">After Biogen failed with a takeover bid in January, Supernus has swooped in to acquire the postpartum depression pill developer....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a3d07d5487e406a6b43a526c930a8600e63bba45102f381261c9dd01edbb44e4" target="_blank" rel="noopener noreferrer">Supernus Pharmaceuticals Snaps Up Beleaguered Sage Therapeutics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>DowJones</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Supernus Pharmaceuticals Snaps Up Beleaguered Sage Therapeutics...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=14ec0f8cb2231444090d6225bcbf24a2096e414cc6707a93cb31e81e5924baef" target="_blank" rel="noopener noreferrer">Biogen, UCB Present Positive Phase 3 Results for Lupus Drug Candidate at EULAR 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. (NASDAQ:BIIB) is one of the 11 most profitable NASDAQ stocks to buy now. On June 12, UCB and Biogen presented additional detailed results from the Phase 3 PHOENYCS GO study, evaluating dap...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=adc97fbc49d122525659392302cc20f65243377a928325db6f7f7bd6d0393742" target="_blank" rel="noopener noreferrer">1 Profitable Stock with Exciting Potential and 2 to Avoid</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">A company with profits isn’t always a great investment. Some struggle to maintain growth, face looming threats, or fail to reinvest wisely, limiting their future potential....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4a2a84381dfb375c254c97093cac789fb62e60e82023fc9f3f25e22b8b2b8289" target="_blank" rel="noopener noreferrer">Biogen Inc. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen Inc. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9369c1f4fb2438e1d3737be6c3b1285a7933c98b4105b7f7e79d39c7d1c7d489" target="_blank" rel="noopener noreferrer">Dapirolizumab Pegol Phase 3 Data in SLE Presented at the Annual European Congress of Rheumatology (EULAR) Show Improvement in Fatigue and Reduction in Disease Activity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">Dapirolizumab pegol (DZP) showed efficacy across multiple clinical endpoints in the PHOENYCS GO study, including fatigue and measures of disease activityDZP showed consistent improvements in fatigue, ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=25c6750499650517d00436206548002809363ab890d43691826e63252333bacd" target="_blank" rel="noopener noreferrer">Biogen: positive Phase 3 data in lupus</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Biogen and UCB have announced additional detailed results from the Phase 3 PHOENYCS GO study evaluating their investigational drug dapirolizumab pegol at the annual meeting of the European League......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9bd46aa422c7c828c4d302b074c969b75a1737fa5db68a84075402511b587eae" target="_blank" rel="noopener noreferrer">Biogen Highlights the Potential of Felzartamab for a Range of Immune-Mediated Diseases including Three Phase 3 Programs in Rare KidneyDiseases</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.75
+                                </span>
+                            </div>
+                            <div class="article-summary">Cambridge - Biogen Inc. will host a virtual investor seminar today at 10:00 a.m. ET focused on the potential of the investigational drug felzartamab in rare kidney diseases and the potential to......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
