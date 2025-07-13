@@ -591,7 +591,7 @@ class DashboardGenerator:
                         margin: 0;
                     }
                     
-                    .refresh-btn {
+                    .refresh-btn, .instant-report-btn {
                         background: rgba(255,255,255,0.1);
                         border: 1px solid rgba(255,255,255,0.2);
                         padding: 10px 20px;
@@ -601,11 +601,49 @@ class DashboardGenerator:
                         cursor: pointer;
                         transition: all 0.3s ease;
                         backdrop-filter: blur(5px);
+                        margin-left: 10px;
                     }
                     
-                    .refresh-btn:hover {
+                    .refresh-btn:hover, .instant-report-btn:hover {
                         background: rgba(255,255,255,0.2);
                         transform: translateY(-2px);
+                    }
+                    
+                    .instant-report-btn {
+                        background: rgba(0,123,255,0.2);
+                        border: 1px solid rgba(0,123,255,0.3);
+                    }
+                    
+                    .instant-report-btn:hover {
+                        background: rgba(0,123,255,0.3);
+                    }
+                    
+                    .instant-report-btn:disabled {
+                        background: rgba(255,255,255,0.05);
+                        color: rgba(255,255,255,0.5);
+                        cursor: not-allowed;
+                        transform: none;
+                    }
+                    
+                    .update-data-btn {
+                        background: rgba(0,200,0,0.2);
+                        border: 1px solid rgba(0,200,0,0.3);
+                    }
+                    
+                    .update-data-btn:hover {
+                        background: rgba(0,200,0,0.3);
+                    }
+                    
+                    .update-data-btn:disabled {
+                        background: rgba(255,255,255,0.05);
+                        color: rgba(255,255,255,0.5);
+                        cursor: not-allowed;
+                        transform: none;
+                    }
+                    
+                    .header-controls {
+                        display: flex;
+                        align-items: center;
                     }
                     
                     .card {
@@ -725,10 +763,16 @@ class DashboardGenerator:
             <body>
                 <div class="header">
                     <div class="header-content">
-                        <h1 class="header-title">Market Sentiment Analysis</h1>
+                        <h1 class="header-title">🐅 Tigro Sentiment Analysis</h1>
                         <div class="header-controls">
                             <button class="refresh-btn" onclick="window.location.reload()">
                                 <span>Refresh</span>
+                            </button>
+                            <button class="update-data-btn" onclick="updateData()">
+                                <span>🔄 Update Data</span>
+                            </button>
+                            <button class="instant-report-btn" onclick="sendInstantReport()">
+                                <span>📧 Send Instant Report</span>
                             </button>
                         </div>
                     </div>
@@ -937,6 +981,149 @@ class DashboardGenerator:
                 
                 function showArticles(ticker, company) {
                     window.location.href = `articles_${ticker}_latest.html`;
+                }
+                
+                async function sendInstantReport() {
+                    const button = document.querySelector('.instant-report-btn');
+                    const originalText = button.innerHTML;
+                    
+                    // Disable button and show loading
+                    button.disabled = true;
+                    button.innerHTML = '<span>⏳ Sending Report...</span>';
+                    
+                    try {
+                        const response = await fetch('https://874fa7587ae0.ngrok-free.app/email-only', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer tigro_2025_secure',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            button.innerHTML = '<span>✅ Report Sent!</span>';
+                            
+                            // Show success message
+                            const successMsg = document.createElement('div');
+                            successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; font-weight: bold;';
+                            successMsg.innerHTML = '📧 Instant report sent successfully! Check your email.';
+                            document.body.appendChild(successMsg);
+                            
+                            setTimeout(() => {
+                                successMsg.remove();
+                            }, 5000);
+                            
+                            // Reset button after 3 seconds
+                            setTimeout(() => {
+                                button.innerHTML = originalText;
+                                button.disabled = false;
+                            }, 3000);
+                        } else {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+                    } catch (error) {
+                        console.error('Error sending instant report:', error);
+                        button.innerHTML = '<span>❌ Error</span>';
+                        
+                        // Show error message
+                        const errorMsg = document.createElement('div');
+                        errorMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #dc3545; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; font-weight: bold;';
+                        errorMsg.innerHTML = '❌ Error sending report. Please try again later.';
+                        document.body.appendChild(errorMsg);
+                        
+                        setTimeout(() => {
+                            errorMsg.remove();
+                        }, 5000);
+                        
+                        // Reset button after 3 seconds
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.disabled = false;
+                        }, 3000);
+                    }
+                }
+                
+                async function updateData() {
+                    const button = document.querySelector('.update-data-btn');
+                    const originalText = button.innerHTML;
+                    
+                    // Disable all buttons during update
+                    const allButtons = document.querySelectorAll('.header-controls button');
+                    allButtons.forEach(btn => btn.disabled = true);
+                    
+                    button.innerHTML = '<span>⏳ Updating Data...</span>';
+                    
+                    try {
+                        const response = await fetch('https://874fa7587ae0.ngrok-free.app/trigger', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer tigro_2025_secure',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            button.innerHTML = '<span>🔄 Processing...</span>';
+                            
+                            // Show progress message
+                            const progressMsg = document.createElement('div');
+                            progressMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #ffc107; color: #212529; padding: 15px 20px; border-radius: 5px; z-index: 9999; font-weight: bold;';
+                            progressMsg.innerHTML = '🔄 Full pipeline running... This may take 30+ seconds. Please wait.';
+                            document.body.appendChild(progressMsg);
+                            
+                            // Update button text with countdown
+                            let countdown = 30;
+                            const countdownInterval = setInterval(() => {
+                                button.innerHTML = `<span>🔄 Processing... (~${countdown}s)</span>`;
+                                countdown--;
+                                if (countdown < 0) {
+                                    button.innerHTML = '<span>🔄 Finalizing...</span>';
+                                    clearInterval(countdownInterval);
+                                }
+                            }, 1000);
+                            
+                            // Wait for pipeline completion (45 seconds to be safe)
+                            setTimeout(() => {
+                                clearInterval(countdownInterval);
+                                progressMsg.remove();
+                                
+                                // Show success message
+                                const successMsg = document.createElement('div');
+                                successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; font-weight: bold;';
+                                successMsg.innerHTML = '✅ Data updated successfully! Refreshing page...';
+                                document.body.appendChild(successMsg);
+                                
+                                // Auto-refresh page after 2 seconds
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 2000);
+                            }, 45000);
+                            
+                        } else {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+                    } catch (error) {
+                        console.error('Error updating data:', error);
+                        button.innerHTML = '<span>❌ Error</span>';
+                        
+                        // Show error message
+                        const errorMsg = document.createElement('div');
+                        errorMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #dc3545; color: white; padding: 15px 20px; border-radius: 5px; z-index: 9999; font-weight: bold;';
+                        errorMsg.innerHTML = '❌ Update not possible. Please use local machine: python master_runner_short.py';
+                        document.body.appendChild(errorMsg);
+                        
+                        setTimeout(() => {
+                            errorMsg.remove();
+                        }, 8000);
+                        
+                        // Reset all buttons after 3 seconds
+                        setTimeout(() => {
+                            allButtons.forEach(btn => btn.disabled = false);
+                            button.innerHTML = originalText;
+                        }, 3000);
+                    }
                 }
                 
                 closeBtn.onclick = () => modal.classList.remove('show');
