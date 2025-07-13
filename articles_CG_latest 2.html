@@ -1,0 +1,807 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Centerra Gold Inc. (CG) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Centerra Gold Inc. (CG)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">34</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">11</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.00</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73b7ca65b2c73f821df612046dd46d4e974490e6d95da91f1a2f7b5a93fb74c1" target="_blank" rel="noopener noreferrer">Carlyle : closes acquisition of SNP Schneider-Neureither & Partner SE</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Munich and Heidelberg, 10 April 2025 - Global investment firm Carlyle today announced the completion of its voluntary public cash takeover offer for all outstanding shares of SNP......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d46022990a4ee25c48fd7b15dbd638ac706cf76440d819bfa591af1e0f8eda2b" target="_blank" rel="noopener noreferrer">Gold climbs after levy chaos drives biggest gain in 18 months</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Gold rose again after posting its biggest one-day gain in 18 months, as confusion over US President Donald Trump’s tariff agenda drove investors to buy the precious metal as a haven.Bul...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bbf708f379ce5af6094ac824c07114ef0ea77b1de35c6dcad34fb1a44260e6fd" target="_blank" rel="noopener noreferrer">Carlyle (CG) Surges 11.7%: Is This an Indication of Further Gains?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Carlyle (CG) witnessed a jump in share price last session on above-average trading volume. The latest trend in earnings estimate revisions for the stock doesn't suggest further strength down the road....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f52161597be8f0e032f5c4dd835dea1404eed8f3fa248d53f73e92d1cef65fa1" target="_blank" rel="noopener noreferrer">Carlyle : Provides $270 Million Unitranche Term Loan to Dexian</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-09</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">New York, NY - April 9, 2025 - Today, global investment firm Carlyle announced its Global Credit platform has provided a $270 million unitranche term loan to Dexian, a global leader in talent and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6c09d137eb76f70a1feec45a11d40b02ac2c37908a10064b24d4dafd6b548d36" target="_blank" rel="noopener noreferrer">Carlyle : AlpInvest Partners Raises Over $4 Billion for Portfolio Finance Platform</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-07</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">AlpInvest Strategic Portfolio Finance Fund II exceeds its initial target and more than triples prior program size at $3.2 billion when including parallel SMAs and co-investments ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5109d5b51805a8a4c8f6baa21575a310d3504eec9d4b74d1253f8d127b8d0bab" target="_blank" rel="noopener noreferrer">M&A and IPOs Worth Billions Stalled in 24 Hours by Trade War</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Billions of dollars worth of acquisitions and initial public offerings are on hold as Donald Trump’s trade war upends the global economy, twisting the knife into a dealmaking market tha...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=26f1f870a034ffc87dc305bc7771e0873a9dd8d547bec9b5b3fb3d8f473fa8d7" target="_blank" rel="noopener noreferrer">Stocks of Wall Street giants plunge as Trump tariff turmoil roils the finance world</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-04-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Stocks of the biggest banks and private-equity firms plunged Thursday as concerns mounted about how Wall Street giants and their customers might be affected by heightened odds of a US recession....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9d130c5dc50e02f09e6d97f00b78e2ed7f6232cd6c658e2ac93c7bc2c86eb19c" target="_blank" rel="noopener noreferrer">Carlyle Secured Lending Announces Completion of Merger With CSL III</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">CGBD's merger with Carlyle Secured Lending and CSL III signifies a strategic alignment that is likely to enhance operational efficiency and minimize costs....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=01fa26fe9ad841ab8d6c66f7de45b2b0be03a48b4b2067a45af2fb54b1de5c04" target="_blank" rel="noopener noreferrer">Bluebird gets rival takeout offer from Ayrmid</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">The new bid surpasses an offer SK Capital and Carlyle Group made last month for the gene therapy developer, which Bluebird’s board still supports....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85c00a920d260ade270ed437eb3c7974b7c78e7534ba4f7c48515b7788531b5e" target="_blank" rel="noopener noreferrer">Carlyle Secured Lending Closes Merger With Carlyle Secured Lending III</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Carlyle Group Inc: * CARLYLE SECURED LENDING, INC. CLOSES MERGER WITH CARLYLESECUREDLENDING IIISource text:Further company coverage: ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=46331b2936dd5c234b1690ad4025e879a97f4fe909216c99d0e2a01fae87d817" target="_blank" rel="noopener noreferrer">Vanguard Met With Blackstone, Carlyle on Private Markets Product</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Vanguard Group held discussions with major alternative asset managers in recent months to explore potential tie-ups that would market private assets to individual investors.Most Read fr...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=619c8c029de3b58e0c213efad5ce5d2a8d2b24ef0003ff34a862e82757975858" target="_blank" rel="noopener noreferrer">Carlyle Secured Lending, Inc. Closes Merger with Carlyle Secured Lending III</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, March 27, 2025 (GLOBE NEWSWIRE) -- Carlyle Secured Lending, Inc. (“CGBD”) (NASDAQ: CGBD) announced today the closing of its previously announced merger with Carlyle Secured Lending III (“CSL...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b4fb571cfd0418eee640266594fc63bcfdbedaa61a885638e433977139478114" target="_blank" rel="noopener noreferrer">AB or CG: Which Is the Better Value Stock Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">AB vs. CG: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dc4ad39734f8266c0b4f443e7040707c41e9f80c7d765de6284ee34031910d6a" target="_blank" rel="noopener noreferrer">Business Leaders Are Backing Trump, Rubenstein Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-26</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Business leaders are backing President Donald Trump publicly, but privately they are concerned about Trump's tariffs and how they'll impact the economy, according to David Rubenstein, Carlyle Group......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dcc6e69d5350aa22b4c7c52af24ec998ec7b8efcd27478a6c0366db0db986ff6" target="_blank" rel="noopener noreferrer">Carlyle Secured Lending, Inc. Announces Shareholder Approval of Merger with Carlyle Secured Lending III</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.41
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, March 26, 2025 (GLOBE NEWSWIRE) -- Carlyle Secured Lending, Inc. (“CGBD”) (NASDAQ: CGBD) announced today that CGBD shareholders voted overwhelmingly in favor of the previously announced merg...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=13e153680e4074c2226e9cdcc25674c883c8db61bbe2fbf4ee7efa3af568e4fc" target="_blank" rel="noopener noreferrer">Carlyle Provides EUR250 Million Strategic Capital For Sanoptis</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Carlyle Group Inc: * CARLYLE GROUP INC: PROVIDES €250 MILLION STRATEGIC CAPITALFORSANOPTISFurther company coverage:;)) ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8de425b3b9e03568c7e1c6ff4477a847d553cc402eb47bb07c133dff0ff01f08" target="_blank" rel="noopener noreferrer">Energean terminates Carlyle asset sale in Italy, Egypt and Croatia</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The regulatory approvals required by Carlyle were not obtained or waived, according to the terms of the SPA signed on 19 June 2024....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd5005a65831c8394fc7ed330e072d2801ca56cea4c0c8eb9bb73bc62df86fe0" target="_blank" rel="noopener noreferrer">Is The Carlyle Group Inc. (CG) the Cheap Asset Management Stock to Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 Cheap Asset Management Stocks to Buy Now. In this article, we are going to take a look at where The Carlyle Group Inc. (NASDAQ:CG) stands against other cheap asset m...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8453974ee5b5de075c50dd1b3ebd4d28bdc04b47cc798ae3f88188c86bdd520d" target="_blank" rel="noopener noreferrer">Energean Cancels Carlyle Deal on Failure to Meet Conditions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Energean Cancels Carlyle Deal on Failure to Meet Conditions...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a14d39b4c585ffc5c0e920af2637f7e07c4a794d20785a34af92061126d8839" target="_blank" rel="noopener noreferrer">Fortitude Re Signs $4 Bln Annuity Reinsurance Deal With Taiyo Life</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-21</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">FGH PARENT LP: * FORTITUDE RE ANNOUNCES $4 BILLION ANNUITY REINSURANCEAGREEMENTWITH TAIYO LIFE INSURANCE COMPANYSource text: ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b3be69bbaa0ca060f8df5cca2c16718d999a9a6771a1507776104feb13bc53e3" target="_blank" rel="noopener noreferrer">UK gas producer Energean terminates Carlyle deal over approval delays</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -UK-based gas producer Energean said on Friday it was terminating a deal with private equity fund Carlyle for the sale of some of its assets due to delays in obtaining regulatory approvals i...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7cb4643b93cab500d4166336b38a682e10feafe29b476658d9e0a2292488b743" target="_blank" rel="noopener noreferrer">SoftBank Seals $6.5 Billion Deal for Chip Designer Ampere</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- SoftBank Group Corp. has agreed to acquire semiconductor designer Ampere Computing LLC in a move that further broadens the Japanese investment firm’s push into artificial intelligence i...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b956197ea97b331c5e410546a2df43769ee410dbe0dc6f600d16ab36a1b156b0" target="_blank" rel="noopener noreferrer">Carlyle seeks buyers for Colombian oil producer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">Private equity groupCarlyle is seeking a buyer for its Colombian oil producerSierraCol for around $1.5 billion, according to sources withknowledge of the matter. Carlyle set up......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dd3c4de2b3f54d877b3dd89a2277f13d69c1efc9ebfd055dc876b333da92ca18" target="_blank" rel="noopener noreferrer">Softbank Is Buying Ampere Computing. Chip Maker Faces Stiff Competition.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.40
+                                </span>
+                            </div>
+                            <div class="article-summary">Softbank Is Buying Ampere Computing. Chip Maker Faces Stiff Competition....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8d3fc2be68586d2f50448f02cc7578bac3e71b5b7dfae61a52b2bcd57d88a24c" target="_blank" rel="noopener noreferrer">Markets Want to Know What Rules of the Game Are, Rubenstein Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The economy and markets need some more certainty, says David Rubenstein, The Carlyle Group co-founder and chairman and host of The David Rubenstein Show: Peer to Peer Conversations. He says some......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f04369552faad6c753410066b06ad34266aed12210794840500819e72f9adba" target="_blank" rel="noopener noreferrer">Autodesk in proxy fight, General Mills reports mixed Q3: Morning Buzz</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.13
+                                </span>
+                            </div>
+                            <div class="article-summary">The major indexes were broadly higher near noon, rebounding from yesterday’s declines as investors weigh concerns about persistent inflation against hopes for a more accommodative stance from the Fede...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=50e22889fc1718fef1fca803835447c4877ba27031b134d37fde0bcdfe4d76ae" target="_blank" rel="noopener noreferrer">SoftBank to Buy Chip Designer Ampere From Carlyle, Oracle For $6.5 Billion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Japan's SoftBank is buying chip design company Ampere Computing from Carlyle Group (CG) and Oracle (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=979ab4159bcf7c21d5defc22b8d4505fd17097f301a2f1fb1a5f4109cd8fdea7" target="_blank" rel="noopener noreferrer">Oppenheimer Downgrades Goldman, Says M&A Rebound ‘Delayed or Cancelled’</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Oppenheimer called the expected M&A rebound under the Trump administration “delayed or cancelled” and downgraded to "perform" the ratings of three financial firms whose fortunes hinge on busy Wall Str...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=991ab4d08ee67e8e295103c128e1ec09a632569d08512ce7fba0a3cbd6cbad15" target="_blank" rel="noopener noreferrer">M&A Rebound on Hold as Macro Uncertainty Drives Goldman, Carlyle Downgrades at Oppenheimer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">An expected rebound in merger and acquisition activity this year will be either delayed or cancelled...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=336149202e28bace5f10d645f67b5d357ae8a467c6c13dff6abec814d639f435" target="_blank" rel="noopener noreferrer">Carlyle's bluebird Deep Discount Buyout (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Carlyle Group's acquisition of bluebird bio for $3 per share offers a potential but unlikely $600 million sales milestone by 2027. See why BLUE stock is a Hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=66938769c9ccbfe5dc57b6277784982c4c47976ff7dc32c59bb8def0f412184a" target="_blank" rel="noopener noreferrer">Market Volatility Sidelining Some Energy Investment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">Needed permit reform will take time and general policy uncertainty could slow-play natural gas projects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=35cb99e2f0eaa4cf259d82ac330c31a92541b685e42ad49bfb86df39ce59b011" target="_blank" rel="noopener noreferrer">Tracking John Rogers' Ariel Investments Portfolio - Q4 2024 Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Ariel Investments' portfolio sees shifts in major stakes. Read here for top picks, reductions, and performance insights, including Ariel Fund's impressive returns....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2cb852e76676e21841f3ca47409d4221acdce1893fce841586203fa13c54296d" target="_blank" rel="noopener noreferrer">Embrace The Fear: What I'm Buying This Month And 2 Stocks Worth Considering</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">I added to positions in Schwab U.S. Large-Cap Growth ETF (SCHG) and SPDR Portfolio S&P 500 ETF (SPLG), due to their tech focus and low expense ratios. See more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0573334649580abb7e961e58d1d6e6de348ba44d6d07c117e1bd8980d24244b" target="_blank" rel="noopener noreferrer">Pooja Goyal</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-14</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Pooja Goyal...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,743 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Twilio Inc. (TWLO) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Twilio Inc. (TWLO)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">30</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.31</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=96a0c998ffe62aa5a066fbe065c0c16da7004af882d6c895d97adc24746fadb6" target="_blank" rel="noopener noreferrer">Software Development Stocks Q1 In Review: Twilio (NYSE:TWLO) Vs Peers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Wrapping up Q1 earnings, we look at the numbers and key takeaways for the software development stocks, including Twilio (NYSE:TWLO) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=40fe4c12b70c17e6e1ae75cee86bf67da38c91351194f2de24c8eac6b4e29725" target="_blank" rel="noopener noreferrer">Jefferies Raises Twilio (TWLO)’s Price Target — But Cautions on Most Optimistic Forecasts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.73
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio Inc. (NYSE:TWLO) is one of the 12 AI Stocks Every Investor Should Be Watching. On June 15, Jefferies analyst Samad Samana raised the firm’s price target on the stock to $132 from $122 and kept ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5658d6ce403e2eeb36270f79f2200788e3e05d545981aa05ba20c982b777d751" target="_blank" rel="noopener noreferrer">Can Twilio's Cross-Sell Strategy Unlock Higher Profitability?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio aims to boost profit through cross-selling, with large customers rising 37% in the first quarter....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4b17f5ec52dd10b6f4321d5233657d4bedb20f0b8dff7f5336c4518f7df0777c" target="_blank" rel="noopener noreferrer">Twilio and Orange to Bring Secure and Interactive RCS Messaging to Businesses in France</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">LONDON, June 11, 2025--Today at Transform London, Twilio announced that it is partnering with Orange, one of the world’s leading telecommunications operators, to scale the use of RCS Business Messagin...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3f9c6be3a7d6cc978cf673cb1b3200dee7ed312edabb88455abb10b9004c2d0a" target="_blank" rel="noopener noreferrer">Investing in Twilio (NYSE:TWLO) a year ago would have delivered you a 107% gain</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">The most you can lose on any stock (assuming you don't use leverage) is 100% of your money. On the other hand, if you......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=240bb1e06139a132b9442b026bd1825c066c286b1ff46e133a4ffe514231f2ef" target="_blank" rel="noopener noreferrer">KeyBanc Initiates Coverage Of Twilio (TWLO) with Overweight Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio Inc. (NYSE:TWLO) is one of the 10 tech stocks on Wall Street’s radar right now. On June 6, KeyBanc initiated coverage of Twilio Inc. (NYSE:TWLO) with a $146 price target and an Overweight ratin...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a636ea83c8e3bc446f5f56aca4e93bc64847604a01576e063b0f1b81532e0e1e" target="_blank" rel="noopener noreferrer">CrowdStrike and McDonald’s downgraded: Wall Street’s top analyst calls</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">The most talked about and market moving research calls around Wall Street are now in one place. Here are today’s research calls that investors need to know, as compiled by The Fly. Top 5 Upgrades: Mel...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5b17337c784d52eae9d97059446d1160c516aff7481d8f36320e34e14e1c5936" target="_blank" rel="noopener noreferrer">Twilio-Tech Companies Announce Launch of AI Integrators Council</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Coalition supports and advocates for specification of AI integration in AI policy proposals.The AI Integrators Council announces the launch of the new coalition to advocate for companies that......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a60ff53468d38189cfd88f15a44b182bcee5b5bfc36a42922ea5ef5d70d95199" target="_blank" rel="noopener noreferrer">Keybanc Initiates Coverage of Twilio (TWLO) with Overweight Recommendation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>Fintel</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8a1518505036bad9c71d1c8ea5ebc1c80ca208b13efa68b706f9b9b8efd50c0" target="_blank" rel="noopener noreferrer">Here is What to Know Beyond Why Twilio Inc. (TWLO) is a Trending Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching Twilio (TWLO) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=13637216c67b1e2722ba433f984704f26b64e2332a126b59fecb2d53b568d682" target="_blank" rel="noopener noreferrer">Twilio Soars 19% in a Month: Should Investors Buy the Stock Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">TWLO rises nearly 19% in a month, outpacing rivals, as AI, strong cash flow and undervaluation fuel investor confidence....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb84ec867eb9fc72cbf0ea01fc25b805eeeffabf526d9b769d85b59a6e6dd95a" target="_blank" rel="noopener noreferrer">Twilo-AI Alone Won't Cut It: Twilio's 6th Annual Report Finds Trust and Timing Drive Customer Loyalty</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">71% of consumers abandon irrelevant experiences - brands that personalize in real time and prioritize transparency are winning hearts, trust, and revenue.Twilio , the customer engagement platform......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=149e8336e55820d6f9f954eb5e000c5d28ffc21cd937eb652c12aace72262283" target="_blank" rel="noopener noreferrer">Transcript : Twilio Inc. Presents at 45th Annual William Blair Growth Stock Conference, Jun-04-2025 08</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presenter SpeechArjun Bhatia All right. Why don't we go ahead and kick things off. Thanks, everyone, for joining. For those of you that don't know me, my name is Arjun Bhatia, and I am the research......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea6bdf2710152d1f2715a5ca61e0ea4a06c38d7632834cddfa187fb12401ddb0" target="_blank" rel="noopener noreferrer">Twilio Inc. (TWLO) Annual William Blair Growth Stock Conference (Transcript)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio Inc. (NYSE:TWLO) Annual William Blair Growth Stock Conference Call June 4, 2025 9:40 AM ETCompany ParticipantsKhozema Z....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a01397010c593f8366c172d0984480a00c5f1f9865a26e7d8e71ba5903c298fe" target="_blank" rel="noopener noreferrer">Twilio: Improving Customer Monetization (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio sees strong revenue growth, rising customer metrics, and attractive valuation....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d04ea07abd1597fff816f1b2966185a3787690c253dc5d86e64d2c123bec2bc3" target="_blank" rel="noopener noreferrer">The Zacks Analyst Blog Highlights Intuit, Amphenol, Broadcom, Twilio and Ubiquiti</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Tech stocks like Broadcom and Intuit powered a strong May rally, defying seasonal trends with double-digit gains....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fe79b96e12245125aa8170a535b84387fa61eed3951f1e92bb8ce95834e508d7" target="_blank" rel="noopener noreferrer">AI Alone Won’t Cut It: Twilio’s 6th Annual Report Finds Trust and Timing Drive Customer Loyalty</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.60
+                                </span>
+                            </div>
+                            <div class="article-summary">SAN FRANCISCO, June 03, 2025--Twilio (NYSE: TWLO), the customer engagement platform that drives real-time, personalized experiences for leading brands, today released its sixth annual State of Custome...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b923d3660f47885d2147d52f0e2d56a8f82f77ced279c22ccb6a2201eba26406" target="_blank" rel="noopener noreferrer">Tech Shines as Markets Defy "Sell in May and Go Away" Adage: 5 Picks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Tech giants like INTU, APH, AVGO, TWLO and UI surged over 11% in May, powering markets past the "Sell in May" adage with standout gains....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e115a2f5218b6755aa71775a2fedb1aa0edc63a79471cee720d00761a9ab10d" target="_blank" rel="noopener noreferrer">Twilio: Prepare For Takeoff With 80%+ Potential Upside</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio's Q1 FY25 showed strong revenue and profit growth, with Communications accelerating and Segment stabilizing. Learn why TWLO stock is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=60e601f147b157b08b8f967b1457c95a9b890682b1fbb133cefcf1c69653a315" target="_blank" rel="noopener noreferrer">Should You Invest in Twilio (TWLO) Based on Bullish Wall Street Views?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">According to the average brokerage recommendation (ABR), one should invest in Twilio (TWLO). It is debatable whether this highly sought-after metric is effective because Wall Street analysts' recommen...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4d5c9fc37fb1d6dca8b86c249ccd371b1b2debcd2eb79eaf36d79034b803383" target="_blank" rel="noopener noreferrer">There's Been No Shortage Of Growth Recently For Twilio's (NYSE:TWLO) Returns On Capital</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">If you're not sure where to start when looking for the next multi-bagger, there are a few key trends you should keep an......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c2245f5c7ef11e4c893cac4872a6a9d5d69d304f8dfc64bb76e66a8f3494f147" target="_blank" rel="noopener noreferrer">Twilio to Participate in William Blair 45th Annual Growth Stock Conference</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">SAN FRANCISCO, May 28, 2025--Twilio (NYSE: TWLO), the customer engagement platform that drives real-time, personalized experiences for today’s leading brands, today announced that Chief Executive Offi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c36c5a52e388c8cea25656524496fcb8a7a21d821e1a8b53ffad3200d3833b3d" target="_blank" rel="noopener noreferrer">Twilio: Proof That A Great Product Can Withstand Cyclical Volatility</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3dd722ed91ade8e2c5113d3c0634c640f36599898cf26e28666ce3645be62c54" target="_blank" rel="noopener noreferrer">Twilio: Caught Between AI Dreams And Sluggish Reality</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=623b0ff016e0501b636c6be775b9f94225a8c8b36f771cddd46ff110c0d5d9b9" target="_blank" rel="noopener noreferrer">Twilio: Still Cheap As Monetization Grows, More Upside Ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover TWLO's AI monetization success with robust growth, increased ROI, and bright long-term prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f35fd673e1ca928eb3082072fd623cda65bd227e15d13520bbe49b1c7e5aa12b" target="_blank" rel="noopener noreferrer">Buy 5 Internet-Centric AI Stocks on the Dip to Boost Portfolio Returns</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The current low-valuation of Internet-centric AI stocks provides good opportunity for investors. Five such stocks to buy are: ANET, FSLY, FIVN, HUBS, TWLO....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c987e980830a80c1d4220c72aa782c4f9c9589af299685cf7f77ee247ddb129" target="_blank" rel="noopener noreferrer">Here's Why Twilio (TWLO) is a Strong Momentum Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Whether you're a value, growth, or momentum investor, finding strong stocks becomes easier with the Zacks Style Scores, a top feature of the Zacks Premium research service....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ccf6471d04a2b4004f5ed33d9b2c1cc9503ada1748e48e7c304d9ff83fff0785" target="_blank" rel="noopener noreferrer">The New York Times Company Leverages Digital Subscriptions for Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">NYT adds 11.06M digital-only subscribers in Q1, lifting digital revenues by 14.4% and boosting ARPU to $9.54, as it navigates away from declining print....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6eacf5f0999cfe53fa27654c8ac5c9a6955374c4328c042f6ee47fda2dd7a801" target="_blank" rel="noopener noreferrer">Twilio: The Turnaround Is In Motion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilioâs strong growth, rising margins, and buybacks support a bullish outlook despite recent gains and macro risks. Learn why TWLO stock is a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=638c2f9430dfcf7c50fe1a917a286631950f18e8b74ab06188b5c62afc42b338" target="_blank" rel="noopener noreferrer">Is Trending Stock Twilio Inc. (TWLO) a Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio (TWLO) has been one of the stocks most watched by Zacks.com users lately. So, it is worth exploring what lies ahead for the stock....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
