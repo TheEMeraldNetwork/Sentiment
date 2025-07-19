@@ -15,7 +15,7 @@ echo "$(date): Starting Tigro automation from LaunchD wrapper" >> logs/tigro_dai
 
 # Activate virtual environment and run automation
 source venv/bin/activate
-python daily_automation.py >> logs/tigro_daily.log 2>> logs/tigro_daily_error.log
+PYTHONPATH=. python master_runner_short.py >> logs/tigro_daily.log 2>> logs/tigro_daily_error.log
 
 # Log the completion
 echo "$(date): Tigro automation completed with exit code $?" >> logs/tigro_daily.log 
