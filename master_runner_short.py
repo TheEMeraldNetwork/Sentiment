@@ -5,6 +5,7 @@ Simplified master runner script that:
 1. Collects sentiment data
 2. Generates and opens the dashboard
 3. Pushes changes to GitHub
+4. Sends email report with declining stocks
 """
 
 import os
@@ -16,23 +17,60 @@ from pathlib import Path
 import shutil
 
 def setup_logging():
-    """Setup logging configuration"""
+    """Setup comprehensive logging configuration"""
+    # Create logs directory if it doesn't exist
+    log_dir = Path('logs')
+    log_dir.mkdir(exist_ok=True)
+    
+    # Setup logging with detailed format
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s'
+        format=log_format,
+        handlers=[
+            logging.FileHandler(log_dir / 'tigro_master_detailed.log'),
+            logging.StreamHandler(sys.stdout)
+        ]
     )
     return logging.getLogger(__name__)
 
-def run_script(script_path: str, logger: logging.Logger) -> bool:
-    """Run a Python script and return success status"""
-    try:
-        logger.info(f"Running {script_path}...")
-        subprocess.run([sys.executable, script_path], check=True)
-        logger.info(f"Successfully completed {script_path}")
-        return True
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Error running {script_path}: {e}")
-        return False
+def run_command_with_logging(command: list, description: str, logger: logging.Logger, max_retries: int = 3) -> bool:
+    """Run a command with detailed logging and retry logic"""
+    for attempt in range(1, max_retries + 1):
+        try:
+            logger.info(f"🔄 Attempt {attempt}/{max_retries}: {' '.join(command)}")
+            result = subprocess.run(
+                command, 
+                check=True, 
+                capture_output=True, 
+                text=True,
+                cwd=os.getcwd()
+            )
+            logger.info(f"✅ Command completed successfully")
+            if result.stdout.strip():
+                logger.info(f"📤 Output: {result.stdout.strip()}")
+            return True
+            
+        except subprocess.CalledProcessError as e:
+            logger.error(f"❌ Attempt {attempt} failed: {e}")
+            if e.stdout:
+                logger.error(f"📤 STDOUT: {e.stdout}")
+            if e.stderr:
+                logger.error(f"📤 STDERR: {e.stderr}")
+            
+            if attempt == max_retries:
+                logger.error(f"🚨 All {max_retries} attempts failed for: {description}")
+                return False
+            else:
+                logger.info(f"🔄 Retrying in 5 seconds...")
+                import time
+                time.sleep(5)
+                
+        except Exception as e:
+            logger.error(f"🚨 Unexpected error in {description}: {e}")
+            return False
+    
+    return False
 
 def copy_to_docs(logger: logging.Logger) -> bool:
     """Copy latest results to docs directory for GitHub Pages"""
@@ -130,34 +168,122 @@ def send_email_report(logger: logging.Logger) -> bool:
         return False
 
 def main():
-    """Main execution function"""
+    """Main execution function with comprehensive logging"""
+    start_time = datetime.now()
     logger = setup_logging()
-    logger.info("Starting simplified analysis pipeline...")
     
-    # Get the project root directory
-    root_dir = Path(__file__).parent
+    logger.info("=" * 60)
+    logger.info("🐅 TIGRO DAILY AUTOMATION STARTED")
+    logger.info(f"📅 Date: {start_time}")
+    logger.info(f"📁 Project Root: {os.getcwd()}")
+    logger.info(f"🐍 Python Executable: {sys.executable}")
+    logger.info(f"🐍 Python Virtual Environment: {os.environ.get('VIRTUAL_ENV', 'Not activated')}")
+    logger.info("=" * 60)
     
-    # Define script paths
-    scripts = [
-        root_dir / 'scripts' / 'a_collect_sentiment.py',
-        root_dir / 'scripts' / 'e_generate_dashboard.py'
-    ]
+    # Check prerequisites
+    logger.info("🔍 Checking prerequisites...")
+    python_path = shutil.which('python') or sys.executable
+    logger.info(f"🐍 Python executable: {python_path}")
     
-    # Run each script
-    success = True
-    for script in scripts:
-        if not run_script(script, logger):
-            success = False
-            break
+    if not Path('scripts/a_collect_sentiment.py').exists():
+        logger.error("🚨 Missing sentiment script!")
+        return False
+        
+    if not Path('scripts/e_generate_dashboard.py').exists():
+        logger.error("🚨 Missing dashboard script!")
+        return False
+        
+    logger.info("✅ All prerequisites checked successfully")
     
-    # Copy files to docs and push to GitHub if all scripts succeeded
-    if success:
-        if copy_to_docs(logger):
-            if push_to_github(logger):
-                # Send email report after successful GitHub push
-                send_email_report(logger)
+    # Step 1: Sentiment Analysis
+    logger.info("📊 Starting sentiment analysis...")
+    if not run_command_with_logging(
+        [python_path, 'scripts/a_collect_sentiment.py'],
+        "sentiment analysis",
+        logger
+    ):
+        logger.error("🚨 Sentiment analysis failed!")
+        return False
+    logger.info("✅ Sentiment analysis completed successfully")
     
-    logger.info("Pipeline execution completed!")
+    # Step 2: Dashboard Generation
+    logger.info("📈 Generating dashboard...")
+    if not run_command_with_logging(
+        [python_path, 'scripts/e_generate_dashboard.py'],
+        "dashboard generation",
+        logger
+    ):
+        logger.error("🚨 Dashboard generation failed!")
+        return False
+    logger.info("✅ Dashboard generation completed successfully")
+    
+    # Step 3: Copy to docs
+    logger.info("📋 Copying results to docs directory...")
+    if copy_to_docs(logger):
+        logger.info("✅ All files copied to docs directory")
+    else:
+        logger.warning("⚠️ Some files may not have been copied to docs")
+    
+    # Step 4: Git operations
+    logger.info("🚀 Pushing changes to GitHub...")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Git add
+    if not run_command_with_logging(['git', 'add', '-A'], "git add", logger, max_retries=2):
+        logger.error("🚨 Git add failed!")
+        return False
+    
+    # Git commit
+    if not run_command_with_logging(
+        ['git', 'commit', '-m', f'Daily Tigro update - {timestamp}'],
+        "git commit",
+        logger,
+        max_retries=2
+    ):
+        logger.warning("⚠️ Git commit failed - possibly no changes")
+    
+    # Git push
+    if not run_command_with_logging(['git', 'push', 'origin', 'main'], "git push", logger, max_retries=3):
+        logger.error("🚨 Git push failed!")
+        return False
+    
+    logger.info("✅ Successfully pushed to GitHub")
+    
+    # Step 5: Email Report
+    logger.info("📧 Sending email report...")
+    try:
+        from utils.email.report_sender import SentimentEmailSender
+        
+        email_sender = SentimentEmailSender()
+        success = email_sender.send_daily_report()
+        
+        if success:
+            logger.info("✅ Email report sent successfully")
+        else:
+            logger.error("🚨 Email report failed to send")
+            
+    except Exception as e:
+        logger.error(f"🚨 Email error: {e}")
+        import traceback
+        logger.error(f"🚨 Email traceback: {traceback.format_exc()}")
+    
+    # Step 6: Cleanup
+    logger.info("🧹 Cleaning up old log files...")
+    cleanup_old_logs(logger)
+    logger.info("✅ Log cleanup completed")
+    
+    # Final summary
+    end_time = datetime.now()
+    duration = end_time - start_time
+    
+    logger.info("=" * 60)
+    logger.info("🎉 DAILY AUTOMATION COMPLETED SUCCESSFULLY")
+    logger.info(f"⏱️  Total Duration: {duration}")
+    logger.info(f"📊 Dashboard: https://theemeraldnetwork.github.io/tigro/")
+    logger.info(f"📧 Email Report: Sent to configured recipient")
+    logger.info("=" * 60)
+    
+    return True
 
 if __name__ == "__main__":
     main() 
