@@ -55,7 +55,7 @@ sentiment_analysis/
 ### 📊 **Live Interactive Dashboard**
 - **Public Access**: https://theemeraldnetwork.github.io/tigro/
 - **Real-time Updates**: Automatic daily refresh
-- **Individual Stock Pages**: Detailed article breakdown per ticker  
+- **Individual Stock Pages**: Detailed article breakdown per ticker
 - **Trend Indicators**: Visual sentiment change tracking
 - **Instant Email**: Send reports directly from dashboard
 

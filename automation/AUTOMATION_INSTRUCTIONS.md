@@ -2,7 +2,7 @@
 
 ## ✅ **AUTOMATION ACTIVE**
 
-Your Tigro sentiment analysis system is now configured to run automatically every day at **7:30 PM** and send you an email with the 5 declining stocks.
+Your Tigro sentiment analysis system is now configured to run automatically every day at **3:45 PM CET** and send you an email with the 5 declining stocks.
 
 ## 📋 **What Happens Daily:**
 
@@ -13,7 +13,7 @@ Your Tigro sentiment analysis system is now configured to run automatically ever
 5. **🗄️ Data Archive**: Saves historical data for trend analysis
 
 ## ⏰ **Current Schedule:**
-- **Daily Run Time**: 7:30 PM (19:30)
+- **Daily Run Time**: 3:45 PM CET (15:45)
 - **Estimated Duration**: 5-8 minutes
 - **Email Delivery**: Within 2-3 minutes after completion
 
@@ -68,15 +68,15 @@ launchctl load ~/Library/LaunchAgents/com.tigro.daily.plist
 
 ## 📊 **Popular Times:**
 - **9:00 AM** (09:00): Morning market prep
-- **6:00 PM** (18:00): After market close  
-- **7:30 PM** (19:30): Current setting ✅
+- **3:45 PM** (15:45): Current setting ✅ (after EU markets)
+- **6:00 PM** (18:00): After US market close  
 - **8:00 PM** (20:00): Evening review
 
 ## 📝 **Logs & Monitoring:**
 - **Main Log**: `logs/tigro_daily.log`
 - **Error Log**: `logs/tigro_daily_error.log`
 - **Dashboard**: https://theemeraldnetwork.github.io/tigro/
-- **Email Status**: Check your inbox daily at 7:35 PM
+- **Email Status**: Check your inbox daily at 3:50 PM CET
 
 ## 🚨 **Troubleshooting:**
 
@@ -118,4 +118,4 @@ Subject: Daily Tigro Sentiment Report - July 19, 2025
 
 ---
 
-**✅ Automation is ACTIVE and will run daily at 7:30 PM!** 
+**✅ Automation is ACTIVE and will run daily at 3:45 PM CET!** 
