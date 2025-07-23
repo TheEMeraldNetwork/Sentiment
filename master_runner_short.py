@@ -253,14 +253,23 @@ def main():
     logger.info("📧 Sending email report...")
     try:
         from utils.email.report_sender import SentimentEmailSender
+        import pandas as pd
         
-        email_sender = SentimentEmailSender()
-        success = email_sender.send_daily_report()
-        
-        if success:
-            logger.info("✅ Email report sent successfully")
+        # Load latest sentiment data
+        sentiment_file = Path('results/sentiment_summary_latest.csv')
+        if sentiment_file.exists():
+            df = pd.read_csv(sentiment_file)
+            logger.info(f"📊 Loaded sentiment data for {len(df)} stocks")
+            
+            email_sender = SentimentEmailSender()
+            success = email_sender.send_email(df, test_mode=False)
+            
+            if success:
+                logger.info("✅ Email report sent successfully")
+            else:
+                logger.error("🚨 Email report failed to send")
         else:
-            logger.error("🚨 Email report failed to send")
+            logger.error("🚨 No sentiment data file found for email")
             
     except Exception as e:
         logger.error(f"🚨 Email error: {e}")
@@ -284,6 +293,26 @@ def main():
     logger.info("=" * 60)
     
     return True
+
+def cleanup_old_logs(logger: logging.Logger):
+    """Clean up old log files to prevent disk space issues"""
+    try:
+        logs_dir = Path('logs')
+        if not logs_dir.exists():
+            return
+            
+        # Keep only last 30 days of logs
+        import time
+        current_time = time.time()
+        thirty_days_ago = current_time - (30 * 24 * 60 * 60)
+        
+        for log_file in logs_dir.glob('*.log'):
+            if log_file.stat().st_mtime < thirty_days_ago:
+                log_file.unlink()
+                logger.info(f"🗑️ Deleted old log: {log_file.name}")
+                
+    except Exception as e:
+        logger.warning(f"⚠️ Log cleanup warning: {e}")
 
 if __name__ == "__main__":
     main() 
