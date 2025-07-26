@@ -36,6 +36,10 @@ def setup_logging():
 
 def run_command_with_logging(command: list, description: str, logger: logging.Logger, max_retries: int = 3) -> bool:
     """Run a command with detailed logging and retry logic"""
+    # Set up environment with PYTHONPATH
+    env = os.environ.copy()
+    env['PYTHONPATH'] = str(Path.cwd())  # Add current directory to PYTHONPATH
+    
     for attempt in range(1, max_retries + 1):
         try:
             logger.info(f"🔄 Attempt {attempt}/{max_retries}: {' '.join(command)}")
@@ -44,7 +48,8 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
                 check=True, 
                 capture_output=True, 
                 text=True,
-                cwd=os.getcwd()
+                cwd=os.getcwd(),
+                env=env  # Pass environment with PYTHONPATH
             )
             logger.info(f"✅ Command completed successfully")
             if result.stdout.strip():
@@ -182,7 +187,12 @@ def main():
     
     # Check prerequisites
     logger.info("🔍 Checking prerequisites...")
-    python_path = shutil.which('python') or sys.executable
+    # Use virtual environment's Python if available
+    venv_python = Path('venv/bin/python')
+    if venv_python.exists():
+        python_path = str(venv_python.absolute())
+    else:
+        python_path = sys.executable
     logger.info(f"🐍 Python executable: {python_path}")
     
     if not Path('scripts/a_collect_sentiment.py').exists():
