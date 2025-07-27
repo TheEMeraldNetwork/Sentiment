@@ -1,0 +1,983 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Axon Enterprise Inc. (AXON) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Axon Enterprise Inc. (AXON)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.26</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3fbc2fbe0d6d155af7e66323456a81c70bfdc7d547fc639ddd542ebaadfa0ccf" target="_blank" rel="noopener noreferrer">Wall Street Analysts See Axon (AXON) as a Buy: Should You Invest?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">According to the average brokerage recommendation (ABR), one should invest in Axon (AXON). It is debatable whether this highly sought-after metric is effective because Wall Street analysts' recommenda...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1fd0dfb61d7ffb34c8d9abefcf7d67e274dfd32311f0251926aa64942ddc79ed" target="_blank" rel="noopener noreferrer">Want Better Returns? Don't Ignore These 2 Aerospace Stocks Set to Beat Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Finding stocks expected to beat quarterly earnings estimates becomes an easier task with our Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e0c4345285eaba2fa6c39d560c1b08ad0875a8d6f949a698387933b11e1178c2" target="_blank" rel="noopener noreferrer">Here is What to Know Beyond Why Axon Enterprise, Inc (AXON) is a Trending Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Recently, Zacks.com users have been paying close attention to Axon (AXON). This makes it worthwhile to examine what the stock has in store....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1d140ef197dc20fb9e983f614e4725518fafdf030ce6c69d8a2b9e0e0e5aed94" target="_blank" rel="noopener noreferrer">Franklin DynaTech Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Global equities collectively rose during 2025âs second quarter (2Q25) after bouncing back from their April lows. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=74ae0897038e48f72464bff137b1d3b80dc0d83c383cd50228bb61ab8bec560c" target="_blank" rel="noopener noreferrer">Conestoga SMid Cap Composite Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=378f9f3df486eb37cb9b4b735c38b2d4ebb44eb526291346f4402ed7df09e336" target="_blank" rel="noopener noreferrer">Axon Eyes Expansion in Drone Equipment Space: Can It Deliver Growth?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">AXON's drone push gains traction with Skydio, Dedrone deals and rising public safety demand fueling future growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd0f87bf74e7a268c873682317b270c671a8dbeb7f8db140f3ad8712f2caa770" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise Inc. stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ba75f031e7ec41091992141330b0f23aa4a2eec67b69134170236e390ee8b584" target="_blank" rel="noopener noreferrer">Here's Why We Think Axon Enterprise (NASDAQ:AXON) Is Well Worth Watching</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">It's common for many investors, especially those who are inexperienced, to buy shares in companies with a good story......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=14602f522a422e07bdb09d40d422c46292d88425481027402aaa54564ee625f9" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a04655c7ba08e0762cb0e9b8f49b3c017f10330bde6d57837a894aa972208883" target="_blank" rel="noopener noreferrer">2 Industrials Stocks with Competitive Advantages and 1 We Find Risky</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">Whether you see them or not, industrials businesses play a crucial part in our daily activities. Still, their generally high capital requirements expose them to the ups and downs of economic cycles, a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d721b96ebe3fecaddee19a2c422bdff761e2dd6d4cfa4e015880ba9e484918a7" target="_blank" rel="noopener noreferrer">Axon to Release Second Quarter 2025 Earnings on August 4, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon (Nasdaq: AXON), the global public safety technology leader, today announced that it will report second quarter 2025 financial results after the market closes on Monday, August 4, 2025. Axon will ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=335fe5b813bda5df53e7c92dc49959f3b6165bdaee464bfe80d50de2fc12e8a4" target="_blank" rel="noopener noreferrer">Axon Enterprise (AXON) Rises As Market Takes a Dip: Key Facts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.76
+                                </span>
+                            </div>
+                            <div class="article-summary">In the latest trading session, Axon Enterprise (AXON) closed at $756.09, marking a +1.37% move from the previous day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5e9129af59c704eaca75ceaa60512832accd0dfee471e6d7f914735500cf4380" target="_blank" rel="noopener noreferrer">Axon (AXON): 3 Reasons We Love This Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon currently trades at $746.40 and has been a dream stock for shareholders. It’s returned 709% since July 2020, blowing past the S&P 500’s 93.6% gain. The company has also beaten the index over the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1dd6d4816cdcd3711a1d7081589d1f4ed8671644ac378b2449c81338051a0d50" target="_blank" rel="noopener noreferrer">Clear Secure Stock Gets Relative Strength Rating Lift</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">The Relative Strength (RS) Rating for Clear Secure stock entered a higher percentile Friday, as it got a lift from 70 to 79.    When To Sell Stocks To Lock In Profits And Minimize Losses  This exclusi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30049fb7e8d2ca004a29f45007e7ee797e4a2791fb5a306584a891d3e9657d16" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7050614c201cc0c4b0b8416caee84972e2070b65e16f4697d1bfc106bdc0d989" target="_blank" rel="noopener noreferrer">What to Expect From Axon Enterprise's Next Quarterly Earnings Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise is expected to announce its second-quarter results next month, and analysts predict a double-digit dip in the company’s bottom-line figure....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=38abf2480a875e5a924b480a1cbb6dde93b191303a7e33f0effa7aff84781a66" target="_blank" rel="noopener noreferrer">Insiders At Axon Enterprise Sold US$78m In Stock, Alluding To Potential Weakness</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Many Axon Enterprise, Inc. ( NASDAQ:AXON ) insiders ditched their stock over the past year, which may be of interest to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3bdbdcfc578316037ce6091ba0dbddef44b1924fd362ea49a0aa6f8b4c546983" target="_blank" rel="noopener noreferrer">Axon vs. Teledyne: Which Defense & Security Stock has Better Prospects?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">AXON outpaces TDY with 25.6% stock gain and stronger sales growth, fueled by soaring demand for TASERs and digital tools....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ededdd9f3fcb73d65f400786dcc40b2f8522dd57dfe2ded6fd410c4f4176ec29" target="_blank" rel="noopener noreferrer">Axon Enterprise's Strong Growth Already Reflected in Valuation, UBS Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise (AXON) offers strong long-term growth prospects driven by demand for its law enforce...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b7b70afdd4a526856e7419b25d2b753ed2e6197d1653f48dc3fd0485a5c7b23a" target="_blank" rel="noopener noreferrer">AXON's Software & Services Growth Picks Up: More Upside to Come?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise's Software & Services revenues surge 39% in Q1 2025, fueled by rising ARR and premium plan adoption momentum....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=77f7b798f0b8874d7b222116c076f61954fbafd81ccb67e8381efe3d58d734bf" target="_blank" rel="noopener noreferrer">Axon Enterprise (AXON): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on Axon Enterprise on Compounding Your Wealth’s Substack by Sergey. As of 9ᵗʰ July, Axon Enterprise’s share was trading at $805.86. AXON’s trailing and forward P/E were...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4678d3482761f7983a9bb280f35779700a2ec82263089bcbc526cbb2711e53fd" target="_blank" rel="noopener noreferrer">Axon Dilemma: When A Massive Moat Meets Impossible Valuation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon has evolved into a tech-driven law enforcement ecosystem with strong growth and a high valuation. Find out why AXON stock is a hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9a12e3826e97ce1b6956aaf4ab1216e5995cad5f5d4e790a75b337692e876c0" target="_blank" rel="noopener noreferrer">AppLovin (APP) Just Got a $430 Price Target—Here’s Why Wall Street Is Buzzing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.41
+                                </span>
+                            </div>
+                            <div class="article-summary">AppLovin Corporation (NASDAQ:APP) is one of the AI Stocks Making Waves on Wall Street. On July 8, Scotiabank analyst Nathaniel Schindler initiated coverage on the stock with a “Sector Outperform” rati...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=adf73ae5314220556f15972b251eaea7e033ed874fb9140819b811cde524474f" target="_blank" rel="noopener noreferrer">Pentagon Lifts Drone Restrictions, Sending Shares of Defense Stocks Higher -- Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    -0.07
+                                </span>
+                            </div>
+                            <div class="article-summary">By Connor Hart The Pentagon is going all in on drones, a move that has provided a boost to several defense-technology stocks. Defense Secretary Pete Hegseth has ordered the removal of any......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aa3c42a947454208b41a50e005ccede5e54656669a420618b76f75b1184948f1" target="_blank" rel="noopener noreferrer">Axon Enterprise (AXON) Beats Stock Market Upswing: What Investors Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">In the latest trading session, Axon Enterprise (AXON) closed at $805.86, marking a +1.98% move from the previous day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c129ecde216a519f8d6f2762a32f0d0fa8713a6eed766561b7700eea0992f5b2" target="_blank" rel="noopener noreferrer">Axon Enterprise, Inc (AXON) is Attracting Investor Attention: Here is What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon (AXON) has received quite a bit of attention from Zacks.com users lately. Therefore, it is wise to be aware of the facts that can impact the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd205fb302a305a40f192a7052d5cbe6a8ba32ed5ed13af4d3ecd24e6e28d545" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock underperforms Thursday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise Inc. stock underperforms Thursday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=328f563cce1f91c4c72349b30219df5430425dc4f1fb2a9f57b1136fce45487e" target="_blank" rel="noopener noreferrer">Strength in Connected Devices Unit Drives Axon: Can the Momentum Sustain?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">AXON's Connected Devices segment surges 26.1% in Q1 2025, fueled by strong TASER 10 and Axon Body 4 demand....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=00fff59ac9e90c9b93ac513f631eed2244529bb04adbc06c1417bf636a84ff79" target="_blank" rel="noopener noreferrer">AppLovin's Strategic Shift Fuels Omnichannel Advertising Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">APP surges 46.5% as its pivot into CTV, web and e-commerce ads positions it for omnichannel growth and market expansion....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e493847dc4d2c48961bbdba3dfa57010f726b235fa80af09e08a91eb3c2bbf23" target="_blank" rel="noopener noreferrer">Axon Enterprise Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9974d10a86620104809bec215871c321b03b8eba473828b580ddfa0ba255a7f6" target="_blank" rel="noopener noreferrer">Moving Markets: Looking Forward To Q3</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">My all-weather portfolio gained 23% in H1, driven by tech, energy, and real assets amid rate cut hopes. See why I'm targeting a 40â50% return by 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5251746df736b6ff9559b1d524571aaedb4875f9b9fdc97a9ba26a403b4b2b89" target="_blank" rel="noopener noreferrer">Looking for Stocks with Positive Earnings Momentum? Check Out These 2 Aerospace Names</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Why investors should use the Zacks Earnings ESP tool to help find stocks that are poised to top quarterly earnings estimates....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d122ffae6bbaffb61ce1614c966a8840a6532cdf950a17a63bdf09ea0ea50b31" target="_blank" rel="noopener noreferrer">Axon Enterprise's (NASDAQ:AXON) investors will be pleased with their fantastic 729% return over the last five years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">We think all investors should try to buy and hold high quality multi-year winners. While not every stock performs well......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4ba852d2f59d2a3d20eeb4d25492d719a9416e578d1aa2e2c01e3d4feb83c3eb" target="_blank" rel="noopener noreferrer">Axon Enterprise (AXON) Outperforms Broader Market: What You Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise (AXON) reached $795.48 at the closing of the latest trading day, reflecting a +2.7% change compared to its last close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3e1fa82918441edc1374638991c820e866aec79ba6d937e9721e3593431ae1de" target="_blank" rel="noopener noreferrer">Axon Enterprise Stock Surges 33.9% YTD: Should Investors Buy or Wait?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">AXON shares have surged 33.9% YTD on strong device and software growth, but high costs and valuation raise caution flags....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aca5b81bfe3c4467b273384707e846e66ef1106f169ef03dab32e6b50f29db7e" target="_blank" rel="noopener noreferrer">Jim Cramer on Axon: “You Can’t Just Buy it All Right Here”</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise, Inc. (NASDAQ:AXON) is one of the 21 stocks on Jim Cramer’s radar. When a caller asked about the stock during the episode, Cramer commented: “Look, I think Rick Smith is great. I have ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3de1adce5fd2e35253c215ba9c1c0ee8e9bbf5070547c72e5f6c72a99b2baedf" target="_blank" rel="noopener noreferrer">Returns On Capital Are Showing Encouraging Signs At Axon Enterprise (NASDAQ:AXON)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">There are a few key trends to look for if we want to identify the next multi-bagger. One common approach is to try and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=627bc093754a4a4f47f02474cf206adf895a8beb80066a9f6548c859500b7b51" target="_blank" rel="noopener noreferrer">Can Axon Enterprise Sustain EBITDA Margin Momentum Amid Cost Pressures?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">AXON lifts 2025 EBITDA outlook as strong TASER and body cam sales drive margin gains despite rising costs....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1877bf8c231ef90847199585d1a12c6b6c2d9c43bbd7739fe8e13b3b0487d7e7" target="_blank" rel="noopener noreferrer">Are Strong Financial Prospects The Force That Is Driving The Momentum In Axon Enterprise, Inc.'s NASDAQ:AXON) Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise's (NASDAQ:AXON) stock is up by a considerable 50% over the past three months. Given the company's......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0e0fa896de5091ec5183c8fd24c555e619c0f79394441b4926262f9b30b1375d" target="_blank" rel="noopener noreferrer">AppLovin's Premium Valuation Rests on Margin Strength and AXON Scale</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">APP's 34X forward P/E may look steep, but strong margins and AXON's ad spend scale help justify the premium....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=867c4aa4256192a1ddad7e327690b2b18aa0eeaef66b51eff7c7435a6e9847c0" target="_blank" rel="noopener noreferrer">Axon Enterprise (AXON) Exceeds Market Returns: Some Facts to Consider</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon Enterprise (AXON) concluded the recent trading session at $818.87, signifying a +1.86% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8f5b572ca1a6a914505c91456206c6d207a6aebcdaa1526dfbd1847fa3e52f6d" target="_blank" rel="noopener noreferrer">Axon Enterprise Delivers On Vision, Priced For Perfection</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon delivers strong growth and sticky revenue through innovation and AI, but a rich valuation limits near-term upside. See why AXON stock is a hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3dea34d05cdff84eaff7a1863280cb1cd71b05b44912f1b60a0f43604b56a576" target="_blank" rel="noopener noreferrer">Axon Enterprise, Inc (AXON) Is a Trending Stock: Facts to Know Before Betting on It</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Axon (AXON) has been one of the stocks most watched by Zacks.com users lately. So, it is worth exploring what lies ahead for the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=99cbd11ff9296881d2685ba0defdf5688eca350e1d45da2f665d333bf6c6f6d6" target="_blank" rel="noopener noreferrer">Should You Invest in Axon (AXON) Based on Bullish Wall Street Views?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">According to the average brokerage recommendation (ABR), one should invest in Axon (AXON). It is debatable whether this highly sought-after metric is effective because Wall Street analysts' recommenda...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33cbbb3d7b4f98673736f8da886ff890859d3a7514bfd827be32340041aa4ada" target="_blank" rel="noopener noreferrer">Axon's $1.75B Senior Notes Raise: Can Growth Plans Deliver Returns?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">AXON issues $1.75B in debt to power AI innovation, reduce dilution risk and fund global infrastructure expansion....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

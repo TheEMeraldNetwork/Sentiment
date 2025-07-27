@@ -1,0 +1,743 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>MATADOR RESOURCES COMPANY (MTDR) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">MATADOR RESOURCES COMPANY (MTDR)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">30</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.03</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5480a745fe76638a014962af9c06d0e0bedf681a79c9d9038e0700aff308c00" target="_blank" rel="noopener noreferrer">Matador Resources Second Quarter 2025 Earnings: Misses Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources ( NYSE:MTDR ) Second Quarter 2025 Results Key Financial Results Revenue: US$895.3m (up 13% from 2Q......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=362d7a4fa5f492213571d8a218ae06fa628065a9a15b720bd5dd332bca6b620c" target="_blank" rel="noopener noreferrer">BXSY: This Unique Fund Could Have A Lot To Offer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ad50143ab69bd7ceabd0111269e88aba8a5011db775d7b791dace9fdb98d22f4" target="_blank" rel="noopener noreferrer">Matador Resources Company 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Matador Resources Company in conjunction with their 2025 Q2 earnings call....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c509a55d7944d7670091755815bca3c8e2c3c509998327be753dfb109146605" target="_blank" rel="noopener noreferrer">Matador Resources Company (MTDR) Q2 2025 Presentation Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company (NYSE:MTDR) Q2 2025 Presentation Conference Call July 23, 2025 11:00 AM ETCompany ParticipantsBrian J....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c3a835ba458e151938a248268337abdef9aab62749c929398f44992f710729b6" target="_blank" rel="noopener noreferrer">Matador Resources Q2 Earnings Beat on Higher Production Volumes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">MTDR tops Q2 EPS estimates on record production and cost cuts despite lower oil prices and a revenue miss....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5a374e5460ea48ec722c2d67f70cf74368675ecb815b2411f37dc73287e8be57" target="_blank" rel="noopener noreferrer">Phillips 66 to Report Q2 Earnings: What's in the Cards?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Strong U.S. gasoline demand and reduced crude prices likely helped counter weaker refining margins for PSX in Q2....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e5dede07153d6959a69f76b33ddcb00db1957f18b1348b55395c940473cbfa37" target="_blank" rel="noopener noreferrer">Matador Resources Company Reports Second Quarter 2025 Results and Updates Full Year 2025 Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">DALLAS, July 22, 2025--Matador Resources Company (NYSE: MTDR) ("Matador" or the "Company") today reported financial and operating results for the second quarter of 2025. A slide presentation summarizi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2d13eacd49b37ce1aa1136377a12500ace286cedd29c9fae1b8b8db1ec470093" target="_blank" rel="noopener noreferrer">Matador: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">DALLAS (AP) — Matador Resources Co. (MTDR) on Tuesday reported second-quarter net income of $150.2 million. On a per-share basis, the Dallas-based company said it had profit of $1.21. Earnings, adjust...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1913f46a2585d484bb1a400f2c34b4a9ea198d167270dda54e029b60d6487444" target="_blank" rel="noopener noreferrer">Matador Resources (MTDR) Tops Q2 Earnings Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador (MTDR) delivered earnings and revenue surprises of +18.61% and -0.81%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=818ddbeab0eb29972cf8f009b0051326d061de7e7cf8a8f732a7fe271026236e" target="_blank" rel="noopener noreferrer">Valero Energy to Report Q2 Earnings: What's in the Cards?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">VLO's Q2 earnings are likely to have been aided by high refinery utilization, better crack spreads and lower input costs supporting margins....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0c5a5eeccf23c3eff475800286d3e4190848635abbd46c9b8a9769eea211a93" target="_blank" rel="noopener noreferrer">Dividends Declared Week of July 14</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">With second-quarter earnings underway, here is a compilation of dividends and distributions declared from select upstream, midstream and service and supply companies....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=19f4466ed496d2e927962a6bd1d0be19b8fa93c7f2a6b0b0708f8810fd744953" target="_blank" rel="noopener noreferrer">These 2 Oils-Energy Stocks Could Beat Earnings: Why They Should Be on Your Radar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors looking for ways to find stocks that are set to beat quarterly earnings estimates should check out the Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=37bf8ea0a460dd28362d54b8920dde741fa5e953130fac623261c0020ee64408" target="_blank" rel="noopener noreferrer">CNX Resources Corporation. (CNX) Reports Next Week: Wall Street Expects Earnings Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">CNX Resources (CNX) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3f03dbe6e1593d545ccb51f1f814f1af45a59ab32ca1361f79df5358d0b6eb09" target="_blank" rel="noopener noreferrer">How to Boost Your Portfolio with Top Oils-Energy Stocks Set to Beat Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">The Zacks Earnings ESP is a great way to find potential earnings surprises. Why investors should take advantage now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f9e19eca73ede0e32ee7feb0ec8716dbb9a45b55dbf2f604a050c625e80b71ed" target="_blank" rel="noopener noreferrer">Matador Resources (MTDR) Expected to Beat Earnings Estimates: Should You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador (MTDR) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2f64d9dceeee62dd1cc9b32839accf6e087b9f001741b2d8d143ab12c3e4e41" target="_blank" rel="noopener noreferrer">Matador Resources Company Declares Quarterly Cash Dividend</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">DALLAS, July 15, 2025--Matador Resources Company (NYSE: MTDR) ("Matador") today announced that its Board of Directors declared a quarterly cash dividend of $0.3125 per share of common stock payable on...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a476937a1af4849fa6ad7ce5bcfdad479bd2e146b0bef2c6e9179e5b594f23f" target="_blank" rel="noopener noreferrer">Should You Invest in the First Trust Energy AlphaDEX ETF (FXN)?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Sector ETF report for FXN...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af1d31c9f875cafb13f1e0986a0347dbb19e2036bae7c57b2bcd5c0177efb050" target="_blank" rel="noopener noreferrer">Will Matador (MTDR) Beat Estimates Again in Its Next Earnings Report?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador (MTDR) has an impressive earnings surprise history and currently possesses the right combination of the two key ingredients for a likely beat in its next quarterly report....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=75f432677af6d121d016fcce4a7a8a44e6b1136e739a2b0591707b97d99fe59d" target="_blank" rel="noopener noreferrer">Is Matador Resources Company (NYSE:MTDR) Trading At A 46% Discount?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights Matador Resources' estimated fair value is US$93.03 based on 2 Stage Free Cash Flow to Equity Matador......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1bb4f21d104fb861e5cccbc3195bbed9743f1e4129090aac7c39e537f3c2435d" target="_blank" rel="noopener noreferrer">Matador Resources: Delaware Production To Drive Potential Re-Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources boasts 130% upside with Delaware oil growth, robust midstream cash flow, and long-term productivity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=afc5c21be2e0cc4db31c2d85cafd85d850be909e74608c0045c8c5a294a8aeeb" target="_blank" rel="noopener noreferrer">Matador Resources Company(NYSE: MTDR) dropped from Russell Small Cap Comp Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company dropped from Russell Small Cap Comp Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f0815e9cb4b3571f6e7eead8150e9642dc983d29add140b04fd596972c004aa7" target="_blank" rel="noopener noreferrer">Matador Resources Company(NYSE: MTDR) dropped from Russell 3000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company dropped from Russell 3000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a9788ae275a044e2d59f95d4fbb599ed3980faf159e4fea9470a172932aa700" target="_blank" rel="noopener noreferrer">Matador Resources Company(NYSE: MTDR) dropped from Russell 2500 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company dropped from Russell 2500 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd9f37e5736cc6eaddeee260372acf57fc0b56454d6567076ff6d306eaa643d6" target="_blank" rel="noopener noreferrer">Matador Resources Company(NYSE: MTDR) dropped from Russell 3000E Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company dropped from Russell 3000E Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ac7b99844ee69495654413cabdcc7bb53744c2062bb9e8573a38ea0e3acf7dc3" target="_blank" rel="noopener noreferrer">Matador Resources Company(NYSE: MTDR) dropped from Russell 1000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company dropped from Russell 1000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6090dd863a552432612a1905b0308df603ebb507eed3e1360143f8c157f1401b" target="_blank" rel="noopener noreferrer">Matador Resources Company(NYSE: MTDR) dropped from Russell Midcap Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company dropped from Russell Midcap Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea083544ca1c6724635780c6c2f6a90b17ea55c1fbb73f0a3dd2147d73a9ed58" target="_blank" rel="noopener noreferrer">Matador Resources Expands Gas Processing Capacity to 720 MMcf/d with Marlan Plant Startup</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Matador Resources Company (NYSE:MTDR) is one of the most undervalued US stocks according to analysts. As May was coming to an end, Matador Resources and its midstream affiliate, called San Mateo Midst...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=83ef200e6d14f730c1ba9e437aee33b59afe7e1f3c03b49eb5d5796412834a7c" target="_blank" rel="noopener noreferrer">Victory Munder Mid-Cap Core Growth Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=54acc3b2032ea85e7556dc7c5b6f6440d00ca914fdf695841f823d2c5501ecb1" target="_blank" rel="noopener noreferrer">Victory Munder Multi-Cap Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e24c741fcfd4e69f1d780d535565edcb9e22315ebcd90aa2aa6c1dbb7547c944" target="_blank" rel="noopener noreferrer">Victory Diversified Stock Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">In the first quarter, the Victory Diversified Stock Fund A-Shares (without sales charge) underperformed its S&P 500Â®Index benchmark by 95 basis points....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

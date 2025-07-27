@@ -41,7 +41,7 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
     env['PYTHONPATH'] = str(Path.cwd())  # Add current directory to PYTHONPATH
     
     for attempt in range(1, max_retries + 1):
-        try:
+    try:
             logger.info(f"🔄 Attempt {attempt}/{max_retries}: {' '.join(command)}")
             result = subprocess.run(
                 command, 
@@ -54,9 +54,9 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
             logger.info(f"✅ Command completed successfully")
             if result.stdout.strip():
                 logger.info(f"📤 Output: {result.stdout.strip()}")
-            return True
+        return True
             
-        except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError as e:
             logger.error(f"❌ Attempt {attempt} failed: {e}")
             if e.stdout:
                 logger.error(f"📤 STDOUT: {e.stdout}")
@@ -75,7 +75,7 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
             logger.error(f"🚨 Unexpected error in {description}: {e}")
             return False
     
-    return False
+        return False
 
 def copy_to_docs(logger: logging.Logger) -> bool:
     """Copy latest results to docs directory for GitHub Pages"""
@@ -274,7 +274,7 @@ def main():
             email_sender = SentimentEmailSender()
             success = email_sender.send_email(df, test_mode=False)
             
-            if success:
+    if success:
                 logger.info("✅ Email report sent successfully")
             else:
                 logger.error("🚨 Email report failed to send")

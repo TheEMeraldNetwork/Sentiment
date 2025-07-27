@@ -1,0 +1,487 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Trip.com Group Limited (TCOM) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Trip.com Group Limited (TCOM)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.24</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e5cb1b8bb9038971297fd15a2f8a6ed669dd0abc915853a681f34c193e702d6a" target="_blank" rel="noopener noreferrer">Trip.com (TCOM) Advances While Market Declines: Some Information for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com (TCOM) reached $63.09 at the closing of the latest trading day, reflecting a +2.32% change compared to its last close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3cfd59ac1cbf7d67ef2198924ca1752b48e8328b6eb7bbaf408a956f8d0d2785" target="_blank" rel="noopener noreferrer">Travel Trailblazers: Top Global Finalists Shortlisted for Trip.com Group's Tourism Innovation Awards</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Meet the future of travel – Trip.com Group has released the top contenders for its Tourism Innovation Awards, as the selection process enters the final stages to select outstanding projects driving to...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c22428b6961e533e80c6398553744201a24d159686b804d0e94fdde37ca9faa" target="_blank" rel="noopener noreferrer">Trip.com (TCOM) Registers a Bigger Fall Than the Market: Important Facts to Note</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">In the most recent trading session, Trip.com (TCOM) closed at $60.54, indicating a -1.5% shift from the previous trading day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1980fbcd1c049536041fe7dd2c13c50a66ecf1e62120c48154923eb5217bd96e" target="_blank" rel="noopener noreferrer">Trip.com Group (NASDAQ:TCOM) Has A Rock Solid Balance Sheet</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Legendary fund manager Li Lu (who Charlie Munger backed) once said, 'The biggest investment risk is not the volatility......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a5a868e3016ead930424608f48119b7608850e32cc252d5b1485d6341cc3355d" target="_blank" rel="noopener noreferrer">Booking Holdings: Low Customer Satisfaction And High Valuation Make This A Sell</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Booking boasts strong profitability, but its high valuation is difficult to justify amid slowing growth and rising competition. Click to read why BKNG is a Sell....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=72a32fd4781ed2ec33b043bfaf73117d395d00a5f4ab4a3663a801d2de2f7c05" target="_blank" rel="noopener noreferrer">Trip.com Group Unveils Sustainability Report, Highlights Green Travel, Inclusivity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com Group Limited (NASDAQ:TCOM) is one of the most undervalued large cap stocks to buy according to analysts. On July 1, Trip.com Group released its latest Sustainability Report detailing progres...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d7b7dc67e60755fc72f73e55dfd8a84c8708f40f7904a271ea6c24aea3ef7ea5" target="_blank" rel="noopener noreferrer">Alibaba Raises $1.5 Billion From Sale of Exchangeable Bonds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Chinese tech giant Alibaba Group Holding Ltd. raised HK$12 billion ($1.5 billion) from the sale of bonds exchangeable into shares of a unit, Alibaba Health Information Technology Ltd.Mo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=355e5ae76762f60fc8272f074c4c955059b8d1e8cf63ae60d9360969638e7744" target="_blank" rel="noopener noreferrer">Trip.com Group (NASDAQ:TCOM) Might Have The Makings Of A Multi-Bagger</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">If you're not sure where to start when looking for the next multi-bagger, there are a few key trends you should keep an......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4bbdec605eaa9aab41db1a81c960789e270e0f456e9e7203e9c4883901a7753e" target="_blank" rel="noopener noreferrer">Trip.com Group Pioneers a Greener, More Inclusive Global Travel Ecosystem in 2024 Sustainability Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com Group, a leading global travel service provider, has released its latest Sustainability Report. The report highlights the company's significant progress in sustainability, centred around its ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57ccd3fb05e4d2269e045b90df873657273d71c370bc18b5e2c9d9f702b62743" target="_blank" rel="noopener noreferrer">Trip.com Group Announces Results of Annual General Meeting</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com Group Limited (Nasdaq: TCOM; HKEX: 9961) ("Trip.com Group" or the "Company"), a leading one-stop travel service provider of accommodation reservation, transportation ticketing, packaged tours...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=06b61e59d682a33d9a0cb7b080ef15d02112a2a55b9f145e8c8aa81119e893e2" target="_blank" rel="noopener noreferrer">Trip.com Group Announces Completion of the Repurchase Right Offer for Its 1.50% Exchangeable Senior Notes due 2027</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com Group Limited (Nasdaq: TCOM; HKEX: 9961) ("Trip.com Group" or the "Company"), a leading one-stop travel service provider for accommodation reservation, transportation ticketing, packaged tour...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e60f99f0e2b145dd1ab6f67cf659e3a447cc486aa8a6dc14db58bf59d3246c6" target="_blank" rel="noopener noreferrer">Citi Maintains a Buy Rating on Trip.com Group (TCOM), Sets a $78 Price Target</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com Group Limited (NASDAQ:TCOM) is one of the 11 Best Strong Buy Stocks to Invest in Now. On June 17, Citi analyst Brian Gong maintained a Buy rating on Trip.com Group Limited (NASDAQ:TCOM) and s...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5bbebf159f91bf9f32e86c23baba92ec521b12699e5c293bbb65062ca8080b50" target="_blank" rel="noopener noreferrer">Trip.com Group (NasdaqGS:TCOM) Completes Repurchase Offer for US$500M Exchangeable Notes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Trip.com Group (NasdaqGS:TCOM) recently completed its repurchase right offer for Exchangeable Senior Notes without any notes being surrendered, reflecting stability in its debt management despite the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=782c9f8dc6d6984604a7e767708b24f123c5673e9f4976a31ab40edc88d0059b" target="_blank" rel="noopener noreferrer">Here's Why Trip.com Group (NASDAQ:TCOM) Has Caught The Eye Of Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The excitement of investing in a company that can reverse its fortunes is a big draw for some speculators, so even......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
