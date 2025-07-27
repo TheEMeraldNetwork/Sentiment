@@ -224,7 +224,11 @@ class MarketDataCollector:
     
     def calculate_expected_returns(self, returns_df: pd.DataFrame) -> pd.Series:
         """
-        Calculate annualized expected returns
+        Calculate annualized expected returns using geometric mean
+        
+        Mathematical Foundation:
+        Geometric mean accounts for compounding: (1+r1)*(1+r2)*...*(1+rn) = (1+r_geometric)^n
+        This is more accurate for investment returns than arithmetic mean.
         
         Args:
             returns_df: DataFrame of daily returns
@@ -235,32 +239,107 @@ class MarketDataCollector:
         if returns_df.empty:
             return pd.Series()
         
-        # Calculate mean daily returns and annualize
-        daily_means = returns_df.mean()
-        annual_returns = daily_means * self.trading_days_year
-        
-        self.logger.info(f"📈 Expected returns calculated for {len(annual_returns)} stocks")
-        
-        return annual_returns
+        # Method 1: Geometric mean (more accurate for compound returns)
+        # Convert returns to price relatives, take geometric mean, annualize
+        try:
+            n_days = len(returns_df)
+            
+            # Calculate compound returns: (1+r1)*(1+r2)*...*(1+rn)^(252/n) - 1
+            price_relatives = 1 + returns_df
+            geometric_means = price_relatives.prod() ** (self.trading_days_year / n_days) - 1
+            
+            # For numerical stability, also calculate arithmetic mean as backup
+            arithmetic_means = returns_df.mean() * self.trading_days_year
+            
+            # Log both methods for comparison
+            self.logger.info(f"📈 Expected returns calculated for {len(geometric_means)} stocks")
+            self.logger.info(f"📊 Method comparison for sample stocks:")
+            
+            for symbol in geometric_means.head(3).index:
+                geo = geometric_means[symbol]
+                arith = arithmetic_means[symbol]
+                self.logger.info(f"   {symbol}: Geometric={geo:.4f} ({geo:.2%}), Arithmetic={arith:.4f} ({arith:.2%})")
+            
+            # Use geometric mean as primary method
+            annual_returns = geometric_means
+            
+            # Handle any invalid values (replace with arithmetic mean)
+            invalid_mask = ~np.isfinite(annual_returns) | (annual_returns < -0.95) | (annual_returns > 5.0)
+            if invalid_mask.any():
+                self.logger.warning(f"⚠️ Replacing {invalid_mask.sum()} invalid geometric returns with arithmetic mean")
+                annual_returns[invalid_mask] = arithmetic_means[invalid_mask]
+            
+            return annual_returns
+            
+        except Exception as e:
+            self.logger.error(f"❌ Geometric mean calculation failed: {e}")
+            self.logger.warning("⚠️ Falling back to arithmetic mean")
+            
+            # Fallback to arithmetic mean
+            daily_means = returns_df.mean()
+            annual_returns = daily_means * self.trading_days_year
+            
+            self.logger.info(f"📈 Expected returns (arithmetic) calculated for {len(annual_returns)} stocks")
+            return annual_returns
     
     def calculate_covariance_matrix(self, returns_df: pd.DataFrame) -> pd.DataFrame:
         """
-        Calculate annualized covariance matrix
+        Calculate annualized covariance matrix with mathematical validation
+        
+        Mathematical Foundation:
+        Cov(X,Y) = E[(X-μx)(Y-μy)] annualized by multiplying by trading days
         
         Args:
             returns_df: DataFrame of daily returns
             
         Returns:
-            DataFrame covariance matrix
+            DataFrame covariance matrix (annualized)
         """
         if returns_df.empty:
             return pd.DataFrame()
         
-        # Calculate daily covariance and annualize
+        # Calculate daily covariance matrix
         daily_cov = returns_df.cov()
+        
+        # Annualize covariance matrix
         annual_cov = daily_cov * self.trading_days_year
         
+        # Mathematical validation
+        n_assets = annual_cov.shape[0]
+        
+        # Check matrix properties
+        is_symmetric = np.allclose(annual_cov, annual_cov.T, atol=1e-10)
+        eigenvals = np.linalg.eigvals(annual_cov.values)
+        is_positive_semidefinite = np.all(eigenvals >= -1e-8)  # Allow small numerical errors
+        min_eigenval = np.min(eigenvals)
+        condition_number = np.max(eigenvals) / np.max([np.min(eigenvals[eigenvals > 1e-10]), 1e-10])
+        
         self.logger.info(f"🔢 Covariance matrix calculated: {annual_cov.shape}")
+        self.logger.info(f"📊 Matrix validation:")
+        self.logger.info(f"   Symmetric: {is_symmetric}")
+        self.logger.info(f"   Positive semi-definite: {is_positive_semidefinite}")
+        self.logger.info(f"   Min eigenvalue: {min_eigenval:.6f}")
+        self.logger.info(f"   Condition number: {condition_number:.2f}")
+        
+        # Handle numerical issues
+        if not is_positive_semidefinite:
+            self.logger.warning("⚠️ Covariance matrix not positive semi-definite, applying regularization")
+            # Add small diagonal term to ensure positive definiteness
+            regularization = max(-min_eigenval * 1.1, 1e-6)
+            annual_cov += np.eye(n_assets) * regularization
+            self.logger.info(f"✅ Added regularization: {regularization:.6f}")
+        
+        if condition_number > 1e12:
+            self.logger.warning(f"⚠️ High condition number ({condition_number:.2e}), matrix may be ill-conditioned")
+        
+        # Verify final matrix properties
+        final_eigenvals = np.linalg.eigvals(annual_cov.values)
+        final_min_eigenval = np.min(final_eigenvals)
+        
+        if final_min_eigenval < 0:
+            self.logger.error(f"❌ Final matrix still not positive semi-definite: min eigenval = {final_min_eigenval:.6f}")
+        else:
+            self.logger.info(f"✅ Final matrix is positive semi-definite: min eigenval = {final_min_eigenval:.6f}")
         
         return annual_cov
     

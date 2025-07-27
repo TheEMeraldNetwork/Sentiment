@@ -248,30 +248,52 @@ class RigorousPortfolioOptimizer:
         """
         Calculate composite scores: 80% financial + 20% sentiment
         
+        Mathematical Foundation:
+        - Historical returns (geometric mean): Base forecast
+        - Analyst targets: Forward-looking adjustment (capped)  
+        - Sentiment: Market psychology factor (limited impact)
+        
         Returns:
             Series of composite expected returns
         """
         composite_scores = pd.Series(index=expected_returns.index, dtype=float)
         
+        # Track adjustments for mathematical validation
+        analyst_adjustments = []
+        sentiment_adjustments = []
+        
         for symbol in expected_returns.index:
-            # Financial component (80%)
-            financial_score = expected_returns[symbol]
+            # Start with historical expected returns
+            historical_return = expected_returns[symbol]
             
-            # Add analyst target upside if available
+            # Financial component: Blend historical with analyst targets (if available)
             if symbol in analyst_targets['symbol'].values:
                 target_data = analyst_targets[analyst_targets['symbol'] == symbol].iloc[0]
                 if pd.notna(target_data['upside_potential']):
-                    # Weight the upside potential
-                    financial_score += 0.3 * target_data['upside_potential']
+                    upside = target_data['upside_potential']
+                    # Cap analyst upside to prevent unrealistic expectations
+                    capped_upside = np.clip(upside, -0.50, 0.50)  # Max ±50% upside
+                    
+                    # Blend historical (70%) with analyst target upside (30%)
+                    # This replaces addition with weighted average to prevent inflation
+                    financial_score = 0.7 * historical_return + 0.3 * capped_upside
+                    analyst_adjustments.append(capped_upside)
+                else:
+                    financial_score = historical_return
+                    analyst_adjustments.append(0.0)
+            else:
+                financial_score = historical_return
+                analyst_adjustments.append(0.0)
             
-            # Sentiment component (20%)
+            # Sentiment component (limited impact)
             sentiment_info = sentiment_data.get(symbol, {'sentiment_score': 0.0})
             sentiment_score = sentiment_info['sentiment_score']
             
-            # Convert sentiment (-1 to +1) to return adjustment
-            sentiment_return_adj = sentiment_score * 0.1  # Max 10% adjustment
+            # Convert sentiment (-1 to +1) to return adjustment (max ±5% impact)
+            sentiment_return_adj = np.clip(sentiment_score * 0.05, -0.05, 0.05)
+            sentiment_adjustments.append(sentiment_return_adj)
             
-            # Combine with weights
+            # Combine with weights (80% financial, 20% sentiment)
             composite_score = (
                 self.financial_weight * financial_score + 
                 self.sentiment_weight * sentiment_return_adj
@@ -279,7 +301,27 @@ class RigorousPortfolioOptimizer:
             
             composite_scores[symbol] = composite_score
         
+        # Mathematical validation and logging
+        mean_historical = expected_returns.mean()
+        mean_composite = composite_scores.mean()
+        mean_analyst_adj = np.mean(analyst_adjustments)
+        mean_sentiment_adj = np.mean(sentiment_adjustments)
+        
         self.logger.info(f"📊 Composite scores calculated for {len(composite_scores)} symbols")
+        self.logger.info(f"📈 Return analysis:")
+        self.logger.info(f"   Historical mean: {mean_historical:.4f} ({mean_historical:.2%})")
+        self.logger.info(f"   Composite mean: {mean_composite:.4f} ({mean_composite:.2%})")
+        self.logger.info(f"   Mean analyst adjustment: {mean_analyst_adj:.4f} ({mean_analyst_adj:.2%})")
+        self.logger.info(f"   Mean sentiment adjustment: {mean_sentiment_adj:.4f} ({mean_sentiment_adj:.2%})")
+        
+        # Validate reasonable return expectations
+        if mean_composite > 0.50:  # 50% mean return is unrealistic
+            self.logger.warning(f"⚠️ Mean composite return ({mean_composite:.2%}) may be unrealistically high")
+        
+        extreme_returns = composite_scores[(composite_scores > 1.0) | (composite_scores < -0.50)]
+        if len(extreme_returns) > 0:
+            self.logger.warning(f"⚠️ {len(extreme_returns)} stocks have extreme expected returns (>100% or <-50%)")
+        
         return composite_scores
     
     def create_optimization_constraints(self, symbols: List[str], 
@@ -313,33 +355,76 @@ class RigorousPortfolioOptimizer:
         """
         Calculate Value at Risk using Monte Carlo simulation
         
+        Mathematical Foundation:
+        1. Simulate asset returns using multivariate normal distribution
+        2. Calculate portfolio returns for each simulation  
+        3. VaR = percentile at (1-confidence) level
+        
         Returns:
-            VaR at specified confidence level
+            VaR at specified confidence level (negative values indicate losses)
         """
         try:
-            # Portfolio returns
-            portfolio_returns = returns_df @ weights
+            # Ensure weights are aligned with returns columns
+            weights_aligned = weights.reindex(returns_df.columns, fill_value=0.0)
             
-            # Generate Monte Carlo simulations
+            # Asset statistics for simulation
+            asset_means = returns_df.mean().values  # Mean return vector (NOT scalar)
+            asset_cov = returns_df.cov().values     # Covariance matrix (NxN)
+            
+            self.logger.info(f"🎲 Monte Carlo simulation: {n_simulations:,} iterations")
+            self.logger.info(f"📈 Assets: {len(asset_means)}, Mean return range: [{asset_means.min():.4f}, {asset_means.max():.4f}]")
+            
+            # Validate dimensions
+            if len(asset_means) != asset_cov.shape[0] or len(asset_means) != len(weights_aligned):
+                raise ValueError(f"Dimension mismatch: means={len(asset_means)}, cov={asset_cov.shape}, weights={len(weights_aligned)}")
+            
+            # Generate Monte Carlo simulations of asset returns
             np.random.seed(42)  # For reproducibility
-            simulated_returns = np.random.multivariate_normal(
-                portfolio_returns.mean(), 
-                np.cov(returns_df.T), 
-                n_simulations
+            simulated_asset_returns = np.random.multivariate_normal(
+                mean=asset_means,           # Correct: vector of asset means
+                cov=asset_cov,             # Correct: asset covariance matrix
+                size=n_simulations
             )
             
             # Calculate portfolio returns for each simulation
-            simulated_portfolio_returns = simulated_returns @ weights
+            # Shape: (n_simulations,) = (n_simulations, n_assets) @ (n_assets,)
+            simulated_portfolio_returns = simulated_asset_returns @ weights_aligned.values
             
-            # Calculate VaR
-            var = np.percentile(simulated_portfolio_returns, (1 - confidence_level) * 100)
+            # Calculate VaR (Value at Risk) 
+            # For 97% confidence: we want the 3rd percentile (worst 3% of outcomes)
+            var_percentile = (1 - confidence_level) * 100
+            var = np.percentile(simulated_portfolio_returns, var_percentile)
             
-            self.logger.info(f"📊 {confidence_level*100}% VaR calculated: {var:.4f}")
-            return var
+            # Additional risk metrics
+            portfolio_mean = np.mean(simulated_portfolio_returns)
+            portfolio_std = np.std(simulated_portfolio_returns)
+            
+            self.logger.info(f"📊 Portfolio simulation results:")
+            self.logger.info(f"   Mean return: {portfolio_mean:.4f} ({portfolio_mean*252:.2%} annualized)")
+            self.logger.info(f"   Volatility: {portfolio_std:.4f} ({portfolio_std*np.sqrt(252):.2%} annualized)")
+            self.logger.info(f"   {confidence_level*100}% VaR: {var:.4f} ({var*252:.2%} annualized)")
+            
+            # Return annualized VaR for better interpretation
+            var_annualized = var * np.sqrt(252)
+            
+            return var_annualized
             
         except Exception as e:
             self.logger.error(f"❌ VaR calculation failed: {e}")
-            return 0.0
+            import traceback
+            self.logger.error(f"📊 VaR calculation traceback: {traceback.format_exc()}")
+            # Return meaningful fallback based on portfolio volatility
+            try:
+                portfolio_returns = returns_df @ weights
+                portfolio_vol = portfolio_returns.std() * np.sqrt(252)
+                # Approximate VaR as 2.33 standard deviations for 99% confidence
+                # Adjusted for 97% confidence: ~2.05 standard deviations
+                fallback_var = -2.05 * portfolio_vol  # Negative for loss
+                self.logger.warning(f"⚠️ Using fallback VaR estimate: {fallback_var:.4f}")
+                return fallback_var
+            except:
+                self.logger.error(f"❌ Fallback VaR calculation also failed")
+                return -0.30  # Conservative 30% max loss estimate
     
     def optimize_portfolio(self, include_universe: bool = False) -> Dict:
         """
