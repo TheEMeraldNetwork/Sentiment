@@ -162,25 +162,34 @@ class PositionSizer:
                     action = 'BUY'
                     rationale = self._generate_smart_rationale(symbol, 'BUY', current_return, volatility, sentiment_info, current_weight, target_weight)
                 else:
-                    action = 'ADD'
-                    rationale = self._generate_smart_rationale(symbol, 'ADD', current_return, volatility, sentiment_info, current_weight, target_weight)
+                    # Check positive return constraint - use as backup only
+                    if current_return > 0:
+                        action = 'TOP_UP_BACKUP'  # Mark for lower priority
+                        rationale = f"BACKUP: Positive return stock ({current_return:+.1%}) - consider only if budget remains after new opportunities"
+                    else:
+                        action = 'ADD'
+                        rationale = self._generate_smart_rationale(symbol, 'ADD', current_return, volatility, sentiment_info, current_weight, target_weight)
             else:
                 # Smart logic for reducing positions - be conservative with winners
                 is_strong_winner = current_return > 0.20  # 20%+ gain
                 is_large_position = current_weight > 0.15  # Large position
                 has_positive_sentiment = sentiment_info['sentiment_score'] > 0.1
                 
-                if is_strong_winner and is_large_position and has_positive_sentiment:
+                # Fix floating point precision: treat very small numbers as zero
+                effective_target_shares = target_shares if abs(target_shares) > 1e-10 else 0.0
+                
+                # Primary check: if target is essentially zero or very small, it's a SELL
+                if effective_target_shares < current_shares * 0.1:  # Selling most/all (90%+)
+                    action = 'SELL'
+                    rationale = self._generate_smart_rationale(symbol, 'SELL', current_return, volatility, sentiment_info, current_weight, target_weight)
+                elif is_strong_winner and is_large_position and has_positive_sentiment:
                     # For strong performers with positive sentiment, prefer stops over selling
-                    if target_shares > current_shares * 0.8:  # Only small reduction
+                    if effective_target_shares > current_shares * 0.8:  # Only small reduction
                         action = 'HOLD'
                         rationale = f"Strong performer ({current_return:.1%} gain) with positive sentiment - maintain position with stop loss protection rather than selling"
                     else:
                         action = 'TRIM'
                         rationale = self._generate_smart_rationale(symbol, 'TRIM', current_return, volatility, sentiment_info, current_weight, target_weight)
-                elif target_shares < current_shares * 0.1:  # Selling most/all
-                    action = 'SELL'
-                    rationale = self._generate_smart_rationale(symbol, 'SELL', current_return, volatility, sentiment_info, current_weight, target_weight)
                 else:
                     action = 'TRIM'
                     rationale = self._generate_smart_rationale(symbol, 'TRIM', current_return, volatility, sentiment_info, current_weight, target_weight)
@@ -254,13 +263,14 @@ class PositionSizer:
     
     def generate_action_summary(self, trade_recommendations: Dict) -> Dict:
         """
-        Generate summary of actions by type
+        Generate summary of actions by type with backup processing
         
         Returns:
             Dict with action summary
         """
-        actions = {'BUY': [], 'ADD': [], 'HOLD': [], 'TRIM': [], 'SELL': []}
+        actions = {'BUY': [], 'ADD': [], 'HOLD': [], 'TRIM': [], 'SELL': [], 'TOP_UP_BACKUP': []}
         
+        # First pass: categorize all actions
         for symbol, rec in trade_recommendations.items():
             actions[rec['action']].append({
                 'symbol': symbol,
@@ -270,13 +280,56 @@ class PositionSizer:
                 'rationale': rec['rationale']
             })
         
+        # Calculate primary cash usage (exclude backups)
+        primary_purchases = sum(
+            item['value_change_usd'] for action in ['BUY', 'ADD'] 
+            for item in actions[action] if item['value_change_usd'] > 0
+        )
+        
+        sales_proceeds = sum(
+            abs(item['value_change_usd']) for action in ['TRIM', 'SELL'] 
+            for item in actions[action] if item['value_change_usd'] < 0
+        )
+        
+        net_primary_cost = primary_purchases - sales_proceeds
+        remaining_budget = self.new_cash_usd - net_primary_cost
+        
+        # Process backups if budget remains
+        processed_backups = 0
+        if remaining_budget > 1000:  # Need at least $1000 for meaningful positions
+            backup_items = sorted(actions['TOP_UP_BACKUP'], 
+                                key=lambda x: x['value_change_usd'], reverse=True)
+            
+            for backup in backup_items:
+                if remaining_budget >= backup['value_change_usd']:
+                    # Convert to ADD action
+                    actions['ADD'].append({
+                        **backup,
+                        'rationale': f"TOP UP: {backup['rationale']}"
+                    })
+                    remaining_budget -= backup['value_change_usd']
+                    processed_backups += 1
+                    
+                    if remaining_budget < 1000:  # Stop if budget too low
+                        break
+        
+        # Generate final summary
         summary = {}
         for action, items in actions.items():
-            summary[action] = {
-                'count': len(items),
-                'total_value': sum(item['value_change_usd'] for item in items),
-                'items': items
-            }
+            if action != 'TOP_UP_BACKUP':  # Don't include unprocessed backups in final summary
+                summary[action] = {
+                    'count': len(items),
+                    'total_value': sum(item['value_change_usd'] for item in items),
+                    'items': items
+                }
+        
+        # Add backup processing info
+        summary['BACKUP_INFO'] = {
+            'backups_available': len(actions['TOP_UP_BACKUP']),
+            'backups_processed': processed_backups,
+            'remaining_budget': remaining_budget,
+            'total_backup_value': sum(item['value_change_usd'] for item in actions['TOP_UP_BACKUP'])
+        }
         
         return summary
     
