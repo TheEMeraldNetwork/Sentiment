@@ -123,6 +123,17 @@ class RigorousActionTableGenerator:
                               sizing_summary: Dict, action_summary: Dict) -> str:
         """Generate the complete HTML content"""
         
+        # Calculate cash status for display
+        net_cash = sizing_summary['net_cash_used']
+        available_cash = sizing_summary['new_cash_usd']
+        
+        if net_cash <= available_cash:
+            cash_status_class = "positive"
+            cash_status_icon = "✅"
+        else:
+            cash_status_class = "negative" 
+            cash_status_icon = "❌"
+        
         # Header and CSS
         html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -440,34 +451,21 @@ class RigorousActionTableGenerator:
                 <span class="cash-value positive">${sizing_summary['new_cash_usd']:,.0f}</span>
             </div>
             <div class="cash-item">
-                <span class="cash-label">Cash from Sales:</span>
-                <span class="cash-value positive">${sizing_summary.get('total_sales', 0):,.0f}</span>
+                <span class="cash-label">Cash from Trim:</span>
+                <span class="cash-value positive">${sizing_summary.get('trim_proceeds', 0):,.0f}</span>
             </div>
             <div class="cash-item">
-                <span class="cash-label">Cash for Purchases:</span>
+                <span class="cash-label">Cash from Sell:</span>
+                <span class="cash-value positive">${sizing_summary.get('sell_proceeds', 0):,.0f}</span>
+            </div>
+            <div class="cash-item">
+                <span class="cash-label">Total Purchases:</span>
                 <span class="cash-value negative">-${sizing_summary.get('total_purchases', 0):,.0f}</span>
             </div>
             <div class="cash-item total">
                 <span class="cash-label"><strong>Net Cash Position:</strong></span>
-                <span class="cash-value">${sizing_summary['net_cash_used']:,.0f}</span>
+                <span class="cash-value {cash_status_class}">${sizing_summary['net_cash_used']:,.0f} {cash_status_icon}</span>
             </div>
-        </div>
-    </div>
-    
-    <div class="action-summary">
-        <h2>📋 Action Summary</h2>
-        <div class="action-grid">"""
-        
-        # Add action summary
-        for action, info in action_summary.items():
-            if info['count'] > 0:
-                html += f"""
-            <div class="action-item action-{action.lower()}">
-                {action}: {info['count']} positions<br>
-                ${info['total_value']:,.0f}
-            </div>"""
-        
-        html += """
         </div>
     </div>
     

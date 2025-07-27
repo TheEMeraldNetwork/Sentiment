@@ -206,7 +206,7 @@ class PositionSizer:
                 'volatility': market_data[symbol].get('volatility', 0.0)
             }
         
-        # Calculate cash usage
+        # Calculate cash usage with breakdown by action type
         total_purchases = sum(
             rec['value_change_usd'] for rec in trade_recommendations.values()
             if rec['value_change_usd'] > 0
@@ -215,6 +215,17 @@ class PositionSizer:
         total_sales = sum(
             abs(rec['value_change_usd']) for rec in trade_recommendations.values()
             if rec['value_change_usd'] < 0
+        )
+        
+        # Break down sales by action type
+        trim_proceeds = sum(
+            abs(rec['value_change_usd']) for rec in trade_recommendations.values()
+            if rec['value_change_usd'] < 0 and rec['action'] == 'TRIM'
+        )
+        
+        sell_proceeds = sum(
+            abs(rec['value_change_usd']) for rec in trade_recommendations.values()
+            if rec['value_change_usd'] < 0 and rec['action'] == 'SELL'
         )
         
         net_cash_used = total_purchases - total_sales
@@ -232,6 +243,8 @@ class PositionSizer:
                 'new_cash_usd': self.new_cash_usd,
                 'total_purchases': total_purchases,
                 'total_sales': total_sales,
+                'trim_proceeds': trim_proceeds,
+                'sell_proceeds': sell_proceeds,
                 'net_cash_used': net_cash_used,
                 'remaining_cash': self.new_cash_usd - net_cash_used
             }
