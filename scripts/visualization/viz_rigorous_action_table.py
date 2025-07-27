@@ -499,15 +499,15 @@ class RigorousActionTableGenerator:
             sentiment_score = sentiment_info['sentiment_score']
             sentiment_trend = sentiment_info['trend']
             
-            # Format sentiment display
-            if sentiment_score > 0.1:
+            # Format sentiment display - ALWAYS show the actual value
+            if sentiment_score > 0.05:
                 sentiment_display = f"+{sentiment_score:.3f}"
                 sentiment_class = "positive"
-            elif sentiment_score < -0.1:
+            elif sentiment_score < -0.05:
                 sentiment_display = f"{sentiment_score:.3f}"
                 sentiment_class = "negative"
             else:
-                sentiment_display = "Neutral"
+                sentiment_display = f"{sentiment_score:.3f}"
                 sentiment_class = "neutral"
             
             # Format trend
