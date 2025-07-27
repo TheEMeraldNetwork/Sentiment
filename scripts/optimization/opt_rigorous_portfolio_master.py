@@ -11,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pandas as pd
 import numpy as np
 import logging
+import glob
 from datetime import datetime
 from typing import Dict, List, Tuple, Optional
 import warnings
@@ -51,6 +52,19 @@ class RigorousPortfolioOptimizer:
         # Current portfolio baseline
         self.current_return = 0.0483       # 4.83% current return
         self.return_improvement = 0.02     # +2pp improvement target
+        
+        # Symbol mapping for sentiment data matching (portfolio CSV vs sentiment data)
+        self.symbol_mapping = {
+            'APPLE': 'AAPL',   # Apple in portfolio shows as APPLE, sentiment data uses AAPL
+            'NVDA': 'NVDA',
+            'SPGI': 'SPGI', 
+            'PRU': 'PRU',
+            'ASML': 'ASML',
+            'CVNA': 'CVNA',
+            'CCJ': 'CCJ',
+            'OGC': 'OGC',
+            'VERA': 'VERA'
+        }
         
     def parse_european_number(self, value_str):
         """Parse European number format"""
@@ -138,6 +152,7 @@ class RigorousPortfolioOptimizer:
             if os.path.exists(results_file):
                 df = pd.read_csv(results_file)
                 self.logger.info(f"📊 Loading sentiment from EXACT dashboard source: {results_file}")
+                self.logger.info(f"🎯 Symbols requested: {symbols}")
                 
                 # Load trends data if available (same as dashboard does)
                 trends_data = {}
@@ -153,16 +168,30 @@ class RigorousPortfolioOptimizer:
                 except Exception as e:
                     self.logger.warning(f"Could not load trends: {e}")
                 
-                # Process sentiment data EXACTLY like dashboard
+                # Process sentiment data EXACTLY like dashboard  
+                # Load ALL sentiment data first, then we'll map symbols later
+                found_symbols = []
                 for _, row in df.iterrows():
                     symbol = row.get('ticker', '').strip().upper()
-                    if symbol in symbols:
+                    if symbol:  # Process all symbols, not just requested ones
+                        found_symbols.append(symbol)
                         # Use last_month_sentiment (EXACT same as dashboard "Last Month" column)
                         last_month_sentiment = row.get('last_month_sentiment')
-                        if pd.isna(last_month_sentiment) or last_month_sentiment == '':
+                        
+                        # Debug logging for AAPL specifically
+                        if symbol == 'AAPL':
+                            self.logger.info(f"🍎 APPLE DEBUG - Raw value: {last_month_sentiment}, Type: {type(last_month_sentiment)}")
+                        
+                        if pd.isna(last_month_sentiment) or last_month_sentiment == '' or last_month_sentiment is None:
                             last_month_sentiment = 0.0
                         else:
-                            last_month_sentiment = float(last_month_sentiment)
+                            try:
+                                last_month_sentiment = float(last_month_sentiment)
+                                # More Apple debugging
+                                if symbol == 'AAPL':
+                                    self.logger.info(f"🍎 APPLE DEBUG - Converted to: {last_month_sentiment}")
+                            except (ValueError, TypeError):
+                                last_month_sentiment = 0.0
                         
                         # Get trend (try to match dashboard trend logic)
                         trend = 'neutral'  # Default
@@ -182,6 +211,7 @@ class RigorousPortfolioOptimizer:
                             'articles_count': row.get('total_articles', 0)
                         }
                         
+                self.logger.info(f"✅ Found sentiment data for symbols: {found_symbols}")
                 self.logger.info(f"✅ Loaded EXACT dashboard sentiment data for {len(sentiment_data)} symbols")
             else:
                 self.logger.error(f"❌ Dashboard sentiment file not found: {results_file}")
@@ -192,16 +222,23 @@ class RigorousPortfolioOptimizer:
         except Exception as e:
             self.logger.error(f"❌ Failed to load sentiment data: {e}")
         
-        # Fill missing symbols with neutral sentiment
+        # Fill missing symbols with neutral sentiment, checking mappings first
         for symbol in symbols:
             if symbol not in sentiment_data:
-                sentiment_data[symbol] = {
-                    'sentiment_score': 0.0,
-                    'trend': 'neutral',
-                    'confidence': 0.5,
-                    'articles_count': 0
-                }
-                self.logger.warning(f"⚠️ No sentiment data for {symbol}, using neutral")
+                # Check if we have a mapping for this symbol
+                mapped_symbol = self.symbol_mapping.get(symbol)
+                if mapped_symbol and mapped_symbol in sentiment_data:
+                    # Use the mapped symbol's sentiment data
+                    sentiment_data[symbol] = sentiment_data[mapped_symbol].copy()
+                    self.logger.info(f"📍 Mapped {symbol} → {mapped_symbol} for sentiment data")
+                else:
+                    sentiment_data[symbol] = {
+                        'sentiment_score': 0.0,
+                        'trend': 'neutral',
+                        'confidence': 0.5,
+                        'articles_count': 0
+                    }
+                    self.logger.warning(f"⚠️ No sentiment data for {symbol}, using neutral")
         
         self.logger.info(f"✅ Sentiment data loaded for {len(sentiment_data)} symbols")
         return sentiment_data

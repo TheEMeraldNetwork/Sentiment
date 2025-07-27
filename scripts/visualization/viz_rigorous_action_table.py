@@ -215,6 +215,48 @@ class RigorousActionTableGenerator:
             padding-bottom: 10px;
         }}
         
+        .cash-flow-container {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }}
+        
+        .cash-item {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #404040;
+            border-radius: 8px;
+            border: 1px solid #505050;
+        }}
+        
+        .cash-item.total {{
+            grid-column: 1 / -1;
+            background: #333333;
+            border: 2px solid #666666;
+            font-size: 1.1em;
+        }}
+        
+        .cash-label {{
+            color: #b0b0b0;
+            font-weight: 500;
+        }}
+        
+        .cash-value {{
+            font-weight: bold;
+            font-size: 1.2em;
+        }}
+        
+        .cash-value.positive {{
+            color: #4CAF50;
+        }}
+        
+        .cash-value.negative {{
+            color: #F44336;
+        }}
+        
         .action-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -367,9 +409,7 @@ class RigorousActionTableGenerator:
 </head>
 <body>
     <div class="header">
-        <h1>🐅 TIGRO Portfolio Action Table</h1>
-        <p>Rigorous Markowitz Optimization with FinBERT Sentiment Integration</p>
-        <p>Generated: {datetime.now().strftime('%B %d, %Y at %H:%M:%S')}</p>
+        <h1>🐅 TIGRO</h1>
     </div>
     
     <div class="kpi-grid">
@@ -390,13 +430,27 @@ class RigorousActionTableGenerator:
             <div class="kpi-value">{opt_results['var_97']:.2%}</div>
             <div class="kpi-label">97% VaR</div>
         </div>
-        <div class="kpi-card">
-            <div class="kpi-value">${sizing_summary['new_cash_usd']:,.0f}</div>
-            <div class="kpi-label">New Cash Available</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-value">${sizing_summary['net_cash_used']:,.0f}</div>
-            <div class="kpi-label">Net Cash Used</div>
+    </div>
+    
+    <div class="action-summary">
+        <h2>💰 Cash Position Summary</h2>
+        <div class="cash-flow-container">
+            <div class="cash-item">
+                <span class="cash-label">New Cash Available:</span>
+                <span class="cash-value positive">${sizing_summary['new_cash_usd']:,.0f}</span>
+            </div>
+            <div class="cash-item">
+                <span class="cash-label">Cash from Sales:</span>
+                <span class="cash-value positive">${sizing_summary.get('total_sales', 0):,.0f}</span>
+            </div>
+            <div class="cash-item">
+                <span class="cash-label">Cash for Purchases:</span>
+                <span class="cash-value negative">-${sizing_summary.get('total_purchases', 0):,.0f}</span>
+            </div>
+            <div class="cash-item total">
+                <span class="cash-label"><strong>Net Cash Position:</strong></span>
+                <span class="cash-value">${sizing_summary['net_cash_used']:,.0f}</span>
+            </div>
         </div>
     </div>
     
