@@ -41,7 +41,7 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
     env['PYTHONPATH'] = str(Path.cwd())  # Add current directory to PYTHONPATH
     
     for attempt in range(1, max_retries + 1):
-    try:
+        try:
             logger.info(f"🔄 Attempt {attempt}/{max_retries}: {' '.join(command)}")
             result = subprocess.run(
                 command, 
@@ -54,9 +54,9 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
             logger.info(f"✅ Command completed successfully")
             if result.stdout.strip():
                 logger.info(f"📤 Output: {result.stdout.strip()}")
-        return True
+            return True
             
-    except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError as e:
             logger.error(f"❌ Attempt {attempt} failed: {e}")
             if e.stdout:
                 logger.error(f"📤 STDOUT: {e.stdout}")
@@ -75,7 +75,7 @@ def run_command_with_logging(command: list, description: str, logger: logging.Lo
             logger.error(f"🚨 Unexpected error in {description}: {e}")
             return False
     
-        return False
+    return False
 
 def copy_to_docs(logger: logging.Logger) -> bool:
     """Copy latest results to docs directory for GitHub Pages"""
@@ -195,11 +195,11 @@ def main():
         python_path = sys.executable
     logger.info(f"🐍 Python executable: {python_path}")
     
-    if not Path('scripts/a_collect_sentiment.py').exists():
+    if not Path('scripts/sentiment/sent_collect_data.py').exists():
         logger.error("🚨 Missing sentiment script!")
         return False
         
-    if not Path('scripts/e_generate_dashboard.py').exists():
+    if not Path('scripts/visualization/viz_dashboard_generator.py').exists():
         logger.error("🚨 Missing dashboard script!")
         return False
         
@@ -208,7 +208,7 @@ def main():
     # Step 1: Sentiment Analysis
     logger.info("📊 Starting sentiment analysis...")
     if not run_command_with_logging(
-        [python_path, 'scripts/a_collect_sentiment.py'],
+        [python_path, 'scripts/sentiment/sent_collect_data.py'],
         "sentiment analysis",
         logger
     ):
@@ -219,7 +219,7 @@ def main():
     # Step 2: Dashboard Generation
     logger.info("📈 Generating dashboard...")
     if not run_command_with_logging(
-        [python_path, 'scripts/e_generate_dashboard.py'],
+        [python_path, 'scripts/visualization/viz_dashboard_generator.py'],
         "dashboard generation",
         logger
     ):
@@ -274,7 +274,7 @@ def main():
             email_sender = SentimentEmailSender()
             success = email_sender.send_email(df, test_mode=False)
             
-    if success:
+            if success:
                 logger.info("✅ Email report sent successfully")
             else:
                 logger.error("🚨 Email report failed to send")

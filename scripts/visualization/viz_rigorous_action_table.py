@@ -124,10 +124,12 @@ class RigorousActionTableGenerator:
         """Generate the complete HTML content"""
         
         # Calculate cash status for display
+        # Net cash position represents cash outflow (positive = cash going out)
         net_cash = sizing_summary['net_cash_used']
         available_cash = sizing_summary['new_cash_usd']
         
-        if net_cash <= available_cash:
+        # Status is green if net cash outflow is within available cash
+        if abs(net_cash) <= available_cash:
             cash_status_class = "positive"
             cash_status_icon = "✅"
         else:
@@ -464,7 +466,7 @@ class RigorousActionTableGenerator:
             </div>
             <div class="cash-item total">
                 <span class="cash-label"><strong>Net Cash Position:</strong></span>
-                <span class="cash-value {cash_status_class}">${sizing_summary['net_cash_used']:,.0f} {cash_status_icon}</span>
+                <span class="cash-value {cash_status_class}">-${sizing_summary['net_cash_used']:,.0f} {cash_status_icon}</span>
             </div>
         </div>
     </div>

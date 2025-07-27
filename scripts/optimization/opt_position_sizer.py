@@ -228,11 +228,13 @@ class PositionSizer:
             if rec['value_change_usd'] < 0 and rec['action'] == 'SELL'
         )
         
-        net_cash_used = total_purchases - total_sales
+        # Net Cash Position = Total Purchases (negative) - Cash from Sales (positive)
+        # When cash flows out for purchases, the net position should be negative
+        net_cash_position = total_purchases - total_sales  # This is the net outflow
         
         self.logger.info(f"💰 Total purchases: ${total_purchases:,.2f}")
         self.logger.info(f"💰 Total sales: ${total_sales:,.2f}")
-        self.logger.info(f"💰 Net cash used: ${net_cash_used:,.2f}")
+        self.logger.info(f"💰 Net cash position: ${net_cash_position:,.2f}")
         self.logger.info(f"💰 Available new cash: ${self.new_cash_usd:,.2f}")
         
         return {
@@ -245,8 +247,8 @@ class PositionSizer:
                 'total_sales': total_sales,
                 'trim_proceeds': trim_proceeds,
                 'sell_proceeds': sell_proceeds,
-                'net_cash_used': net_cash_used,
-                'remaining_cash': self.new_cash_usd - net_cash_used
+                'net_cash_used': net_cash_position,
+                'remaining_cash': self.new_cash_usd - net_cash_position
             }
         }
     

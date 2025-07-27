@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐅 TIGRO Master Dashboard</title>
+    <meta name="description" content="Advanced Portfolio Management with AI-Powered Sentiment Analysis">
+    <meta name="keywords" content="portfolio, sentiment analysis, AI, investment, finance, stocks">
     <style>
+        :root {
+            --bg-dark: #1a1a1a;
+            --bg-medium: #2d2d2d;
+            --bg-light: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-green: #4CAF50;
+            --accent-blue: #2196F3;
+            --accent-orange: #FF9800;
+            --border-color: #404040;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,71 +26,93 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: #1a1a1a;
-            color: #e0e0e0;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .header {
-            background: #2a2a2a;
-            padding: 20px;
+            background: var(--bg-medium);
+            padding: 20px 0;
             text-align: center;
-            border-bottom: 1px solid #404040;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
         }
 
         .header h1 {
-            color: #ffffff;
             font-size: 2.5em;
+            font-weight: 700;
             margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
-            color: #b0b0b0;
             font-size: 1.1em;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .stats-left, .stats-right {
+            display: flex;
+            gap: 30px;
         }
 
         .tabs-container {
-            background: #2a2a2a;
-            border-bottom: 1px solid #404040;
-            padding: 0 20px;
+            background: var(--bg-medium);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .tabs {
             display: flex;
-            gap: 0;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .tab {
-            background: #404040;
-            color: #b0b0b0;
-            padding: 15px 30px;
-            cursor: pointer;
+            background: transparent;
             border: none;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            padding: 18px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 16px;
-            font-weight: 500;
-            margin-right: 2px;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
         }
 
         .tab.active {
-            background: #1a1a1a;
-            color: #ffffff;
-            border-bottom: 2px solid #666666;
-        }
-
-        .tab:hover:not(.active) {
-            background: #505050;
-            color: #ffffff;
+            color: var(--text-primary);
+            border-bottom-color: var(--accent-green);
+            background: rgba(76, 175, 80, 0.1);
         }
 
         .tab-content {
             display: none;
-            min-height: 80vh;
-            padding: 20px;
+            height: calc(100vh - 200px);
+            background: var(--bg-light);
         }
 
         .tab-content.active {
@@ -85,71 +121,71 @@
 
         .iframe-container {
             width: 100%;
-            height: 80vh;
-            border: 1px solid #404040;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #2a2a2a;
+            height: 100%;
+            position: relative;
         }
 
-        iframe {
+        .iframe-container iframe {
             width: 100%;
             height: 100%;
             border: none;
-            background: #1a1a1a;
+            background: white;
         }
 
         .navigation {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             z-index: 1000;
         }
 
         .nav-btn {
-            background: #404040;
-            color: #ffffff;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-green);
+            color: white;
             border: none;
-            padding: 12px 16px;
-            border-radius: 25px;
+            border-radius: 50%;
+            font-size: 1.5em;
             cursor: pointer;
-            font-size: 16px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-btn:hover {
-            background: #505050;
+            background: var(--accent-blue);
             transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(33, 150, 243, 0.4);
         }
 
         .loading {
-            text-align: center;
-            padding: 50px;
-            color: #b0b0b0;
-            font-size: 18px;
-        }
-
-        .stats {
-            background: #2a2a2a;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #404040;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 1.2em;
+            color: var(--text-secondary);
         }
 
-        .stats-left {
-            color: #b0b0b0;
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
         }
 
-        .stats-right {
-            color: #4CAF50;
-            font-weight: bold;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         @media (max-width: 768px) {
@@ -162,14 +198,19 @@
             }
             
             .tab {
-                border-radius: 0;
-                margin-right: 0;
-                margin-bottom: 2px;
+                padding: 15px 20px;
+                text-align: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
             }
             
             .navigation {
-                bottom: 10px;
-                right: 10px;
+                bottom: 20px;
+                right: 20px;
                 flex-direction: column;
             }
         }
@@ -186,7 +227,7 @@
             <span id="last-update">Last Updated: Loading...</span>
         </div>
         <div class="stats-right">
-            <span id="system-status">System: Online</span>
+            <span id="system-status"><span class="status-indicator"></span>System: Online</span>
         </div>
     </div>
 
@@ -199,7 +240,7 @@
 
     <div id="tab-0" class="tab-content active">
         <div class="iframe-container">
-            <iframe src="./docs/sentiment_report_latest.html" title="Sentiment Analysis Dashboard">
+            <iframe src="./docs/sentiment_report_latest.html" title="Sentiment Analysis Dashboard" onload="updateTimestamp()">
                 <div class="loading">Loading Sentiment Analysis Dashboard...</div>
             </iframe>
         </div>
@@ -207,8 +248,8 @@
 
     <div id="tab-1" class="tab-content">
         <div class="iframe-container">
-            <iframe src="./rigorous_portfolio_action_table.html" title="Portfolio Optimization">
-                <div class="loading">Loading Portfolio Optimization Dashboard...</div>
+            <iframe src="./docs/rigorous_portfolio_action_table.html" title="Portfolio Optimization" onload="updateTimestamp()">
+                <div class="loading">Loading Portfolio Optimization...</div>
             </iframe>
         </div>
     </div>
@@ -227,7 +268,6 @@
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -240,18 +280,42 @@
             
             // Update URL hash
             window.location.hash = tabIndex === 0 ? 'sentiment' : 'portfolio';
+            
+            updateTimestamp();
         }
 
         function refreshCurrentTab() {
-            const currentIframe = document.querySelector(`#tab-${currentTab} iframe`);
-            if (currentIframe) {
-                currentIframe.src = currentIframe.src;
+            const activeIframe = document.querySelector(`#tab-${currentTab} iframe`);
+            if (activeIframe) {
+                activeIframe.src = activeIframe.src;
+                updateTimestamp();
             }
         }
 
-        // Handle keyboard navigation
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('last-update').textContent = 
+                `Last Updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+        }
+
+        // Initialize based on URL hash
+        function initializeFromHash() {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'portfolio') {
+                switchTab(1);
+            } else {
+                switchTab(0);
+            }
+        }
+
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            refreshCurrentTab();
+        }, 30 * 60 * 1000);
+
+        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey || e.metaKey) {
+            if (e.altKey) {
                 switch(e.key) {
                     case '1':
                         e.preventDefault();
@@ -269,45 +333,14 @@
             }
         });
 
-        // Load tab from URL hash
-        window.addEventListener('load', function() {
-            const hash = window.location.hash;
-            if (hash === '#portfolio') {
-                switchTab(1);
-            } else {
-                switchTab(0);
-            }
-            
-            // Update last update time
-            updateLastUpdate();
+        // Handle browser back/forward
+        window.addEventListener('hashchange', initializeFromHash);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFromHash();
+            updateTimestamp();
         });
-
-        function updateLastUpdate() {
-            const now = new Date();
-            const timeString = now.toLocaleDateString() + ' at ' + now.toLocaleTimeString();
-            document.getElementById('last-update').textContent = `Last Updated: ${timeString}`;
-        }
-
-        // Auto-refresh every 5 minutes
-        setInterval(function() {
-            updateLastUpdate();
-            // Optionally refresh current tab
-            // refreshCurrentTab();
-        }, 300000);
-
-        // Add loading state management
-        document.querySelectorAll('iframe').forEach(iframe => {
-            iframe.addEventListener('load', function() {
-                console.log('📊 TIGRO Dashboard loaded:', iframe.title);
-            });
-            
-            iframe.addEventListener('error', function() {
-                console.error('❌ Failed to load:', iframe.title);
-            });
-        });
-
-        console.log('🐅 TIGRO Master Dashboard initialized');
-        console.log('💡 Keyboard shortcuts: Ctrl/Cmd + 1 (Sentiment), Ctrl/Cmd + 2 (Portfolio), Ctrl/Cmd + R (Refresh)');
     </script>
 </body>
 </html> 
