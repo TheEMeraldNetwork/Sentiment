@@ -1,0 +1,503 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>XPO Inc. (XPO) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">XPO Inc. (XPO)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.11</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=916cc6776d49f93797fb06f9948c8d38a71c0a3a3ab68ebdd12c75ec09bb9931" target="_blank" rel="noopener noreferrer">Fidelity Stock Selector Mid Cap Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Fidelity Investments reviews Q2 results for its Mid Cap Fund, spotlighting key stock picks and sector calls. See how theyâre navigating policy-driven shifts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f2a34e992533e6e9c9ea9ceaaa6acd1e98d33838d4a7fd5b0d3c6ea6e141d281" target="_blank" rel="noopener noreferrer">Why XPO (XPO) Stock Is Up Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of freight delivery company XPO (NYSE:XPO) jumped 4.3% in the morning session after an analyst at Stifel raised the company's price target to $145 from $135....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a6ae5f199d4cd1b03876ff274e8952126876635d92f675303ec08597b60f4d5a" target="_blank" rel="noopener noreferrer">Benchmark Raises Price Target for XPO, Keeps Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. (NYSE:XPO) is one of the 12 Best Logistics Stocks to Buy According to Hedge Funds. On July 15, Benchmark increased its price target for XPO, Inc. (NYSE:XPO) from $130 to $140 while keeping a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3e1d3a402260edab4f6ce46cb64c6633181506f71721d6ff157c07fdb852728f" target="_blank" rel="noopener noreferrer">Earnings Preview: XPO (XPO) Q2 Earnings Expected to Decline</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO (XPO) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3e7b3e19a210a869c4e1edc012b3dc4090a7b794a3482a452e7c13d320000c5b" target="_blank" rel="noopener noreferrer">XPO opens North Carolina facility, featuring 300-plus doors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">“It was a key investment for us,” East Division President Tim Staroba said....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=675593342fc53140f2119c87f2e353c1b46529a26b4786a96d5c41c68873bcd0" target="_blank" rel="noopener noreferrer">38 XPO Drivers to Compete at 2025 National Truck Driving Championships in Minneapolis</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">GREENWICH, Conn., July 09, 2025 (GLOBE NEWSWIRE) -- XPO (NYSE: XPO), a leading provider of freight transportation in North America, today announced its team of 38 finalists for this year’s National Tr...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4b47967d9c9f1fabbbc32517ee822f1f9f7549bad77778dffd828ebf07ca051a" target="_blank" rel="noopener noreferrer">XPO's Results to Show Improved Operational Efficiency Despite Macro Headwinds, Oppenheimer Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO's (XPO) second-quarter results are expected to show continued improvement in operational efficie...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6b784029a822ecd254a5006ab1b4d381d8a2351ecea8aa54de43222b8ca67f98" target="_blank" rel="noopener noreferrer">Here's Why We Think XPO (NYSE:XPO) Might Deserve Your Attention Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">It's common for many investors, especially those who are inexperienced, to buy shares in companies with a good story......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73796732ce20164fcd4ea58d323b74b0f284810c71e8897af9191ecb87520eec" target="_blank" rel="noopener noreferrer">XPO rating cut by S&P, agency cites continuing weak freight market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">LTL carrier XPO had its debt rating cut by S&P.. The post XPO rating cut by S&P, agency cites continuing weak freight market appeared first on FreightWaves....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bc24d31efd776adf8bfd97bf8cc96d83c0e494eb05a8f4f54bab0bd35267314f" target="_blank" rel="noopener noreferrer">XPO, Inc.(NYSE: XPO) added to Russell 3000E Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. added to Russell 3000E Value Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5de172f443724c5b28943a11b21803993f918ebea9b5424cf273a3895f5cbda6" target="_blank" rel="noopener noreferrer">XPO, Inc.(NYSE: XPO) added to Russell Small Cap Comp Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. added to Russell Small Cap Comp Value Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0959d2411f48b6a0f2b0daac88efee3f44bf1f5c635be93b22b0282b3d273b55" target="_blank" rel="noopener noreferrer">XPO, Inc.(NYSE: XPO) added to Russell 1000 Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. added to Russell 1000 Value Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e95cd2600dc5dbd282eccab3d8258d7876af6952250ac8e8ca1d2b2b1e1322fe" target="_blank" rel="noopener noreferrer">XPO, Inc.(NYSE: XPO) added to Russell 2500 Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. added to Russell 2500 Value Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e5d70b79f4b6a50a6f5e18e1a286d5592b316df0ed8a3338932c519357e283fb" target="_blank" rel="noopener noreferrer">XPO, Inc.(NYSE: XPO) added to Russell 3000 Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. added to Russell 3000 Value Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=525c93e4c5574fe7834273d36d62ab380d7655894f0c65503a41225d5a093290" target="_blank" rel="noopener noreferrer">XPO, Inc.(NYSE: XPO) added to Russell Midcap Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">XPO, Inc. added to Russell Midcap Value Index......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

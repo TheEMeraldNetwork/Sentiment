@@ -1,0 +1,535 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Rogers Communications Inc. (RCI) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Rogers Communications Inc. (RCI)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.05</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c00684762fd3de578c631e73eccecb7520a1397bc4254546da3bcb060bc47ece" target="_blank" rel="noopener noreferrer">Rogers Communications: Still Faces ARPU Pressure, But Valuation Suggests More Upside</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Rogers Communication is gaining on margin growth, stable users, bundling strategies, and strong value despite ARPU risks and leverage. See why RCI stock is a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=27680b0ec9714c8ae78edf2d0fa9a576e005b3cb43c8c77fad588941ec99bac1" target="_blank" rel="noopener noreferrer">Rogers Communications Inc. (RCI) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Rogers Communications Inc. (NYSE:RCI) Q2 2025 Earnings Conference Call July 23, 2025 8:00 AM ETCompany ParticipantsAnthony Staffieri - President, CEO &amp;......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e515fa5adf1578fb8aaed24a72d105162cfc0f092c7f06935239c787d3d53805" target="_blank" rel="noopener noreferrer">Rogers Communications Inc. 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9ffa09e3cd17a1eb7368b5eb604667252f1b2277c03994f6efeb5d3fd3a1cac5" target="_blank" rel="noopener noreferrer">Rogers Communications: A Look At The High-Yield Bonds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We compare Rogers to the TELUS and BCE and tell you why the high-yield bonds are attractive. Read the full analysis here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=288a21bbbc78a227984db7eb106ba2e7ec2ad986dba7d7f4068594f09518ff23" target="_blank" rel="noopener noreferrer">Rogers Launches Satellite-to-Mobile Service in Canada</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First wireless provider to offer next generation technology to all CanadiansInvites all Canadians to join the beta at no costCovers 2.5 times more square kms than any other Canadian wireless carrierAu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=32f5b369ae9b0d960c1457b38de8015dad5bf6dd8497d2525a92b3084a98aab9" target="_blank" rel="noopener noreferrer">Why The June 2025 CPI Report Is A Tale Of Two Contradictions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2ab7ff03b3ab3aa67c1f1042238a8c6181639a6ffdf5cdac097be390f55a4fd0" target="_blank" rel="noopener noreferrer">Rogers Announces Cash Tender Offers for Six Series of Debt Securities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, July 11, 2025 (GLOBE NEWSWIRE) -- Rogers Communications Inc. (“Rogers” or the “Company”) (TSX: RCI.A and RCI.B; NYSE: RCI) today announced the commencement of separate offers (the “Offers”) t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10bb4cd591bbb511171110754c14afa16311151b5fbb7f9e0476b62816964d66" target="_blank" rel="noopener noreferrer">Rogers Announces Cash Tender Offers for Eight Series of U.S. Dollar Debt Securities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">TORONTO, July 11, 2025 (GLOBE NEWSWIRE) -- Rogers Communications, Inc. (“Rogers” or the “Company”) (TSX: RCI.A and RCI.B; NYSE: RCI) today announced the commencement of separate offers (the “Offers”) ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e1ca65519ded736b2aee8b976124dd45bc3b9cb528f906a22d696a087f933d85" target="_blank" rel="noopener noreferrer">Rogers Communications Launches Cash Tender Offers for Debt Securities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">Rogers Communications (RCI-B.TO) announced Friday cash tender offers for U.S. and Canadian dollar-de...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=878a164a01ab0c4a6bc2233a3e4c602e67f4672b816d631db1ebdab9799d462c" target="_blank" rel="noopener noreferrer">Update: Rogers Communications Up 1% as Launches Cash Tender Offers for Debt Securities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Rogers Communications (RCI-B.TO) announced Friday cash tender offers for U.S. and Canadian dollar-de...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d7627dcade1b80f7f203d5c6adbcfa2421e0453110c7660dece9107ee68e7c78" target="_blank" rel="noopener noreferrer">Desjardins Raises Price Target on Rogers and Cogeco, Lowers on Telus</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Desjardins adjusted its price targets on three Canadian telecom stocks. Analyst Jerome Dubreuil r...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57313730e2a1b05877a2947f3ef36f8d040c8288eb704310258b583fc98b6773" target="_blank" rel="noopener noreferrer">RBC Increases Price Target on Rogers and Quebecor, Lowers on Quebecor</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RBC Capital Markets adjusted its price target on three Canadian telecom stocks on Tuesday. Analys...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c473fa5fe0f34e8781818b91e0fbd24725123c13aa26965031b46867709199a3" target="_blank" rel="noopener noreferrer">Rogers refuses to return to bargaining table and continues to undermine Abbotsford workers' right to strike</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">ABBOTSFORD, B.C., July 08, 2025 (GLOBE NEWSWIRE) -- Rogers Communications continues to refuse to return to the bargaining table with striking workers in Abbotsford, B.C., choosing instead to bring in ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8c9ab363fa3f6e9db9465b7fd3b8c5972fb5e62882e8ff7911b73dc843343427" target="_blank" rel="noopener noreferrer">Rogers Communication (RCI) Soars 5.1%: Is Further Upside Left in the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Rogers Communication (RCI) was a big mover last session on higher-than-average trading volume. The latest trend in earnings estimate revisions might not help the stock continue moving higher in the ne...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=52f277fbc15f7d3497d837d3373871758f4ae6a1d568be0d83847e6549fc516f" target="_blank" rel="noopener noreferrer">AT&T, Telecom Stocks Have Rallied This Year. Why Trump’s Immigration Policy Could End That.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">The stocks were a good place to hide amid the tariff turmoil, but the administration’s deportation drive could end up being a significant headwind....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=209bc038e07182c70820453f23c10c49d8bf9e2d6f2191d9959505b673859827" target="_blank" rel="noopener noreferrer">Rogers Becomes Majority Owner of Maple Leaf Sports & Entertainment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">​Closes transaction to acquire BCE’s 37.5% ownership stake in MLSE​Strengthens commitment to Canadian sports ​Will invest to bring championships to Canada​ TORONTO, July 02, 2025 (GLOBE NEWSWIRE) -- R...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9cde4432b915e5fd85c81fbf45e08809d57e2cb907de39218b4c577d904988a1" target="_blank" rel="noopener noreferrer">Rogers Communications Boosts Stake in Maple Leaf Sports & Entertainment to 75%</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Rogers Communications (RCI-A.TO, RCI-B.TO) on Wednesday said it is now the largest owner of Maple Le...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,711 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>LKQ Corporation (LKQ) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">LKQ Corporation (LKQ)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.29</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=863e590fa19ab2d95e766525b43f3a3a0d76661123a8b37ffefd2e9ba767888c" target="_blank" rel="noopener noreferrer">LKQ (NASDAQ:LKQ) Has Announced A Dividend Of $0.30</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The board of LKQ Corporation ( NASDAQ:LKQ ) has announced that it will pay a dividend of $0.30 per share on the 28th of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=649488b1cbf33843087ddfe92a7abbb3ea4cef722e87024613c7f2d87c9f9e44" target="_blank" rel="noopener noreferrer">What Moved Markets This Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76794d0fbafaced856c3d207afe2830e42765978605a36b15f02dedf58d4f2d8" target="_blank" rel="noopener noreferrer">DIVIDEND ALERT! LKQ Corp. (LKQ) Sheds 17.8% as Tariff Uncertainties Linger</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published Double-Digit Disaster: 10 Big Names Fall Off the Cliff. LKQ Corporation (NASDAQ:LKQ) is one of the worst-performing stocks on Thursday. LKQ Corporation saw its share prices fall ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=39a0553d6fe9b0ad37503dce8824fd3288f444bcb2a3849cc171b3239acda362" target="_blank" rel="noopener noreferrer">LKQ Q2 Deep Dive: Cost Controls and Leadership Changes Amid Ongoing Market Pressures</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Automotive parts company LKQ (NASDAQ:LKQ) met Wall Street’s revenue expectations in Q2 CY2025, but sales fell by 1.9% year on year to $3.64 billion. Its non-GAAP profit of $0.87 per share was 5.8% bel...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3aa52159ebcdca5ab55809a94d0f07fed8290bcbd4173d851dbc51140396cd1b" target="_blank" rel="noopener noreferrer">LKQ: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.06
+                                </span>
+                            </div>
+                            <div class="article-summary">The results did not meet Wall Street expectations. The average estimate of six analysts surveyed by Zacks Investment Research was for earnings of 93 cents per share. The vehicle components company pos...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=963c74336554b30ce1732c4d4e5859c0b653b549c6b4c7ac493ffc3a56201c8c" target="_blank" rel="noopener noreferrer">LKQ Corporation Announces Results for Second Quarter 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Progressing with Simplifying the Portfolio to Enhance Return on Invested Capital Reaffirms Commitment to Executing on Three-Year Plan to Drive Shareholder Value Updates Outlook for Full Year 2025; Cap...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=119179fe8e20deffaea499c20b5933309de2fcb6232d340825420c52b8f3a6dd" target="_blank" rel="noopener noreferrer">LKQ’s (NASDAQ:LKQ) Q2 Earnings Results: Revenue In Line With Expectations But Stock Drops</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">Automotive parts company LKQ (NASDAQ:LKQ) met Wall Street’s revenue expectations in Q2 CY2025, but sales fell by 1.9% year on year to $3.64 billion. Its non-GAAP profit of $0.87 per share was 5.8% bel...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5fd8f77af38b45d9e309af2aa3320662d5a669b80a3d1cf2ce8f7d7776f60208" target="_blank" rel="noopener noreferrer">LKQ cuts 2025 earnings outlook on soft demand for auto parts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Tariff-related uncertainty and higher insurance costs have pressured LKQ’s margins and reduced the number of repairable insurance claims.  LKQ now expects adjusted earnings per share between $3.00 and...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ef6357d442eea4ffc1ac12bd246835fa452e6baa8882cbf1cb1d3619efcea13b" target="_blank" rel="noopener noreferrer">LKQ Corporation (LKQ) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db08ab85e71e683231c88723d8397ed5fac5edc733d7901c432377f1af4fcf1a" target="_blank" rel="noopener noreferrer">LKQ Corporation 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by LKQ Corporation in conjunction with their 2025 Q2 earnings call....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=47979b363aff4fb4d10908ec9d8790a0e14efe3bd12ea287686b1f95ccd3e165" target="_blank" rel="noopener noreferrer">Stocks Supported by Strong Earnings from Alphabet</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.08%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is down -0.67%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.18%. September E-mini S&P futures...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5b9c757ed28be3e0b50562804c0ad9f2a6cd01103592b4dd120276bd0f61c2e9" target="_blank" rel="noopener noreferrer">LKQ Shares Crash To 52-Week Low On Slashed Outlook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation (NASDAQ:LKQ) shares plummeted over 21% on Thursday after the automotive parts distributor reported second-quarter adjusted earnings that missed analyst expectations and significantly c...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fd337ebb8d291c7fb161f2ae86ee4d033989f0c69d87d940f702f6e9e2844069" target="_blank" rel="noopener noreferrer">LKQ Misses Q2 Earnings Estimates, Slashes FY25 Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ posts weak Q2 earnings, trims FY25 revenue and EPS forecasts as segment EBITDA and sales broadly disappoint....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5674dd5e683b63086b5d17c75d2a8369f6a486cef69c813c1f582f3b973a7c4" target="_blank" rel="noopener noreferrer">LKQ Stock Is S&P 500’s Worst Performer. Fewer Cars Are Being Repaired.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of  LKQ  were plummeting Thursday after the automotive parts and services company reported a smaller-than-expected quarterly profit and lowered its financial forecasts for the full year.  The c...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=64e08fca300910413896a9b3347146daafec77c6979af8fc5570f4df57680d15" target="_blank" rel="noopener noreferrer">Why LKQ (LKQ) Shares Are Trading Lower Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of automotive parts company LKQ (NASDAQ:LKQ) fell 21% in the afternoon session after the company reported disappointing second-quarter 2025 results and lowered its full-year financial outlook. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b604fb643e31db707725ed1f9fb07ca9aa1aee113a188da212dd6462031ecc2" target="_blank" rel="noopener noreferrer">Equity Markets Mixed as New Home Sales Miss Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">US benchmark equity indexes are on track to close mixed on Thursday, after June new home sales in th...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c96b5044a7bd9d8d323b72d90c75d6af3bfdf5f6470376748d36197a56aea529" target="_blank" rel="noopener noreferrer">S&P 500, Nasdaq Extend Rallies to Records; Dow Falls</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 and Nasdaq extended rallies to records as Alphabet's (GOOG, GOOGL) Q2 results topped est...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a7e56ff58b844dce0c8580385827207afdf60a1fa5c7edb6097bde66bd8ebdd9" target="_blank" rel="noopener noreferrer">Equity Markets Close Mixed After Home Sales Miss, Private Output Growth Data</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">US benchmark equity indexes closed mixed on Thursday, after June new home sales missed estimates and...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f3a6f1d1ea97004411a5c06147e1076a1e7b74c4cd9f6ff67e5fdb1074ea4f29" target="_blank" rel="noopener noreferrer">LKQ (LKQ) Q2 Earnings: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Automotive parts company LKQ (NASDAQ:LKQ) will be reporting results this Thursday before market hours. Here’s what investors should know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=12129a50efe18257b9bf779014105db30266b74041a5d6f861c8d4a1d554821f" target="_blank" rel="noopener noreferrer">LKQ Corporation (NASDAQ:LKQ) Shares Could Be 45% Below Their Intrinsic Value Estimate</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights The projected fair value for LKQ is US$70.43 based on 2 Stage Free Cash Flow to Equity LKQ's US$38.48......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3d89e6e2afb1268854a9d359295889639303dcc9facca0ef5f0e90e9b33ed28c" target="_blank" rel="noopener noreferrer">Ahead of LKQ (LKQ) Q2 Earnings: Get Ready With Wall Street Estimates for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Besides Wall Street's top-and-bottom-line estimates for LKQ (LKQ), review projections for some of its key metrics to gain a deeper understanding of how the company might have fared during the quarter ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec8b8ebfd830230c375fdb5c60f87083293ce22da9cd75cf73ed49e508718fd9" target="_blank" rel="noopener noreferrer">3 Ideal July Buys And 7 To Watch From 47 'Safer' Dividends In 100 Barron's Sustainable Dogs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover Barron's 2025 ranking of sustainable companies, top ESG stocks, and strategies for maximizing returns with insights on risks and analyst forecasts. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=991940b8a6fe1b8559ac220a62b1d68d99177d49b91770f4875576d8497a899e" target="_blank" rel="noopener noreferrer">ClearBridge Sustainability Leaders Strategy Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The ClearBridge Sustainability Leaders Strategy outperformed its Russell 3000 Index benchmark in the second quarter. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9aa77de560c6a5d6c5ad3f6111dc83d8812e338e4136b5544af56059c506419c" target="_blank" rel="noopener noreferrer">3 Low-Volatility Stocks Facing Headwinds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">A stock with low volatility can be reassuring, but it doesn’t always mean strong long-term performance. Investors who prioritize stability may miss out on higher-reward opportunities elsewhere....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2e03dead9e9fe4ec80d5f7877280e368ce0b3925bd9ba5c2072aa954d42b6dd1" target="_blank" rel="noopener noreferrer">LKQ Corporation’s Quarterly Earnings Preview: What You Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation is set to report its second-quarter results next month, and analysts are projecting a modest single-digit decline in earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8a09946fc92352ab8286a163d05e45d6f03369045b854c91d1536f51e44d7ada" target="_blank" rel="noopener noreferrer">LKQ (NASDAQ:LKQ) stock performs better than its underlying earnings growth over last five years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">When you buy and hold a stock for the long term, you definitely want it to provide a positive return. Furthermore......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=739747b000b85cf2a3b062689390dc38db0f97eb695eff33031a5673e4d8001a" target="_blank" rel="noopener noreferrer">LKQ Corporation(NasdaqGS: LKQ) added to Russell 2500 Value Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation added to Russell 2500 Value Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cc73145a8d5af133a4afe428d6dc71a6b0cc2b374a56af218f785567709b3465" target="_blank" rel="noopener noreferrer">LKQ Corporation(NasdaqGS: LKQ) added to Russell 2500 Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-29</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ Corporation added to Russell 2500 Index......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
