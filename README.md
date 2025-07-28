@@ -1,239 +1,276 @@
-# 🐅 TIGRO Portfolio Optimization System
+# 🐅 TIGRO - Financial Sentiment Analysis & Portfolio Management System
 
-[![GitHub Pages](https://img.shields.io/badge/Dashboard-Live-brightgreen)](https://theemeraldnetwork.github.io/tigro/)
-[![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-Private-red)](LICENSE)
+[![GitHub Pages](https://img.shields.io/badge/Live%20Dashboard-GitHub%20Pages-blue)](https://theemeraldnetwork.github.io/tigro/)
+[![Python](https://img.shields.io/badge/Python-3.8+-green)](https://python.org)
+[![Status](https://img.shields.io/badge/Sentiment%20Analysis-PRODUCTION-brightgreen)](https://theemeraldnetwork.github.io/tigro/)
+[![Status](https://img.shields.io/badge/Portfolio%20Optimization-REDESIGN%20NEEDED-red)](#portfolio-optimization-status)
 
-**Advanced Portfolio Management with AI-Powered Sentiment Analysis**
+## 📍 CURRENT CHECKPOINT STATUS (July 28, 2025)
 
-Tigro is a sophisticated portfolio optimization system that combines **Modern Portfolio Theory** with **real-time sentiment analysis** using FinBERT AI to generate superior risk-adjusted returns.
+### ✅ **PRODUCTION READY - DO NOT MODIFY**
+**SENTIMENT ANALYSIS SYSTEM**: Fully operational, deployed, and generating daily reports.
 
-## 🎯 **System Capabilities**
+**🚨 CRITICAL WARNING**: The sentiment analysis flow is a **PROTECTED PRODUCTION SYSTEM**. Any future dashboard or portfolio optimization work **MUST NOT** modify or interfere with the sentiment analysis components.
 
-- **📊 Real-time Sentiment Analysis**: FinBERT processing of 150+ stocks daily
-- **🔧 Portfolio Optimization**: Markowitz mean-variance optimization with constraints
-- **📈 Risk Management**: VaR calculations, dynamic stop losses, correlation analysis
-- **🤖 Automated Trading**: Daily analysis and GitHub Pages dashboard
-- **📧 Smart Alerts**: Email notifications for significant market changes
-- **🎨 Live Dashboard**: Professional-grade visualization at [tigro.github.io](https://theemeraldnetwork.github.io/tigro/)
-
-## 🏗️ **System Architecture**
-
-```mermaid
-flowchart LR
-    A[Market Data] --> B[Sentiment Analysis]
-    B --> C[Portfolio Optimization]
-    C --> D[Risk Management]
-    D --> E[Live Dashboard]
-    E --> F[Trading Signals]
-```
-
-## 📁 **Project Structure**
-
-```
-tigro/
-├── 🏛️ actual-portfolio-master.csv     # Current portfolio data (PROTECTED)
-├── 🏛️ master name ticker.csv          # Stock universe - 150 stocks (PROTECTED)  
-├── 🏛️ master_runner_short.py          # Main automation script (PROTECTED)
-├── 🏛️ index.html                      # Dashboard entry point (PROTECTED)
-├── 📊 TIGRO_SYSTEM_FLOW.html          # Interactive system flow diagram
-│
-├── 🔧 scripts/                   # All analysis scripts (14 organized scripts)
-│   ├── 🧠 sentiment/             # Sentiment analysis (1 script)
-│   │   └── sent_collect_data.py
-│   ├── 💰 financial/             # Financial calculations (3 scripts)
-│   │   ├── fin_portfolio_analyzer.py
-│   │   ├── fin_portfolio_analyzer_v2.py
-│   │   └── fin_realistic_analyzer.py
-│   ├── ⚖️ optimization/          # Portfolio optimization (4 scripts)
-│   │   ├── opt_portfolio_optimizer.py
-│   │   ├── opt_sentiment_integration.py
-│   │   ├── opt_strategy_generator.py
-│   │   └── opt_strategy_summary.py
-│   ├── 📊 visualization/         # Dashboards & reports (2 scripts)
-│   │   ├── viz_action_table.py
-│   │   └── viz_dashboard_generator.py
-│   ├── 🤖 automation/            # Scheduling & alerts (1 script)
-│   │   └── auto_whatsapp_trigger.py
-│   └── 🛠️ utilities/             # Helper functions (2 scripts)
-│       ├── util_audit_reviewer.py
-│       └── util_debug_analyzer.py
-│
-├── 📦 data/                      # All data storage
-│   ├── database/                 # Sentiment database
-│   ├── market/                   # Market data
-│   ├── results/                  # Analysis outputs
-│   └── archive/                  # Historical data
-│
-├── ⚙️ config/                    # Configuration files
-├── 🧪 tests/                     # Testing scripts
-├── 📚 docs/                      # GitHub Pages content
-├── 📋 logs/                      # System logs
-└── 🗂️ temp/                      # Temporary files
-```
-
-## 🎯 **System Architecture Overview**
-
-The Tigro system consists of **26 core components** organized into 7 categories:
-- **🔵 Data Sources (A1-A5)**: Portfolio data, stock universe, market data, sentiment, risk-free rate
-- **🟣 Sentiment Processing (B1-B3)**: FinBERT analysis, trend detection, aggregation
-- **🟢 Financial Calculations (C1-C5)**: Returns, volatility, Sharpe ratios, analyst targets
-- **🟠 Optimization Engine (D1-D4)**: Markowitz optimization, sentiment integration, constraints, VaR
-- **🟡 Position Sizing (E1-E3)**: Weight conversion, stop losses, rebalancing decisions
-- **🟤 Reporting (F1-F3)**: Dashboard generation, action tables, email alerts
-- **🔷 Automation (G1-G2)**: Daily automation, GitHub deployment
-
-**📊 View the complete interactive flow diagram**: `TIGRO_SYSTEM_FLOW.html`
-
-## 🚀 **Quick Start**
-
-### **Prerequisites**
-```bash
-# Python 3.8+ required
-pip install -r requirements.txt
-```
-
-### **Running Analysis**
-```bash
-# Full system analysis
-python master_runner_short.py
-
-# Individual components
-python scripts/sentiment/sent_collect_data.py     # Sentiment analysis
-python scripts/financial/fin_portfolio_analyzer.py  # Portfolio metrics
-python scripts/optimization/opt_markowitz_engine.py  # Optimization
-python scripts/visualization/viz_dashboard_generator.py  # Dashboard
-```
-
-### **Live Dashboard**
-Visit: **[https://theemeraldnetwork.github.io/tigro/](https://theemeraldnetwork.github.io/tigro/)**
-
-## 📋 **Script Documentation**
-
-### **🧠 Sentiment Analysis**
-| Script | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| `sent_collect_data.py` | FinBERT sentiment analysis | News articles | Sentiment scores (-1 to +1) |
-| `sent_analyze_trends.py` | Monthly trend analysis | Historical sentiment | Trend direction & strength |
-| `sent_summary_generator.py` | Daily aggregation | Individual scores | Portfolio-level sentiment |
-
-### **💰 Financial Analysis**
-| Script | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| `fin_portfolio_analyzer.py` | Current portfolio metrics | Portfolio data | Returns, Sharpe ratios |
-| `fin_market_data.py` | Market data collection | Stock symbols | OHLCV, analyst targets |
-| `fin_risk_calculator.py` | Risk calculations | Price history | Covariance matrix, VaR |
-| `fin_treasury_rates.py` | Risk-free rate | Treasury data | Current RF rate |
-| `fin_analyst_targets.py` | Target price analysis | Analyst data | Conservative targets |
-
-### **⚖️ Portfolio Optimization**
-| Script | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| `opt_markowitz_engine.py` | Portfolio optimization | Returns, constraints | Optimal weights |
-| `opt_sentiment_integration.py` | Sentiment overlay | Financial + sentiment | Composite scores |
-| `opt_constraint_handler.py` | Risk constraints | User preferences | Feasible solutions |
-| `opt_position_sizer.py` | Position sizing | Weights, cash | Share quantities |
-| `opt_stop_loss_calculator.py` | Dynamic stops | Volatility, correlation | Stop loss levels |
-
-### **📊 Visualization & Reports**
-| Script | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| `viz_dashboard_generator.py` | Main dashboard | All analysis | GitHub Pages site |
-| `viz_action_table.py` | Trading recommendations | Optimization results | HTML action table |
-| `viz_performance_charts.py` | Performance tracking | Historical data | Charts & metrics |
-
-### **🤖 Automation**
-| Script | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| `auto_email_sender.py` | Email alerts | Significant changes | Email notifications |
-| `auto_github_deployer.py` | Dashboard deployment | Analysis results | Live website |
-| `auto_whatsapp_trigger.py` | WhatsApp notifications | Critical alerts | Mobile alerts |
-
-### **🛠️ Utilities**
-| Script | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| `util_audit_reviewer.py` | Mathematical audit | Analysis results | Audit report |
-| `util_debug_analyzer.py` | System debugging | Error logs | Debug information |
-| `util_yfinance_helper.py` | YFinance interface | Stock symbols | Market data |
-
-## 📊 **Current Performance**
-
-- **Portfolio Value**: €38,766 (~$42,643)
-- **Current Return**: 4.83%
-- **Target Return**: 6.83% (+2pp improvement)
-- **Sharpe Ratio**: 0.658
-- **Stocks Tracked**: 150 companies
-- **Sentiment Articles**: 19,580+ analyzed daily
-
-## 🎯 **Mathematical Framework**
-
-### **Portfolio Optimization**
-- **Markowitz Mean-Variance**: Minimize risk for target return
-- **Constraint Satisfaction**: Sector limits, position sizing, risk tolerance
-- **Sentiment Integration**: 80% financial metrics + 20% sentiment overlay
-
-### **Risk Management**
-- **Value at Risk (VaR)**: 97% confidence level
-- **Dynamic Stop Losses**: Volatility-adjusted protection
-- **Correlation Analysis**: Position-level risk contribution
-
-### **Performance Metrics**
-- **Sharpe Ratio**: (Return - Risk Free Rate) / Volatility
-- **Portfolio Volatility**: √(w^T × Σ × w)
-- **Expected Returns**: Forward-looking projections with confidence intervals
-
-## 🔄 **Daily Automation**
-
-The system runs automatically daily at **5:15 PM CET** via LaunchAgent:
-
-1. **Sentiment Collection**: Process latest news articles
-2. **Market Data Update**: Fetch current prices and analyst targets
-3. **Portfolio Analysis**: Calculate current performance metrics
-4. **Optimization**: Generate optimal portfolio weights
-5. **Dashboard Update**: Refresh GitHub Pages dashboard
-6. **Email Alerts**: Send notifications for significant changes
-
-## 📧 **Notifications**
-
-- **Gmail Integration**: Automated email reports
-- **WhatsApp Alerts**: Critical market changes
-- **Dashboard Updates**: Real-time GitHub Pages refresh
-
-## 🛡️ **Security & Configuration**
-
-- **API Keys**: Stored in `config/api_keys.json` (not in repo)
-- **Email Credentials**: App password authentication
-- **GitHub Deployment**: Automated via SSH keys
-
-## 📈 **Trading Integration**
-
-The system generates actionable trading recommendations:
-
-- **Buy/Sell/Hold** decisions with specific reasoning
-- **Position sizing** based on risk-adjusted weights
-- **Stop loss levels** for risk management
-- **Rebalancing thresholds** for portfolio maintenance
-
-## 🧪 **Testing**
-
-```bash
-# Run all tests
-python -m pytest tests/
-
-# Test individual components
-python tests/test_yfinance_connection.py
-python tests/test_sentiment_analysis.py
-python tests/test_optimization_engine.py
-```
-
-## 📝 **License**
-
-Private repository. All rights reserved.
-
-## 🤝 **Contributing**
-
-This is a private portfolio management system. For questions or issues, contact the repository owner.
+### ❌ **NEEDS COMPLETE REDESIGN**
+**PORTFOLIO OPTIMIZATION**: Requires full rebuild with proper mathematical foundations and clean architecture.
 
 ---
 
-**🐅 Tigro Portfolio Optimization System** - *Where AI meets Modern Portfolio Theory* 
+## 🎯 **SYSTEM OVERVIEW**
+
+TIGRO (The Investment Growth & Risk Optimization) system combines:
+1. **✅ AI-Powered Sentiment Analysis** (FinBERT) - PRODUCTION READY
+2. **❌ Portfolio Optimization** (Markowitz + Strategic Constraints) - NEEDS REDESIGN
+3. **🔄 Automated Daily Reports** - WORKING
+4. **📊 Interactive Dashboard** - WORKING (Sentiment Only)
+
+---
+
+## 🔒 **PROTECTED PRODUCTION COMPONENTS**
+
+### **⚡ Sentiment Analysis Pipeline** 
+**STATUS**: 🟢 FULLY OPERATIONAL - **DO NOT TOUCH**
+
+**Components Protected:**
+- `scripts/a_collect_sentiment.py` - Core sentiment collection
+- `master_runner_short.py` - Daily automation runner  
+- `master name ticker.csv` - Stock universe (132+ stocks)
+- All FinBERT AI processing logic
+- Email automation system
+- Dashboard generation for sentiment data
+- `docs/sentiment_report_latest.html` - Live dashboard
+- `index.html` - Redirect to sentiment dashboard
+
+**Live Dashboard**: https://theemeraldnetwork.github.io/tigro/
+
+**Features Working:**
+- ✅ 132+ stocks analyzed daily
+- ✅ FinBERT AI sentiment scoring
+- ✅ Trend analysis (Last Week vs Last Month)
+- ✅ Article count and confidence metrics
+- ✅ Automated email reports
+- ✅ GitHub Pages deployment
+- ✅ LaunchAgent automation (5:15 PM CET)
+- ✅ Comprehensive logging system
+
+**Data Flow:**
+```
+Article Collection → FinBERT Processing → Sentiment Scoring → 
+Trend Analysis → Dashboard Generation → Email Reports → GitHub Deploy
+```
+
+---
+
+## ❌ **PORTFOLIO OPTIMIZATION - REDESIGN REQUIRED**
+
+### **Current Issues Identified:**
+1. **Mathematical Errors**: VaR calculation bugs, incorrect covariance matrices
+2. **Logic Conflicts**: Pure Markowitz vs Strategic constraints incompatible
+3. **Data Integration**: Sentiment-Portfolio symbol mapping issues
+4. **Floating Point Precision**: Action classification errors (NVIDIA case)
+5. **Architecture**: Monolithic, hard to test and validate
+6. **User Experience**: Complex output format, mixed data sources
+
+### **What Needs Complete Rebuild:**
+- All optimization scripts in `scripts/optimization/`
+- Portfolio dashboard integration
+- Mathematical foundations
+- Data validation systems
+- User interface for portfolio recommendations
+
+### **Requirements for Redesign:**
+1. **Clean Separation**: Sentiment analysis must remain untouched
+2. **Mathematical Rigor**: Proper covariance, VaR, Sharpe calculations
+3. **Strategic Order**: SELL → TRIM → BUY NEW → TOP UP
+4. **Budget Constraints**: Maximum $10,000 new cash deployment
+5. **Return Targets**: 10-12% annual returns with acceptable Sharpe ratio
+6. **Real Money Ready**: No hardcoded values, full validation
+
+---
+
+## 📁 **PROJECT STRUCTURE**
+
+### **🔒 PROTECTED (Production Sentiment Analysis)**
+```
+sentiment_analysis/
+├── scripts/
+│   ├── a_collect_sentiment.py          # 🔒 PROTECTED - Core sentiment engine
+│   └── e_generate_dashboard.py         # 🔒 PROTECTED - Dashboard generator
+├── master_runner_short.py              # 🔒 PROTECTED - Daily automation
+├── master name ticker.csv              # 🔒 PROTECTED - Stock universe
+├── index.html                          # 🔒 PROTECTED - Dashboard redirect
+├── docs/sentiment_report_latest.html   # 🔒 PROTECTED - Live dashboard
+├── database/sentiment/                 # 🔒 PROTECTED - Historical data
+├── results/                            # 🔒 PROTECTED - Generated reports
+└── utils/                              # 🔒 PROTECTED - Support modules
+```
+
+### **❌ TO BE REDESIGNED (Portfolio Optimization)**
+```
+├── scripts/optimization/               # ❌ REBUILD REQUIRED
+├── scripts/financial/                  # ❌ REBUILD REQUIRED  
+├── scripts/visualization/              # ❌ REBUILD REQUIRED
+├── actual-portfolio-master.csv         # ✅ Data source (keep)
+└── Any portfolio dashboard files       # ❌ REBUILD REQUIRED
+```
+
+### **✅ SUPPORTING INFRASTRUCTURE**
+```
+├── config/                             # ✅ Configuration files
+├── automation/                         # ✅ LaunchAgent & monitoring
+├── documentation/                      # ✅ Setup guides
+├── requirements.txt                    # ✅ Dependencies
+└── .gitignore                          # ✅ Git configuration
+```
+
+---
+
+## 🚀 **DEPLOYMENT & AUTOMATION**
+
+### **Daily Automation (WORKING)**
+- **Schedule**: 5:15 PM CET daily
+- **LaunchAgent**: `com.tigro.daily.plist`
+- **Process**: Sentiment collection → Dashboard update → Email report → GitHub deploy
+- **Monitoring**: `logs/tigro_master_detailed.log`
+- **Runtime**: ~18 minutes for 132+ stocks
+
+### **Email Integration (WORKING)**
+- **Gmail**: davideconsiglio1978@gmail.com
+- **App Password**: yapl pqyf rzpp olbr
+- **Reports**: Detailed HTML + Summary
+- **Frequency**: Daily after analysis completion
+
+---
+
+## 🔧 **INSTALLATION & SETUP**
+
+### **Requirements**
+```bash
+Python 3.8+
+Virtual Environment (venv/)
+Required packages in requirements.txt
+```
+
+### **Quick Start (Sentiment Analysis Only)**
+```bash
+# Clone repository
+git clone <repository-url>
+cd sentiment_analysis
+
+# Setup virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run sentiment analysis
+python master_runner_short.py
+```
+
+### **Configuration Files**
+- `utils/config/api_keys.json` - API credentials
+- `config/com.tigro.daily.plist` - LaunchAgent automation
+- `master name ticker.csv` - Stock universe
+
+---
+
+## 📊 **DATA SOURCES & INTEGRATIONS**
+
+### **Sentiment Analysis Sources**
+- **News Articles**: Financial news aggregation
+- **AI Processing**: FinBERT transformer model
+- **Storage**: Local CSV database + GitHub Pages
+- **Delivery**: Email + Web dashboard
+
+### **Portfolio Data Sources** 
+- **Portfolio**: `actual-portfolio-master.csv`
+- **Market Data**: yfinance API (when optimization rebuilt)
+- **Fundamental Data**: To be integrated in redesign
+
+---
+
+## 🛡️ **SYSTEM PROTECTION RULES**
+
+### **🚨 CRITICAL - SENTIMENT ANALYSIS PROTECTION**
+
+**ANY FUTURE DEVELOPMENT MUST:**
+1. ✅ **NEVER modify** sentiment analysis scripts
+2. ✅ **NEVER change** `master_runner_short.py` automation
+3. ✅ **NEVER alter** dashboard generation for sentiment
+4. ✅ **NEVER touch** the daily LaunchAgent workflow
+5. ✅ **ALWAYS preserve** `index.html` redirect to sentiment dashboard
+
+**IF PORTFOLIO OPTIMIZATION IS ADDED:**
+1. ✅ Create **separate scripts** with clear naming
+2. ✅ Use **separate dashboard files** (not index.html)
+3. ✅ Implement **independent data flows**
+4. ✅ Never interfere with existing automation
+5. ✅ Maintain sentiment analysis as the primary system
+
+---
+
+## 📝 **CHANGELOG - CLEANUP (July 28, 2025)**
+
+### **✅ COMPLETED CLEANUP**
+- Removed 27+ temporary files (`temp_*`)
+- Deleted failed HTML dashboard attempts
+- Cleaned debug scripts and utilities
+- Removed incomplete optimization logic
+- Cleared Python cache directories
+- Protected sentiment analysis as production system
+
+### **✅ PRESERVED WORKING COMPONENTS**
+- Complete sentiment analysis pipeline
+- Daily automation system
+- Email integration
+- GitHub Pages deployment
+- Historical sentiment data
+- Documentation and configuration
+
+### **❌ REMOVED FOR REDESIGN**
+- Portfolio optimization scripts
+- Two-phase optimizer
+- Supervisor execution system
+- Mathematical validation scripts
+- Failed dashboard integration attempts
+
+---
+
+## 🎯 **NEXT STEPS (When Ready)**
+
+### **For Portfolio Optimization Redesign:**
+1. **Study working sentiment system** - understand data flows
+2. **Design clean architecture** - separate from sentiment analysis  
+3. **Implement mathematical foundations** - proper Markowitz optimization
+4. **Build validation systems** - real money deployment standards
+5. **Create independent dashboard** - do not modify sentiment dashboard
+6. **Test extensively** - with small amounts before full deployment
+
+### **Success Criteria:**
+- ✅ Sentiment analysis remains untouched and operational
+- ✅ Portfolio optimization works independently
+- ✅ Mathematical accuracy verified
+- ✅ User interface meets requirements
+- ✅ Real money deployment ready
+
+---
+
+## 📞 **SUPPORT & MONITORING**
+
+### **Live Dashboard**: https://theemeraldnetwork.github.io/tigro/
+### **Monitoring Tools**:
+- `automation/realtime_monitor.py`
+- `automation/countdown_monitor.py`
+- `logs/tigro_master_detailed.log`
+
+### **Status Check**:
+```bash
+# Check sentiment system status
+python -c "import pandas as pd; print('✅ Sentiment System:', 'OPERATIONAL' if pd.read_csv('database/sentiment/summary/sentiment_summary_latest.csv') is not None else '❌ ERROR')"
+```
+
+---
+
+**🔒 REMEMBER: The sentiment analysis is a working production system generating real value. Protect it while building the portfolio optimization separately.** 
