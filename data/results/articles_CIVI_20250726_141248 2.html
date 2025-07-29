@@ -1,0 +1,839 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Civitas Resources Inc. (CIVI) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Civitas Resources Inc. (CIVI)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">36</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.15</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=287c4edc03cc1885f5d49166223b7dcdcba02ae6f22b77f1e4e8cf9211f3e747" target="_blank" rel="noopener noreferrer">Prairie Operating Co. Leans Heavily on Cash Flow Discipline</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">PROP sharpens its DJ Basin growth plan with a disciplined cash flow model and over 10% production growth target....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=451a0f3bdb1659473b34f540985262767e954530192c7c7d169086e3ae000a44" target="_blank" rel="noopener noreferrer">Rare Buying Opportunities: Deeply Undervalued With Big Upside Catalysts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e1ea3f29eb13b185f3105d4e233d91deed167d266c3143163a49a4d273cd8e1" target="_blank" rel="noopener noreferrer">Buy 5 Ideal Safer Dividend Power Dogs In July</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d7ca18f2111a9f4ac315578131332aeefad5317c1c8a43d40ecdb669ae4d5f74" target="_blank" rel="noopener noreferrer">Zacks Industry Outlook Highlights EQT, APA, Civitas Resources and W&T Offshore</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Despite a weak industry outlook, EQT, APA, CIVI, and WTI show strength with growth, value, and production-focused strategies....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=115dfb0f4f1b8e1766f1f9331879ff524c43d25fa6d5d8e290405b2e7194254f" target="_blank" rel="noopener noreferrer">Tough Times for U.S. Upstream Stocks? These 4 Buck the Trend</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Following a careful analysis of the Zacks Oil and Gas - Exploration and Production - United States industry, we advise focusing on shares of EQT, APA, CIVI and WTI....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c6a6db7d13f540a265881f9f33ca82a2f22bb4481f59aa6d67459c5596b58b5c" target="_blank" rel="noopener noreferrer">Undercovered Dozen: Morgan Stanley, Arista Networks, Global Ship Lease And More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Undercovered Dozen series highlights 12 lesser-covered stocks, offering fresh ideas and fostering discussion among investors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c006303eec3faff7feb1af74d4166fae3e9a4c8f4d4a1d6aef5eb93587a0e8a0" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc. Schedules Second Quarter 2025 Conference Call and Webcast</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">DENVER, July 15, 2025--2Q Earnings Call Information...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c91895f11f394bc73364efa3dad7eda4d6a54acd9b0f8f859ec1a86198c42bef" target="_blank" rel="noopener noreferrer">Civitas Executives Show Steady Confidence Despite Legal and Rating Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. (NYSE:CIVI) is one of the 10 Energy Stocks with Insider Buying in 2025. Insider transactions see a positive uptick amid mixed analyst sentiments and lawsuits. Founded in 2021, ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6c524b73b7525a347f3ae1e3508631c4e56b78ae0229af50cb2d6a5c415e1357" target="_blank" rel="noopener noreferrer">Civitas Resources: Great Value, But Still Need To Bounce Back</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd46553fd075741ba6aefd2c941100d9e46c45cb68f9deff5757341ad3987eec" target="_blank" rel="noopener noreferrer">Civitas Resources: A Contrarian Bet In The Energy Sector</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources is undervalued with strong upside potential, a 6% dividend yield, and operational strength. Click here to read my most recent CIVI stock analysis....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85104b70c3079e49434adae8dad95e87fbf45cdf994bd63afb51df6d8f558bc1" target="_blank" rel="noopener noreferrer">Why Investors Need to Take Advantage of These 2 Oils-Energy Stocks Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors looking for ways to find stocks that are set to beat quarterly earnings estimates should check out the Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=69e8fbaa1d9c4a5ba5dfe7e341aa81b761ff1ad27371c0aad701eec1abf0b9f3" target="_blank" rel="noopener noreferrer">Oil Prices Have Gone Nowhere. This Energy Stock Is Looking Up.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">investors should look for oil companies that are relying on more than higher prices to boost profits. Chord Energy fits the bill....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fb5c1f95a4697120b584b91699f74f1799af4e30557f25de01061e040704c159" target="_blank" rel="noopener noreferrer">These 2 Oils-Energy Stocks Could Beat Earnings: Why They Should Be on Your Radar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Zacks Earnings ESP is a great way to find potential earnings surprises. Why investors should take advantage now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7904de147ed1fc7649701deaa07befb369e00fa21d7a5689f06b5983a378b690" target="_blank" rel="noopener noreferrer">Civitas Resources: Loading My Little Red Wagon For Income And Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources is undervalued with strong upside potential, strategic Permian assets, and income stability. Find out why CIVI stock is a strong buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2108cd6aaac43205e1e4ee0a2dedca8394a7e816811628fe4c6cfc737f8d00af" target="_blank" rel="noopener noreferrer">SHAREHOLDER NOTICE: Faruqi & Faruqi, LLP Investigates Claims on Behalf of Investors of Civitas Resources</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Faruqi & Faruqi, LLP Securities Litigation Partner James Wilson Encourages Investors Who Suffered Losses In Civitas To Contact Him Directly To Discuss Their OptionsIf you purchased or acquired......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f1530739a21e19ca0638fbf76657120d4ff9f5e9e88e7c4a8ce046232637e1e" target="_blank" rel="noopener noreferrer">Why Prairie Operating Co.'s Emission Focus Deserves a Look</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">PROP's grid-powered rigs, zero-flaring goals, and methane-cutting technology show how clean drilling can fuel growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e29eed622673d8b698ef2cf53fc8c921b451b7194b91e755ff36c4de691345ab" target="_blank" rel="noopener noreferrer">Levi & Korsinsky Notifies Shareholders of Civitas Resources, Inc.(CIVI) of a Class Action Lawsuit and an Upcoming Deadline</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, July 1, 2025 /PRNewswire/ -- Levi & Korsinsky, LLP notifies investors in Civitas Resources, Inc. of a class action securities lawsuit. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8696eb8b95bbe7a09c95f26f5fcd8935480de5a54beca13cad5081db02d5ceaf" target="_blank" rel="noopener noreferrer">Civitas Deadline Today: Rosen Law Firm Urges Civitas Resources, Inc. (NYSE</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Rosen Law Firm, a global investor rights law firm, announces that a shareholder filed a class action lawsuit on behalf of purchasers of Civitas Resources, Inc. securities between February 27, 2024......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ad95d6aa0703cfddcfc7225818e0a2b8551a104b06b92b68f9777438f76919c2" target="_blank" rel="noopener noreferrer">Levi & Korsinsky Reminds Shareholders of a Lead Plaintiff Deadline of July 1, 2025 in Civitas Resources, Inc. Lawsuit - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Levi & Korsinsky, LLP notifies investors in Civitas Resources, Inc. of a class action securities lawsuit. CLASS DEFINITION: The lawsuit seeks to recover losses on behalf of Civitas Resources......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ff9b328b7b3dbc32f00137f67f55de6b2e34dad9c6bfaa94066beaa489398a48" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc.(NYSE: CIVI) dropped from Russell Small Cap Comp Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. dropped from Russell Small Cap Comp Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cdb2e614c4cee2361f9b813e5414b6f98d58e1b4c319d06a5d75ebb152dca917" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc.(NYSE: CIVI) dropped from Russell 3000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. dropped from Russell 3000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7d0dbf12cfc96952dd68a405500ae05ecf1eafd5a5bf44331f3b21b7bb2725d9" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc.(NYSE: CIVI) dropped from Russell 1000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. dropped from Russell 1000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6421e1549af3bfaffbf4032e622853f4fb7e3cce16e99f3c91f59647114ee970" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc.(NYSE: CIVI) dropped from Russell Midcap Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. dropped from Russell Midcap Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b4b831b7e595ca19aa21760c1c9ce3b27929687aa7942a71bf844474b3d38c25" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc.(NYSE: CIVI) dropped from Russell 2500 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. dropped from Russell 2500 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f6fbfdf54285b06d3bbab02c1e8fd57676c462fc55430246b614ed3fbc205ed" target="_blank" rel="noopener noreferrer">The Gross Law Firm Reminds Civitas Resources, Inc. Investors of the Pending Class Action Lawsuit with a Lead Plaintiff Deadline of July 1, 2025 - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 30, 2025 /PRNewswire/ -- The Gross Law Firm issues the following notice to shareholders of Civitas Resources, Inc. . ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ab0202551cde2aac81dd7c4d733120aed254caabebd4ff91136dc5f6b0b440fa" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc. Sued for Securities Law Violations - Contact Levi & Korsinsky Before July 1, 2025 to Discuss Your Rights - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Levi & Korsinsky, LLP notifies investors in Civitas Resources, Inc. of a class action securities lawsuit. CLASS DEFINITION: The lawsuit seeks to recover losses on behalf of Civitas Resources......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86928277369b8365e47f260310a9de6d6820cca1249b932c364761496179fe33" target="_blank" rel="noopener noreferrer">Deadline Soon: Civitas Resources, Inc. (CIVI) Investors Who Lost Money Urged To Contact The Law Offices of Frank R. Cruz About Securities Fraud Lawsuit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">The Law Offices of Frank R. Cruz reminds investors of the upcoming July 1, 2025 deadline to participate as a lead plaintiff in the securities fraud class action lawsuit filed on behalf of investors......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1defbe81c347cb8a95e70f78278b24415efe07fdc1a2008f600335f4eaa18484" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc.(NYSE: CIVI) dropped from Russell 3000E Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Civitas Resources, Inc. dropped from Russell 3000E Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=14fcda0c79c6acbf008b1f13c53232ab55d957677361a70a6f984ef04d1a1b5a" target="_blank" rel="noopener noreferrer">DEADLINE TOMORROW: Berger Montague Advises Civitas Resources (NYSE</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">PHILADELPHIA, June 30, 2025 /PRNewswire/ -- Berger Montague PC advises investors that a securities class action lawsuit has been filed against Civitas Resources, Inc. on behalf of purchasers of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8676113bc9a1e76bac75492d617cd9b0a0e98b24ab80e93fb1da955c4d7c3baf" target="_blank" rel="noopener noreferrer">CIVI Deadline: CIVI Investors with Losses in Excess of $100K Have Opportunity to Lead Civitas Resources, Inc. Securities Fraud Lawsuit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 28, 2025 /PRNewswire/ -- Why: Rosen Law Firm, a global investor......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be8eb0eabbfcd600d997619340f26d34299c104177489bf17cd0ba409d4233c5" target="_blank" rel="noopener noreferrer">Touchstone Small Cap Value Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1f9bda8bb81b9b2b4609a5af99b0fabdea259e74f69b2e7fd7fc99a0bae93d9f" target="_blank" rel="noopener noreferrer">Investors who lost money on Civitas Resources, Inc.(CIVI) should contact Levi & Korsinsky about pending Class Action - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 27, 2025 /PRNewswire/ -- Levi & Korsinsky, LLP notifies investors in Civitas Resources, Inc. of a class action securities lawsuit. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=97cb88f2e72617add4041e4825b7cd450a735f9d1db99ef923eb65cebddf4d27" target="_blank" rel="noopener noreferrer">Civitas Resources, Inc. Class Action: Levi & Korsinsky Reminds Civitas Resources, Inc. Investors of the Pending Class Action Lawsuit With a Lead Plaintiff July 1, 2025 - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">Levi & Korsinsky, LLP notifies investors in Civitas Resources, Inc. of a class action securities lawsuit. CLASS DEFINITION: The lawsuit seeks to recover losses on behalf of Civitas Resources......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5e07d7fad3d6e945385c538d6b64d352f4e4fd98f33badcf6f27d221ff7d26a" target="_blank" rel="noopener noreferrer">Pomerantz Law Firm Announces the Filing of a Class Action Against Civitas Resources, Inc. and Certain Officers - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.67
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 27, 2025 /PRNewswire/ -- Pomerantz LLP announces that a class action lawsuit has been filed against Civitas Resources, Inc.  and certain officers.  The class action, filed in the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=26b07533fcba7b5bd85e18d8c71bd684b9066c06ee036826c340a581ec7c85ae" target="_blank" rel="noopener noreferrer">The Gross Law Firm Reminds Shareholders of a Lead Plaintiff Deadline of July 1, 2025 in Civitas Resources Lawsuit - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 26, 2025 /PRNewswire/ -- The Gross Law Firm issues the following notice to shareholders of Civitas Resources, Inc. . ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f77e389e2555b35b42eadf1ef5ab4c6615bbbd0ada0d96ac3eae84c08f00f1c" target="_blank" rel="noopener noreferrer">Faruqi & Faruqi Reminds Civitas Resources Investors of the Pending Class Action Lawsuit with a Lead Plaintiff Deadline of July 1, 2025 - CIVI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Faruqi & Faruqi, LLP Securities Litigation Partner James Wilson Encourages Investors Who Suffered Losses Exceeding $100,000 In Civitas To Contact Him Directly To Discuss Their OptionsIf you......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

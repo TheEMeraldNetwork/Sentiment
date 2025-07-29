@@ -1,0 +1,391 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Syndax Pharmaceuticals Inc. (SNDX) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Syndax Pharmaceuticals Inc. (SNDX)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.20</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b9edbc937a08e6d290c853244472d2593f6461d06bb50ab00d39def7ecadebf" target="_blank" rel="noopener noreferrer">Syndax Presents New Revuforj Data in Relapsed, Refractory mNPM1 and NUP98r Acute Leukemia from AUGMENT-101 Trial at EHA 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK - Syndax Pharmaceuticals , a commercial-stage biopharmaceutical company advancing innovative cancer therapies, announced new data from the pivotal AUGMENT-101 trial of Revuforj , the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1bf32ef7040b68bb7708f2019898d8f0958e1178f7faaf2a2a0a0310e2864d0a" target="_blank" rel="noopener noreferrer">Syndax reports publication of revumenib data from BEAT AML trial</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Syndax (SNDX) Pharmaceuticals announced that data from the BEAT AML trial of revumenib in combination with venetoclax and azacitidine in newly diagnosed mutant NPM1 and KMT2A-rearranged acute myeloid ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=69ed9f020d4fbf0e6ef10b1448f8a4728f629943a94fb3f85f30451303d72a6d" target="_blank" rel="noopener noreferrer">Syndax Presents New Revuforj® Data in Relapsed/Refractory mNPM1 and NUP98r Acute Leukemia from AUGMENT-101 Trial at EHA 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.44
+                                </span>
+                            </div>
+                            <div class="article-summary">Syndax Pharmaceuticals announced new data from the pivotal AUGMENT-101 trial of Revuforj , the Company?s first-in-class menin inhibitor, in patients with relapsed or refractory mutant NPM1 and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=45f59495f85694554cbdddcce64a228f84a9d0e5f0b3f3767cb3fe53b04a5497" target="_blank" rel="noopener noreferrer">Syndax Presents New Revuforj® (revumenib) Data in Relapsed/Refractory mNPM1 and NUP98r Acute Leukemia from AUGMENT-101 Trial at EHA 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">– 26% (20/77) CR+CRh rate and 48% (37/77) ORR in efficacy-evaluable pivotal R/R mNPM1 AML population – – Robust responses observed across subgroups, regardless of co-mutations, number of prior lines o...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8b0324d6fd1a15e9f830e65901bd7bb91f562fb530a73db3989964c3907e0355" target="_blank" rel="noopener noreferrer">Syndax Announces Publication of Revumenib Data from the BEAT AML Trial in the Journal of Clinical Oncology and Simultaneous Presentation at EHA 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">– Revumenib was generally well-tolerated in combination with venetoclax/azacitidine in older, newly diagnosed mNPM1 and KMT2Ar AML patients – – Promising clinical activity and deep responses observed ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=604008ef813f24e2d2ae2e29c0ae5330cca1134805638bcf98f8691c2939d8a6" target="_blank" rel="noopener noreferrer">Transcript : Syndax Pharmaceuticals, Inc. Presents at Goldman Sachs 46th Annual Global Healthcare Conference 2025, Jun-11-2025 02</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">Presenter SpeechCorinne Jenkins Good afternoon, everyone. Thanks for joining us here at the Goldman Sachs Annual Healthcare Conference. Thrilled to be joined by the team from Syndax. Maybe I'll...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b574ee0c0020a92938761c0e6fda7a2f638ecf8d4af6f8ec0d9ec90599240156" target="_blank" rel="noopener noreferrer">Syndax Pharmaceuticals Reports Inducement Grants Under NASDAQ Listing Rule 5635(c)(4)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 05, 2025 (GLOBE NEWSWIRE) -- Syndax Pharmaceuticals (Nasdaq: SNDX), a commercial-stage biopharmaceutical company advancing innovative cancer therapies, today announced that on June 1, 2...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9499af0fe8718cf30138b0259125c87de43ba447669bb9d6e9125dfd1fe35070" target="_blank" rel="noopener noreferrer">Syndax Announces Participation in June Investor Conferences</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, May 29, 2025 (GLOBE NEWSWIRE) -- Syndax Pharmaceuticals (Nasdaq: SNDX), a commercial-stage biopharmaceutical company advancing innovative cancer therapies, today announced that Michael A. Me...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

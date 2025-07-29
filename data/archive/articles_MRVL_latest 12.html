@@ -1,0 +1,2887 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Marvell Technology Inc. (MRVL) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Marvell Technology Inc. (MRVL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">164</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">72</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">39</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.15</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5aa7661f55d9cd06c2551e524ac1a2aabd34d9c84d5a77035d11017f885158a8" target="_blank" rel="noopener noreferrer">Undervalued and Profitable: 2 Artificial Intelligence (AI) Stocks for Long-Term Portfolios</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A tried and tested way of making money in the stock market is by buying great companies that are tapping into a growing trend that also trade at attractive valuations and holding them for the long run...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=786129b66570d902c5260b5468da6d95ee9cb144d1e9abbb20511e8d78a60c25" target="_blank" rel="noopener noreferrer">Wall Street rallies behind Marvell Technology stock after blockbuster AI showcase</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology's stock price pops on AI chip bet....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5fed61c1c8a2a922536c2a1955472caffb34c0451ea458e7af2f1d010b705460" target="_blank" rel="noopener noreferrer">Momentum Favors Marvell Technology (MRVL) as Trade Pact Soothes Supply Chain Stress</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">While the Trump administration’s aggressive trade policies have caused global uncertainty, the semiconductor sector—particularly companies like Marvell Technology (MRVL)—has felt the impact acutely. T...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c7794b6421bb375146547192eefd7e9a3865cb36654abf031599c006a81bcc8" target="_blank" rel="noopener noreferrer">2 Reasons to Like MRVL and 1 to Stay Skeptical</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology has gotten torched over the last six months - since December 2024, its stock price has dropped 30.9% to $75.35 per share. This may have investors wondering how to approach the situa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=edf60d4f7eb619938df295778dc9f15182150458e58304575704f8b4f61b5033" target="_blank" rel="noopener noreferrer">Marvell: We Were Wrong About The Short Term (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell's upgraded AI targets and competitive pricing make it a strong buy for savvy investors. Read here for an investment analysis of MRVL stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ae3ff6cdd04dae765492be56f5d3cdafa1e9b704ff82fcd552f6d6a781abd423" target="_blank" rel="noopener noreferrer">CRDO vs. MRVL: Which AI Connectivity Stock Has More Upside?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">CRDO's explosive revenue growth and expanding AI-focused product lines spark investor interest over MRVL....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cb1dea9fd13cb1fd08f82929d3d857c0c6b4615dfa8737d2ec7a158bfc26c5e2" target="_blank" rel="noopener noreferrer">Marvell Technology (NasdaqGS:MRVL) Collaborates With Empower On Integrated Power Solutions For AI Transformation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (NasdaqGS:MRVL) saw its share price rise by 20% last month, following positive developments in its business strategy and collaborative efforts. The partnership with Empower Semicond...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6cb7cb00559991e6abc50ef7558f1c30c2d0355512bf81a5732c9698be68e53d" target="_blank" rel="noopener noreferrer">These Stocks Are Moving the Most Today: Tesla, Sunrun, Nucor, Circle Internet, Korn Ferry, Bitdeer, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">These Stocks Are Moving the Most Today: Tesla, Sunrun, Nucor, Circle Internet, Korn Ferry, Bitdeer, and More...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ebd660049346c01f97aed683dc59f50f6eefe401fe95d47282482ef218877a22" target="_blank" rel="noopener noreferrer">Broadcom: Breakout Occurred Too Fast/ Furious, Reversing Momentum Possible</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.12
+                                </span>
+                            </div>
+                            <div class="article-summary">Broadcom's bright XPU, networking, and SaaS prospects driven by AI growth, despite trends hinting at stock corrections. Click for my AVGO stock update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a5fa93aed7c97bf203c7c737c2241bda8362cb08f162b5264c4c65cdb08c34d1" target="_blank" rel="noopener noreferrer">Wall Street Fears Hawkish Fed Will Trigger Stock Market Selloff</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Not much seems to faze the stock market these days even as risks abound, from war in the Middle East, to trade tensions, to slowing growth. But Wall Street’s biggest fear arrives today ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9d5606ea44989719f247e9767aace911571937bd1fbb87690c34c6dd61433221" target="_blank" rel="noopener noreferrer">Marvell custom AI event: Here are Wall Street takeaways</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Marvell Technology’s (NASDAQ:MRVL) recent custom AI silicon event drew mixed but mostly positive reactions from Wall Street, with both Barclays and Morgan Stanley highlighting an ambi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=61c17fd89bf6162f77cf65830de145bde69f3dcd09e64743213e8ed970433f9d" target="_blank" rel="noopener noreferrer">Investors in Marvell Technology (NASDAQ:MRVL) have seen splendid returns of 108% over the past five years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.04
+                                </span>
+                            </div>
+                            <div class="article-summary">The worst result, after buying shares in a company (assuming no leverage), would be if you lose all the money you put......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=77c9838ee451fd697d54d0c07a0f500ef191687047bca3469c97297b5b5f5e7a" target="_blank" rel="noopener noreferrer">Wall Street Lunch: Home Building Activity Takes A Hit In May</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.74
+                                </span>
+                            </div>
+                            <div class="article-summary">Home building activity plunged last month, with groundbreaking on new homes falling to the lowest level since 2020....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fde9921afefb38149ce9f529986651d58d3d902ed0ce6d870f09c6ff92b0165c" target="_blank" rel="noopener noreferrer">Marvell sees a big opportunity ahead. Can that spark a real turnaround for its stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell sees a big opportunity ahead. Can that spark a real turnaround for its stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a66e218d0d11c825bbf7f711dfc72cdb566d3720e5cf21337ef11c53e8c73932" target="_blank" rel="noopener noreferrer">Empower and Marvell Announce Collaboration on Next-Generation Integrated Power Delivery Solution for AI and Cloud Platforms</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">Initiative aims to develop high-performance optimized chip-level power delivery for 4+ kilowatt processorsSAN JOSE, Calif., June 18, 2025 (GLOBE NEWSWIRE) -- Empower Semiconductor, the world leader in...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b688a741faf67f4dcb62320c6a4b87969819122cc3f484b4bf2c9aa9a4456603" target="_blank" rel="noopener noreferrer">Micron Stock Rises 18% in Three Months: Will It Carry the Momentum?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">MU stock climbs 18% in three months as AI demand, HBM growth and diversification fuel long-term optimism....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=88011092013a5945115c42be153f860a3a5879d2273b6ec73d1ad8c53742b69c" target="_blank" rel="noopener noreferrer">AMD: Not Second Best To Nvidia, But It's The Smarter Bet</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Advanced Micro Devices, Inc.'s AI potential, new MI400 chips, and strong momentum signal growth. Click for why AMD's valuation reset positions it for a rally....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21bcebe2820f6635c415435e306a31eebb4a599353d8025024f2045c7ccfa818" target="_blank" rel="noopener noreferrer">Marvell, alcohol stocks, Nucor outlook: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (MRVL) stock is in focus as Wall Street analysts highlight the company's promising artificial intelligence (AI) plans following its custom AI chip event. Alcohol stocks, including C...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1ec16ff31d8a998a9e7d4c1252fae24dace1c5064187307df1682d1be36f6967" target="_blank" rel="noopener noreferrer">Marvell Stock Surges. What Could Keep Its AI Chip Rally Going.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares popped after the chip designer raised expectations for its total addressable market in the custom AI processor business....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86dda8b79dbb7909a86704308ed31b3b16d87feb6c4235292d4e3266d17ac930" target="_blank" rel="noopener noreferrer">Top Midday Stories: Markets Await Fed Decision on Rates; Nippon Steel Closes Acquisition of US Steel</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">All three major US stock indexes were up in late-morning trading Wednesday as market participants aw...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5b2c77937a5ff71df88961b9e617f5c753515ea88b121e4abb987b2a25e46686" target="_blank" rel="noopener noreferrer">Why Are Marvell Technology (MRVL) Shares Soaring Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of networking chips designer Marvell Technology (NASDAQ: MRVL) jumped 8.7% in the morning session after the company announced a breakthrough in making chips for Artificial Intelligence (AI), re...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e64e7cef49657fd7b0c44479562605aa15d30fc1ae20b1c54934757d82c560bc" target="_blank" rel="noopener noreferrer">Marvell Technology Raises Its Custom AI Chip Prospects</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell stock jumped after the chipmaker increased its addressable market for custom chips for artificial intelligence applications....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1113c257874a6d9487db215b5c709a460c81d9e11f063cb2dd67b88344d2d97" target="_blank" rel="noopener noreferrer">Marvell Stock Jumps After Unveiling Multi-Billion AI Chip Deals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Doubles Down on AI Chips, Wall Street Takes Notice...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=afbd4ae9f2513f916d1706e7f28df6f7d70b251431c8d52057315ceeed2010c4" target="_blank" rel="noopener noreferrer">Unusual Call Options Activity in Marvell Technology Highlights the Value of MRVL Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">There was a heavy, unusual call options volume today in Marvell Technology Inc., the system-on-a-chip semiconductor designer, after it reported strong results. This highlights the underlying value of ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a64a5d1534e14981e370033723004a7288262eeb4266524ea7fde5a2f786d0e" target="_blank" rel="noopener noreferrer">Why This Analyst Thinks Marvell Stock Is Headed for $130 After Custom AI Event</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">JPMorgan reiterated its bullish view on Marvell stock after the company’s Custom AI investor event. MRVL shares are currently trading at a discount versus Nvidia and Broadcom....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c466e22253cc8edfebfbd071655db06ee0a66a773e17bb618041504478100693" target="_blank" rel="noopener noreferrer">Markets Play Dead Fish</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2540688e8e15ef65424a2ad00441a7ce07003476cf86fa33454fc9312ba462b5" target="_blank" rel="noopener noreferrer">Marvell is a 'very high growth' AI player: BofA analyst</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.76
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (MRVL) stock gains after the semiconductor tech company hosted its custom artificial intelligence (AI) chip event, showcasing its AI plans and capacity. Following the event, Bank of...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ab5994aa116c2c1aed2eaebb8d82d30710ce8a198036191df105fd4238932668" target="_blank" rel="noopener noreferrer">1 Unprofitable Stock with Exciting Potential and 2 to Think Twice About</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Running at a loss can be a red flag. Many of these businesses face mounting challenges as competition increases and funding becomes harder to secure....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98b863999f6de79689217912c1400ead48a7d6134f92d926c8a4fb1dbb10cb09" target="_blank" rel="noopener noreferrer">Marvell Introduces Optimized Integrated Power Solutions to Boost Performance, Efficiency, and ROI of Accelerated Infrastructure</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ: MRVL), a leader in data infrastructure semiconductor solutions, today announced its Package Integrated Voltage Regulator (PIVR) power solutions, transforming power de...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e5da45c0aa552019300f9050ad709c916e00039fd517bd609e56fac279634894" target="_blank" rel="noopener noreferrer">Marvell Develops Industry's First 2nm Custom SRAM for Next-Generation AI Infrastructure Silicon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ: MRVL), a leader in data infrastructure semiconductor solutions expanded its custom technology platform with the launch of the industry's first 2nm custom Static Rando...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cc10fbd9b5c1e481a46c21ab36fb35ea14c18e6dd52ac24d06adf1d916082a0e" target="_blank" rel="noopener noreferrer">Astera Labs Soars on Expanding AI Reach With Alchip, NVIDIA Deals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Astera Labs teams up with Alchip and deepens NVIDIA ties as surging AI demand fuels 144% revenue growth in Q1 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e6eb9a595e799e765d2be246b7259abc6bf79b17bbc6ac8bc6c779e8cc7d0411" target="_blank" rel="noopener noreferrer">Marvell Launches New Power Regulator And 2nm Memory Chips To Boost AI, Cloud Efficiency</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.75
+                                </span>
+                            </div>
+                            <div class="article-summary">Data infrastructure chip company Marvell Technology (NASDAQ:MRVL) on Tuesday announced its Package Integrated Voltage Regulator (PIVR) power solutions. These solutions transform power delivery systems...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be1e4fe851c3d87cce358ecdf93156fa2c4d44dbc73d3e63efc9b7b6edba8244" target="_blank" rel="noopener noreferrer">Transcript : Marvell Technology, Inc. - Shareholder/Analyst Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presentation Operator MessageOperator Welcome to Marvell's custom AI Investor Event. Please welcome Senior Vice President, Investor Relations, Ashish Saran.Presenter SpeechAshish Saran Good...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=738e86e0d8a911ab7f1cbfe2efbe166a93dd26c999091cf05191025dd87d090f" target="_blank" rel="noopener noreferrer">Barclays Keeps Overweight Rating on Marvell Technology (MRVL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ:MRVL) is one of the 10 Best American Semiconductor Stocks to Buy Now. On May 30, Barclays reaffirmed its “Overweight” rating on Marvell Technology, Inc. (NASDAQ:MRVL) ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6d61eabb9d439fa2f560b9f097f9ca815481689a5db0063529c70719533cb445" target="_blank" rel="noopener noreferrer">Marvell Technology Inc Declares Quarterly Dividend Payment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">SANTA CLARA, Calif. - Marvell Technology, Inc. , today announced a quarterly dividend of $0.06 per share of common stock payable on July 31, 2025 to shareholders of record as of July 11, 2025.About......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c846baed61533f8c6ebee47133b4ea7b7fef97fc0dbf736c72f5ab591fdcfa9a" target="_blank" rel="noopener noreferrer">SKYT vs. MRVL: Which Semiconductor Stock is the Better Investment?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">SkyWater Technology's quantum push, Fab 25 deal and lean valuation stack up strongly against Marvell Technology's AI-fueled momentum....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0dac1e14f6a7d9ddf24fbf065080f9c7729f3c98ebde200a14a9420c0d459e70" target="_blank" rel="noopener noreferrer">Marvell Technology, onsemi, ThredUp, Wayfair, and Teradyne Shares Are Soaring, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks jumped in the afternoon session after the major indices rebounded (Nasdaq +1.5%, S&P 500 +1.0%) as reports pointed to easing tensions between Israel and Iran. The Wall Street Journa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7b097463832309b58ee56a52ffd59eea1f65e7d5c3227192cd84159d350a292b" target="_blank" rel="noopener noreferrer">AI Chip Stocks Advance Amid Higher Market Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">AI chip stocks rose Monday as several Wall Street analysts reiterated their bullish views on the artificial intelligence market....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f9bc3e7c6441a64481afd72aa8eca6680983a2c33dd68ff91f513d77c2bb8101" target="_blank" rel="noopener noreferrer">Harbor Human Capital Factor US Large Cap ETF Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">During the first quarter, the Harbor Human Capital Factor US Large Cap ETF returned -4.13%, slightly underperforming its benchmark....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7140281fcbb9cc338677d0705426474b48b49d8395e5f69c439b04a826211595" target="_blank" rel="noopener noreferrer">Marvell Technology (NasdaqGS:MRVL) Declares US$0.06 Dividend Per Share</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (NasdaqGS:MRVL) recently affirmed a quarterly dividend of $0.06 per share, reinforcing shareholder value as it experienced a 3% price increase in the past month. This period also in...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=06ae050cc01e51508c30338f44b7f0c4841b3836259150f4fd328523a6f82f1b" target="_blank" rel="noopener noreferrer">2 Growth Stocks with All-Star Potential and 1 to Ignore</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Growth boosts valuation multiples, but it doesn’t always last forever. Companies that cannot maintain it are often penalized with large declines in market value, a lesson ingrained in investors who lo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d17786fe111a26a4716c85c1a02e932128b78c36125c91731b0c8875940adf7" target="_blank" rel="noopener noreferrer">Is It Time To Consider Buying Marvell Technology, Inc. (NASDAQ:MRVL)?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. ( NASDAQ:MRVL ) received a lot of attention from a substantial price increase on the NASDAQGS......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d2a557dfbcfb4e27a899e1b3b81d4916b00c128a9e7f9055c58a35d034a9e214" target="_blank" rel="noopener noreferrer">Credo Expects Revenues to Top $800M in FY26: Is the Growth Sustainable?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">CRDO guides FY26 revenues to exceed $800 million, fueled by AEC, retimer and optical business growth amid soaring AI data-center demand....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f84f572d8fd94808dbe36a32d776b9cd8fc8f2a00203219887a9042d775e6d5b" target="_blank" rel="noopener noreferrer">Marvell Technology, Inc. Declares Quarterly Dividend Payment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ: MRVL), today announced a quarterly dividend of $0.06 per share of common stock payable on July 31, 2025 to shareholders of record as of July 11, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=500a066f381690097bb443d54ae006a5d68b96f4b190962e903628f934916d47" target="_blank" rel="noopener noreferrer">Marvell Expands Custom Compute Platform with UALink Scale-up Solution for AI Accelerated Infrastructure</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.68
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ: MRVL), a leader in data infrastructure semiconductor solutions, today announced its custom Ultra Accelerator Link (UALink) scale-up offering. As part of the Marvell® ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b01b67c7a4893118a0f4fd67255f0d7a0bd302c01b2fe9eef99f861374109fa" target="_blank" rel="noopener noreferrer">Will AI-Driven Custom Silicon Drive MRVL's Q2 Revenues Beyond $2B?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology eyes a record-breaking Q2 sales as soaring demand for AI custom silicon drives data center revenue momentum....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9d89b1d0177d48b8495bfb4fef4a76174ec44c938684a31e124c4068c8bd466" target="_blank" rel="noopener noreferrer">TCW Artificial Intelligence ETF Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a2d3f948506f0accf53a959b36043755540fa2eaca9918ba4ab29e727a20b4af" target="_blank" rel="noopener noreferrer">5 Single-Stock ETFs That Surged at the Start of June</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Single-stock ETFs tied to MU, MRVL, HOOD, MARA and META are surging as tech-fueled optimism powers gains....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2e99f4e1a7ceebad1a248884917c8d655927acf99df397bed98d5930718ab948" target="_blank" rel="noopener noreferrer">The 3 Best Growth Stocks to Buy With $100 Right Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">These three companies have been beaten down by the market, but they could produce incredible returns going forward....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1fa0aa07b5636b18d5c1b888a39f30fc1bef50a81358102adabeede492dc8249" target="_blank" rel="noopener noreferrer">Marvell Technology (NasdaqGS:MRVL) Sees Net Income Rise to US$178 Million</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (NasdaqGS:MRVL) has recently seen a share price increase of 21%, which can be associated with a series of positive developments. The company's recent earnings announcement showed a ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a266d75a2904846d13c9c0995632fc25b785a6bf92e63ce1fe1ca5a02963bafb" target="_blank" rel="noopener noreferrer">Impax Large Cap Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Impax Large Cap Fund underperformed in the quarter as markets repriced risk amid the heightened uncertainty around impacts of an âAmerica-firstâ approach to US economic policy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8dceb4ea289e4388b28a11af98eed8302edc46e04f9dd9957ce4fcaf95212862" target="_blank" rel="noopener noreferrer">Broadcom's Post-Q2 Earnings Pullback Is A Classic Overreaction</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Broadcom should see more upside in the ASIC and networking businesses. Click here to see why AVGO stock is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5b64a1347bde77a117930524e5b2dd8b3d855b2e5d31650c6b614381e88091ff" target="_blank" rel="noopener noreferrer">Nvidia Stock Rises. Why Broadcom Earnings Show AI Demand Remains Strong.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia Stock Rises. Why Broadcom Earnings Show AI Demand Remains Strong....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=548090960eab348860d22524fe342b17d9572679f102203ea573fcf9d3152656" target="_blank" rel="noopener noreferrer">Harbor Long-Term Growers ETF Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">During Q1, the Harbor Long Term Growers ETF returned -10.09% (at NAV), underperforming the benchmark, the Russell 1000Â® Growth Index, which returned -9.97%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8a50760be6ab16e0173502d7ceea46b91774a50dea296c59f2088908b98e6a32" target="_blank" rel="noopener noreferrer">Mission Produce, Offerpad, Marvell Technology, Designer Brands, and Hain Celestial Stocks Trade Up, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks jumped in the afternoon session after the major indices rebounded, as the Bureau of Labor Statistics report revealed a resilient labor market with non-farm payrolls rising by 139,00...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=763f3e11ca974bf08e9fa77f7a53459ef031b23309bb8f02ae7a9e283eece27e" target="_blank" rel="noopener noreferrer">Marvell Technology, Inc. (MRVL) Is a Trending Stock: Facts to Know Before Betting on It</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching Marvell (MRVL) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6ecddba3f021199b5ce80914820c36794e48069b1f238dbdf311282d0a9469e0" target="_blank" rel="noopener noreferrer">Analyst After Marvell (MRVL) Results – ‘This Could Have Really Gone Badly’</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.07
+                                </span>
+                            </div>
+                            <div class="article-summary">CFRA’s Angelo Zino said in a latest program on Schwab Network that the most important thing to note in Marvell Technology Inc (NASDAQ:MRVL) results and call was that the company’s AWS and other key pr...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=58ff934ed014abc2f5f2b8643321dac728efc93f2377cb327de29be4b9ab3fed" target="_blank" rel="noopener noreferrer">Why This 1 Momentum Stock Could Be a Great Addition to Your Portfolio</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Whether you're a value, growth, or momentum investor, finding strong stocks becomes easier with the Zacks Style Scores, a top feature of the Zacks Premium research service....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=adf89990f4200588535005e751fe86d68c0d25f1cd18803ad41b7085643df99b" target="_blank" rel="noopener noreferrer">Can MRVL's Custom AI Silicon Keep Driving Data Center Wins?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology's shift toward an advanced 2.5D packaging platform and high demand for Custom AI Silicon chips are set to drive the revenues....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91faeadf823c17dcc3b6b3acc01e150d4ece80aca5899593fcd0c9f6c1ff8cec" target="_blank" rel="noopener noreferrer">Marvell Technology: Don't Get Tempted By The 42% Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. stock is overvalued with pressured margins and unrealistic AI expectations. Click to see why MRVL is a sell despite its affordability....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85cd73a79de0e58f0e6c6f8a0dd57cfbdd6fb345ca82a02d1444139e05721d65" target="_blank" rel="noopener noreferrer">1 No-Brainer Artificial Intelligence (AI) Stock to Buy on the Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology dipped following its latest quarterly results, even though it reported a terrific rise in its revenue and earnings.  Marvell stock's valuation means that investors can buy this pote...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=38a6d65a9ec63cd848c82399abcc6bb713b38f7265f1f37839504901e473e372" target="_blank" rel="noopener noreferrer">Credo: Quietly Becoming AI's Favorite Cable Guy - Buy Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Credo Technology Group Holding Ltd targets two hyperscalers & diversifies beyond Amazon, driving Q4 growth. Click for more on CRDO's AI-driven datacenter trends....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=55c2220861c0925c0299c1e1cf40e4ef7c8eca28df6217e1ceb5fcf3debc6d09" target="_blank" rel="noopener noreferrer">Marvell: Still A Buying Opportunity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell offers significant upside potential, with price targets suggesting 40-100% gains and limited downside risk at current levels. Learn more on MRVL stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6cc7d83b64ab861995f6dd4c0c4dae33c4e83ae64e3d0f4844694c4bfbd84fd0" target="_blank" rel="noopener noreferrer">Here's Why Marvell Technology (MRVL) is a Strong Growth Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">Whether you're a value, growth, or momentum investor, finding strong stocks becomes easier with the Zacks Style Scores, a top feature of the Zacks Premium research service....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b78df0243ca90cbd6e6d2e59e21538ba7e381d3c242d33e37f8bd4334f8dc0a7" target="_blank" rel="noopener noreferrer">Marvell Delivers Marvelous AI Growth, But Stock Sinks -- Should Investors Jump In?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.41
+                                </span>
+                            </div>
+                            <div class="article-summary">The company appears to have an opportunity to get involved with custom chips for Microsoft.  Shares of Marvell Technology (NASDAQ: MRVL) sank, despite the company once again displaying robust data cen...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ddce10223174050946e9ccecb728f5602cabfc087263f31058fc7827fc3fa057" target="_blank" rel="noopener noreferrer">Marvell: Data Center Remains Strong, While Cyclical Segments Continue To Recover</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">MRVL's strong earnings, robust data center demand, and improved margins signal recovery....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=37782e5e78b82254222e23d2faac4f1472dd8e0d34c737a27c280a2e13da9c3f" target="_blank" rel="noopener noreferrer">Taiwan Semiconductor Rises 13% in Three Months: How to Play the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">TSM jumps nearly 13% in three months, fueled by AI demand and strong earnings, but headwinds keep it a hold for now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85f3923c1cfbb6a9a9dc04bbf003f038d39b3ea92abbb5d3cead16f6ed6d3788" target="_blank" rel="noopener noreferrer">Transcript : Marvell Technology, Inc. Presents at Bank of America Global Technology Conference 2025, Jun-03-2025 10</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presenter SpeechVivek Arya And I'm Vivek Arya from BoA semiconductor team and really delighted in honor to have the management team from Marvell join us this morning, Matt Murphy, CEO; and Willem......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2950cb85af8396c1c6bd22ce8194386bd2867d321702bed982f742bef1563744" target="_blank" rel="noopener noreferrer">MRVL Plunges 30% in 3 Months: Should You Buy, Sell or Hold the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology stock plunges 30% in three months, but a discounted valuation and AI tailwinds raise a key question: hold or fold MRVL stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a8e15d9bd7d8472293f1b34a8aa7ece455129a63b58661355a84f25480775238" target="_blank" rel="noopener noreferrer">Jim Cramer and Wall Street Are Watching Marvell Technology (MRVL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 Stocks on Jim Cramer and Wall Street’s Radar. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other stock...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=892b06b31a8062337f849d002417f5b3a42304fc1681f7e7554d2d32374c3473" target="_blank" rel="noopener noreferrer">International Markets and Marvell (MRVL): A Deep Dive for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Explore Marvell's (MRVL) international revenue trends and how these numbers impact Wall Street's forecasts and what's ahead for the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed154c4f08c7de0f4301e95948fc519a7c7246a374a76f333e0f0da82cc879c9" target="_blank" rel="noopener noreferrer">Marvell Technology, Inc. Just Beat Analyst Forecasts, And Analysts Have Been Updating Their Predictions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">As you might know, Marvell Technology, Inc. ( NASDAQ:MRVL ) recently reported its quarterly numbers. Marvell Technology......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=83d357e8055f39856b3c1b834ca8416f6171ae7420b5b576e14a3f957617ae4d" target="_blank" rel="noopener noreferrer">Marvell price target raised to $70 from $60 at TD Cowen</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">TD Cowen raised the firm’s price target on Marvell (MRVL) to $70 from $60 and keeps a Buy rating on the shares. The firm said an in-line print/guide with strong language on 3nm engagement with Amazon ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e82122f208c173fd62a8a4f608ae09f68e6d04fbe86f1c7a214e6ebbf1c5256a" target="_blank" rel="noopener noreferrer">Here's What Key Metrics Tell Us About Marvell (MRVL) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Although the revenue and EPS for Marvell (MRVL) give a sense of how its business performed in the quarter ended April 2025, it might be worth considering how some key metrics compare with Wall Street ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=25ce62a22d081037b4932a10f1f53a89c5fcae774fe104829a2e7b1608c3cb06" target="_blank" rel="noopener noreferrer">Markets Stay Green on More Tariff Discourse; Earnings from COST, GAP & More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Market indexes spent almost all day in the green this Thursday, save for a brief scare mid-day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=28b28406674f5856cf17cb4c7a35e9390050aa3d0116aff9aafed85fc3e824d1" target="_blank" rel="noopener noreferrer">Generation PMCA Q1 2025 Quarterly</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=37aeff3d3ccad0143259c1a6b98a40f153fd4f085367bc9411c7b51e7cbd1b60" target="_blank" rel="noopener noreferrer">Analyst Views Split on Marvell (MRVL) – Here’s What They’re Watching</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 AI Stocks on Wall Street’s Radar. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other AI stocks on Wall...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7726b9b18295e05b3a7d649910998bfc9d26f5f45e22b14d876d820d6c78687f" target="_blank" rel="noopener noreferrer">Wall Street futures down as Trump's tariffs stay put after latest court ruling</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Wall Street futures slipped onFriday, as investors took stock of an appeals court decision toundo a prior ruling that had blocked most of U.S. PresidentDonald Trump's tariffs, heading into the last......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a315c8204148834e3d875ec7b8e27da94025eb5e3da5d9325b00be70782031e1" target="_blank" rel="noopener noreferrer">Marvell Technology Inc (MRVL) Q1 2026 Earnings Call Highlights: Record Revenue and Robust AI ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology Inc (MRVL) reports a 63% year-over-year revenue increase, driven by strong data center performance and strategic business moves....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=762bc2ce1773a62ee21a1cd71df10453ea1d4071f4a0adaef7764288cf458cc9" target="_blank" rel="noopener noreferrer">The Zacks Analyst Blog Highlights Costco, The Gap, Dell Technologies, Marvell Technology and Ulta Beauty</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Costco, Dell, Marvell and Ulta beat estimates, while Gap tumbles 17% despite a Q1 beat....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a5641634667385f3ce1484710edf529ca7fa49a3a4e1535e000b147b6adf22a" target="_blank" rel="noopener noreferrer">Credo: The Risks Of Choosing A Side Before Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9a76174df0582a099707d89d8ba8aa7d382793cd6ac5404f88ba2471296a1ec6" target="_blank" rel="noopener noreferrer">These Stocks Are Moving the Most Today: Nvidia, Dell, Ulta, Gap, Marvell, American Eagle, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia falls after rallying Thursday, Dell rises on better-than-expected financial guidance, and Gap and American Eagle contend with tariff uncertainty....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=29f672bdc5ddc5fee09313d75befad62001a69daf0715e0a348716a640653077" target="_blank" rel="noopener noreferrer">Marvell: When The Market Thinks Good Earnings Still Aren't Good Enough</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=edd399088519d3f5c3e9e35c2d5bc3a39aa3ed71467b6ec67d4d269cd1f74692" target="_blank" rel="noopener noreferrer">Marvell Beats Q1 Earnings Estimates, Guides Strong on Robust Demand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">MRVL's Q1 results reflect the benefits of solid growth in the data center and continued recovery in enterprise networking and carrier infrastructure end markets....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a4afbe1d3dcd41d305298a0c9fb18297ab704f3e9ec611c2b0b5c622b634c26b" target="_blank" rel="noopener noreferrer">Marvell tried to ease a big investor concern, but the stock’s slump shows that doubts still linger</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.74
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell tried to ease a big investor concern, but the stock’s slump shows that doubts still linger...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a5d0cc20b5e60984dd57f3461afef4736bfe9349692e8bd8754e9029e0e64ff7" target="_blank" rel="noopener noreferrer">Marvell Technology, Netflix, Zscaler: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (MRVL) stock is dropping Friday morning despite reporting major revenue growth in its AI data center business and its guidance figure coming in line with Wall Street expectations. N...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6fb11dbebee9c335f1ade718665a135a07015022965e16a2219e82354186779c" target="_blank" rel="noopener noreferrer">Marvell Shares Tumble Amid Concerns Over Next-Gen AI Ramp</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Shares Slide Amid Mixed Analyst Notes...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bbcbf55212c4b1ca0642a48172ae35a18a96f65d76c40544fd11914f6185b5db" target="_blank" rel="noopener noreferrer">Marvell Technology Posts In-Line Q1 Results Driven by AI Data Center Strength, Morgan Stanley Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology's (MRVL) in-line Q1 results were driven by strength from its artificial intellige...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2d5ab5996a553284ac7011bf158d44326906170ef223e2008b97b1bf80110ab5" target="_blank" rel="noopener noreferrer">Marvell Stock Slides. Why It Could Be the Cheap AI Chip Play.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">The company’s earnings didn’t dispel concerns it might lose out on designing Amazon’s Trainium AI chips. Still, analysts are upbeat....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f68ed7fa30caf485d2330b03221c15324e632e06038c025e8efcb217dd6a971" target="_blank" rel="noopener noreferrer">Top Midday Stories: Trump Says China Violated Agreement; Fed's Preferred Inflation Gauge Falls to 2.1% in April</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">All three major stock indexes were down in late-morning trading Friday after President Donald Trump...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5dc94c10e9cd58a34ae333a05e101d744e92396c81940f2d59cc9a5296d0f74d" target="_blank" rel="noopener noreferrer">Marvell: June Event Becomes The Moment Of Truth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. shows good fundamentals with earnings recovery, but custom silicon uncertainty. Click for key insights ahead of June's critical MRVL event....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb3751cf0a409f8338b8016363b3b806597631559cdb7fb86e6f24811463a712" target="_blank" rel="noopener noreferrer">Why Marvell Technology (MRVL) Stock Is Trading Lower Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of networking chips designer Marvell Technology (NASDAQ: MRVL) fell 6.3% in the afternoon session after the company reported underwhelming first quarter 2025 results: sales and earnings were ro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8907fd186a5bf8edcb483a810cf4bc952d191acf5b00cf69dcf248b6f5e67198" target="_blank" rel="noopener noreferrer">Marvell Technology Confident in AWS Relationship, AI Accelerator Focus, Oppenheimer Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (MRVL) remains confident in its multi-generational relationship with Amazon.com's...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=575dde50274a897697d7d3ce4e9debd73cc632acec351b0ff4f276b4f33309f8" target="_blank" rel="noopener noreferrer">These Stocks Moved the Most Today: Nvidia, Dell, Ulta, Gap, Marvell, Regeneron, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia falls after rallying Thursday, Marvell’s latest earnings fail to impress Wall Street, and Gap and American Eagle contend with tariff uncertainty....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ba6c9e5eac3b9addeed8e277561c6a8d23bed9e03ec566f3bfe598662ab5547d" target="_blank" rel="noopener noreferrer">Costco earnings, Fedspeak, pending home sales: What to Watch</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Market Domination Overtime anchors Julie Hyman and Josh Lipton preview the top market headlines and economic data expected to hit Wall Street tomorrow, Thursday, May 29, including earnings results fro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=265b4ecdef13496a8e077d64077eefcf209e61ecbb78a92dd234d623bb631f93" target="_blank" rel="noopener noreferrer">Costco, Best Buy lead bevy of retail earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Costco, Best Buy lead bevy of retail earnings...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f52be1ee281ad722900a15b949dc51bdb9286c412da0fd8cc429bce3b03e103c" target="_blank" rel="noopener noreferrer">Nvidia shares eye 4-month high, and other early market movers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia shares eye 4-month high, and other early market movers...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f6c05d92570681b42339f216fef6a74e3df271f3237e7274badf8175ac85f06f" target="_blank" rel="noopener noreferrer">Trending tickers: Nvidia, Salesforce, HP, Tesla and M&S</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest investor updates on stocks that are trending on Thursday....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=22b4d9917bdfd56a0be5e02cd609455405cd2798195d0489cd82862b604f9089" target="_blank" rel="noopener noreferrer">Broadcom: Market Going All-In Again, Be Really Wary (Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.17
+                                </span>
+                            </div>
+                            <div class="article-summary">Broadcom's (AVGO) AI custom chips and networking dominance remain key growth drivers, but future revenue clarity beyond FY2026 is crucial for sustained upside. See more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e166c8c1c2525f97fc8f87137d19c1e9167f6137e47eae9786d658ec8e206c30" target="_blank" rel="noopener noreferrer">/C O R R E C T I O N -- Marvell/</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">In the news release, Marvell Delivers Advanced Packaging Platform for Custom AI Accelerators, issued 29-May-2025 by Marvell over PR Newswire, we are advised by the company that the fifteenth paragraph...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5f94a7f435d90fca1e722ae449a2fa92d5a5498b93197b676ed8051b4b99c5c8" target="_blank" rel="noopener noreferrer">Trees Don't Grow To The Sky, But Nvidia Does</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia Corporation beats Q1 expectations with AI-driven growth and strong gaming results. Click for my look at NVDA earnings and a look at the competition....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f306d0be33de282198daabea36333f535c6392b09453b46532ce767a5673a353" target="_blank" rel="noopener noreferrer">Marvell Technology, Inc. Delivers Advanced Packaging Platform for Custom Ai Accelerators</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. has expanded the packaging ecosystem for AI infrastructure with an innovative multi-die solution that lowers total cost of ownership for custom AI accelerator silicon. The......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=269dc47e9a4c53e2b13393f0d05f45dcff4f4a7927832f8ceb14e64c19150478" target="_blank" rel="noopener noreferrer">Marvell Technology (MRVL) Slid as Revenue Guidance Fell Short of Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.13
+                                </span>
+                            </div>
+                            <div class="article-summary">Fred Alger Management, an investment management company, released its “Alger Mid Cap Focus Fund” first quarter 2025 investor letter. A copy of the letter can be downloaded here. In Q1 2025, U.S. equit...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e9b2d3bba0069df631043cc4d93cdbb0c3c6e564ddb2ed11294e1b34277e639" target="_blank" rel="noopener noreferrer">Marvell Delivers Advanced Packaging Platform for Custom AI Accelerators</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ: MRVL), a leader in data infrastructure semiconductor solutions, has expanded the packaging ecosystem for AI infrastructure with an innovative multi-die solution that ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4ad828d829e271b507ed5308e56b3518b307ae9be42374fc8f25985e00499c4f" target="_blank" rel="noopener noreferrer">Marvell Technology Swings to 1Q Profit, Posts Higher Sales on Continued AI Demand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology Swings to 1Q Profit, Posts Higher Sales on Continued AI Demand...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=927fb62a4a9c190466767984486c4f17603f33f4a5411963018a1f4e94dc198f" target="_blank" rel="noopener noreferrer">Chipmaker Marvell forecasts second-quarter revenue above estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology forecastsecond-quarter revenue above Wall Street estimates on Thursday,betting on robust demand for custom chips powering artificialintelligence workloads in data centers. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f26387fc945f7a687d19b958c1eaebbd9f3cf9d256a56af0c02a501873bb21e4" target="_blank" rel="noopener noreferrer">Marvell Technology (NasdaqGS:MRVL) Expands AI Packaging with Innovative Multi-Die Solution</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (NasdaqGS:MRVL) recently launched a multi-die packaging solution aimed at enhancing AI infrastructure, which has been well-received and demonstrated the company's commitment to inno...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b56bdac57abc162cf872bcd487722e180247f4837bba4f06316d2605fa335897" target="_blank" rel="noopener noreferrer">Transcript : Marvell Technology, Inc., Q1 2026 Earnings Call, May 29, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presentation Operator MessageOperator Good afternoon, and welcome to Marvell Technology Inc. First Quarter of Fiscal Year 2026 Earnings Conference Call. [Operator Instructions]. Please note that...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cbc25930073d61999639ad99316f01d59f5f48d367437faef445f9450fc3edd1" target="_blank" rel="noopener noreferrer">Analyst Sees ‘Wait-and-See’ for Marvell Technology, Inc. (MRVL) as EPS Drops and Competitors Loom</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 12 AI Stocks on Latest News and Ratings. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other AI stocks on ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e052a4dec9552499057909e08575a8a3154325cdc8ec3eb91a30d8f73a6decfc" target="_blank" rel="noopener noreferrer">Marvell Technology, Inc. (MRVL) Q1 2026 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a6d0c63d379f44b0d430e70def60505927b4e29d847a5112a85a15cdb955f02" target="_blank" rel="noopener noreferrer">Marvell Technology, Inc. Reports First Quarter of Fiscal Year 2026 Financial Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ: MRVL), a leader in data infrastructure semiconductor solutions, today reported financial results for the first quarter of fiscal year 2026....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73278e26faffaae9761816b458443f6d6866eb35c3c6ce19aa6dbca9feaf571e" target="_blank" rel="noopener noreferrer">Marvell forecasts second-quarter revenue above estimates on strong demand for custom AI chips</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -Marvell Technology forecast second-quarter revenue above Wall Street estimates on Thursday, betting on strong demand for its custom chips powering artificial intelligence workloads in data ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=75c4d462c2b87fc7b4e71a29817c9982549fef7d29c333cfd38d6705b13cce9a" target="_blank" rel="noopener noreferrer">Marvell: Fiscal Q1 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">The results exceeded Wall Street expectations. The average estimate of 14 analysts surveyed by Zacks Investment Research was for earnings of 61 cents per share. The chipmaker posted revenue of $1.9 bi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0bbd42ffbc36f6bed420fb0dc2cd10d83c8b58873713a66b07fad22f525b21c8" target="_blank" rel="noopener noreferrer">Marvell meets earnings expectations, but here’s what’s really on investors’ minds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell meets earnings expectations, but here’s what’s really on investors’ minds...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4a91279ced3884ca58e362ac432800f9d327ba81c44e932beef6e4aa23d892a5" target="_blank" rel="noopener noreferrer">Marvell's narrow Q1 earnings beat fails to wow Wall Street</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (MRVL) stock is under pressure after the company's first quarter results came in just above expectations. First quarter net revenue was $1.9 billion in the first quarter, beating es...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=95c3e611f74623c3094efdc64f3e2c752dc39691ea53fa74e547d9bd4368c664" target="_blank" rel="noopener noreferrer">Marvell Technology Squeaks Past Quarterly Targets. Stock Drops Late.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Chipmaker Marvell Technology edged above estimates for its fiscal first quarter and with its outlook for the current period. But Marvell stock fell....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1f8ca99baef618452148c2b9300476d977b8c92247af851f6cac8231e9801058" target="_blank" rel="noopener noreferrer">Marvell Earnings Are Solid but Not Enough for Wall Street</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">The chip maker is set to report earnings after the close of markets on Thursday. All attention will be on its red-hot data center segment....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0969c8ccd180f75986b680cd015dcf44918670823b3032c993e9b77f406043ba" target="_blank" rel="noopener noreferrer">Marvell Technology (NASDAQ:MRVL) Q1: Beats On Revenue, Quarterly Revenue Guidance Slightly Exceeds Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Networking chips designer Marvell Technology (NASDAQ: MRVL) announced better-than-expected revenue in Q1 CY2025, with sales up 63.3% year on year to $1.90 billion. Guidance for next quarter’s revenue ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9b1e7846d96fe58149eac794379ad893a7f82165438550c5a21ece94754c0981" target="_blank" rel="noopener noreferrer">Marvell Technology (MRVL) Q1 Earnings and Revenues Top Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell (MRVL) delivered earnings and revenue surprises of 1.64% and 1.04%, respectively, for the quarter ended April 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7b4a1f02b546d2608e00f84ed83c595ce0091293621f07a583b88ff3f3b3b4b7" target="_blank" rel="noopener noreferrer">What To Expect From Marvell Technology’s (MRVL) Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Networking chips designer Marvell Technology (NASDAQ: MRVL) will be reporting results tomorrow afternoon. Here’s what to look for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a43ae5f8c6cb05e3347352a335e2a89aa177940d047b1e681ebc614da5a4f62d" target="_blank" rel="noopener noreferrer">This AI Stock Could See Big Gains – Why JPMorgan Is Bullish on Marvell (MRVL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 AI Stocks on Analyst’s Radar Today. In this article, we are going to take a look at where Marvell Technology Inc. (NASDAQ:MRVL) stands against other AI stocks that a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8228682a7a105facd9a482eabcd0dbf5726ec5b1b9dff7270acab204bb69078" target="_blank" rel="noopener noreferrer">Carillon Eagle Mid Cap Growth Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2abb8a1b4bb6359ae9925b9127fa26ea2c44231204ee5af7a65ec3aeaa890ca" target="_blank" rel="noopener noreferrer">Credo: Don't Keep On Chasing The Highs (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.47
+                                </span>
+                            </div>
+                            <div class="article-summary">Credo Technologyâs EBITDA multiple surged to 45x and a 0.84 forward PEG ratio lends credence to its valuation profile. Click to know the risks and opportunities for CRDO....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a63064c22901643afe0b94140991b732c629021a2016be6c1ac64676ff8cdb99" target="_blank" rel="noopener noreferrer">Marvell Q1 Preview: Why I'm Buying Shares Going Into Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. upgraded to Strong Buy; $114 target driven by cloud growth, AWS partnership, and XPU ramp-up. Click for my MRVL stock update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30ca3b74bbcbd7a7a85385197946798af8a4af53e33362a5fd3765b1e8103065" target="_blank" rel="noopener noreferrer">Carillon Scout Mid Cap Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a40562b403e9711326a0dd70cf392f1e8df364f4c1faf8455a6462f8c2db2d85" target="_blank" rel="noopener noreferrer">Broadcom Stock Is Rising. Shares Can Soar Past Their Record, Says Analyst.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Broadcom Stock Is Rising. Shares Can Soar Past Their Record, Says Analyst....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5c33a444bf62d4a9ada50205e527153cf1ee30a5d69e705df9d68936fad19b6a" target="_blank" rel="noopener noreferrer">Redburn Atlantic launches coverage on chip stocks: AVGO, ANET new Buys</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Redburn Atlantic has begun coverage on three semiconductor stocks—Broadcom Inc (NASDAQ:AVGO), Arista Networks (NYSE:ANET), and Marvell Technology Inc (NASDAQ:MRVL)....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ebb1dc01d660e4d767b40f7246b03272eee4ea3b010d09365fac9bc009c2ef50" target="_blank" rel="noopener noreferrer">Following a 18% decline over last year, recent gains may please Marvell Technology, Inc. (NASDAQ:MRVL) institutional owners</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.19
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights Institutions' substantial holdings in Marvell Technology implies that they have significant influence over......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d920966da4093e006a2792fc27bded5c0c8b7269fbb79a22ba5a1ae7c79652cb" target="_blank" rel="noopener noreferrer">Custom AI Silicon, Data Center Boom Likely to Propel MRVL Q1 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology's Q1 results are likely to reflect the benefits of strong traction in custom AI silicon and data center end markets....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ccdec4452394b74bfd2120b12024b2f5051d753648364e36add44995277af691" target="_blank" rel="noopener noreferrer">Broadcom, Arista Networks initiated: Wall Street's top analyst calls</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Broadcom, Arista Networks initiated: Wall Street's top analyst calls...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3b6a88db36dd6c2027bc616d2998adfa58a9f66088d8502ee921963419c5a937" target="_blank" rel="noopener noreferrer">Susquehanna Cuts Marvell (MRVL) Price Target to $90, Keeps Positive Rating Ahead of Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 AI Stocks Gaining Wall Street’s Attention. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other AI stock...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c661228b157416b4fd86f3ecbdd53858a4bdec23c7a5b4d432b127cd71be4cb4" target="_blank" rel="noopener noreferrer">Nvidia earnings are giving a lift to these other chip stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia earnings are giving a lift to these other chip stocks...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af52e2325ac73dbc713d1d50935892ff0962f5e843f13be180289907403c7b21" target="_blank" rel="noopener noreferrer">Morgan Stanley Lowers PT on Marvell (MRVL) Stock, Keeps Equal Weight Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">On May 27, Morgan Stanley lowered its price target on Marvell Technology, Inc. (NASDAQ:MRVL) from $90 to $70, keeping an Equal Weight rating on the shares. Joseph Moore from Morgan Stanley downgraded ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d7545b9ed41d0b92dc936c9fc0dfbf3792d4f203e58eb304ee9ca6cf392ccb87" target="_blank" rel="noopener noreferrer">John Hancock Balanced Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=384ce96b93fd0029584f75a6d02817ae5d561761ba3f94d6337112085ea621bf" target="_blank" rel="noopener noreferrer">Prediction: This Insanely Cheap Artificial Intelligence (AI) Stock Will Skyrocket After May 29 (Hint: It's Not Nvidia)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia will be releasing its quarterly results shortly, but it's not alone.  Investors and analysts are eagerly looking forward to Nvidia's upcoming results for the first quarter of its fiscal 2026 (e...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=63546e108af4bcab3c845bd0f4147b2f4143aa600713ea12d8d4ee1c336556b7" target="_blank" rel="noopener noreferrer">2 AI-Driven Tech Stocks to Buy Before they Surge in June</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Diving into some best-in-class, beaten-down tech stocks to buy before everyone else on Wall Street starts searching for deals again....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=804bb424190b0821d734aaaa4a9898b66e93706e957b2190aa2421a4294e793e" target="_blank" rel="noopener noreferrer">Marvell Technology, Semtech, Ambarella Set to Report Results Amid Mixed AI Signals, Morgan Stanley Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology (MRVL) remains under pressure amid investor concerns over its Application Specifi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0ac8478609399613fc97d3e16537d766fc854d38f12542b4f9eb59bd65a0e90c" target="_blank" rel="noopener noreferrer">Why Marvell's AI Revenue Could Top $4 Billion By 2025, Analyst Explains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">JP Morgan analyst Harlan Sur maintained an Overweight rating on Marvell Technology, Inc. (NASDAQ:MRVL) with a price forecast of $130 on Tuesday. This price forecast is based on Marvell’s strong market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=503d5a7e14b23c219934a55b724fe65119070f3386066cd240f583b27e4e9c6a" target="_blank" rel="noopener noreferrer">Microchip Technology, Marvell Technology, onsemi, Amplitude, and Genesco Shares Are Soaring, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks jumped in the afternoon session after the major indices rebounded (Nasdaq +2.0%, S&P 500 +2.0%) as President Trump postponed the planned 50% tariff on European Union imports, shifti...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=40c9c9a4806a381e8657007098375138b509b2bc6b8e5b32658a660d1197997d" target="_blank" rel="noopener noreferrer">3 Hyped Up  Stocks with Mounting Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">Great things are happening to the stocks in this article. They’re all outperforming the market over the last month because of positive catalysts such as a new product line, constructive news flow, or ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e681f4ba19c844b715513d33346b3fdaa5f00351e0e2b0e7ee34dc1be0a8c2d9" target="_blank" rel="noopener noreferrer">MRVL to Post Q1 Earnings: Time to Buy, Sell or Hold the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">AI-driven data center growth, networking recovery and automotive stability are likely to have driven Marvell Technology's financial performance in the first quarter....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=78049da615e1d3df7a55ce886b6e13f652562257cd5d6b1864f45df9d2074910" target="_blank" rel="noopener noreferrer">Jim Cramer Praises Marvell Technology (MRVL)’s CEO and Is Not Sure If “Marvell Will Disappoint”</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of Jim Cramer’s Game Plan: 12 Stocks in Focus. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other stocks tha...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a02120326a48336213a1594a966f92b567f24d733ceb23ffdf19541d1220366e" target="_blank" rel="noopener noreferrer">Jim Cramer on Dell (DELL): “I Do Expect Dell to Be Darn Good”</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of Jim Cramer’s Game Plan: 12 Stocks in Focus. In this article, we are going to take a look at where Dell Technologies Inc. (NYSE:DELL) stands against other stocks that Ji...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6fd53b99e3068d77bf6ee9c07a33a535c85ce32a2ee3d4a16ffa324ca676e7e5" target="_blank" rel="noopener noreferrer">Wall Street Week Ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Get a quick take on Wall Street this week! From Nvidiaâs earnings to key economic data and Fed updates, stay ahead with Seeking Alpha's insights....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a0f382433c3e76cb0b5901afd21ce0e8b0334ff11966eaf9f73b941aca645468" target="_blank" rel="noopener noreferrer">What To Expect in the Markets This Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Coming Up: April PCE Inflation Data, First-Quarter GDP Update, Fed Speakers, Consumer Confidence, Earnings from Nvidia, Salesforce, Dell, Costco, and Others...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0385c794f7ed58aa50e2427ed31d1d76b351c3bcb93035845a5783a9f42968ef" target="_blank" rel="noopener noreferrer">Columbia Balanced Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4002980bc11356191bd5e97a81f72e32d6df6fdec5c60bd72c34593ca2fc04af" target="_blank" rel="noopener noreferrer">Nvidia, Dell, Salesforce To Report Earnings Next Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a1b9c81716041c526523f6b89230cd22cba8879133997bd3c16ce0f6eba12714" target="_blank" rel="noopener noreferrer">What the Era of ‘Sovereign AI’ Means for Chip Makers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">As Nvidia and others strike deals with sovereign nations, their business will become politicized as never before....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cc6fe6edaa61f21a87f958ae61065a93b691ad5d19f0b5313bdcd915ea1fa179" target="_blank" rel="noopener noreferrer">Possible Bearish Signals With Marvell Technology Insiders Disposing Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the past year, many Marvell Technology, Inc. ( NASDAQ:MRVL ) insiders sold a significant stake in the company......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db4df9523134a724658e9ab6adfbf39a71cf4c3baf641b161808e44b6086ce9d" target="_blank" rel="noopener noreferrer">Jim Cramer Says Marvell Technology (MRVL) is “Right to Be Bought Here”</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of Jim Cramer Discussed These 9 Stocks Recently. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other stocks t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8323b5387644c2b8a7bf5831fc85cad332b53eca05ee48bee0956d793ba44149" target="_blank" rel="noopener noreferrer">Marvell (MRVL) Q1 Earnings Preview: What You Should Know Beyond the Headline Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Evaluate the expected performance of Marvell (MRVL) for the quarter ended April 2025, looking beyond the conventional Wall Street top-and-bottom-line estimates and examining some of its key metrics fo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b56f9b106584633bd6e0ee2b90a0f04a4261f71acef7a1d8be2301a954e9c8c4" target="_blank" rel="noopener noreferrer">Stocks to watch next week: Nvidia, Salesforce, Dell, Costco and Kingfisher</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Earnings preview of key companies reporting next week and what to look out for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5c938e3a795da4beb43b5f3765f37d76814e52c0ec9af90a4d941b75416932f" target="_blank" rel="noopener noreferrer">Marvell Technology Set for Upside in Q1 Results on AI Demand, Oppenheimer Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology's (MRVL) artificial intelligence-led growth remains intact and is on track to acc...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a12eb03146245986bc3638cbbc3dca166c3a437852547fb58a04dec790fcf613" target="_blank" rel="noopener noreferrer">Melius Steps Back From Marvell (MRVL) – Here’s Why the Buy Case Faded</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of 10 AI Stocks on Latest News and Ratings. In this article, we are going to take a look at where Marvell Technology, Inc. (NASDAQ:MRVL) stands against other best AI stock...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a1bbaab4a53d54c9fc7993156844ceee5f84e1d907789cbde9161df2f638f9c6" target="_blank" rel="noopener noreferrer">Marvell Technology: Potentially A Top AI Opportunity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f6d78cb14e7f38f45300260494bcda66c2c15327813613cd55ed2f8b93d5b2a4" target="_blank" rel="noopener noreferrer">Artisan Global Opportunities Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">The Artisan Global Opportunities Fund portfolio generated negative absolute returns for Q1 of 2025. Click here to read the full commentary. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=06388e85b7a0c55499f1f57dd6aace88009f9e77e81703107af8ba7532d1c69e" target="_blank" rel="noopener noreferrer">Marvell’s stock is already down almost 50% this year. Here’s why it was just downgraded.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell’s stock is already down almost 50% this year. Here’s why it was just downgraded....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e26c91fea760b6e9de4feabd9e7f789439889f677e2d49bb3cd8fc0b0cc965b3" target="_blank" rel="noopener noreferrer">Lazard U.S. Sustainable Equity Portfolio Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">In the first quarter, the Lazard US Sustainable Equity Portfolio outperformed the return for the S&P 500 Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f42d25af50ec7246f6a1cc65f05e33f8eb40973ba6a5330b9a7a81545e8a5f63" target="_blank" rel="noopener noreferrer">Lazard U.S. Equity Concentrated Portfolio Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">In the first quarter, the Lazard US Equity Concentrated Portfolio underperformed its benchmark, the S&P 500 Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ef64b88af9454e2387ce945be98cf1e1589c6a52bc5200f652c09955f94cb0a9" target="_blank" rel="noopener noreferrer">Nvidia Is Opening Its NVLink Technology to Others: But Is That Bullish or Bearish for the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia announced it would make its NVLink technology available to other AI accelerators, such as custom ASICs made by cloud giants.  At Computex in Taiwan last weekend, artificial intelligence (AI) GP...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c6920b37cef25a4edc8c9e45851990311273b6b247e7fa69602178a187589224" target="_blank" rel="noopener noreferrer">Lazard Global Equity Select Portfolio Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Equity markets worldwide receded in the first quarter, as the outlooks for corporate spending and global economic growth were affected by US tariff plans....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=119ec3f7cb47b783b3923b7627db7ff477a9216f739dbba3cf9835686c90a416" target="_blank" rel="noopener noreferrer">Nvidia CEO Jensen Huang Does It Again</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.41
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia Corporation's Computex 2025 reveals innovations like Rubin AI chip & NVLink Fusion, strengthening its AI dominance. Click for my updated look at NVDA stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a86cc76cb188aaaa344c5991b99cc600586ec39422341ad79e0eaa3b56d8651f" target="_blank" rel="noopener noreferrer">Wall Street Bulls Look Optimistic About Marvell (MRVL): Should You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Based on the average brokerage recommendation (ABR), Marvell (MRVL) should be added to one's portfolio. Wall Street analysts' overly optimistic recommendations cast doubt on the effectiveness of this ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=549885793deca654470078dbae8a9ffa84418d2006e8c6fc68615d9be2a0accd" target="_blank" rel="noopener noreferrer">Marvell Joins Forces with NVIDIA to Provide Custom Solutions for Advanced AI Infrastructure</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Marvell Technology, Inc. (NASDAQ:MRVL) has moved to strengthen its prospects in the high-growth artificial intelligence infrastructure market. On May 19, the company confirmed a strategic partnership ...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

@@ -1,0 +1,173 @@
+name: 🐅 TIGRO Sentiment Analysis Automation
+
+on:
+  # Manual trigger (for Update button)
+  workflow_dispatch:
+    inputs:
+      send_email:
+        description: 'Send email report after analysis'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+        - 'true'
+        - 'false'
+      
+  # Daily schedule at 2:50 PM CET (13:50 UTC)
+  schedule:
+    - cron: '50 13 * * *'
+  
+  # Trigger on push to main (for testing)
+  push:
+    branches: [ main ]
+    paths: 
+      - 'scripts/**'
+      - 'utils/**'
+      - 'master name ticker.csv'
+
+jobs:
+  sentiment_analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔄 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: 🔧 Configure Environment
+      run: |
+        echo "PYTHONPATH=${{ github.workspace }}:$PYTHONPATH" >> $GITHUB_ENV
+        mkdir -p results database/sentiment/detailed database/sentiment/summary
+        
+    - name: 🔑 Setup API Keys Configuration
+      run: |
+        mkdir -p utils/config
+        cat > utils/config/api_keys.json << EOF
+        {
+          "finnhub_api_key": "${{ secrets.FINNHUB_API_KEY }}",
+          "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
+          "gmail_email": "${{ secrets.GMAIL_EMAIL }}",
+          "gmail_password": "${{ secrets.GMAIL_APP_PASSWORD }}"
+        }
+        EOF
+        
+    - name: 📊 Run Sentiment Analysis
+      run: |
+        echo "🚀 Starting sentiment analysis for $(wc -l < 'master name ticker.csv') stocks..."
+        python scripts/sentiment/sent_collect_data.py
+        echo "✅ Sentiment analysis completed"
+        
+    - name: 📈 Generate Dashboard
+      run: |
+        echo "🎨 Generating fresh dashboard..."
+        python scripts/visualization/viz_dashboard_generator.py
+        echo "✅ Dashboard generation completed"
+        
+    - name: 📧 Send Email Report (if requested)
+      if: ${{ github.event.inputs.send_email == 'true' || github.event_name == 'schedule' }}
+      run: |
+        echo "📧 Sending email report..."
+        python -c "
+        from utils.email.report_sender import SentimentEmailSender
+        import pandas as pd
+        import os
+        
+        if os.path.exists('results/sentiment_summary_latest.csv'):
+            df = pd.read_csv('results/sentiment_summary_latest.csv')
+            sender = SentimentEmailSender()
+            success = sender.send_email(df, test_mode=False)
+            print(f'📧 Email sent: {\"SUCCESS\" if success else \"FAILED\"}')
+        else:
+            print('❌ No sentiment data found for email')
+        "
+        
+    - name: 🌐 Update GitHub Pages
+      run: |
+        echo "🌐 Updating GitHub Pages content..."
+        
+        # Copy main index.html to docs/
+        cp index.html docs/index.html
+        
+        # Copy latest sentiment report to docs/
+        LATEST_REPORT=$(ls -t results/sentiment_report_*.html 2>/dev/null | head -1)
+        if [ -n "$LATEST_REPORT" ]; then
+          cp "$LATEST_REPORT" docs/sentiment_report_latest.html
+          echo "✅ Updated sentiment_report_latest.html"
+        fi
+        
+        # Copy latest CSV data
+        if [ -f "results/sentiment_summary_latest.csv" ]; then
+          cp results/sentiment_summary_latest.csv docs/sentiment_summary_latest.csv
+        fi
+        
+    - name: 📊 Analysis Summary
+      run: |
+        echo "📊 SENTIMENT ANALYSIS SUMMARY:"
+        if [ -f "results/sentiment_summary_latest.csv" ]; then
+          STOCK_COUNT=$(tail -n +2 "results/sentiment_summary_latest.csv" | wc -l)
+          echo "✅ Stocks analyzed: $STOCK_COUNT"
+          
+          # Count sentiment trends
+          RISING=$(tail -n +2 "results/sentiment_summary_latest.csv" | awk -F',' '$5 > 0.1' | wc -l)
+          DECLINING=$(tail -n +2 "results/sentiment_summary_latest.csv" | awk -F',' '$5 < -0.1' | wc -l)
+          
+          echo "📈 Rising sentiment: $RISING stocks"
+          echo "📉 Declining sentiment: $DECLINING stocks"
+          echo "📅 Analysis timestamp: $(date)"
+        else
+          echo "❌ No analysis results found"
+        fi
+        
+    - name: 💾 Commit and Push Results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Add all new files and changes
+        git add -A
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "ℹ️ No changes to commit"
+        else
+          # Get analysis stats for commit message
+          STOCK_COUNT="unknown"
+          TIMESTAMP=$(date "+%Y%m%d_%H%M%S")
+          
+          if [ -f "results/sentiment_summary_latest.csv" ]; then
+            STOCK_COUNT=$(tail -n +2 "results/sentiment_summary_latest.csv" | wc -l)
+          fi
+          
+          git commit -m "🤖 Automated Sentiment Analysis Update - $TIMESTAMP
+
+          ✅ GitHub Actions Workflow Completed
+          📊 Stocks analyzed: $STOCK_COUNT
+          🤖 FinBERT AI processing completed
+          📈 Dashboard updated with fresh data
+          📧 Email report: ${{ github.event.inputs.send_email || 'scheduled' }}
+          
+          🎯 Triggered by: ${{ github.event_name }}
+          ⏰ Timestamp: $(date)
+          🔄 Workflow: sentiment_analysis.yml"
+          
+          git push
+          echo "✅ Results pushed to repository"
+        fi
+        
+    - name: 🎉 Workflow Complete
+      run: |
+        echo "🎉 TIGRO Sentiment Analysis Workflow Completed Successfully!"
+        echo "🌐 Dashboard: https://theemeraldnetwork.github.io/sentiment/"
+        echo "📊 Fresh data available within 2-3 minutes" 

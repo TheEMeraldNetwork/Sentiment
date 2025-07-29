@@ -1,0 +1,999 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>First Solar Inc. (FSLR) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">First Solar Inc. (FSLR)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">46</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.08</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98d2bd9b1a06a587ad460f81790779e0f57ae8090732d95e3698fb8b166d3f93" target="_blank" rel="noopener noreferrer">First Solar Q4: Policy Uncertainty Creates A Rare Value Opportunity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar's deep oversold sentiment, growing quarterly earnings, and proactive supply chain considerations position it well. Read an analysis of FSLR stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=18debc2589b8d89a3989833207a6b5521d9d698a01db695ef93d667894cfde50" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Tuesday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Tuesday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0963bb761166f50d0015a5939b572654555c0f903549b81e2b812c3463c3980d" target="_blank" rel="noopener noreferrer">First Solar Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=da5cf696727b3119b0908a5d59ffc07906887667c5077a7c2f5360e9f454bf5c" target="_blank" rel="noopener noreferrer">What Moved Markets This Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-03-01</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. stocks fell about 1% this week, closing a tough February overall for markets. Read more about this week's major events on Wall Street....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9249f1a739d3c69f59839b63a33ee58b9659f4ceaa8bd76ea9b4173bf4c799e" target="_blank" rel="noopener noreferrer">First Solar : EPEAT Disclosure Report 2024</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">EPEAT Disclosure Report 2024 October 2024 TABLE OF CONTENTS ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=81fe54fc6d2f1ee8d6513e4d76b78b97f20630d2e0e13f85321c04c2a46a61eb" target="_blank" rel="noopener noreferrer">First Solar, Inc. (FSLR): Among the Worst Performing Solar Stocks to Buy Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 10 Worst Performing Solar Stocks to Buy Now. In this article, we are going to take a look at where First Solar, Inc. (NASDAQ:FSLR) stands against the other solar sto...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a3eeb1013db63c186a16bb506f4c4e5d98f90fc2c9ce339299eacb7975239bd" target="_blank" rel="noopener noreferrer">First Solar: No Floor In Sight - Pending Further Policy Clarity (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar struggles with US tariff wars and delayed schedules. Find out why FSLR stock faces uncertainty and may continue to experience volatility....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6be1634008d15a613d4cc42743132c4ff25dbcc826b7c6b42cea26174aaba478" target="_blank" rel="noopener noreferrer">First Solar Full Year 2024 Earnings: EPS Misses Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar ( NASDAQ:FSLR ) Full Year 2024 Results Key Financial Results Revenue: US$4.21b (up 27% from FY 2023). Net......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=631c32db0c3c60e4b02366eaf8ce69d4ad7b457bff79fbd1ffe29b94a928464c" target="_blank" rel="noopener noreferrer">First Solar price target lowered to $251 from $280 at RBC Capital</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">RBC Capital lowered the firm’s price target on First Solar (FSLR) to $251 from $280 and keeps an Outperform rating on the shares. The company’s Q4 results and 2025 guide were disappointing due to a se...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=745ddd6d39fd292be1ff0b063e4175f772a89abc6c3070419d4381e47c6e0e8c" target="_blank" rel="noopener noreferrer">First Solar price target lowered to $230 from $260 at BMO Capital</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">BMO Capital lowered the firm’s price target on First Solar (FSLR) to $230 from $260 but keeps an Outperform rating on the shares after its Q4 results and guidance. The stock has been under significant...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f274d225fe356a9ea93f2f53994b7b821225f8eeec0824995ccc7a07b93bf342" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Thursday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Thursday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cdaba11b0d253b19e9b04ebc44f8be9cff189cabf3e8d5a9f6b49efc2c6ae0bf" target="_blank" rel="noopener noreferrer">First Solar (FSLR) Q4 Earnings: Taking a Look at Key Metrics Versus Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The headline numbers for First Solar (FSLR) give insight into how the company performed in the quarter ended December 2024, but it may be worthwhile to compare some of its key metrics to Wall Street e...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98a20436ccad670c12019b3929f09b8be33d09a2c25fc804c8d7c9bfb36954ec" target="_blank" rel="noopener noreferrer">First Solar (FSLR) Q4 2024 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">FSLR earnings call for the period ending December 31, 2024....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df0ed70f73c3305e065815f5bdbce104ea9b036b1ae5eb0ceb46988351693bef" target="_blank" rel="noopener noreferrer">First Solar: Radiating Quality Following Robust 2025 Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar has shown stable growth and strong margins, making it a reliable investment. Click here to see why FSLR stock is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5617e6e352ba41a5d2aecc7702eb1b4533ad73b80218fd32e4e2740d16f2bd12" target="_blank" rel="noopener noreferrer">First Solar Inc (FSLR) Q4 2024 Earnings Call Highlights: Record Sales and Strategic Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc (FSLR) reports a 27% increase in net sales for 2024, while navigating production issues and international market uncertainties....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a6fadd8b4422cc9087d288c53c9f3a51f26642a10c12229f93b7f1a7e0ae7d15" target="_blank" rel="noopener noreferrer">First Solar misses Q4 profit estimates, but revenue better-than-feared; stock up</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.10
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- First Solar Inc (NASDAQ:FSLR) reported fourth-quarter earnings below Wall Street estimates on Tuesday but revenue came in better than feared....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9dd2e84c3b12cc77894e61b98fc23f6f5fae5b15ceb7ed332ee3742c3fd9f006" target="_blank" rel="noopener noreferrer">First Solar Continues to Ride Growth Streak Fueled by Incentives, Demand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar ended 2024 with a contracted backlog of 68.5 gigawatts valued at $20.5 billion, having sold a record 14.1 GW of modules....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3695ec28e059fb7f5fd9a986f9a226e3e041d70337275dcdff37fedd67f29ab6" target="_blank" rel="noopener noreferrer">Q4 2024 First Solar Inc Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Q4 2024 First Solar Inc Earnings Call...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=311eca08f7f38580180b93acc57831429587a28856dae435845a50ef9a2b5d3e" target="_blank" rel="noopener noreferrer">Talon PV gains licence for TOPCon solar cell patents from First Solar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">The agreement allows Talon to establish an N-type TOPCon cell manufacturing facility in the US, with operations from 2026....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=67c80801a310cd592c021e92365035412125fcc7ee517d3dd06c42f191594fcb" target="_blank" rel="noopener noreferrer">First Solar Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=71ea68a44673d2ff89aef42e7607edc3b97ac8e14f9e87d25f899a4e90fe63f7" target="_blank" rel="noopener noreferrer">First Solar's Q4 Earnings Miss Estimates, Revenues Increase Y/Y</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">FSLR's fourth-quarter revenues beat the Zacks Consensus Estimate by 3%. The top line also increases 30.7% from the year-ago level....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8891842cb7b40a08a9362bbd01a6547728865d7bf07d328aebb5a298e2b4b76" target="_blank" rel="noopener noreferrer">First Solar Stock Pops. Its ‘Messy’ Quarter is Good Enough.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.68
+                                </span>
+                            </div>
+                            <div class="article-summary">The company projected strong earnings growth, and some analysts think pressure on the stock is overdone....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1189993aeffe29cf8142eb99a393cd7cd873567511605a690fd37a582a84a1df" target="_blank" rel="noopener noreferrer">Why First Solar (FSLR) Is Rallying Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar (FSLR) is jumping 11% after the solar panel maker reported higher-than-expected fourth-quarter revenue and provided 2025 sales guidance that was also above analysts’ average estimates. Add...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=040b8b4fb895c8ba971799ba5b8219ed9e97273bf2d48608446c7d331c0d4a67" target="_blank" rel="noopener noreferrer">First Solar Reports Q4 and Full-Year 2024 Earnings, Shares Surge Over 9%</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">2025 guidance: Revenue expected between $5.3 billion and $5.8 billion....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1ad9d3427d41138b99d3a5a98bf79e3436ff4f72309d7caafc2b768ba8f30c0" target="_blank" rel="noopener noreferrer">First Solar stock surges on Q4 revenue beat, challenges ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar (FSLR) shares are climbing after the company posted a revenue beat in its mixed earnings report. Despite this, the solar manufacturer has identified several significant challenges ahead, i...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10053b752b5b8eec79e128078567ff36bc0f59b645efcf590ef07e4038e5820c" target="_blank" rel="noopener noreferrer">First Solar: A Buy Beyond The Numbers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Read here for an analysis of First Solar's (FSLR) valuation and growth prospects amid tax credits, political risks, and manufacturing support....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a026ea7e52f1bd1d28650f65c13d7862a39759ac4f99f61c11ad5887c764dff" target="_blank" rel="noopener noreferrer">Home Depot and Workday headline earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Home Depot and Workday headline earnings...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c59150e6b75c0ca5c92df800bf52b2e04c9b6a8631fa74be5e0299d01de66cc3" target="_blank" rel="noopener noreferrer">First Solar Initiates Legal Action Against JinkoSolar for Infringement of TOPCon Technology Patents</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar, Inc. today announced the filing of a lawsuit against Shanghai-headquartered JinkoSolar and its related entities alleging infringement of First Solar’s US Patent No. 9,130,074 . The......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=979784a12e2dd0a2e63be4d6c1c116d16dca0299a473d32ab7e88679f692021d" target="_blank" rel="noopener noreferrer">Talon PV Enters TOPCon Patent Licensing Agreement with First Solar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Agreement paves way for American TOPCon crystalline silicon PV cell manufacturing......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=217f155696cfb88eb83342f46c424db51e2b34c4635d197dc975b981e49ff1d7" target="_blank" rel="noopener noreferrer">First Solar, Inc. Announces Fourth Quarter and Full Year 2024 Financial Results and 2025 Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Net sales of $4.2 billion for 2024 and $1.5 billion for the fourth quarterNet income per diluted share of $12.02 for 2024 and $3.65 for the fourth quarter2024 year-end net cash balance of $1.2......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c64ce3edae571a070e28c41635cc4584454f750b4a39071a9861beca95644f4" target="_blank" rel="noopener noreferrer">First Solar : Q4’24 Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Q4'24 Earnings and 2025 Guidance Call February 25, 2025 | 2024......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b5e658a0797d1b222a546d9a21535dd714f7684aa8b19c79a29022c33dffaee3" target="_blank" rel="noopener noreferrer">First Solar : Fourth Quarter 2024 Q4 2024 Earnings Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Q4'24 Earnings and 2025 Guidance Call February 25, 2025 | 2024......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0d0f68031e08b0b2c7122feabf17dd30b0903fce054eacabc2c933ca9d477322" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a98f945994b1845bf89e68a91f9d2f0760fa21cee52bbeec4a20e9451418905" target="_blank" rel="noopener noreferrer">First Solar, Inc. 2024 Q4 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by First Solar, Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a7f6749457fdbcbf91207a30d9cff9958cbe6624cdf8a2ca4d579a6e40aead0c" target="_blank" rel="noopener noreferrer">First Solar, Inc. (FSLR) Q4 2024 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar, Inc. (NASDAQ:FSLR) Q4 2024 Earnings Conference Call February 25, 2025 4:30 PM ETCompany ParticipantsByron Jeffers - Head of IRMark Widmar -......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=694ca3539b179ba1ac9332758f492c679cc5db2fc7a230e51bdea3eb69166c42" target="_blank" rel="noopener noreferrer">First Solar (NASDAQ:FSLR) Posts Better-Than-Expected Sales In Q4</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Solar panel manufacturer First Solar (NASDAQ:FSLR) announced better-than-expected revenue in Q4 CY2024, with sales up 30.7% year on year to $1.51 billion. The company expects the full year’s revenue t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=319049bbc7b10aed7075e89759d613affb7d13ddd464961031c1a516a81f9afa" target="_blank" rel="noopener noreferrer">First Solar: Q4 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">The average estimate of 13 analysts surveyed by Zacks Investment Research was for earnings of $4.64 per share. The largest U.S. solar company posted revenue of $1.51 billion in the period, beating Str...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0958bd59bf1d26ef14a8f2afda7c7371fc676cad9646f900fb489e310d8f83a8" target="_blank" rel="noopener noreferrer">First Solar forecasts higher 2025 sales, initiates legal action against JinkoSolar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">The Biden administration had imposed a round of tariffs on solar panel imports from four Southeast Asian nations in November, after American manufacturers complained companies were flooding the market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2eeb6b43bdbbc33f7f2bdb6d62953b480f8598f6ddabb5c515e6b65bd4006db4" target="_blank" rel="noopener noreferrer">First Solar (FSLR) Lags Q4 Earnings Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar (FSLR) delivered earnings and revenue surprises of -21.34% and 2.98%, respectively, for the quarter ended December 2024. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=264903423e363e6e9ccf37fad4df8e19e063d4c1b002c86c85f4a729ca7e0132" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-24</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8eacd531424c752ee672a9ac958aa3b12dc7f24f09c00b36ab72bc9c670d59d5" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=79c896dcb3989eb9f976cfa5c11bb244948a1583993891422d0107ca35cc2853" target="_blank" rel="noopener noreferrer">First Solar Announces Final Sale Amount of 2024 Section 45X Advanced Manufacturing Production Tax Credits</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-20</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar, Inc. today announced the final sale amount of Section 45X Advanced Manufacturing Production tax credits generated by the production and sale of solar modules in the United States in......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e0282adf0a6d7628f3d478541f7c254b7da4a5981b95790ea60a7ddd937270fa" target="_blank" rel="noopener noreferrer">First Solar Stock: Deep Analysis Reveals Solar's Geopolitical Importance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-19</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar, Inc.'s U.S. dominance, strategic growth, and energy security focus make it a strong long-term investment. Read more on FSLR stock update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=36843414dfde3bd406c944732a3ffb95d213b81022f6b08ba3e8b3b8926e97ac" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Thursday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-13</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Thursday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9b19cc4ba2056fd154bce2f7f43d09214cb62d0b44b825bfbcda06bbc0973764" target="_blank" rel="noopener noreferrer">First Solar Inc. stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-12</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">First Solar Inc. stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e9b873b7ac77152552af488cc1f2a9b633c32576aaed608807edc88badb29489" target="_blank" rel="noopener noreferrer">Why First Solar Wins Even if Trump Does Away With Tax Credits</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-02-11</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Why First Solar Wins Even if Trump Does Away With Tax Credits...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

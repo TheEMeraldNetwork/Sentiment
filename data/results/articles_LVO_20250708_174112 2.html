@@ -1,0 +1,471 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>LiveOne Inc. (LVO) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">LiveOne Inc. (LVO)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.21</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fa458718867ec9ab0dbfcdc2c1865be6d9374f49a51efad201487b280b830edb" target="_blank" rel="noopener noreferrer">LiveOne’s (Nasdaq: LVO) Slacker Radio and Intuizi Partner to Drive Subscription Growth with AI Advanced Marketing Signals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">Campaigns target automotive, electronics and retail sectorsLOS ANGELES and ORLANDO, Fla., July 08, 2025 -- LiveOne’s music streaming service, Slacker Radio, and Intuizi, an AI platform focused on......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e023e16ce8582398c5ec192c91cafca2763e9f5f4a44a04ec6a2e6dc9cc0fcf" target="_blank" rel="noopener noreferrer">LiveOne Inc (LVO) Q4 2025 Earnings Call Highlights: Strategic Partnerships and Podcast Growth ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">LiveOne Inc (LVO) reports strong revenue growth and strategic financial moves amid restructuring challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a34e150443c4d38bfc58d48f718335e7a95a4ce60e2a16c4e6bd872db35858e8" target="_blank" rel="noopener noreferrer">LiveOne Teams Up With Synervoz to Boost Voice AI and Expand B2B Deals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">LVO teams up with Synervoz to fast-track voice tech, fueling B2B growth with 75 deals in the pipeline and major launches ahead....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3cbaa66d381165c4302a2e8a7fd7963863b5c6cf992a7747873d7bc80e46f757" target="_blank" rel="noopener noreferrer">Liveone Partners with Synervoz for Voice Ai and B2b Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">LiveOne announced a strategic partnership with Synervoz Communications Inc. to co-create new products and experiences that power the next wave of voice in native devices and operating systems. LiveOne...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=311c4afe291bc2cf241ca48897bd72aa7da7ca2dc20762711cc887560710242c" target="_blank" rel="noopener noreferrer">LiveOne (Nasdaq: LVO) Partners with Synervoz for Voice AI and B2B Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Synervoz’s Switchboard platform boosts voice and audio development cycles by 10xCollaboration targets 70+ B2B opportunities across industries like automotive and retail LOS ANGELES, July 03, 2025 (GLO...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=70c7b15edb90dfb5597a3182710f2c79af55706bcae707255d53f1e5d74566c1" target="_blank" rel="noopener noreferrer">Transcript : LiveOne, Inc., Q4 2025 Earnings Call, Jul 03, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presentation Operator MessageOperator Ladies and gentlemen, thank you for patiently waiting. We will be starting momentarily. Thank you for standing by. Ladies and gentlemen, welcome to the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5501a7ff2a8047af80a91938fc2633644e11fe91f18ff776b897305b7bf4daf" target="_blank" rel="noopener noreferrer">LiveOne, Inc. (LVO) Q4 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LiveOne, Inc. (NASDAQ:LVO) Q4 2025 Earnings Conference Call July 3, 2025 10:00 AM ETCompany ParticipantsRobert S....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b6a49375bc9ff122e9f6c53ee3d160be55d2157ea025fa81280340d8d3e064b" target="_blank" rel="noopener noreferrer">LiveOne (Nasdaq: LVO) to Host Thursday, July 3rd Special Conference Call; Record Earnings, B2B Updates, Tesla Conversion and Substantial Ad Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">LOS ANGELES, June 26, 2025 (GLOBE NEWSWIRE) -- LiveOne (Nasdaq: LVO), an award-winning, creator-first, music, entertainment, and technology platform, announced today that it will be hosting a conferen...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c7a1cb7e3e0ac8189edc2d9dd9028f9c11d7ca362781489bc4a7fc5d9964e588" target="_blank" rel="noopener noreferrer">LiveOne: Fiscal Q4 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">BEVERLY HILLS, Calif. — BEVERLY HILLS, Calif. — LiveOne, Inc. on Wednesday reported a loss of $7.9 million in its fiscal fourth quarter. On a per-share basis, the Beverly Hills,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a6e2ec6b43b702195526ecfb343657e276d274f4295f1e2d9d31b6c92e4528d" target="_blank" rel="noopener noreferrer">LiveOne, Inc. Reports Earnings Results for the Fourth Quarter and Full Year Ended March 31, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">LiveOne, Inc. reported earnings results for the fourth quarter and full year ended March 31, 2025. For the fourth quarter, the company reported sales was USD 19.29 million compared to USD 30.9 million...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6259c655e6f63f4d85a661362dab4e00c8d4b7d23a06c8aee3f65411c97b8440" target="_blank" rel="noopener noreferrer">LiveOne’s (Nasdaq: LVO) Audio Division Achieves Record Earnings, Adjusted EBITDA* Exceeds Guidance by 51% at $18.2M</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">- Audio Division (Slacker Radio and PodcastOne): - Fiscal 2025 Record Revenue: $108.9M (beat guidance by $2.9M) - Fiscal 2025 Record Adjusted EBITDA*: $18.2M (beat guidance by 51+% or $6.2M) - Fiscal ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c3a4156a0c67447ba638c5285c76e455a2ca91ecaa89190518a969dec342b97d" target="_blank" rel="noopener noreferrer">LiveOne (Nasdaq: LVO) to Stream BKFC Ice Wars’ “Battle of the Border” USA vs. Canada Fight Night in Over 200 Countries</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">June 18, 2025 at 8:00 p.m. ET / 5:00 p.m. PT at LiveOne.Come/IceWars (https://www.liveone.com/live-events/event/bkfc-ice-wars-presents-battle-of-the-border) LOS ANGELES, June 12, 2025 (GLOBE NEWSWIRE)...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3db07122a6e6b534c1dbbbf5e28c3ac1b23f3aeb13a41e7afab414476edf42fc" target="_blank" rel="noopener noreferrer">LiveOne (Nasdaq: LVO) Appoints Steve Lehman as Vice Chairman</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-09</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Highlights: Former Chairman and CEO of both NASDAQ and NYSE companies, including Premiere Radio, the largest radio network in the U.S., acquired by iHeartMediaLead LiveOne’s M&A......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

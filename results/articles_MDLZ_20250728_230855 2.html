@@ -1,0 +1,1223 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Mondelez International Inc. (MDLZ) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Mondelez International Inc. (MDLZ)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">60</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">19</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.03</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e6cbcbf163874aef6a9afdd31ee0a4b129458d1f0f2f1b8e9e9e5937fecad99" target="_blank" rel="noopener noreferrer">With 84% ownership of the shares, Mondelez International, Inc. (NASDAQ:MDLZ) is heavily dominated by institutional owners</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights Significantly high institutional ownership implies Mondelez International's stock price is sensitive to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d6167f8ba0795374ddd9bd6ed66670af850a233978cbed1daafc39f6f7b1de0" target="_blank" rel="noopener noreferrer">Visa, CVS, and 4 More Oversold Stocks Worth a Look Before Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Stocks that have gained too much are more susceptible to big drops than companies that dropped heading into their results....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=675d305c685a59b79d1453c7382d6ed52d84d8edd73e7259243df69108a0ab3c" target="_blank" rel="noopener noreferrer">Stocks to watch next week: Microsoft, Apple, Shell, AstraZeneca and HSBC</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Earnings preview of key companies reporting in the coming week and what to look out for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=048c8079d9966ff2edcdce16f9de614563a59a2261dc68ef2bbc8caef6f767c7" target="_blank" rel="noopener noreferrer">Ahead of Mondelez (MDLZ) Q2 Earnings: Get Ready With Wall Street Estimates for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Besides Wall Street's top-and-bottom-line estimates for Mondelez (MDLZ), review projections for some of its key metrics to gain a deeper understanding of how the company might have fared during the qu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=afe005d3aaa84e191a5a50838fee7787b5b383f6e7c153a3613f37d75d2c48e2" target="_blank" rel="noopener noreferrer">Mondelēz 2024 Snacking Made Right Report: Waste</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">NORTHAMPTON, MA / ACCESS Newswire / July 22, 2025 / Mondelez International We've been working for years to reduce the levels of waste from our operations. We continue to sharpen our focus on food wast...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d17c0aea027c7a5f94ac5c28bfde643f326b2a96e526ab4f17e819752fc6b264" target="_blank" rel="noopener noreferrer">US court dismisses child-labour claims against cocoa importers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">The appeals court found there was no link between the plaintiffs' forced labour and the importers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e062fd9786613e13174fe6bcd8d2f2ebfcaabcc726185e87044fabcab09ce1b0" target="_blank" rel="noopener noreferrer">Kraft Heinz (KHC) Expected to Beat Earnings Estimates: Can the Stock Move Higher?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Kraft Heinz (KHC) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6916d44798feabbb9af0eacf1571af67d29167096162f6b9eb02fa0a39e06de2" target="_blank" rel="noopener noreferrer">Chocolate cravings are about to be costlier as Hershey’s confirms price increases are on the way</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Tariffs, however, are not to blame this time....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=39dc5c7986ca462af72547bf2b725ed1771da937398e467a41627a610b022b13" target="_blank" rel="noopener noreferrer">Hershey to raise candy prices by double digits amid elevated cocoa costs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">The Reese’s maker said the “unprecedented cost” of the commodity is impacting many of its top sweet brands....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=780a45c4fb1b3d5c2fb80ffd8bbdf307b6e022f5c816658c06130c7149bd4101" target="_blank" rel="noopener noreferrer">Earnings Preview: Mondelez (MDLZ) Q2 Earnings Expected to Decline</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez (MDLZ) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=70b001df86f6c1ac8b88e591e50ce1d08cf3bf8bcc13055b32ff084d2f5fa21c" target="_blank" rel="noopener noreferrer">Mondelez Q2 Earnings Expected to Be 'Positive Catalyst' for Stock, Vital Farms Likely to Raise Outlook, Morgan Stanley Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez's (MDLZ) Q2 earnings are expected to be a "positive catalyst" for the stock as the company...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9b8e0d1412bdd90fc5488d1eafc1fd5a8b7cf7ce6cd490b9ec403bf03eb2bc42" target="_blank" rel="noopener noreferrer">Mondelez International Inc. Cl A stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc. Cl A stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=874211100be87729a6a6fe64c28ffa97d2eff6cadcc1c237c5b2ee97e7aad7b7" target="_blank" rel="noopener noreferrer">Hershey Lifts Candy Prices, Citing High Cocoa Costs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">The chocolate maker has notified retail customers of a double-digit percentage increase, as cocoa markets have stayed high on supply concerns....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b95bbc759025c37db637ea13f2e06ac65569c6030d46cd5ab7cb54edcf2030ab" target="_blank" rel="noopener noreferrer">CHIPS AHOY! Enters the Upside Down for the Most Anticipated Netflix Release Yet: Stranger Things 5!</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Flavor meets fandom as CHIPS AHOY!, America's favorite chocolate chip cookie brand, and Netflix's hit series Stranger Things collaborate to create the new CHIPS AHOY! x Stranger Things Limited-Edition...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=82f0a50117648ad494d1236868ba558ebc43a18015e3d0f7c6ff1faa26db69a9" target="_blank" rel="noopener noreferrer">Mondelez International (MDLZ) Unveils CHIPS AHOY! x Stranger Things Cookie Collaboration</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International (MDLZ) announced an exciting collaboration last week, launching the CHIPS AHOY! x Stranger Things Limited-Edition Cookie. This innovative product, with its captivating elements ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1354a7193fa8d6c55f90ede733db7a5ef07acd1f19b2286aa5ce15c564ae1c51" target="_blank" rel="noopener noreferrer">3 Reasons to Sell MDLZ and 1 Stock to Buy Instead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez has had an impressive run over the past six months as its shares have beaten the S&P 500 by 11.6%. The stock now trades at $67.14, marking a 16% gain. This was partly due to its solid quarter...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=287d2b4be3b364db79876035d207f2b4866c5a99f89817b35c6e670debe8eccb" target="_blank" rel="noopener noreferrer">Hershey: Headwinds Might Last Longer Than Initially Expected (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=837ba6607674a9b705e5de72dbaa17e97944c50b0664dfe3b6a20c8395822b59" target="_blank" rel="noopener noreferrer">FSTA: Consumer Staples Dashboard For July</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ce4647b0142a490ac9fb21d4fcc15384f2766e0a81943a827738ddecc97b20d9" target="_blank" rel="noopener noreferrer">Starbucks downgraded, Oracle initiated: Wall Street's top analyst calls</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Starbucks downgraded, Oracle initiated: Wall Street's top analyst calls...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b8d1987a4318971a737d7f2eabc495ad4ac1127bc615df3afa32ba08a03e6d5" target="_blank" rel="noopener noreferrer">Mondelēz 2024 Snacking Made Right Report: Executive Letters</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A letter from Dirk Van de PutChair & Chief Executive Officer, Mondelez InternationalA flaky croissant to accompany your morning coffee. A crispy biscuit for a mid-day break. A delicious bite of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=87172aed23ba3c491cfb1f4a5854ffe966e1a3c8a60490f2893887e3567609ed" target="_blank" rel="noopener noreferrer">Barry Callebaut: The Game Of Patience</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">Barry Callebaut is undervalued. See how BYCBF stock's long-term potential, pricing model, and 65% upside make it a strong investment....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=047500780af235c70618d0a563c4fb80a4bac8e5aacbde2bd3d6c91c15feaf3d" target="_blank" rel="noopener noreferrer">Why Investors Need to Take Advantage of These 2 Consumer Staples Stocks Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Zacks Earnings ESP is a great way to find potential earnings surprises. Why investors should take advantage now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e3bc250e96d7869aaa6f4f1cb15959617a8d514dba6cbcedc31c5313e901f588" target="_blank" rel="noopener noreferrer">Hindustan Coca-Cola Beverages Names New CEO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Coca-Cola Company announced today that Hemant Rupani, a veteran business leader with experience across several companies and industries, will join Bangalore-based bottler Hindustan Coca-Cola Bever...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5fad52f9a8333061b6fdfd9dbd482bb12addb5bbfe4ed996ee6e74f791411ef" target="_blank" rel="noopener noreferrer">Mondelez executive to join Hindustan Coca-Cola Beverages as CEO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Hemant Rupani will join HCCB after a nine-year tenure at Mondelez International....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a4ba3ad91542d3b3a25931ec7eee95292afa8cfeb5335662f2747589052f2e5" target="_blank" rel="noopener noreferrer">Mondelez International Inc. Cl A stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b1af706526c6c294d36ff31b4cc11f47125450cabaa94119a1a1286458706cfa" target="_blank" rel="noopener noreferrer">Ferrara holding company in talks to buy French confectioner CPK</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">US-based Ferrara Candy, affiliated to Ferrero, is looking to acquire the owner of brands including Carambar, Lutti, and Krema....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd5dd824dd0393bfd640cf0c113cff5949a880a6862138cb1174a3c6f4a498b8" target="_blank" rel="noopener noreferrer">Mondelēz International to Report Q2 2025 Financial Results on July 29, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">CHICAGO, July 14, 2025 (GLOBE NEWSWIRE) -- Mondelēz International, Inc. (Nasdaq: MDLZ) will release its second quarter 2025 financial results on Tuesday, July 29, 2025 at 4:05 p.m. ET and will host a ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=646b07c546c10cbc96c500e17178632c44e3f1196803ee799a5ad9a26e6306b7" target="_blank" rel="noopener noreferrer">Seniors Helping Seniors® In-Home Care Services Expands into Union and Essex Counties, New Jersey</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">Seniors Helping Seniors® in-home care services, a franchisor with over 200 franchise partners and 400 territories nationwide, has grown rapidly in recent years by building a workforce of talented care...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=94b301380630775c52ffa0acb91ff80365575f2888c87df52a2f4e4380ddb780" target="_blank" rel="noopener noreferrer">Mondelēz International Scales Up Due Diligence and Sector Collaboration To Promote Human Rights; Releases Annual 2024 Progress Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">* Continued to scale human rights due diligence across global operations and supply chains, with ~96% of owned plants and ~98% of prioritized supplier sites audited in the last three years.1* Trained....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c64c92ac4d9331bff6dafb86bbfee51983942be1092eff0cd9ab465a877042df" target="_blank" rel="noopener noreferrer">Mondelez (MDLZ) Urges EU to Delay Deforestation Law Amid Cocoa Market Turmoil</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International, Inc. (NASDAQ:MDLZ) is one of the 12 best consumer goods stocks billionaires are quietly buying. On July 4, MDLZ, owner of Cadbury, called for a delay to the European Union’s up...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=17fcd3a64ad57cc11ed4f48e75f87b009113ce32fbc9171fe30054230e743cd1" target="_blank" rel="noopener noreferrer">Ritz recall 2025: Mislabeled peanut butter cracker sandwiches pose risk of life-threatening allergic reaction</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">A labeling error could leave people with peanut allergies at serious risk. Here’s a full list of products impacted by the recall....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8275c1b85e3131aceac0066eb78f3d278f20ea3d59b98a39bc930030b89ec232" target="_blank" rel="noopener noreferrer">Mondelez International Inc. Cl A stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc. Cl A stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3255c0e85fc3691caf6615457e0d778ee00075126e8ed23afb2cdb7dd285ce18" target="_blank" rel="noopener noreferrer">Mondelēz International Joins the 100+ Accelerator To Help Advance More Sustainable Innovation at Scale</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">* 100+ Accelerator was created to rapidly pilot and scale solutions.* Mondelez International's addition reinforces movement among world's largest brands to collaborate on more sustainable innovation.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a029790e36e665964c5251bd40439e4c06a190c15b6919cce40a0ac5526ab2c7" target="_blank" rel="noopener noreferrer">1 Profitable Stock to Consider Right Now and 2 to Brush Off</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">While profitability is essential, it doesn’t guarantee long-term success. Some companies that rest on their margins will lose ground as competition intensifies - as Jeff Bezos said, "Your margin is my...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e53ad3b6643b2be5b8b1432963a5c0dbb046c1e3881a935740d78561a44c7b08" target="_blank" rel="noopener noreferrer">Mondelez Seeks 12-Month Delay on EU Deforestation Law, Citing Supply Chain Strains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International, Inc. (NASDAQ:MDLZ) is one of the Best Stagflation Stocks to Buy Now. Mondelez is urging the EU to delay the implementation of its upcoming deforestation law. The regulation, se...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f418d879747b43a0be79b38c5eb475fb4b9b2d97ddeb90996ba2a9296dd86d14" target="_blank" rel="noopener noreferrer">Investors Met With Slowing Returns on Capital At Mondelez International (NASDAQ:MDLZ)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">There are a few key trends to look for if we want to identify the next multi-bagger. One common approach is to try and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a71e12088bd53a4d01b59a591d24dd0eff347df08ba51e26638596673de14018" target="_blank" rel="noopener noreferrer">What to Expect From Mondelez International’s Q2 2025 Earnings Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International is all set to release its fiscal second-quarter earnings later this month, and analysts project a double-digit earnings drop....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d9d124afe150beff326f36103aa02c6028d98b10998c3949e042b836ca384f12" target="_blank" rel="noopener noreferrer">Mondelez urges further delay deforestation law amid calls for EU to press on</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Under the directive, companies marketing goods in the EU will have to demonstrate that their supply chains are free from deforestation-related impacts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5ee27255b1bc524fd4f3044ca19790b1fd61f0145944b530c239b3a263fa8b1" target="_blank" rel="noopener noreferrer">Mondelez urges further delay to EU deforestation law</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Under the directive, companies marketing goods in the EU will have to demonstrate that their supply chains are free from deforestation-related impacts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21be1e5131a7d5e158f657ad86e8aaa898ccc1ed33eac15b8e525c5b517c6ffa" target="_blank" rel="noopener noreferrer">Mondelez Global recalls four carton sizes of Ritz peanut butter cracker sandwiches in U.S.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International Inc: Mondelez Global LLC conducts U.S. voluntary recall of four carton sizes of Ritz peanut butter cracker sandwiches due to labeling error......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=32683ca594735fba0b130fb9cb773247bba84ffe49eb052a2e1b990bdcf893ce" target="_blank" rel="noopener noreferrer">Mondelēz Global LLC Conducts U.S. Voluntary Recall of Four Carton Sizes of RITZ Peanut Butter Cracker Sandwiches Due to Labeling Error</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">EAST HANOVER, N.J., July 08, 2025 (GLOBE NEWSWIRE) -- Mondelēz Global LLC announced today a voluntary recall of four carton sizes of RITZ Peanut Butter Cracker Sandwiches (8-pack, 20-pack, and 40-pack...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c24c2db8ec37cbb8b7e76dcb061f62ae5a3420af5ac82ec65ba44690cba2a82f" target="_blank" rel="noopener noreferrer">Mondelez Recalls Some RITZ Peanut Butter Cracker Sandwiches</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez International (MDLZ) said Tuesday it has issued a voluntary recall for some RITZ Peanut But...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=41b499b87d35c97ef933ca3535b4728b725bf8bebb642db5236a58433640d1bd" target="_blank" rel="noopener noreferrer">Clorox Among 14 Dividend Growth Companies Announcing Annual Increases In July</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Clorox is expected to announce a modest dividend increase of around 2%. Check out July dividend increase predictions for 14 long-term dividend growth companies....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=36faeb9ca41eb3374ec011cf9f18f7f035a7d24ef9e7cbb5e6f7189c2cb2586b" target="_blank" rel="noopener noreferrer">Mondelez: Limited Upside Through The Rest Of 2025 (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1ffa3270bce4fd3d03474c8f539cf5a4e69d12c681122d9310e31dc44474e289" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of July 6</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">See here for latest updates on dividend activity for Dividend Champions, Contenders, and Challengers, including changes, ex-dividend dates, & upcoming pay dates....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2016f43451a2f9abd9bc120ae3f9932bc7c73fa3c536b125d8d7e4cd2fc2d7d4" target="_blank" rel="noopener noreferrer">5 Must-Read Analyst Questions From Mondelez’s Q1 Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Mondelez’s first quarter results prompted a positive response from the market, as the company’s profit surpassed analyst expectations despite flat sales. Management attributed this performance to stro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b7cbe4d63d721874942d3a64f6eefdc5b2fbd9c1e4b9f809ef2b9ac2a86f7bf3" target="_blank" rel="noopener noreferrer">Cacique Foods appoints former Mondelez executive as new CEO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Pedro Silveira succeeds Gil de Cardenas, who led the company since 2009 and is moving to non-executive chair....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76cc75a590e5fb473c07950e56e6918af0f522dd4dcafd88fc2fc7b4dbccb742" target="_blank" rel="noopener noreferrer">Mondelēz International Expands Sustainable Futures Portfolio Aiming To Accelerate Scalable Climate and Community Initiatives</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">* New investments span regenerative agriculture, inclusive financing, and circular packaging ambitions through innovative technology.* Investments reflect the company's three-pronged approach across.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=55596724f1712302b4ba705e4dd53bd7da512c30499619efadd8d436ef05b5de" target="_blank" rel="noopener noreferrer">Seeking sweet spots: the key ingredients for confectionery NPD</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">GlobalData, using its Ai Palette platform, presents the ingredients it believes offer opportunities for confectioners to win over snack lovers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a1c72e10aabc57f3239e5141dd86c8a98493916b14069a2024301eca6e8990e7" target="_blank" rel="noopener noreferrer">Ambani's Reliance to spin off India consumer goods business into new unit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MUMBAI (Reuters) -Indian billionaire Mukesh Ambani's Reliance Industries said it will spin off its consumer goods unit into a new entity to allow the fast-growing business to attract investors beyond ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=003bb6ca7640971901a0cb3a69e40ab4744301ea6a0659bdec2c1b27080ce2db" target="_blank" rel="noopener noreferrer">Zacks Industry Outlook Highlights Mondelez International, Sysco, McCormick and Celsius</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">MDLZ, SYY, MKC, and CELH lean on innovation and efficiency to combat inflation and shifting food-buying habits....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dafe8ff83b5cbbe95ae5b06359884a4bee4827dbdb5710a48f2867ede21b15fe" target="_blank" rel="noopener noreferrer">What Makes Mondelez International (MDLZ) an Attractive Investment?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Lindsell Train Ltd, an investment management company, has released its “Lindsell Train Global Equity Fund” first-quarter 2025 investor letter. A copy of the letter can be downloaded here. The objectiv...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=314ea3ded2f7b6fabd69c5c34fbec753b5cd785f342d28ce5067da68c201238d" target="_blank" rel="noopener noreferrer">UK watchdog bans Cadbury ad over calorie claim</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">The advert, which aired in January, was challenged for its use of the phrase “only 91 calories”....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f5b32f2924bebc87510ec2455e38ba5259882170335d6ec9d60f8c14934b40ae" target="_blank" rel="noopener noreferrer">The Battle to Keep Consumers Means Smaller Packs of Cookies and Chips</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Consumer goods companies are enlarging their range of products—by making them smaller.  Diminutive snack and drink sizes are hitting store shelves as brands try to keep stretched consumers buying with...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9353cb7f9bc09d33b97c028799bd296d768ac08e91829cf228f1d7469de4b60b" target="_blank" rel="noopener noreferrer">Inside Mondelēz’s snacking investment playbook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A top executive talks about what the Oreo maker is looking for in potential startup targets and how the current economic environment is impacting its approach....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d70f2b465b9ec1c74a4917ac11cabf8d28ffc7256b65e1e6159ee8a0bdcc2c07" target="_blank" rel="noopener noreferrer">Mondelez International, Inc.'s (NASDAQ:MDLZ) Intrinsic Value Is Potentially 51% Above Its Share Price</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Key Insights The projected fair value for Mondelez International is US$102 based on 2 Stage Free Cash Flow to Equity......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=331cd5c746d9165f75ba78bd5367b741251cd7c5de80361ec5b71038db4c2b5e" target="_blank" rel="noopener noreferrer">4 Miscellaneous Food Stocks to Keep an Eye on Amid Market Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.40
+                                </span>
+                            </div>
+                            <div class="article-summary">MDLZ, SYY, MKC and CELH adapt with cost controls, innovation and portfolio shifts as inflation reshapes food spending....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b0b82b4972909c8eb4a2c7c4f5620c28791cfac3ddeccf675cce01c66be52021" target="_blank" rel="noopener noreferrer">Top stock picks in the snack aisle: Impact of GLP-1s & RFK Jr.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Bank of America Securities food and beverage analyst Peter Galbo joins Market Domination to discuss how to navigate snack food stocks. To watch more expert insights and analysis on the latest market a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=63662cb3e03e2625be18684e45ca2f7d4e51f74afbac61b9909450cdfe6acc0a" target="_blank" rel="noopener noreferrer">How to Boost Your Portfolio with Top Consumer Staples Stocks Set to Beat Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">The Zacks Earnings ESP is a great way to find potential earnings surprises. Why investors should take advantage now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b6dfea5104cf3e4ea84006fb764d5f95c75d22673bdd14efd94fba92bc42bbcb" target="_blank" rel="noopener noreferrer">Will the Weak Snack Demand Bite Into PepsiCo's Future Momentum?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">PEP faces pressure as soft snack demand hits Frito-Lay North America despite strength in global beverage segments....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

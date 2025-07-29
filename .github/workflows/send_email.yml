@@ -1,0 +1,95 @@
+name: 📧 Send Email Report
+
+on:
+  # Manual trigger (for Send Email button)
+  workflow_dispatch:
+    inputs:
+      email_type:
+        description: 'Type of email report'
+        required: false
+        default: 'latest'
+        type: choice
+        options:
+        - 'latest'
+        - 'test'
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔄 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+        
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas requests beautifulsoup4 transformers torch scikit-learn yfinance
+        
+    - name: 🔧 Configure Environment
+      run: |
+        echo "PYTHONPATH=${{ github.workspace }}:$PYTHONPATH" >> $GITHUB_ENV
+        
+    - name: 🔑 Setup API Keys Configuration
+      run: |
+        mkdir -p utils/config
+        cat > utils/config/api_keys.json << EOF
+        {
+          "finnhub_api_key": "${{ secrets.FINNHUB_API_KEY }}",
+          "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
+          "gmail_email": "${{ secrets.GMAIL_EMAIL }}",
+          "gmail_password": "${{ secrets.GMAIL_APP_PASSWORD }}"
+        }
+        EOF
+        
+    - name: 📧 Send Email Report
+      run: |
+        echo "📧 Sending email report..."
+        python -c "
+        from utils.email.report_sender import SentimentEmailSender
+        import pandas as pd
+        import os
+        
+        # Check for latest sentiment data
+        if os.path.exists('results/sentiment_summary_latest.csv'):
+            df = pd.read_csv('results/sentiment_summary_latest.csv')
+            sender = SentimentEmailSender()
+            
+            test_mode = '${{ github.event.inputs.email_type }}' == 'test'
+            success = sender.send_email(df, test_mode=test_mode)
+            
+            if success:
+                print('✅ Email sent successfully!')
+                print(f'📊 Report included {len(df)} stocks')
+                
+                # Count declining stocks for alert
+                declining = df[df['sentiment_score'] < -0.1] if 'sentiment_score' in df.columns else pd.DataFrame()
+                if len(declining) > 0:
+                    print(f'🚨 Alert: {len(declining)} stocks with declining sentiment')
+                else:
+                    print('📈 No declining stocks detected')
+            else:
+                print('❌ Email sending failed')
+                exit(1)
+        else:
+            print('❌ No sentiment data found')
+            print('💡 Run sentiment analysis first to generate data')
+            exit(1)
+        "
+        
+    - name: 📊 Email Summary
+      run: |
+        echo "📊 EMAIL REPORT SUMMARY:"
+        echo "📧 Email type: ${{ github.event.inputs.email_type || 'latest' }}"
+        echo "⏰ Sent at: $(date)"
+        echo "🎯 Triggered by: ${{ github.event_name }}"
+        if [ -f "results/sentiment_summary_latest.csv" ]; then
+          STOCK_COUNT=$(tail -n +2 "results/sentiment_summary_latest.csv" | wc -l)
+          echo "📈 Data included: $STOCK_COUNT stocks"
+        fi 

@@ -1,0 +1,407 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Immunovant Inc. (IMVT) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Immunovant Inc. (IMVT)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.01</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a8426883e303c99125a37493f25f5a5c73cd57b231d26d76bb704c726581f68" target="_blank" rel="noopener noreferrer">Tourlite Capital Q1 2025 Investor Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Tourlite Fund, LP returned â4.6% for the First Quarter of 2025. Click here to read the full fund letter. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c2a2273b6479889eca65c8da25335a2d70e2cc0245044e5c5ec8f50473f162d3" target="_blank" rel="noopener noreferrer">Immunovant (IMVT) Upgraded to Buy: What Does It Mean for the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Immunovant (IMVT) has been upgraded to a Zacks Rank #2 (Buy), reflecting growing optimism about the company's earnings prospects. This might drive the stock higher in the near term....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1f41a01885c07ff8798986488db621c2a44ec10e1513ef8c87d27dc72666c25c" target="_blank" rel="noopener noreferrer">IMVT Q4 Loss Narrower Than Expected, Stock Up, Pipeline in Focus</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">Immunovant stock rises on encouraging fourth-quarter fiscal 2025 results. It is on track to initiate 10 studies on IMVT-1402 across various autoimmune indications....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f669fb47e6284e8e7684a09f7a1cfeefb782a4fc2384d2ca06255fc00505b11" target="_blank" rel="noopener noreferrer">Immunovant Provides Corporate Updates and Reports Financial Results for the Fourth Quarter and Fiscal Year Ended March 31, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Immunovant’s new management team is focused on rapid clinical execution for the six announced indications for IMVT-1402, including a second potentially registrational study in Graves’ disease (GD) and...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7d257a030ebe456e9b8ae7ee8083344e480d9b4420dd6854196c3f9b78dbc175" target="_blank" rel="noopener noreferrer">Immunovant, Inc. Reports Earnings Results for the Fourth Quarter and Full Year Ended March 31, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Immunovant, Inc. reported earnings results for the fourth quarter and full year ended March 31, 2025. For the fourth quarter, the company reported net loss was USD 106.45 million compared to USD 75.32...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=746b4c8ad48db76af34a0d12b113a0c1f15b2e221ba0c3a7d980045c5f8624be" target="_blank" rel="noopener noreferrer">H.C. Wainwright Keeps Buy Rating on Roivant Sciences (ROIV) Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">On May 28, H.C. Wainwright analyst Douglas Tsao reiterated a Buy rating on Roivant Sciences Ltd. (NASDAQ:ROIV) while keeping the price target the same at $18. The reiteration comes after the company a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2d9094ab67b2590abcb83b08670f4cf1e7a609cdfaa4ccc03be9de388f2a51ef" target="_blank" rel="noopener noreferrer">IMVT INVESTIGATION ALERT: Robbins Geller Rudman & Dowd LLP Announces Investigation into a Private Placement Transaction by Immunovant, Inc. and Encourages Investors to Contact the Firm</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.68
+                                </span>
+                            </div>
+                            <div class="article-summary">Robbins Geller Rudman & Dowd LLP announces an investigation into potential breaches of fiduciary duty by the directors and officers of Immunovant, Inc. and Roivant Sciences Ltd. – Immunovant’s......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=810dc4be5bfe5fffe33822c9cffb6c0297d8d89b98583c4653ed306cc77bc346" target="_blank" rel="noopener noreferrer">Argenx Q1 Earnings: Less Than Perfect Report Gets Punished</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">argenx shares declined yesterday after missing revenue estimates for the first time since the launch of Vyvgart 13 quarters ago. See why I'm bullish on ARGX....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d6b3fd8cd15e5512a19aeaefee6fdceb2f3bf4c4566b9e14c23e73b3cdd10a98" target="_blank" rel="noopener noreferrer">Is Immunovant, Inc. (IMVT) The Best Stock That Will Bounce Back?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently compiled a list of the 11 Stocks That Will Bounce Back According To Analysts. In this article, we are going to take a look at where Immunovant, Inc. (NASDAQ:IMVT) stands against the other ...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

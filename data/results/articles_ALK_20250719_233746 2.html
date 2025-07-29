@@ -1,0 +1,887 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Alaska Air Group Inc (ALK) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Alaska Air Group Inc (ALK)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">39</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">22</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.25</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=759920c75c1f7df4cfc78687ed7a2687dc65089fffc11bcfaff4fef6370c97ef" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Beats Stock Market Upswing: What Investors Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest trading day saw Alaska Air Group (ALK) settling at $53.12, representing a +2.85% change from its previous close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=38b3779120a096a74511643af22f485fbb1f6746e0bcfb769cf15da4d1b77df7" target="_blank" rel="noopener noreferrer">Countdown to Alaska Air (ALK) Q2 Earnings: A Look at Estimates Beyond Revenue and EPS</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Evaluate the expected performance of Alaska Air (ALK) for the quarter ended June 2025, looking beyond the conventional Wall Street top-and-bottom-line estimates and examining some of its key metrics f...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=215a7f87a358b2548ae72d0b040c4defbd3cb2ae07c2f100debf1b94218a899c" target="_blank" rel="noopener noreferrer">UBS Affirms ‘Neutral’ Stance on Alaska Air (ALK), Expects Solid Q2 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.68
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. (NYSE:ALK) is one of the best airline stocks to buy according to hedge funds. On July 7, analysts at UBS initiated coverage of the stock with a ‘Neutral’ rating and a $49 price ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3dcf272b705fb1daafec2a3aac5f705494eae1415ce37ebfb2c03c00c81f0b66" target="_blank" rel="noopener noreferrer">Hawaiian Airlines cutting 252 noncontract positions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">Hawaiian Airlines began what is expected to be its largest round of merger-related job cuts Wednesday when it filed a Worker Adjustment and Retraining Notification indicating it planned to eliminate j...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f1b371115911b1aa3749e0459f5cea1d7e7761a148c669d48e5ed0b741e553a5" target="_blank" rel="noopener noreferrer">Hawaiian Airlines issues layoff notice for 252 noncontract jobs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Hawaiian Airlines began its third round of merger-related layoffs, issuing a WARN (Worker Adjustment and Retraining Notification ) notice today indicating that it planned to cut another 252 of its non...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dabf8e701cdf429ea834554d32c41c1961a8cb7849c44105a36acb4f1e0e862a" target="_blank" rel="noopener noreferrer">Earnings Preview: Southwest Airlines (LUV) Q2 Earnings Expected to Decline</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Southwest (LUV) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ff03606f8fd6c82343ef0a04bd7a0160e91be6c120eb0972d34799b6c54728ab" target="_blank" rel="noopener noreferrer">Alaska Air Group: Execution Needs To Catch Up, But Stock Remains Undervalued</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=abd3d07d3e356682e38281b5c5eee2ae1c7a4daf5ba9d72459e9d576c098a0ec" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Suffers a Larger Drop Than the General Market: Key Insights</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.16
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group (ALK) reached $52.54 at the closing of the latest trading day, reflecting a -3.03% change compared to its last close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e5482376cb95c4c0d4475685bf5fe8c20896473455c3bf27ad57dac3fda15fb8" target="_blank" rel="noopener noreferrer">Airline ETFs Rally on Delta's Bullish Outlook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Delta's upbeat forecast lifts JETS 7.3% and AIRL 7.9%, reviving airline ETFs after a rough stretch for the sector....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=705758d67c0ac27ed786aa0437a6319c36d27b60039ce118a402d5c96b211325" target="_blank" rel="noopener noreferrer">Stocks Pressured by US Trade Policy Uncertainty</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is down -0.06%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.03%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.08%. September E-mini S&P futur...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=983d7442de1c85776557c8d674f917d42ea410d32acf694349ccafcc57607375" target="_blank" rel="noopener noreferrer">United, American, Southwest all surge after Delta's outlook lifts fortunes for US airlines</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Delta Air Lines' strong earnings and projected growth provided an early boom for the airline industry as the rest of the major carriers prepare to report....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85ce9577a6d3a38bde2a8cb2f2673b65d5d8c0fe6550adb6ebaef285e89dac92" target="_blank" rel="noopener noreferrer">Stocks See Support from Airline Stocks but Trade Uncertainty Persists</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.10%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.41%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.34%. September E-mini S&P futures...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=027293e17cd210de98255439158c8c4c60d5b92d8c57e0180a177b35a94f6b2e" target="_blank" rel="noopener noreferrer">United Airlines to Report Q2 Earnings: Is a Beat in Store for the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Let's assess the factors that are likely to have influenced UAL's second-quarter performance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e552566a874deb681b80dd6c10e77ff1dc652c5fe5f387064edc54b82210fcd5" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Declines More Than Market: Some Information for Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group (ALK) concluded the recent trading session at $50.06, signifying a -1.01% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21fe9431e94307b6371a946bc1c68d1289323eb1a1a0bf9f29ef6e9304b300bc" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Expected to Beat Earnings Estimates: What to Know Ahead of Q2 Release</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air (ALK) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e33a0eeb527df5dd9086771905d49f0828379f78f3ccebc5684a3a8a1ba78b7f" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc. (ALK) Reports Cybersecurity Incident at One of Its Subsidiaries</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. (NYSE:ALK) is one of the 10 Best Cheap Stocks to Buy According to Billionaire Ray Dalio. Bridgewater Associates holds over $33 million worth of shares of ALK, which represents 0...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a01a1027f1a683eeafbd26e916ca37584541fe594ec014624b4c8b9a5a5bccb6" target="_blank" rel="noopener noreferrer">Alaska Air Group announces webcast of second-quarter 2025 financial results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group Inc., the parent company of Alaska Airlines Inc., Hawaiian Airlines, Inc. and Horizon Air Industries Inc., will hold its quarterly conference call to discuss 2025 second quarter finan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b788b236f14b9e7b0a42a2d1eefd8cb844bc97a3f03189415fd025e78076c283" target="_blank" rel="noopener noreferrer">UBS previews airline Q2 earnings, starts JetBlue at sell</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- On Monday, UBS assumed coverage on several U.S. airline stocks with a cautious tone, initiating JetBlue Airways (NASDAQ:JBLU) with a Sell rating and flagging a challenging path to pro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b00e019c8743c8d54da73d8e322fa14e3597e8a4dd278f563607a93e9a8f02df" target="_blank" rel="noopener noreferrer">Alaska Air Group's Q2 Earnings on Track, Future Guidance Crucial, UBS Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group's (ALK) Q2 earnings per share are expected to be in line with company guidance as d...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d50579482034456b874a250ddad88743d99fd8cd07056ce844c0ed497c39b1fd" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Gains As Market Dips: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest trading day saw Alaska Air Group (ALK) settling at $50.21, representing a +1.48% change from its previous close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eeaf5096b5ef0765715dc5f5d0ec4204ab12893042a6c9788e4262ad3d301c7e" target="_blank" rel="noopener noreferrer">Australia's Qantas Airways Says 6M Customer Records Accessed in Cyberattack</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Qantas Airways said a cybersecurity incident at one of its call centers exposed 6 million customer records, the second carrier in as many weeks to be the subject of a cyberattack....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30c1661bd05cb5dc3f4d31477c5b59ca109dbe335d03a0f0048e01fc88c36e46" target="_blank" rel="noopener noreferrer">Boeing CFO Exit Is Latest Change in Chief Executive Kelly Ortberg’s C-Suite</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Jet maker names Jesus ‘Jay’ Malave as next finance chief and says his predecessor will be a senior adviser to CEO Kelly Ortberg....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=972a5646300f0196b13281a1549c5bdc31a1af24e28ef66ae9b9bcd16fa13c9a" target="_blank" rel="noopener noreferrer">New Strong Sell Stocks for July 1st</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ANF, ALK and AAL have been added to the Zacks Rank #5 (Strong Sell) List on July 1, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a083b56deedbd4afd8a00d8e93decebd47d7e9afa0755209dfc2ef03e13cd89e" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc.(NYSE: ALK) added to Russell 3000E Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. added to Russell 3000E Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=93ac3b61a074fbd872d82a1df6ab74e3c1e40fb4b32bbad6234104b3a58078e6" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc.(NYSE: ALK) added to Russell 2500 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. added to Russell 2500 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b32712e5072094101642d08352983509f941fc72de6ba6fe4da1d9a4d8356b61" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc.(NYSE: ALK) added to Russell 1000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. added to Russell 1000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=801c5bb9830eeb3a1182e7de167f94ce6ccecf04407853632ac1e1405026e641" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc.(NYSE: ALK) added to Russell Small Cap Comp Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. added to Russell Small Cap Comp Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e2b5493ff1be6097ad43bce590e82b32113439c4c0b05ec272bb10dd9bb0726d" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc.(NYSE: ALK) added to Russell 3000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.80
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. added to Russell 3000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f9ec4162c2c15223b071fa75f6444e3f598657ff7054e4c1bdadaaf805f1247" target="_blank" rel="noopener noreferrer">Alaska Air Group, Inc.(NYSE: ALK) added to Russell Midcap Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group, Inc. added to Russell Midcap Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53d3d3069a42850fe4b40af1740618d73d9a359d5483d4f6e5f784619c6fef73" target="_blank" rel="noopener noreferrer">Alaska Airlines announces two new vice presidents in key workforce roles</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Alaska Airlines board of directors has placed two leaders in vice president roles to oversee critical employee groups. These appointments place trusted leaders at the helm during a dynamic time in...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48f173ea50f75f11bcf9eb52efcc8b8a3c77fec854d806419d37c78ddd99957f" target="_blank" rel="noopener noreferrer">Alaska Air Group-Owned Hawaiian Airlines Dealing With 'Cybersecurity Event'</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group-owned Hawaiian Airlines explained that it is still dealing with a cyberattack that hit some of its IT systems....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4f536801479ad8e23a505e597c2a01fa836e06c30e18ee29880416135ce19494" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Stock Moves -1.82%: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group (ALK) concluded the recent trading session at $48.66, signifying a -1.82% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=25e8d3f65e3a172186a279831bd0689e30cbd2c626721c835f95cafb7cc06f0a" target="_blank" rel="noopener noreferrer">Alaska Air Launches Tokyo Narita Service, Kicks Off Major International Expansion From Seattle</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group Inc. (NYSE:ALK) is one of the most active stocks to buy according to analysts. Earlier in May, Alaska Airlines inaugurated a new daily nonstop service between Seattle and Tokyo Narita...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ecd4fc53ead5e26d122b64258c56cc287434a229855ef619cad1852f9adfa91" target="_blank" rel="noopener noreferrer">Alaska Air Group (ALK) Rises Higher Than Market: Key Facts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group (ALK) reached $47.73 at the closing of the latest trading day, reflecting a +1.6% change compared to its last close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3539a857c5eb6abbc58a69743d0900a18a2ff3a889356801f356c03e19d0940c" target="_blank" rel="noopener noreferrer">Stocks Rally on a Tentative Ceasefire in the Israel-Iran War</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.85%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.89%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +1.10%. September E-mini S&P futures (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6100e764ca4b37994e6d9cd3f27f6995a8518f05b696e83cd29bcd5529c71a08" target="_blank" rel="noopener noreferrer">Stocks Supported as Tensions Ease in the Middle East</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.81%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.79%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +1.15%. September E-mini S&P futures (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2b82e027f9d1f40623d53e7c0ccc2a3eb5a7874a8d0aea3b1af964e368cb699e" target="_blank" rel="noopener noreferrer">'This Should've Been Caught Years Ago:' Boeing Faces NTSB Heat Over 737 MAX 9 Alaska Airlines Mid-Air Blowout Incident</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Aircraft manufacturer Boeing Co. (NYSE:BA) is set to be probed for its role in last year's Alaska Air Group Inc. (NYSE:ALK) Flight 1282 incident involving a sudden loss of pressure in the aircraft's f...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c08e4053ba7cbb787b23acd88e6019716a7132f1ffb3c334bb96f0be0ed17082" target="_blank" rel="noopener noreferrer">Stocks Soar as Middle East Tensions Ease and Bond Yields Fall</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) Tuesday closed up +1.11%, the Dow Jones Industrials Index ($DOWI ) (DIA ) closed up +1.19%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +1.53%. September E-mini...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0017cb223c9795341424af57ba19ce83106b10519ece2cc871a44e00f127b37d" target="_blank" rel="noopener noreferrer">Morgan Stanley Keeps Buy Call, Trims Price Target to $83</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Alaska Air Group Inc. (NYSE:ALK) is one of the 10 most undervalued industrial stocks to buy according to analysts. On June 4, Morgan Stanley’s Ravi Shanker reiterated a Buy rating on Alaska Air, while...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

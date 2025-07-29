@@ -1,0 +1,695 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Lamb Weston Holdings Inc. (LW) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Lamb Weston Holdings Inc. (LW)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">27</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">11</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.13</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c3fe21d0b1c60453ed384f5a09b6598c5121fb56a4d5dd98c3c540cbe0979ea" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 Recap: Benchmarking Kellanova (NYSE:K)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Let’s dig into the relative performance of Kellanova (NYSE:K) and its peers as we unravel the now-completed Q1 shelf-stable food earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8816e65db8737003ceaee0bbec4dc501e2c6605825a18c5364d4975e5d8e5c29" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 In Review: Conagra (NYSE:CAG) Vs Peers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.05
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q1 earnings season comes to a close, it’s time to take stock of this quarter’s best and worst performers in the shelf-stable food industry, including Conagra (NYSE:CAG) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=29fbfb1dd428c3561efa1fc73d5b9f6a9b0eda76a620974054e844b181a3134c" target="_blank" rel="noopener noreferrer">Activist firm Jana finds support among Lamb Weston shareholders wanting board change</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK (Reuters) -Activist investor Jana Partners is lining up support for a possible boardroom battle at Lamb Weston after a survey showed roughly half of the french-fry maker's top 50 shareholders...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d99c8bfd81ac545c3cb5f6baf745c562d9aad0ef34e49cdf991819a2b70ee905" target="_blank" rel="noopener noreferrer">JANA Partners Sends Open Letter to Shareholders Reporting Overwhelming Support for Significant Board Change at Lamb Weston</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 03, 2025--JANA Partners ("JANA"), which together with its strategic and operating partners owns approximately 7% of Lamb Weston Holdings, Inc. (NYSE: LW) ("Lamb Weston" or the "Company"...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a9deb654d9857343759b6f2f79ae56e0cb1ffeb0aab673686d8ed4f591694d5" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-03</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0ff7cff49b78160e45f67ae89d86c1c3acc61216e35397d0202b0a129f6d916" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e22b907237a2e06c6db9baa1cf17154f09913632faec7227e1fca9498ca0e96" target="_blank" rel="noopener noreferrer">Q1 Earnings Highs And Lows: McCormick (NYSE:MKC) Vs The Rest Of The Shelf-Stable Food Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Let’s dig into the relative performance of McCormick (NYSE:MKC) and its peers as we unravel the now-completed Q1 shelf-stable food earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eca1e36e78132456d4d998f45ff7ee04d73e5861de9f25945f1ef2f82e6ca5f5" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 Recap: Benchmarking TreeHouse Foods (NYSE:THS)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of the earnings season is always a good time to take a step back and see who shined (and who not so much). Let’s take a look at how shelf-stable food stocks fared in Q1, starting with TreeHous...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=01a0614b02e16cbe71740b5164344a4671a57229d87a6d6840183045a1d7001e" target="_blank" rel="noopener noreferrer">Shareholders in Lamb Weston Holdings (NYSE:LW) are in the red if they invested a year ago</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors can approximate the average market return by buying an index fund. While individual stocks can be big......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ed26bb13b671ea8aa0413e512dbd3cb495c4db5d6fea6be5f907d2896c7676b" target="_blank" rel="noopener noreferrer">3 Low-Volatility Stocks with Questionable Fundamentals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Low-volatility stocks may offer stability, but that often comes at the cost of slower growth and the upside potential of more dynamic companies....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6cfeee67c0b989629a091e09a9db5c66c443017f3e7f77411cf38831e1a74e18" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of May 25</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=feb32206f20d526e264df2618baec44abcd54f9301de5aedc85c664cd1c47191" target="_blank" rel="noopener noreferrer">Q1 Rundown: Mondelez (NASDAQ:MDLZ) Vs Other Shelf-Stable Food Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how Mondelez (NASDAQ:MDLZ) and the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cdd2621b0c75020d4e80faefce76c9a06c701518454342b6859eb7dcb20dcfc6" target="_blank" rel="noopener noreferrer">Q1 Earnings Highlights: Simply Good Foods (NASDAQ:SMPL) Vs The Rest Of The Shelf-Stable Food Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.15
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q1 earnings season wraps, let’s dig into this quarter’s best and worst performers in the shelf-stable food industry, including Simply Good Foods (NASDAQ:SMPL) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=414fcf55a1c6badc4c3e4dac179ca8b8cedf1a1fdcb260d02ed7ee571879e879" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 Results: Benchmarking B&G Foods (NYSE:BGS)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">As the craze of earnings season draws to a close, here’s a look back at some of the most exciting (and some less so) results from Q1. Today, we are looking at shelf-stable food stocks, starting with B...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2d050b246d67a49d2b385122b1bc60ee68ae122007124ed05ca3139400de65e" target="_blank" rel="noopener noreferrer">Q1 Earnings Roundup: BellRing Brands (NYSE:BRBR) And The Rest Of The Shelf-Stable Food Segment</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Q1 earnings season wraps, let’s dig into this quarter’s best and worst performers in the shelf-stable food industry, including BellRing Brands (NYSE:BRBR) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3db9e5203d1627fca59741759ae8b81dad543b3250c2362f46bd1510e207154a" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc. stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc. stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d936b26172220fd02507b3ee8e4d025f0f9736a83e123b53e9e6dd7d6eb7e83e" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 In Review: SunOpta (NASDAQ:STKL) Vs Peers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">The end of an earnings season can be a great time to discover new stocks and assess how companies are handling the current business environment. Let’s take a look at how SunOpta (NASDAQ:STKL) and the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f2a7a6466c5cb595930c021ab21db8b50553c1f6197a3b547731d2f5ab971dd3" target="_blank" rel="noopener noreferrer">3 Consumer Stocks with Mounting Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Consumer staples stocks are solid insurance policies in frothy markets ripe for corrections. Surprisingly, the sector hasn’t played its shielding role over the past six months as it tumbled 10.5%. Thi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cf9aaa3753d993e2b00e1ece9f4944a83504c1b9b4ddd9cf47a97b54a9969c5a" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 Teardown: J&J Snack Foods (NASDAQ:JJSF) Vs The Rest</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">Looking back on shelf-stable food stocks’ Q1 earnings, we examine this quarter’s best and worst performers, including J&J Snack Foods (NASDAQ:JJSF) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c30f76ed4647ecc34b42b07d31b056330450f8b7d1da79b29e3db0c8dfbc3abd" target="_blank" rel="noopener noreferrer">A Look Back at Shelf-Stable Food Stocks’ Q1 Earnings: Utz (NYSE:UTZ) Vs The Rest Of The Pack</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">As the craze of earnings season draws to a close, here’s a look back at some of the most exciting (and some less so) results from Q1. Today, we are looking at shelf-stable food stocks, starting with U...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=928d8e7deb18e7f10b67e367db3be13cda06271854cb73aa54534cb306771856" target="_blank" rel="noopener noreferrer">Shelf-Stable Food Stocks Q1 In Review: Kraft Heinz (NASDAQ:KHC) Vs Peers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Let’s dig into the relative performance of Kraft Heinz (NASDAQ:KHC) and its peers as we unravel the now-completed Q1 shelf-stable food earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=65493d1712cba35f677b409371d2af7b7ef62a81553940f66bbef9b1d284e59f" target="_blank" rel="noopener noreferrer">3 Cash-Producing Stocks That Concern Us</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">A company that generates cash isn’t automatically a winner. Some businesses stockpile cash but fail to reinvest wisely, limiting their ability to expand....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=134b05896fdc67975f72f4dea707542c0385fa599cf48c1e25940b849c626283" target="_blank" rel="noopener noreferrer">Lamb Weston (LW) International Revenue Performance Explored</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Examine Lamb Weston's (LW) international revenue patterns and their implications on Wall Street's forecasts and the prospective trajectory of the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=330473ed7a9f99094a79e211f626e06abc5daae4b3d89a4699fbe2240c3eb7a5" target="_blank" rel="noopener noreferrer">Post Holdings tempers M&A bets as tariffs disrupt valuations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">The US food firm was linked last year with interest in Lamb Weston in the wake of a deal for Potato Products of Idaho....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b226b10826ade89e08a09cd460ad8bc474d7a7d09220e07c6aaca42f5c4bbc35" target="_blank" rel="noopener noreferrer">Lamb Weston Holdings Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Lamb Weston Holdings Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4317555396beb7206598285e46f1e9241037af869aed3158f57d7d53e9475781" target="_blank" rel="noopener noreferrer">3 S&P 500 Stocks in the Doghouse</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 (^GSPC) is home to the biggest and most well-known companies in the market, making it a go-to index for investors seeking stability. But not all large-cap stocks are created equal - some a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bbbe2cb408ea0a498d36f7d6c5fcda8274d4e5b29d580f0c4836cc8c5cbbe13e" target="_blank" rel="noopener noreferrer">Lamb Weston appoints new CIO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">In his prior role, Benjamin Heselton helped open an IT services shop that specializes in SAP projects for Würth Group....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

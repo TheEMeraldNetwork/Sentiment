@@ -1,0 +1,439 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Simulations Plus Inc. (SLP) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Simulations Plus Inc. (SLP)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">11</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.07</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e15bc6d58e933c968d876ae237d59fc89b9fb8e635129b6311b5cead921efa2" target="_blank" rel="noopener noreferrer">Simulations Plus, Inc. Releases ADMET Predictor 13</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. announced the release of ADMET Predictor 13, its machine learning modeling platform for the design, optimization, and selection of new molecules during various stages of drug......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4600432da528a35be9eaf5216d31a41f36bafb0445637943e33a39982418031f" target="_blank" rel="noopener noreferrer">Simulations Plus Releases ADMET Predictor® 13</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RESEARCH TRIANGLE PARK, N.C., June 05, 2025--Simulations Plus, Inc. (Nasdaq: SLP) ("Simulations Plus"), a leading provider of cheminformatics, biosimulation, simulation-enabled performance and intelli...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1d6ec2cc5b8e2c56d2cab01249059137a1c89cdc54695d2d97543658e540bbec" target="_blank" rel="noopener noreferrer">Simulations Plus To Reduce Workforce By 10% - SEC Filing</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-02</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.02
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus Inc: * SIMULATIONS PLUS INC - TO REDUCE WORKFORCE BY 10% - SECFILING * SIMULATIONS PLUS INC - EXPECTS $4.3 MILLION ANNUALIZEDCOSTSAVINGS - SEC......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=329d9c5780c0a58f7dae2a687ac89703bb565bd64449a81bf7febe3be5044e05" target="_blank" rel="noopener noreferrer">High Growth Tech Stocks in the US to Watch This May 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. stock market has experienced significant volatility recently, with major indices like the Dow Jones and Nasdaq Composite seeing sharp gains following a tech sector rally driven by shifts in t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76fc1ed18228b10e314787f4d9bc41a971acc27aafe1d7f3f32e2ccd9bdcea8b" target="_blank" rel="noopener noreferrer">3 Intriguing Stocks Estimated At Up To 42.7% Below Intrinsic Value</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.69
+                                </span>
+                            </div>
+                            <div class="article-summary">As the United States market grapples with renewed trade tensions and fluctuating indices, investors are keenly observing the impact on economic growth and corporate profits. In such a volatile environ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dcb45880c7092b325d3a5dbf830e88766833c7a9f20102dd6d7effe87004f216" target="_blank" rel="noopener noreferrer">3 Growth Companies With High Insider Ownership And 161% Earnings Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last 7 days, the United States market has experienced a 1.1% drop, yet it has shown resilience with a 9.1% rise over the past year and earnings are projected to grow by 14% annually. In such ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5821c8f1a8e62a053cab07179b1e383e3bf70c06d346af5713d16741d85131c8" target="_blank" rel="noopener noreferrer">SLP Advances Predictive Toxicology With DILIsym 11: Shares to Benefit?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus unveils DILIsym 11, an upgraded version of its flagship QST platform to advance predictive toxicology and pediatric liver assessment safety....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=782b7635a037d254b93d6b0ad35325a82be70856e16d6f0f507275cdd20ae77d" target="_blank" rel="noopener noreferrer">Simulations Plus Releases DILIsym 11</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. , a leading provider of cheminformatics, biosimulation, simulation-enabled performance and intelligence solutions, and medical communications to the biopharma industry,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b09cb34f2598fc98e1059336bcb69de598a5cfb155842100fe9bdccdfd31a85" target="_blank" rel="noopener noreferrer">Simulations Plus, Inc. Releases DILIsym 11</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-15</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. announced the release of DILIsym 11, the latest version of its quantitative systems toxicology platform. DILIsym is a software platform designed to predict potential DILI......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4c53c4e293b989533af81610f25254ca1b6480c3b8ada494d3afcf67c47c17c8" target="_blank" rel="noopener noreferrer">Simulations Plus Releases DILIsym® 11</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RESEARCH TRIANGLE PARK, N.C., May 15, 2025--Simulations Plus, Inc. (Nasdaq: SLP) ("Simulations Plus"), a leading provider of cheminformatics, biosimulation, simulation-enabled performance and intellig...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8df8f91fd4329cf595e21d12cdfcbdec3d3b6072f9bfc7ae16e0dbadc8584781" target="_blank" rel="noopener noreferrer">Are Simulations Plus, Inc.'s (NASDAQ:SLP) Mixed Financials Driving The Negative Sentiment?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">It is hard to get excited after looking at Simulations Plus' (NASDAQ:SLP) recent performance, when its stock has......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

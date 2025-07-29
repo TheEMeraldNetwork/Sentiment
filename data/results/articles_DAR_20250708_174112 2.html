@@ -1,0 +1,599 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>DARLING INGREDIENTS INC. (DAR) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">DARLING INGREDIENTS INC. (DAR)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">21</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.39</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=87429c6f541de3f688870ef2683be1eb952de9d3bf82acdde2216cc87487d29e" target="_blank" rel="noopener noreferrer">Should Value Investors Buy Darling Ingredients (DAR) Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Here at Zacks, our focus is on the proven Zacks Rank system, which emphasizes earnings estimates and estimate revisions to find great stocks. Nevertheless, we are always paying attention to the latest...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=32d5b52cd24524777ce1ab9836c407b8a9364dd6f5dba333209161660cf416f7" target="_blank" rel="noopener noreferrer">Wall Street Analysts Predict a 38.88% Upside in Darling (DAR): Here's  What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">The average of price targets set by Wall Street analysts indicates a potential upside of 38.9% in Darling (DAR). While the effectiveness of this highly sought-after metric is questionable, the positiv...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e3e22ca30bb7569447a9ea93eaba3d7137cecf79df2fa5f41385bd4405cbcc58" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc.(NYSE: DAR) added to Russell 3000E Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. added to Russell 3000E Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f27bfe26ba6920e37b2774586b8d234c6e6ece026d6ca8f7d6da84f62be740fa" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc.(NYSE: DAR) added to Russell 2500 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. added to Russell 2500 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e313302d66d55ed0ff609a5b70ed465bd7d88390f976d354d39d3ff70130a829" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc.(NYSE: DAR) added to Russell 1000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. added to Russell 1000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b36401d4c4c598951d9fe89f4dc735985275f8a8c12d14a52484fadc7ffdd45" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc.(NYSE: DAR) added to Russell Small Cap Comp Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. added to Russell Small Cap Comp Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d2103c16cd0cd9d2ebc3469f270bb080361344e4be03d382d5eb98f5331a861e" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc.(NYSE: DAR) added to Russell 3000 Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. added to Russell 3000 Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a3e149e53ccd3d24cb185f49213d5dcd553fee6fdfaae3a27d26eedac385d9a" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc.(NYSE: DAR) added to Russell Midcap Growth Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. added to Russell Midcap Growth Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=abafc6c94b0be8fd60874974e8dc3b6d48fb3146eca50c22dd156cbf4a708d09" target="_blank" rel="noopener noreferrer">S&P 500 Futures Climb in Premarket Trading; Nike, Oklo Lead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P 500 Futures Climb in Premarket Trading; Nike, Oklo Lead...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8812cd339ada686b2f5ac8036df84defb82d5f635423352797b534053dc45592" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc. Enters into Third Amended and Restated Credit Agreement</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">Effective June 25, 2025, Darling Ingredients Inc. and certain of its subsidiaries entered into a Third Amended and Restated Credit Agreement , between the Company, as a borrower; the subsidiary......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73c9e32abe24e502b0ac35ffbca5169637769f099c4263255868358da0442f28" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc. announces offering of EUR750 million of senior notes by Darling Global Finance B.V.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.44
+                                </span>
+                            </div>
+                            <div class="article-summary">IRVING, Texas-Darling Ingredients Inc. , the world's leading company turning food waste into sustainable products and producer of renewable energy, today announced the completion of the refinancing......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d0370eb8ed43cff03b18014cd242cb47589d6e49811ebdf7015c1cd4809b8d7a" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc. announces offering of €750 million of senior notes by Darling Global Finance B.V., entry into a new amended and restated credit agreement, and redemption of €515.0 million 3.625% senior notes due 2026</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">IRVING, Texas, June 26, 2025--Darling Ingredients Inc. (NYSE: DAR) ("Darling" or the "Company"), the world’s leading company turning food waste into sustainable products and producer of renewable ener...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=590f8951d67a0621648553addf99e788599648c8657339d36990f4b0fc87880d" target="_blank" rel="noopener noreferrer">Darling Ingredients (NYSE:DAR) Is Looking To Continue Growing Its Returns On Capital</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">What are the early trends we should look for to identify a stock that could multiply in value over the long term......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3440dd7bac188b4db8be50ea672629fa7546161a6bb5f7779941e1c12bc1cf22" target="_blank" rel="noopener noreferrer">Darling Ingredients prices offering of EUR750 mln of senior notes due 2032</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc: * DARLING INGREDIENTS INC. ANNOUNCES PRICING OF OFFERING OF€750MILLION OF SENIOR NOTES DUE 2032 BY DARLING GLOBAL FINANCE B.V.Source text:Further company......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1e0f89ab9e111f970af40c1c48794aaf6bf5deb48a5bbf7186ae1e2d71a7ecc4" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc. Announces Pricing of Offering of €750 Million of Senior Notes Due 2032 by Darling Global Finance B.V.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">IRVING, Texas, June 18, 2025--Darling Ingredients Inc. (NYSE: DAR) ("Darling" or the "Company"), the world’s leading company turning food waste into sustainable products and producer of renewable ener...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4db4b250db339959bc0865c4715556261c40f1bac2f104eb6d6883cfbb57a0a2" target="_blank" rel="noopener noreferrer">Darling Ingredients Announces Offering Of 750 Million Euros Of Senior Notes By Darling Global Finance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc: * DARLING INGREDIENTS INC. ANNOUNCES OFFERING OF €750MILLION OFSENIOR NOTES BY DARLING GLOBAL FINANCE B.V. AND PROPOSED ENTRYINTO A NEW AMENDED AND RESTATED......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73d5f371a2f7f1e1fd98cbd1fb72dff3d8ef4a511d33e58c06daf0b71f51e469" target="_blank" rel="noopener noreferrer">Darling Ingredients : Offering of €750 Million of senior notes by Darling Global Finance B.V. and proposed entry into a new amended and restated credit agreement</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling Ingredients Inc. the world's leading company turning food waste into sustainable products and producer of renewable energy today announced that Darling Global Finance B.V. , an indirect,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1f0f1ca424bcb519e9373cfbd540ca0f686c2afda93795394c1f27ad5c76b11b" target="_blank" rel="noopener noreferrer">Darling Ingredients Inc. announces offering of €750 Million of senior notes by Darling Global Finance B.V. and proposed entry into a new amended and restated credit agreement</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.64
+                                </span>
+                            </div>
+                            <div class="article-summary">IRVING, Texas, June 16, 2025--Darling Ingredients Inc. (NYSE: DAR) ("Darling" or the "Company") the world’s leading company turning food waste into sustainable products and producer of renewable energ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=58e37da72ffd5037c6ebf6297e2582f7100c8a8ae0351215f135418283f61d9f" target="_blank" rel="noopener noreferrer">?Darling Ingredients Inc. announces offering of EUR750 Million of senior notes by Darling Global Finance B.V. and proposed entry into a new amended and restated credit agreement</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">IRVING, Texas - Darling Ingredients Inc. the world's leading company turning food waste into sustainable products and producer of renewable energy today announced that Darling Global Finance B.V. ,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=625c3ecd8de9f1573fd3a4a3a2a79519b89bf81c6055a53ccd739d5006b61456" target="_blank" rel="noopener noreferrer">Strength Seen in Darling (DAR): Can Its 9.2% Jump Turn into More Strength?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Darling (DAR) saw its shares surge in the last session with trading volume being higher than average. The latest trend in earnings estimate revisions may not translate into further price increase in t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af7814d8b783f43dfe02df605093643d47c23b3f78d96884beaa3f770fd8d87b" target="_blank" rel="noopener noreferrer">Darling Ingredients (DAR) Soars 9% on Trump’s Biofuel Policy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of LOOK: These 10 Stocks Just Stole The Show. In this article, we are going to take a look at where Darling Ingredients Inc. (NYSE:DAR) stands against other best-performin...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

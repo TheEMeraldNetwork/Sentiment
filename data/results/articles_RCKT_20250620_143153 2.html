@@ -1,0 +1,807 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Rocket Pharmaceuticals Inc. (RCKT) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Rocket Pharmaceuticals Inc. (RCKT)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">34</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">19</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.31</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48b45b08ab5a92799ec137810a0b791cdd59719fa5de65f27794d2aad0fbb453" target="_blank" rel="noopener noreferrer">RCKT INVESTOR NOTICE: Robbins Geller Rudman & Dowd Announces that Rocket Pharmaceuticals, Inc. Investors with Substantial Losses Have Opportunity to Lead Class Action Lawsuit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    -0.19
+                                </span>
+                            </div>
+                            <div class="article-summary">The law firm of Robbins Geller Rudman & Dowd LLP announces that purchasers or acquirers of Rocket Pharmaceuticals, Inc. securities between February 27, 2025 and May 26, 2025, inclusive , have until......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fc49b2b4a25a5650ecda16800c0f29ff3170d3d09f746cc45139d65470ca0e2e" target="_blank" rel="noopener noreferrer">Gene Therapy Has Lost Support on Wall Street. There’s Still Hope for Big Cures.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Five years ago, scientists and investors were excited about gene therapy offering one-and-done cures for deadly diseases. Today, much of the enthusiasm has dried up....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c822edcad0b07aa5099db447e881557767c2d06b491260a009520a197d98cb8b" target="_blank" rel="noopener noreferrer">Shareholders that lost money on Rocket Pharmaceuticals, Inc.(RCKT) Urged to Join Class Action - Contact The Gross Law Firm to Learn More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-19</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 19, 2025 /PRNewswire/ -- The Gross Law Firm issues the following notice to shareholders of Rocket Pharmaceuticals, Inc. . ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=422cfde67c4b87fe5d5de9cebdb2d96c27901b76eb2314e20acacd2fe6a3994f" target="_blank" rel="noopener noreferrer">Securities Fraud Investigation Into Rocket Pharmaceuticals, Inc. (RCKT) Announced – Investors Who Lost Money Urged To Contact The Law Offices of Frank R. Cruz</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-18</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Law Offices of Frank R. Cruz announces an investigation of Rocket Pharmaceuticals, Inc. on behalf of investors concerning the Company’s possible violations of federal securities laws.IF YOU......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8a52cae2cee54efeee9141b4de7e1f01ae4b81876c73c2551a256fa3010e4a6a" target="_blank" rel="noopener noreferrer">Levi & Korsinsky Reminds Shareholders of a Lead Plaintiff Deadline of August 11, 2025 in Rocket Pharmaceuticals, Inc. Lawsuit - RCKT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 17, 2025 /PRNewswire/ -- Levi & Korsinsky, LLP notifies investors in Rocket Pharmaceuticals, Inc. of a class action securities lawsuit. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=657425d52acf19b5c24f2416a1462ac3a394e5128ebe755f645b7e7e5d5d9463" target="_blank" rel="noopener noreferrer">Pomerantz Law Firm Investigates Claims On Behalf of Investors of Rocket Pharmaceuticals, Inc. - RCKT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-17</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 17, 2025 /PRNewswire/ -- Pomerantz LLP is investigating claims on behalf of investors of Rocket Pharmaceuticals, Inc. . Such investors are advised to contact Danielle Peyton at......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=459fd86558a3051a0d97003eed54ebc052e9c7758bbfe09d88eb3e47c1ad9d38" target="_blank" rel="noopener noreferrer">Investors in Rocket Pharmaceuticals, Inc. Should Contact The Gross Law Firm Before August 11, 2025 to Discuss Your Rights - RCKT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 16, 2025 /PRNewswire/ -- The Gross Law Firm issues the following notice to shareholders of Rocket Pharmaceuticals, Inc. . ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3e04f465e74cda860feb2f489631cefa672ca85ba7522df1ec38ba558dca8154" target="_blank" rel="noopener noreferrer">RCKT Bronstein, Gewirtz & Grossman LLC Announces that Rocket Pharmaceuticals, Inc. Investors with Substantial Losses Have Opportunity to Lead Class Action Lawsuit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.66
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 16, 2025 /PRNewswire/ -- Attorney Advertising-- Bronstein, Gewirtz & Grossman, LLC, a nationally recognized law firm, notifies investors that a class action lawsuit has been filed......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=baa536c8d2928ae9681288c28841a45a5657b866a24ba6890537f1fad5973167" target="_blank" rel="noopener noreferrer">INVESTOR DEADLINE APPROACHING: Faruqi & Faruqi, LLP Investigates Claims on Behalf of Investors of Rocket Pharmaceuticals</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-15</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Faruqi & Faruqi, LLP Securities Litigation Partner James Wilson Encourages Investors Who Suffered Losses Exceeding $50,000 In Rocket Pharmaceuticals To Contact Him Directly To Discuss Their......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d436ad9eb661fac87a345a94a84768343773c52cf97fe566bf8dbe7988fba2c" target="_blank" rel="noopener noreferrer">RCKT Robbins Geller Rudman & Dowd Announces that Rocket Pharmaceuticals, Inc. Investors with Substantial Losses Have Opportunity to Lead Class Action Lawsuit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">The law firm of Robbins Geller Rudman & Dowd LLP announces that purchasers or acquirers of Rocket Pharmaceuticals, Inc. securities between February 27, 2025 and May 26, 2025, both dates inclusive ,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a872ec2d35211c5d1f747167ff02a19251ad6f287e7e4df433b0572c85247d18" target="_blank" rel="noopener noreferrer">Contact Levi & Korsinsky by August 11, 2025 Deadline to Join Class Action Against Rocket Pharmaceuticals, Inc.(RCKT)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 13, 2025 /PRNewswire/ -- Levi & Korsinsky, LLP notifies investors in Rocket Pharmaceuticals, Inc. of a class action securities lawsuit. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e65ea27194f926f456be67cb84fdb35c8c726111d82f28e2b59eb95b8430cd65" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals, Inc. (RCKT) Faces Securities Class Action Amid Protocol Change and FDA's Clinical Hold on Gene Therapy Trial - Hagens Berman</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">RCKT Investors with Losses Encouraged to Contact the FirmSAN FRANCISCO, June 13, 2025 /PRNewswire/ -- A securities class action lawsuit styled Ho v. Rocket Pharmaceuticals, Inc., et al., No.......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4e17a32497c39709dab330bcc732d053e416bec75644351c1e8da981ccb30e51" target="_blank" rel="noopener noreferrer">RCKT Investors Have the Opportunity to Lead the Rocket Pharmaceuticals Securities Fraud Lawsuit with Faruqi & Faruqi, LLP</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-13</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Faruqi & Faruqi, LLP Securities Litigation Partner James Wilson Encourages Investors Who Suffered Losses Exceeding $50,000 In Rocket Pharmaceuticals To Contact Him Directly To Discuss Their......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d9cbe414064a0f21de39b6861ac61d8e5826efe3ac2ad5c6989cbb6fbcfa43e8" target="_blank" rel="noopener noreferrer">Rosen Law Firm Urges Rocket Pharmaceuticals, Inc. (NASDAQ: RCKT) Stockholders with Losses in Excess of $100K to Contact the Firm for Information About Their Rights</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Rosen Law Firm, a global investor rights law firm, announces that a shareholder filed a class action lawsuit on behalf of purchasers and acquirers of Rocket Pharmaceuticals, Inc. securities between......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=acd27cebd7ca7c752fc168e2285c9a463b5c4fc6a02633a6bc410bbe4f454c08" target="_blank" rel="noopener noreferrer">RCKT Investors Have Opportunity to Lead Rocket Pharmaceuticals, Inc. Securities Fraud Lawsuit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-12</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, June 12, 2025 /PRNewswire/ -- Why: Rosen Law Firm, a global investor......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9a9604491941dc839464309d58d454e941b6fdd08d42139f64496692131fdaf0" target="_blank" rel="noopener noreferrer">Harbor Health Care ETF Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">During the first quarter, the Harbor Health Care ETF returned 2.18% (NAV), outperforming the Russell 3000Â® Growth Health Care Index, which returned 1.99%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4511aa2d3e92f0d7ebe161fcc29b584b80f037a5cf9ff8c520ba4649c56baf4f" target="_blank" rel="noopener noreferrer">Harbor Small Cap Growth Fund Q1 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=31f15f4a04b7742d44a654664f4de7a279f18755760a01645ab35b006b7cabfc" target="_blank" rel="noopener noreferrer">Leerink Partners Downgrades Rocket Pharmaceuticals (RCKT) to Market Perform on Danon Disease Blow</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals, Inc.’s (NASDAQ:RCKT) prospects have taken a significant hit on the company being forced to halt research on its experimental gene therapy for Danon Disease. The decision comes ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aedf657c169a1afedf03afbb2bd67ae7edcfe3b699913478e73f8eed6db8ceaa" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals, Inc. (RCKT) Gene Therapy Trial Paused Following Patient Death</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals, Inc. (NASDAQ:RCKT) has suspended dosing in its Danon disease gene therapy trial after a patient developed fatal complications from capillary leak syndrome, which caused a sever...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1aa34b8c860854e9dfcc0143e7f220f3fd81a54fa89171f807183bc5cbe69042" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals: Despite FDA Clinical Hold On RP-A501, Prospects Remain Intact</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bcf926f97933330e3a43d7620dd5b9833fa25efff193251046c2604b2fa863d6" target="_blank" rel="noopener noreferrer">RCKT Stock Tanks on Patient Death in Danon Disease Study</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals plunges after a patient death in its Danon disease study, prompting a voluntary dosing pause. The FDA puts a clinical hold on the study....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fd8ca8b8c066dd372efcad0c88ddab0d3b9dfe27a96a4eb28675a0350784ad02" target="_blank" rel="noopener noreferrer">William Blair Reaffirms Outperform Rating on Rocket Pharma Despite Trial Setback</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.12
+                                </span>
+                            </div>
+                            <div class="article-summary">Sami Corwin, an analyst at William Blair, maintained his Outperform rating on Rocket Pharmaceuticals Inc. (NASDAQ:RCKT) on May 27 with no price target, despite the company’s recent difficulties. The b...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2020964440123756f46688e32bdac9297a210d254b46de30d091723a15a87c92" target="_blank" rel="noopener noreferrer">Rocket Pharma's Gene Therapy Future Clouded By Regulatory Uncertainty</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals Inc (NASDAQ:RCKT) on Tuesday announced an update related to RP-A501, its investigational gene therapy for Danon disease, a rare X-linked dominant genetic disorder that manifests...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=23175661603afd7efc29224d32c0855aa99dddf8c5484e9aee92aa136ea71a14" target="_blank" rel="noopener noreferrer">US FDA places clinical hold on Rocket Pharma's gene therapy trial</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. Food and Drug Administrationplaced a clinical hold on Rocket Pharmaceuticals' genetherapy trial due to a serious event in one patient, the companysaid on Tuesday.(Reporting by Christy......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d35223457a07801c8a0525513351ea829eecda1d8ecbb5cca15d9b1109bf25b5" target="_blank" rel="noopener noreferrer">US FDA pauses gene therapy trial by Rocket Pharma after patient death</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals saidon Tuesday the U.S. Food and Drug Administration had placed aclinical hold on its mid-stage gene therapy trial after apatient died due to a serious adverse event, sending......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d85147974fdefe7e1613f709a921b4d639c5b721158cfb4a3f8b7219f935cf88" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals, Inc. Provides Update on Phase 2 Clinical Trial of Rp-A501 for Danon Disease</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.40
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals, Inc. announced an update related to RP-A501, its investigational gene therapy for Danon disease. A patient participating in the Phase 2 pivotal trial of RP-A501 experienced an....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53bf9c10376f0c38e6995ec0c6cc558e53b05a0d07a6dec3b7a2f9ea6ef5371e" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals Shares Down as Trial Patient Dies of Complications</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">By Adriano Marchese Rocket Pharmaceuticals shares fell sharply in premarket trading Tuesday after a trial for its investigational therapy for Danon disease was halted by regulators following the......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=26dcd4f815d0564ccbf843ddd6582c07992c7bb4e41fc3ddfea0d5fef28d5ee1" target="_blank" rel="noopener noreferrer">FDA halts Rocket Pharma's gene therapy trial as complications lead to patient death</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. FDA has paused a mid-stagegene therapy trial by Rocket Pharmaceuticals after apatient suffered serious complications, which ultimately led tothe person's death, the drug developer said on......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=06a6f56119ed7bf5f79262a5d2c05e46ca581c373f91b7d24c1874d3d07e10c7" target="_blank" rel="noopener noreferrer">Transcript : Rocket Pharmaceuticals, Inc. - Special Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presentation Operator MessageOperator Good morning, ladies and gentlemen, and thank you for standing by. Welcome to the Rocket Pharma Clinical Update Conference Call. [Operator Instructions]. I...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=65285bccb9972245a7f11737405edb17715bdeac0b9de51f69e3481937fee6a3" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals Provides Update on Phase 2 Clinical Trial of RP-A501 for Danon Disease</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">CRANBURY, N.J., May 27, 2025--Rocket Pharmaceuticals, Inc. (NASDAQ: RCKT), a fully integrated, late-stage biotechnology company advancing an integrated pipeline of genetic therapies for rare diseases,...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=301d91d9f0eaf4f71bda093b7f06d292d5861c506bc72bdf60a61c7b5c8bf7d4" target="_blank" rel="noopener noreferrer">Sector Update: Health Care Stocks Rise Premarket Tuesday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Health care stocks were edging higher premarket Tuesday as the Health Care Select Sector SPDR Fund (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4b6f854cd846f3dab6ba00401fa8df6dc3fee8b0080a420b9e7cc6364cb98aa" target="_blank" rel="noopener noreferrer">CoreWeave, Rocket Pharmaceuticals, SoundHound: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Barclays analysts downgraded CoreWeave (CRWV) to Equal Weight, raising valuation concerns. This is CoreWeave's first downgrade since the company's initial public offering (IPO). Rocket Pharmaceuticals...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b7bfb11161393f6ac505145c856e1803c07fd823e9d24ad017d260bc8280ac2b" target="_blank" rel="noopener noreferrer">Rocket Pharmaceuticals Stock Craters After Gene Therapy Patient Dies</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Rocket Pharmaceuticals shares plummeted 60% Tuesday after the firm said it halted a study of a gene-therapy drug for Danon disease because a patient had a "Serious Adverse Event (SAE)" and later died....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fe6030c3684fb2497b1cacd9d4d2736dfbe8ed44470e64fd259bd1b1807ee58e" target="_blank" rel="noopener noreferrer">Patient dies in Rocket’s Phase II Danon disease gene therapy trial</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">The FDA ordered a clinical hold on the Phase II trial after the adverse event was first disclosed....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

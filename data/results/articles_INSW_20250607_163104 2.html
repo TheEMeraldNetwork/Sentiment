@@ -1,0 +1,535 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>International Seaways Inc. (INSW) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">International Seaways Inc. (INSW)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.15</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=22750aa66a056238294b1506ee0167f3d06e2b74bb7010427a5bc81d473dcb31" target="_blank" rel="noopener noreferrer">International Seaways: It's Not All Smooth Sailing (Technical Analysis)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-20</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways' technical outlook is bullish, with a recent uptrend, strong support levels, and positive momentum indicators suggesting further......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ac4a071e58831a649a8b7b7dc86913dffe18a7a574d12e75f21b9dabe78eba50" target="_blank" rel="noopener noreferrer">International Seaways and V. Partner to Launch Female Cadet Program</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, May 16, 2025--International Seaways (NYSE: INSW), one of the world’s largest tanker companies, and V., the global ship manager and marine services provider, have today announced the launch o...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ac171b90bfd02a497b3924e0de2e1457701f7211ce3291fc1a26815f4449716c" target="_blank" rel="noopener noreferrer">Why J Mintzmyer Is Short Walmart And Long 3 Shipping Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Shipping expertÂ J Mintzmyer helps investors navigate the current volatility in the shipping space, and explains why he's heavily short Walmart. See more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b0376afad685a4bd51066b4b20d8b9ba25b1815a7f4b70f4573dc41c39945df5" target="_blank" rel="noopener noreferrer">International Seaways First Quarter 2025 Earnings: Beats Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways ( NYSE:INSW ) First Quarter 2025 Results Key Financial Results Revenue: US$183.4m (down 33% from......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e0cc9120e21a21e389f8a7d9b89a738dee9002a92920c388d8f28f6de87d0106" target="_blank" rel="noopener noreferrer">Results: International Seaways, Inc. Exceeded Expectations And The Consensus Has Updated Its Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">As you might know, International Seaways, Inc. ( NYSE:INSW ) just kicked off its latest first-quarter results with some......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=64eaa2af7f4a584f43b81700a51b1e0973fa8eb3f3384bb00d8f2a94d7c50a6d" target="_blank" rel="noopener noreferrer">International Seaways Inc (INSW) Q1 2025 Earnings Call Highlights: Strong Liquidity and ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways Inc (INSW) reports robust financials with $673 million in liquidity and strategic fleet swaps, while navigating market uncertainties....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2275d7c14a85f499eae172f46a209042baa7c2397dcd11018335f0eb670066fb" target="_blank" rel="noopener noreferrer">Q1 2025 International Seaways Inc Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Q1 2025 International Seaways Inc Earnings Call...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a87234c891e972c19c1d76aae6652049f4de4ab6d23b07aa60824924b668b368" target="_blank" rel="noopener noreferrer">International Seaways, Inc. (INSW): Among Cheap Rising Stocks to Buy Right Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published a list of the 10 Cheap Rising Stocks to Buy Right Now. In this article, we will look at where International Seaways, Inc. (NYSE:INSW) stands against other cheap rising stocks in ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91e64ec3ac716790cb219847b645a2084979960801377789d6d499933199eb00" target="_blank" rel="noopener noreferrer">International Seaways, Inc. Reports Earnings Results for the First Quarter Ended March 31, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways, Inc. reported earnings results for the first quarter ended March 31, 2025. For the first quarter, the company reported sales was USD 45.8 million compared to USD 48.12 million a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3ebde1c5fe4923457dec8585956892fc8d522ddee35cbb2785785c66161cc645" target="_blank" rel="noopener noreferrer">International Seaways, Inc. Declares Regular Quarterly Dividend, Payable on June 26, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways, Inc. declared a regular quarterly dividend of $0.12 per share of common stock . Dividend will be paid on June 26, 2025, to shareholders with a record date at the close of......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e348a4ff3c809554117533dab058b4ac95194da46214afdfdfce2f6a53421375" target="_blank" rel="noopener noreferrer">International Seaways Reports First Quarter 2025 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, May 08, 2025--International Seaways, Inc. (NYSE: INSW) (the "Company," "Seaways," or "INSW"), one of the largest tanker companies worldwide providing energy transportation services for crude...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=18f5dd77987c04cac799e26a5f2b205b1e7d5d2561f5ca0e4475d7d3e9463b25" target="_blank" rel="noopener noreferrer">International Seaways: Q1 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">The New York-based company said it had net income of $1 per share. Earnings, adjusted for non-recurring gains, were 80 cents per share. The results beat Wall Street expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=af7788f73b941aeee7e7359c49ae87fc74fe4cc0f602f8828d027a11c6f5d246" target="_blank" rel="noopener noreferrer">International Seaways (INSW) Q1 Earnings and Revenues Top Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways (INSW) delivered earnings and revenue surprises of 35.59% and 6.17%, respectively, for the quarter ended March 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86a5234cf3c9703e670f534232eaa7901ae911d160664d8e81616ee3e9f33f09" target="_blank" rel="noopener noreferrer">DHT Holdings - An Interesting Value Play Despite Low Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">DHT Holdings stands out with strong profitability, high ROE, and a high dividend yield. Click to read why DHT could be an interesting value play....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=93c851c118d8103d50feb2f32d33607bb479b3087dcba32cbedc59be41d54fd9" target="_blank" rel="noopener noreferrer">Trump Trade War: Shipping Giant Changes Outlook; Outlines Scenarios For U.S.-China Trade Talks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Maersk tweaked its 2025 global shipping volumes forecast amid "U.S. centric rather than global" trade tensions....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=36e18f24a27974a2706610bf9367437fb717f84e1a829b4edaa127340b631c7c" target="_blank" rel="noopener noreferrer">International Seaways, Inc. (INSW) Q1 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">International Seaways, Inc. (NYSE:INSW) Q1 2025 Earnings Conference Call May 8, 2025 9:00 AM ETCompany ParticipantsJames Small - General Counsel, SVP,......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=502fed1090fc130bf15a6cb38e97b8f402e2b100770b9bf3dbf7924a765df5b6" target="_blank" rel="noopener noreferrer">International Seaways, Inc. 2025 Q1 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-05-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by International Seaways, Inc....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
