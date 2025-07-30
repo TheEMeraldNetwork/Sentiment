@@ -845,7 +845,7 @@ class DashboardGenerator:
                 html_template += f"""
                     <script>
                         articlesData['{row['ticker']}'] = [
-                            ${','.join([
+                            {','.join([
                                 f"""{{
                                     "title": "{str(article.get('title', '')).replace('"', '\\"') if pd.notna(article.get('title')) else ''}",
                                     "date": "{article.get('date', '')}",
