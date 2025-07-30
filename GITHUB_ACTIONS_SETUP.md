@@ -19,26 +19,62 @@ Go to your GitHub repository: https://github.com/TheEmeraldNetwork/Sentiment
 2. Click **Secrets and variables** → **Actions**
 3. Click **New repository secret**
 
-### Add the following secrets:
+### Add the following secrets (COPY-PASTE THESE EXACT VALUES):
 
 #### 📊 **FINNHUB_API_KEY**
 - **Name**: `FINNHUB_API_KEY`
-- **Value**: Your Finnhub API key
-- **Get it**: https://finnhub.io/register
+- **Value**: `YOUR_FINNHUB_KEY_HERE` ⚠️ **MISSING - YOU NEED TO GET THIS**
+- **Get it**: https://finnhub.io/register (FREE)
+- **Instructions**: 
+  1. Sign up at finnhub.io
+  2. Verify email
+  3. Go to Dashboard → API Key
+  4. Copy the key (starts with `cp_`)
 
 #### 📈 **ALPHA_VANTAGE_API_KEY** 
 - **Name**: `ALPHA_VANTAGE_API_KEY`
-- **Value**: Your Alpha Vantage API key
-- **Get it**: https://www.alphavantage.co/support/#api-key
+- **Value**: `YOUR_ALPHA_VANTAGE_KEY_HERE` ⚠️ **MISSING - YOU NEED TO GET THIS**
+- **Get it**: https://www.alphavantage.co/support/#api-key (FREE)
+- **Instructions**:
+  1. Sign up at alphavantage.co
+  2. Go to "Get your free API key today"
+  3. Copy the 16-character key
 
 #### 📧 **GMAIL_EMAIL**
 - **Name**: `GMAIL_EMAIL`
-- **Value**: `davideconsiglio1978@gmail.com`
+- **Value**: `davideconsiglio1978@gmail.com` ✅ **FOUND IN CONFIG**
 
 #### 🔐 **GMAIL_APP_PASSWORD**
 - **Name**: `GMAIL_APP_PASSWORD`
-- **Value**: `yapl pqyf rzpp olbr`
+- **Value**: `yapl pqyf rzpp olbr` ✅ **FOUND IN CONFIG**
 - **Note**: This is your Gmail App Password (not regular password)
+
+---
+
+## 🚨 **MISSING API KEYS - ACTION REQUIRED**
+
+**⚠️ You need to obtain 2 API keys before the system will work:**
+
+### **1. Finnhub API Key (FREE)**
+```
+🔗 Website: https://finnhub.io/register
+📝 Steps:
+   1. Create account with email
+   2. Verify email address
+   3. Login → Dashboard
+   4. Copy API key (starts with "cp_")
+   5. Paste in GitHub Secrets as FINNHUB_API_KEY
+```
+
+### **2. Alpha Vantage API Key (FREE)**
+```
+🔗 Website: https://www.alphavantage.co/support/#api-key
+📝 Steps:
+   1. Click "Get your free API key today"
+   2. Fill out form (any details work)
+   3. Copy the 16-character key
+   4. Paste in GitHub Secrets as ALPHA_VANTAGE_API_KEY
+```
 
 ---
 
