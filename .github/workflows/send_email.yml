@@ -1,7 +1,6 @@
 name: 📧 Send Email Report
 
 on:
-  # Manual trigger (for Send Email button)
   workflow_dispatch:
     inputs:
       email_type:
@@ -24,7 +23,7 @@ jobs:
     - name: 🐍 Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.11'
         cache: 'pip'
         
     - name: 📦 Install Dependencies
@@ -56,7 +55,6 @@ jobs:
         import pandas as pd
         import os
         
-        # Check for latest sentiment data
         if os.path.exists('results/sentiment_summary_latest.csv'):
             df = pd.read_csv('results/sentiment_summary_latest.csv')
             sender = SentimentEmailSender()
@@ -67,8 +65,6 @@ jobs:
             if success:
                 print('✅ Email sent successfully!')
                 print(f'📊 Report included {len(df)} stocks')
-                
-                # Count declining stocks for alert
                 declining = df[df['sentiment_score'] < -0.1] if 'sentiment_score' in df.columns else pd.DataFrame()
                 if len(declining) > 0:
                     print(f'🚨 Alert: {len(declining)} stocks with declining sentiment')
