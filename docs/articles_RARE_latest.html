@@ -1,0 +1,791 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>ULTRAGENYX PHARMACEUTICAL INC. (RARE) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">ULTRAGENYX PHARMACEUTICAL INC. (RARE)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">33</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">13</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.06</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=96134747ecd66aa35ff15dd889e8eb923a856ff6470b42e32309c53d56e69322" target="_blank" rel="noopener noreferrer">Ultragenyx: July Selloff Creates Buying Opportunity Ahead Of UX143 Catalyst</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyxâs 35% July selloff is overblown; both UX143 and UX111 programs remain on track with key catalysts ahead. Learn more on RARE stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e57c5ce57b0c448a894ed1ba5a6f113eeeb59d4fbc3bc765775d170c9958dbc1" target="_blank" rel="noopener noreferrer">BioHarvest Sciences Inc. (BHST) Surges 5.6%: Is This an Indication of Further Gains?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">BioHarvest Sciences Inc. (BHST) saw its shares surge in the last session with trading volume being higher than average. The latest trend in earnings estimate revisions may not translate into further p...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d600dfc54a414f76e065c24f2c0cdb2127e0d72112cbdd15cb61aba0b8a8007f" target="_blank" rel="noopener noreferrer">FDA Rejects Replimune’s Skin Cancer Treatment, Shares Sink</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Replimune Group Inc. shares sank to their lowest point ever after US regulators rejected a skin cancer treatment from the biotech company, another sign of the agency’s new leadership ta...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=569c2622e58f961bea6777d7d920c41af04a8ea3d8bb31cb463741c3dd9c3aa8" target="_blank" rel="noopener noreferrer">Ultragenyx Reports Inducement Grant Under Nasdaq Listing Rule 5635(c)(4)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NOVATO, Calif., July 18, 2025 (GLOBE NEWSWIRE) -- Ultragenyx Pharmaceutical Inc. (NASDAQ: RARE), a biopharmaceutical company focused on the development and commercialization of novel therapies for rar...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=35d6c4e97201fd29b6821e5039c985469fe35feac3c5f5558426a055307523e3" target="_blank" rel="noopener noreferrer">Bank of America Securities Reiterated a Buy Rating on Ultragenyx Pharmaceutical (RARE)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceutical Inc. (NASDAQ:RARE) is one of the Best 52-Week Low Stocks to Buy According to Analysts. On July 14, Tazeen Ahmad from Bank of America Securities reiterated a Buy rating on Ult...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=42b6f344f1d7bf633f17ac5d791d76235d2a8198d8b686710acdf9bb6e19fea8" target="_blank" rel="noopener noreferrer">New Pedestrian Access from Inner Belt to East Somerville MBTA Station Now Open to the Public</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">The City of Somerville, MBTA, and developers North River Leerink and Wheelock Street Capital are pleased to announce a new pedestrian connection between the MBTA's East Somerville Green Line Station a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=722a1eabdcfc289edbe915afd2147f8b9c4722179696aee8ff58acb6b546a7c9" target="_blank" rel="noopener noreferrer">William Blair Maintains a Buy on Ultragenyx Pharmaceutical (RARE)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceutical Inc. (NASDAQ:RARE) is one of the best oversold NASDAQ stocks to buy now. On July 14, William Blair analyst Sami Corwin maintained a bullish stance on Ultragenyx Pharmaceutica...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea83a54f0d566073dbdbb12721e2654fde7fd1a4880259d9aaf5f9a3d8f4e347" target="_blank" rel="noopener noreferrer">Ultragenyx: The High Stakes Of Binary Events And A Short Cash Runway</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx (RARE) faces high cash burn, clinical trial risks, and competition....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2e1ccdc30fb44e418bd2da71c603c8910c9eaa278e8e9d287eeb2d5f6520ed8b" target="_blank" rel="noopener noreferrer">Health Canada extends Evkeeza approval for children with HoFH</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The decision follows the initial approval granted in September 2023, which covered patients aged five years and above....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30f66f1102c4ea752565941a39795e765b9c06b44ff488989caef5381df19e5f" target="_blank" rel="noopener noreferrer">Ultragenyx receives complete response letter for UX111 BLA</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">The FDA's request stems from observations made during recent inspections of Ultragenyx's manufacturing facilities....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed112f6c3b1d4af0f96639565f838331398eee52db33b34cd7a78e79bc39de0e" target="_blank" rel="noopener noreferrer">FDA rejects Ultragenyx gene therapy over manufacturing concerns</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">While the complete response letter derails a near-term clearance, one analyst described the rejection as more of “a speed bump to approval, rather than a roadblock.”...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4cb5ab8da2eec0d881e81b4a20a4d8b705cf1522db8fc4e963bd4b3f509d2df3" target="_blank" rel="noopener noreferrer">Health Canada Extends the Approval of Evkeeza® (evinacumab) to Children as Young as 6-months Old with Homozygous Familial Hypercholesterolemia (HoFH)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">First and only medicine approved by Health Canada for patients as young as 6-months of age with HoFH, an ultrarare, inherited form of high cholesterolTORONTO, July 14, 2025 (GLOBE NEWSWIRE) -- Ultrage...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4deee32ce680b7d009fab0e3972b66915516e46e90e5cfc780b75f74755fcf7d" target="_blank" rel="noopener noreferrer">Traders Digest Tariff Announcements, Driving Premarket Losses for US Equity Futures</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">US equity futures were down ahead of Monday's opening bell after President Donald Trump threatened t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3ef6b4809df0bd0a4b978411ed7d86e400eda288b60ba90e89bae0b1aed451ee" target="_blank" rel="noopener noreferrer">Ultragenyx Pharma Takes Another Hit As FDA Slaps Its Gene Therapy With A Rejection</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceuticals took another hit when the FDA rejected its gene therapy for patients with a rare, genetic disorder....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=56fdfed612a4b46833b01278c880f6e871e64386a2250619bec53ef887ccd452" target="_blank" rel="noopener noreferrer">Ultragenyx (RARE) Falls 26% as New Treatment Fails to Get FDA Green Light</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceutical Inc. (NASDAQ:RARE) is one of the stocks drowned heavily. Are you holding any? Ultragenyx fell by 26.05 percent week-on-week as investor sentiment was largely dragged down by ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cce8e26af7e0bbf726d89b4877966dd1befb023a0e80ab11263c10a9af0751bf" target="_blank" rel="noopener noreferrer">Jazz names new CEO; Ultragenyx, Mereo shares slide on trial update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Current operations chief Renee Gala will succeed Bruce Cozadd at Jazz. Meanwhile, a key study of an Ultragenyx and Mereo drug is continuing past a second interim analysis....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8c42b092d9fb62a54cecd7fc6d70c479b251f878510595923e75e5757ecd48aa" target="_blank" rel="noopener noreferrer">US FDA declines to approve Ultragenyx's gene therapy for rare genetic disorder</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. Food and DrugAdministration has declined to approve UltragenyxPharmaceutical's experimental gene therapy to treat arare genetic disorder, the company said on Friday.(Reporting by Kamal......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d600f9c16d14c45ad47deac1c2f226b60aaf328d27b5d6e8d1470447e956d5a1" target="_blank" rel="noopener noreferrer">US FDA declines to approve Ultragenyx's gene therapy for rare inherited disorder</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. Food and DrugAdministration has declined to approve UltragenyxPharmaceutical's experimental gene therapy to treat arare inherited disorder, citing manufacturing concerns, thecompany said......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2091796384a567f4ef6c167be0971002881fb943cbc546ef5a1a4d3f92228c09" target="_blank" rel="noopener noreferrer">Ultragenyx Says Metabolic Disorder Treatment Approval Likely Delayed to 2026</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">By Dean Seal Ultragenyx Pharmaceutical said federal regulators have issued a complete response letter to its application for a metabolic disorder treatment that may delay the potential approval to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3033ed803fdd6acfbbbbd6d88e1140ebc2d16f10dd3735ca77be440dd8c46a71" target="_blank" rel="noopener noreferrer">Ultragenyx Receives Complete Response Letter from FDA for UX111 AAV Gene Therapy to Treat Sanfilippo Syndrome Type A (MPS IIIA)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">Complete Response Letter (CRL) cited specific chemistry, manufacturing and controls (CMC) related observations that are resolvable FDA clinical reviews acknowledged that the clinical data are robust a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5fe045667dfeb4e42031da517c3bbd2ccd2f7a138375a694723f2230430374c" target="_blank" rel="noopener noreferrer">Ultragenyx (RARE) Surges 5.1%: Is This an Indication of Further Gains?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx (RARE) witnessed a jump in share price last session on above-average trading volume. The latest trend in earnings estimate revisions for the stock doesn't suggest further strength down the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b640b0c62563bf95b22a9e2f2a577e735767724f20aa33db11b95baa12a75417" target="_blank" rel="noopener noreferrer">Sector Update: Health Care Stocks Mixed Premarket Thursday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Health care stocks were mixed premarket Thursday as the Health Care Select Sector SPDR Fund (XLV) wa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=658649ae1e5c80b79ee3097273c1e2da706ad2cde8ac86134630ecea07af97a2" target="_blank" rel="noopener noreferrer">Ultragenyx: 'Hold' The Best Strategy As Stock Tanks On Bone Disease Study Miss</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48ffe3f7f3a2761afad8236324e1f67cc13a01bdecbf54bda7765a0022c27de8" target="_blank" rel="noopener noreferrer">RARE, MREO Fall as Osteogenesis Study Likely to Continue Till Year End</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceutical and Mereo BioPharma shares tumble as investors await key phase III UX143 osteogenesis data now set for release at year-end....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aa39aba081af80f9f00d8551b68f85d1f5c8f636d0a3d46c5720f91cb8fb09a6" target="_blank" rel="noopener noreferrer">Ultragenyx, Mereo Hammered For Their Surprise Miss In Brittle Bone Disease</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx and Mereo stocks crashed Thursday after their treatment for brittle bone disease missed its mark in a second interim look....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b54e36ea0460fc0153af2493bea468caeb6dfb23c3baa9bf69d6ba8bbd62108" target="_blank" rel="noopener noreferrer">Biotech Stock Ultragenyx Is Falling on Unsatisfying Trial Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx and partner Mereo BioPharma’s brittle bone disease trial will continue. Investors had wanted data good enough to end it early....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8506aa8882a9e59c10949f83f0a30a1972009b024d6c52829388c7dcc41054f1" target="_blank" rel="noopener noreferrer">Mereo BioPharma: Buy Rating Despite No Early Study Completion Of Setrusumab For OI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2bd31cb4234a9fc9396e3834061ddbde79fc0d65626a1ddd33a2db82afea3325" target="_blank" rel="noopener noreferrer">Top Midday Decliners</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceutical (RARE) shares dropped 26% after a phase 3 study update of UX143 missed a k...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f3e27a63147a30bb0a66741eddf37645fb4195c7ebc4b6f3a658f9c6070851a1" target="_blank" rel="noopener noreferrer">Sector Update: Health Care Stocks Rise Late Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Health care stocks advanced late Thursday afternoon, with the NYSE Health Care Index rising 0.9% and...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8ea5d804d736e938791b2e97feb792c15e9fa888d2881a943d2cdad656e0d4a" target="_blank" rel="noopener noreferrer">Ultragenyx’s GTX-102 Receives FDA Breakthrough Therapy Designation for Angelman Syndrome</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.69
+                                </span>
+                            </div>
+                            <div class="article-summary">Ultragenyx Pharmaceutical Inc. (NASDAQ:RARE) is one of the most promising stocks according to Wall Street analysts. On June 27, Ultragenyx Pharmaceutical announced that the US FDA granted Breakthrough...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=41374fb7da95be035775925e5633f0c68509272b840fcec6f64e9c63718a9594" target="_blank" rel="noopener noreferrer">Ultragenyx and Mereo BioPharma Announce UX143 Phase 3 Orbit Study for Osteogenesis Imperfecta Progressing to Final Analysis</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Data from Orbit and Cosmic studies expected around the end of the yearNOVATO, Calif., July 09, 2025 (GLOBE NEWSWIRE) -- Ultragenyx Pharmaceutical Inc. (NASDAQ: RARE) and Mereo BioPharma Group plc (NAS...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=36ee1af2d5f3c0bedf9d827928e9698214181abd38fa39ea9ccc037d0808014c" target="_blank" rel="noopener noreferrer">High Growth Tech Stocks In The US Market With Promising Potential</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">The U.S. stock market has recently experienced a surge, with the S&P 500 and Nasdaq Composite reaching new all-time highs following a robust June jobs report that exceeded expectations and fueled opti...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2380a33098a6f80b874c78bc06f5c5c3b692854656888cf5da8a9e11c87edc60" target="_blank" rel="noopener noreferrer">Ultragenyx Receives Breakthrough Therapy Designation for GTX-102 in Angelman Syndrome</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-06-30</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">NOVATO - Ultragenyx Pharmaceutical Inc. , announced that it has received Breakthrough Therapy Designation from the U.S. Food and Drug Administration for GTX-102 as a treatment for Angelman......</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
