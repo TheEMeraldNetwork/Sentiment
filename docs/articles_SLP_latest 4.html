@@ -1,0 +1,647 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Simulations Plus Inc. (SLP) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Simulations Plus Inc. (SLP)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.07</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1c20be4678d8499653eea9afd9692830629ce67a9e515ca4b27a8c8fadb83fba" target="_blank" rel="noopener noreferrer">Simulations Plus and the Institute of Medical Biology of the Polish Academy of Sciences Partnership Announces Results in Validation of ADMET Predictor® Models with Enhanced AI Drug Design</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">RESEARCH TRIANGLE PARK, N.C., July 29, 2025--Simulations Plus, Inc. (Nasdaq: SLP) ("Simulations Plus"), a leading provider of cheminformatics, biosimulation, simulation-enabled performance and intelli...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6183c64f1f665c77279b55f1bd9a9e9c6e4de96e39829965081fc1be57d67279" target="_blank" rel="noopener noreferrer">SLP Resources Berhad (KLSE:SLP) Will Be Looking To Turn Around Its Returns</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">What financial metrics can indicate to us that a company is maturing or even in decline? A business that's potentially......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d554b818a9a2a49d7064f37b58158304eb2d4ec085622b73940d2e3af2d7be2" target="_blank" rel="noopener noreferrer">Conestoga Capital Advisors Trimmed Its Position in Simulations Plus (SLP)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Conestoga Capital Advisors, an asset management company, released its second-quarter 2025 investor letter. A copy of the letter can be downloaded here. The second quarter began with a historically poo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e37987fb412e018583ce78eb66a5dc2eaa70b5a7bbd005fbc6e784429f7ecc0f" target="_blank" rel="noopener noreferrer">Conestoga Small Cap Composite Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Conestoga lagged in Q2 as low-quality stocks surged, but stayed true to its focus on profitable small caps. See why theyâre sticking with quality over hype...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fbac69da7bc5b02e77ede21350de09e7466b6bd12c8ef65bf53269988c3d37eb" target="_blank" rel="noopener noreferrer">Conestoga Micro Cap Composite Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Conestoga gained 15.65% in Q2 but lagged the benchmark as speculative stocks surged. Explore how theyâre staying focused on quality micro caps with upside....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eaf1840cee8b1d317f1a1e7bb7c42744fe74dfee0e9c8de8501f0e5b4987efc9" target="_blank" rel="noopener noreferrer">KeyBanc Downgrades Simulations Plus (SLP) Stock to Sector Weight</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. (NASDAQ:SLP) is one of the Best Beaten Down Stocks to Buy Now. KeyBanc downgraded the company’s stock to “Sector Weight” from “Overweight” without a price target, as reported by...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=92353f1e7286b1f3ec98241f63c48b7ddeb755131850b4d85f5c7285876352c4" target="_blank" rel="noopener noreferrer">Simulations Plus: Still Positioned For FDA In‑Silico Trend Despite Near‑Term Headwinds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus dipped after Q3 2025 on guidance cuts, but core software strength and long-term growth drivers remain. Find out why SLP stock is a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c4a20c2d42ecd9a3423107efd89198501a997e5ade3d71c3ed7445ea26f91003" target="_blank" rel="noopener noreferrer">Simulations Plus Third Quarter 2025 Earnings: Revenues Beat Expectations, EPS Lags</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus ( NASDAQ:SLP ) Third Quarter 2025 Results Key Financial Results Revenue: US$20.4m (up 9.8% from 3Q......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=47030ed8973b956e3b68f4b980a47defb24be66a58edbbe7b9b12252f5ef1a7a" target="_blank" rel="noopener noreferrer">Simulations Plus Inc (SLP) Q3 2025 Earnings Call Highlights: Revenue Growth Amidst Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.08
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus Inc (SLP) reports a 10% revenue increase driven by acquisitions, while facing organic revenue declines and significant impairment expenses....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f62a13601e07ff0de4da2272875b5044204674d7b453bfacd096a9e72784603d" target="_blank" rel="noopener noreferrer">SLP's Q3 Earnings Top, Sales Up Y/Y, Stock Gains Despite Lowered View</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulation Plus' fiscal Q3 2025 earnings surge 67% on Pro-ficiency gains, but a cut in 2025 outlook shows hurdles in biosimulation and services....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=22d95ab41c0901afa3ed214488d2c5b536adec04229edea098dcb9282078d591" target="_blank" rel="noopener noreferrer">Simulations Plus Sees Weaker Demand Persist, Outlook Softens</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus Inc. (NASDAQ:SLP) shares declined on Tuesday following the release of its third-quarter 2025 earnings report. The company reported sales of $20.4 million, representing a 10% year-over...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9c3ea921432713166a7085ac6ca42b3152b9b98092547068294e4d4680ec6c2" target="_blank" rel="noopener noreferrer">Top Midday Decliners</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">S&W Seed (SANW) said late Monday it notified the Nasdaq Capital Market that it plans to voluntarily...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=771fc7b13744ff6b1e39380523c15efee9d69499acaeb9d106f80b18a17de279" target="_blank" rel="noopener noreferrer">Sector Update: Health Care Stocks Fall Late Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Health care stocks declined late Tuesday afternoon, with the NYSE Health Care Index dropping 1.9% an...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a97ba78861509afdc97aba32c2710fda4e7dca4d36845e8e89e37b91b32104e3" target="_blank" rel="noopener noreferrer">Simulations Plus Q3 revenue up 10%, beats estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Overview * Simulations Plus fiscal Q3 revenue rises 10%, beating analyst expectations, per LSEG data * The provider of simulation software and consulting services for drug research and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f90693f855d556f3b0adbd632c6eb0989fd54b2d86fc7f47658654168fa73a7" target="_blank" rel="noopener noreferrer">Simulations Plus : SLP Earnings Presentation Q3FY25 (July 14, 2025)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a8fd393ea249a2c7a7ebbd7e7670a5ff315b202f4e7afdf15571d0ef6686c652" target="_blank" rel="noopener noreferrer">Simulations Plus, Inc. Updates Earnings Guidance for the Fiscal Year 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. updated earnings guidance for the fiscal year 2025. For the year, the company expects revenue to be between $76 million to $80 million. Revenue growth to be between 9% to 14%......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=68b09e4cdad7f0e0948a80926b8c50050a11364f8ee379055aecc9b754f127fc" target="_blank" rel="noopener noreferrer">Transcript : Simulations Plus, Inc., Q3 2025 Earnings Call, Jul 14, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presentation Operator MessageOperator Greetings, and welcome to the Simulations Plus Third Quarter Fiscal 2025 Financial Results Conference Call. [Operator Instructions] As a reminder, this...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a81cc968b6e290fc674097d40ff33156189553a226ef88649dbc974df9cd4d74" target="_blank" rel="noopener noreferrer">Simulations Plus Reports Third Quarter Fiscal 2025 Financial Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RESEARCH TRIANGLE PARK, N.C., July 14, 2025--Simulations Plus, Inc. (Nasdaq: SLP) ("Simulations Plus" or the "Company"), a leading provider of cheminformatics, biosimulation, simulation-enabled perfor...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2ae5d6a1ee0a092cec8f8f4bce4e1106b6b7d4c6fd4737fd6275860fab8f9c3b" target="_blank" rel="noopener noreferrer">Simulations Plus: Fiscal Q3 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">RESEARCH TRIANGLE PARK, N.C. (AP) — Simulations Plus Inc. SLP) on Monday reported a loss of $67.3 million in its fiscal third quarter. On a per-share basis, the Research Triangle Park, North Carolina-...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5a3db74e76d30ec0f13a2637006de99280a5db92def75f571dfb1d73b57db86" target="_blank" rel="noopener noreferrer">Simulations Plus Invests in Clinical Development Technology Company Nurocor</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RESEARCH TRIANGLE PARK, N.C., July 14, 2025--Simulations Plus, Inc. (Nasdaq: SLP) ("Simulations Plus"), a leading provider of cheminformatics, biosimulation, simulation-enabled performance and intelli...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f6b90e68af0a47f8e17d20672f4b581925e1b5b98d7db22a5e23a041ed530f71" target="_blank" rel="noopener noreferrer">Simulations Plus, Inc. (SLP) Q3 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. (NASDAQ:SLP) Q3 2025 Earnings Conference Call July 14, 2025 5:00 PM ETCompany ParticipantsShawn M....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30bccca3e64c32248560ea0803d2f8067e14f2e3a2a0cfff912dc4d48b742da6" target="_blank" rel="noopener noreferrer">Simulations Plus, Inc. 2025 Q3 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Simulations Plus, Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2db317094f313182f133b7598373d8cb53eeea55ab1dd87c44f0125fbb60ba2" target="_blank" rel="noopener noreferrer">Craig-Hallum Trims Simulations (SLP) Price Target, Maintaining a Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-03</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Simulations Plus, Inc. (NASDAQ:SLP) is one of the top 10 healthcare AI stocks to buy according to hedge funds. Simulations Plus, Inc. (NASDAQ:SLP), a leading provider of modeling and simulation softwa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=650e4922ccac3da207331e92811741cfd1e4c0815bc0feac7376edbf7d91941c" target="_blank" rel="noopener noreferrer">3 High Growth Stocks Insiders Are Betting On</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">As the U.S. stock market navigates a landscape marked by fluctuating indices and economic uncertainties, investors are keenly observing developments in trade talks and fiscal policies that could influ...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

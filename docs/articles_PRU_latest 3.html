@@ -1,0 +1,759 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Prudential Financial Inc. (PRU) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Prudential Financial Inc. (PRU)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">31</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.00</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=780ed6e3bda0a2aa8f73dadf4d1b26ceb39042f4ffce3130a24b88f26bd66391" target="_blank" rel="noopener noreferrer">Prudential Financial: Mixed Q2 But Valuation Is Attractive</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b6b3463b28b878c1907498a9dd7d41692573901a64c914406694c9e5ff11a8f8" target="_blank" rel="noopener noreferrer">2025 U.S. Insurance Investments Market Report: The Power Of The Private Markets</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=46b3bc266626c5ef2441bfd3cadf06770067ea503be82b9ae9a713495e804214" target="_blank" rel="noopener noreferrer">Prudential (PRU) Q2 Earnings Report Preview: What To Look For</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Financial services giant Prudential Financial (NYSE:PRU) will be reporting earnings this Wednesday after market hours. Here’s what investors should know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=604e3bfebcc4737ef415a65a3b2db4aa49ee51264170dbadb2cbcd4ec3ee615c" target="_blank" rel="noopener noreferrer">Bear of the Day: Goosehead Insurance (GSHD)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">One of the general rules of thumb when investing in stocks is to avoid insolvent companies, and Goosehead Insurance (GSHD) has started to check this red flag....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed4d9354b310b578eabac45a9b74bd4fc8431729ba0bed2b1ad9604087cee578" target="_blank" rel="noopener noreferrer">Prudential (PUK) is on the Move, Here's Why the Trend Could be Sustainable</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">If you are looking for stocks that are well positioned to maintain their recent uptrend, Prudential (PUK) could be a great choice. It is one of the several stocks that passed through our "Recent Price...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8753d6fd9a27b2db2d9c8cecfcce5a3caf14624b2f6f4ff5587d5c8b80d3649" target="_blank" rel="noopener noreferrer">Prudential Financial Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1fd3ce75e11b92c06a7e23a9a8231812ba06cd54323c3f0797bdc70c610172dc" target="_blank" rel="noopener noreferrer">PRU Gears Up to Report Q2 Earnings: Here's What to Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial's Q2 results are likely to reflect a favorable reserve experience and solid investment performance, offset by higher expenses....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86680d3f6a0e0719bf02139a0b193d887f9e638543c6ec2dff7c683cad7ab4ef" target="_blank" rel="noopener noreferrer">Gear Up for Prudential (PRU) Q2 Earnings: Wall Street Estimates for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Besides Wall Street's top-and-bottom-line estimates for Prudential (PRU), review projections for some of its key metrics to gain a deeper understanding of how the company might have fared during the q...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2294281c2d3ed6bbd123629970bff5ae087c9fc4cfe698d829ea42d251b6dd1f" target="_blank" rel="noopener noreferrer">Prudential advances Thursday, outperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential advances Thursday, outperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec3fb05f85f20a8251859cf43035cfcf54fae95947dc4575a11b058931e7e5c4" target="_blank" rel="noopener noreferrer">Analysts Estimate Prudential (PRU) to Report a Decline in Earnings: What to Look Out for</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential (PRU) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fe8bcf032099d1c801a60f721726bdba37a318a512d2c8f6b6d8d2c905eb2c19" target="_blank" rel="noopener noreferrer">Prudential Financial Inc. stock underperforms Wednesday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Inc. stock underperforms Wednesday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1ca841bc2052a72dcbb198c4026b189fe4e9b10115f4d030926d9f4d17c7dfd" target="_blank" rel="noopener noreferrer">Prudential Financial Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=926db5df924f1390c7184d78359294eac43eb3b218d264b05778740644683d0a" target="_blank" rel="noopener noreferrer">3 Reasons PRU is Risky and 1 Stock to Buy Instead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last six months, Prudential’s shares have sunk to $103.65, producing a disappointing 13.8% loss - a stark contrast to the S&P 500’s 4.1% gain. This was partly due to its softer quarterly resu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=080c1a1612706ff6d4b89e405328eb68ec48d07aff58e6eb16c1945c48097fe1" target="_blank" rel="noopener noreferrer">Luxury Development Edition Birmingham Secures £127.5 Million Backing From Eldridge</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">LONDON, July 21, 2025--Court Collaboration and Select Property, the strategic partners behind Edition Birmingham, one of the city’s most prestigious residential developments, have today announced a £1...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e55c6ff55187989cf43111ecab96b7d173be80a6ca1a36a0c1fe2f2157b0b70" target="_blank" rel="noopener noreferrer">Prudential Financial Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db54078f4040b6a9e482ab7dff995d522883338088e53fcd73ef0db932611d21" target="_blank" rel="noopener noreferrer">This 12 Dividend Stock Portfolio Will Pay Your Bills – Every Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Most dividend stocks pay quarterly—but your bills don’t. Rent, groceries, gas, surprise car repairs… life doesn’t come once every three months. That’s why some investors are building what’s called a W...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5c31e1a0d71b8e49d311639eb71dfef61424234aef96995767e8a46a0da4b1d" target="_blank" rel="noopener noreferrer">Life Insurance Stocks Q1 Highlights: Prudential (NYSE:PRU)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Wrapping up Q1 earnings, we look at the numbers and key takeaways for the life insurance stocks, including Prudential (NYSE:PRU) and its peers....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0e33ced53e4cb049073ed115299a4cee82e4333c4bd2411ce3c23f26bb8a4e92" target="_blank" rel="noopener noreferrer">Prudential slides Wednesday, underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential slides Wednesday, underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7bff1a5e9a8b5dddbd51249f9622e09262a1e45adeb041d7aab2faae840e76dc" target="_blank" rel="noopener noreferrer">Is Prudential plc's (LON:PRU) Recent Stock Performance Influenced By Its Fundamentals In Any Way?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential (LON:PRU) has had a great run on the share market with its stock up by a significant 22% over the last three......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec8b8ebfd830230c375fdb5c60f87083293ce22da9cd75cf73ed49e508718fd9" target="_blank" rel="noopener noreferrer">3 Ideal July Buys And 7 To Watch From 47 'Safer' Dividends In 100 Barron's Sustainable Dogs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover Barron's 2025 ranking of sustainable companies, top ESG stocks, and strategies for maximizing returns with insights on risks and analyst forecasts. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=72c725c1084d1ba0cbe9b4e5a38ea8ea6e4bc414a74b27fbe9006e4a1443d650" target="_blank" rel="noopener noreferrer">Prudential falls Tuesday, underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential falls Tuesday, underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=37d427e61f37a0aeb19752615e8e8a7f75cd1356a7a3260acf700a8c7655ba03" target="_blank" rel="noopener noreferrer">Prudential Financial Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e6306076db5d02a1abd0026cef0777b2d3c699e97b8fe578abc99188c72ae25f" target="_blank" rel="noopener noreferrer">Prudential rises Monday, outperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential rises Monday, outperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f449d5ea2dfbea4cff466396007d65a11120af381c1f5fa3562ac5ac831ba067" target="_blank" rel="noopener noreferrer">Dogs Of The S&P 500: 14 Ideal 'Safer' July Dividend Buys</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b4872868b86f881585d252b4d337b876f1e1a1577b82f70a83f1ade4a13a3483" target="_blank" rel="noopener noreferrer">PRU Stock Trading at a Discount to Industry at 7.47X: Time to Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">Prudential Financial lags the market with a 10.1% drop but trades at a discount, backed by solid ROE and a global growth strategy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=354f88656eca7974105ac766b8f067583321982aec8a3212de3fabe8dfd68fa3" target="_blank" rel="noopener noreferrer">Do Options Traders Know Something About Prudential Financial Stock We Don't?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors need to pay close attention to Prudential Financial stock based on the movements in the options market lately....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bbfee9905840c31be447fe8a50276e2105b693156f354543dd438cd744ac8806" target="_blank" rel="noopener noreferrer">Can Prudential's New ActiveIncome Feature Redefine Retirement Planning?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">PRU debuts ActiveIncome, an annuity overlay for managed accounts that offers lifetime income without sacrificing liquidity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ece4443362d491d82f6796c949776664ae5347aa6f7940359fddaaae2c5ba43c" target="_blank" rel="noopener noreferrer">Prudential Financial Launches ActiveIncome Insurance Overlay, Delivering a New Category of Lifetime Income to Dimensional Managed Accounts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEWARK, N.J., July 07, 2025--Prudential Financial, Inc. (NYSE: PRU) today announced the launch of ActiveIncome, a first-of-its-kind insurance overlay option now accessible through Dimensional Fund Adv...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=721d4128539cff4d500675899b990c98707200800ba02f1828327a539382d75e" target="_blank" rel="noopener noreferrer">Prudential: Stability, Value, And Cash Flow In One Package</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dcb7be7fa0dbe1c419a7b33a9ded711c0cc42ade42fb1cc658079e89517cfd31" target="_blank" rel="noopener noreferrer">Prudential Financial, Inc. to Announce Second Quarter 2025 Earnings; Schedules Conference Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEWARK, N.J., July 02, 2025--Prudential Financial, Inc. (NYSE: PRU) will release its second quarter 2025 earnings on Wednesday, July 30, 2025, after the market closes. The earnings news release, the f...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1e9efd79d79487197c8d053bffb899f1c0506d662249145c94430e7b86c2702a" target="_blank" rel="noopener noreferrer">Steward Partners Acquires Bay Area Firm With $1.1 Billion of Client Assets</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">The acquisition accelerates the growth of Steward’s division for advisors seeking a succession plan....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

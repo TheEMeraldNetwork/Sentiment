@@ -1,0 +1,711 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Performance Food Group Company (PFGC) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Performance Food Group Company (PFGC)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.21</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c4dda23c74581d1536e030c62b74cb0c0aacd6fa0d08255fcb94f8dee853e7f" target="_blank" rel="noopener noreferrer">ClearBridge Mid Cap Growth Portfolios Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Franklin Templeton reports strong Q2 gains for its Mid Cap Growth Portfolios, powered by AI-driven picks. Explore how active strategy shaped the rebound....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e392e933c450c051ee02ce7fd349da3b2822dc279d5b666f07ca209048dbc758" target="_blank" rel="noopener noreferrer">eBay Q2 Earnings Beat Estimates, Revenues Increase Y/Y, Stock Gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">EBAY tops Q2 earnings and revenue estimates, with strong GMV and ad growth lifting shares 37.5% YTD....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b9c237f6b08b7db0ce553fb888edc4e06e03edb45602400c3fc6529d6d3ca78c" target="_blank" rel="noopener noreferrer">Etsy Q2 Earnings Miss Estimates, Revenues Jump Y/Y on Rising Ad Sales</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.64
+                                </span>
+                            </div>
+                            <div class="article-summary">ETSY misses Q2 earnings but beats on revenue as ad sales climb; stock buybacks, reactivated buyers offer bright spots....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=20cae6ce683d58e953b9d4bc8334e80be01849bdec56db7c685b4a0bb72958ce" target="_blank" rel="noopener noreferrer">Performance Food Group Company to Host Webcast of Fourth-Quarter Fiscal 2025 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">RICHMOND, Va., July 30, 2025--Performance Food Group Company to Host Webcast of Fourth-Quarter Fiscal 2025 Results...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bee516d7433aed1104fac3650dcaf6753880fe0f4864e8286262e0d8a6c22c2f" target="_blank" rel="noopener noreferrer">Sprouts Farmers (SFM) Q2 Earnings and Revenues Surpass Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Sprouts Farmers (SFM) delivered earnings and revenue surprises of +9.76% and +2.47%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c41b49309d42d37100ec6259b02096995f1fb64d62cb0edabc7d37187307d6c" target="_blank" rel="noopener noreferrer">Should You Buy or Hold Sprouts Farmers Stock Before Q2 Earnings?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">SFM eyes a strong Q2, with 30.9% EPS growth expected, but its high valuation raises questions ahead of earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fdcbb618fd2e8aa15735a3c459d1d2f2da5ef0ea46493605d1600e4758f827c3" target="_blank" rel="noopener noreferrer">Fidelity Mid-Cap Stock Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e5f4dba3bd7c08dbca9d287f46fd3f5765b21c3c99ee17339fd8a88379812186" target="_blank" rel="noopener noreferrer">Investing in Performance Food Group (NYSE:PFGC) five years ago would have delivered you a 253% gain</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.02
+                                </span>
+                            </div>
+                            <div class="article-summary">The worst result, after buying shares in a company (assuming no leverage), would be if you lose all the money you put......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=373776588c016b32a11b62add521b3b092f0719bd30cf6f70f862ce0097e8bb1" target="_blank" rel="noopener noreferrer">Performance Food Group (PFGC) Targeted for Acquisition by US Foods</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">Performance Food Group Company (NYSE:PFGC) is one of the best alternative meat stocks to invest in according to analysts. On July 11, shares of US Foods Holding (USFD) surged to an all-time high follo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db9e501b16fbf05a768e3d53267af3fc6ed4dd5f66fa50086819a673826e0de6" target="_blank" rel="noopener noreferrer">Performance Food Group (PFGC) is a Great Momentum Stock: Should You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Does Performance Food Group (PFGC) have what it takes to be a top stock pick for momentum investors? Let's find out....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ac0ce3103001b26bf588ac9c2f3021349514f7dcc6a7426c56fe46af991c0677" target="_blank" rel="noopener noreferrer">PFGC or SFM: Which Is the Better Value Stock Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">PFGC vs. SFM: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b0ea43c4be105f1d65517cce8a0a80b2752a08011899e3a0a23594912cfce994" target="_blank" rel="noopener noreferrer">United Natural Foods Stock Scores RS Rating Upgrade</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">United Natural Foods stock saw a welcome improvement to its Relative Strength (RS) Rating on Thursday, with an increase from 73 to 85.    Looking For The Best Stocks To Buy And Watch? Start Here  IBD'...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c969c08aa83387e5d999c5aa08b5e458f1aff23da4e74a0aaa012ee1ee0f9eca" target="_blank" rel="noopener noreferrer">Food And Hardware Stocks Score New Highs; RS Ratings Spike</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Celestica and Performance Food Group are at all-time highs. Both have scored a spot on IBD's screen for strong price action....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a1d16d9073a2fa849163f7fb8d1d23b2a3533574ba34f6767f2998a147de47c" target="_blank" rel="noopener noreferrer">Performance Food is said to draw takeover interest from US Foods - Bloomberg News</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.41
+                                </span>
+                            </div>
+                            <div class="article-summary">July 11 - Performance Food is said to draw takeover interest from US Foods - Bloomberg News......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a495b9c4885003762409ca056bfee04d74c080dee26439a8c870ddd6e271811" target="_blank" rel="noopener noreferrer">Performance Food Group attracts takeover interest from US Foods, Bloomberg News reports</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Performance Food's shares were up more than 9% in premarket trading, while those of US Foods were flat.  Rosemont, Illinois-based US Foods has been evaluating an acquisition of Performance Food and ex...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b03bcb31f769cd78b558debb4a89d8c898ae7ead7107a2dc80d6366630a1ce0a" target="_blank" rel="noopener noreferrer">Boeing, AMC, US Foods & Performance Food: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Here are some of the stocks on the move on July 11. Boeing (BA) investors are watching for a preliminary report on an Air India crash that occurred in June.  Wedbush upgraded shares of AMC (AMC) to Ou...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c8234dbd52f2a892bc8ff693d605b4324c30dc3d3340f7e8ab1818b4d54c071" target="_blank" rel="noopener noreferrer">Performance Food Draws Takeover Interest From US Foods</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Performance Food Group Co. has attracted takeover interest from US Foods Holding Corp., a potential deal that would create a food distribution company with combined sales of roughly $10...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=01021c9910c7ecefd9eb7453bb84a4b5feb0550cfc30ae9660cd74bf24865a5d" target="_blank" rel="noopener noreferrer">Top Midday Stories: Performance Food Draws Takeover Interest From US Foods; Levi Strauss Raises Full-Year Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">All three major US stock indexes were down in late-morning trading Friday after President Donald Tru...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8971cc12eacad86165e8e36d4259bdda37e92ef9c949be5c86e65cc0d78ddf80" target="_blank" rel="noopener noreferrer">US Foods Mulling Acquisition of Performance Food, Report Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">US Foods Holding stock hit an all-time high Friday on a report that the firm was mulling an acquisition of Performance Food Group, whose shares also jumped to a record high....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c66227dcc40cfac31e4e3675fc2b67e38c4ef0a15518a79e97fda283a6902e3d" target="_blank" rel="noopener noreferrer">Equity Markets Mostly Fall Intraday as Traders Track Tariff Updates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">US benchmark equity indexes were mostly lower intraday as markets tracked the latest trade developme...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=900daabb1d91f3e86c41d7c9bab1ac5a82eb39a47c9b196bd8ccd998875b3d07" target="_blank" rel="noopener noreferrer">Two Food Stocks Soar On Massive Deal News As Defensive Play Hits New Highs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Two food stocks hit an all-time high in Friday's stock market. Aerospace and defense play TransDigm also scaled to new highs....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bbdde80f2d9fb1398412119ba2f95668a36b54c71be90d8cf79a79cb9f3c846f" target="_blank" rel="noopener noreferrer">Sector Update: Consumer Stocks Mixed in Late Afternoon Trading</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Consumer stocks were mixed late Friday afternoon with the Consumer Staples Select Sector SPDR Fund (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=16a5a07692492425909b22a305c9047dee41a87bf357b50424536f6a177ed1fa" target="_blank" rel="noopener noreferrer">Wall Street Retreats as Investors Monitor Tariffs Updates, Bank Earnings Loom</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 and the Nasdaq Composite fell on Friday from fresh highs as investors closely watched up...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a5ef336fe695cca3984eb11a99e5d002a60c2159906215f0c0c75dcff0cf607" target="_blank" rel="noopener noreferrer">It's No Nvidia, But Top Funds Get 'Fanatical' About This Breakout Stock — Again</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">As Nvidia earns a $4 trillion market cap and record high, US Foods joins Nvidia on this elite list as it eyes a breakout....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e075442f805d7ca3b6300095e977172e95aca557756438e8f6b9a4486d6dd826" target="_blank" rel="noopener noreferrer">Is Sprouts Farmers Stock a Buy, Hold or Sell After a 26% YTD Jump?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">SFM stock surges 26% YTD, powered by store expansion, private-label growth and rising demand for healthier food....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b96d36868c1f474057f0103a08682064fe624e128a85bc379054b13980c6892" target="_blank" rel="noopener noreferrer">BMO Keeps Outperform Rating on Performance Food Group (PFGC)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.66
+                                </span>
+                            </div>
+                            <div class="article-summary">Performance Food Group Company (NYSE:PFGC) is one of the 11 Best Food Stocks to Buy According to Wall Street Analysts. On May 29, BMO Capital Markets maintained an “Outperform” rating on Performance F...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c5df45a5a87a6b1690bdfbb07a330cbb5d33284fa62429aed2a07e8d9aba8c17" target="_blank" rel="noopener noreferrer">Zacks Industry Outlook Highlights Sprouts Farmers Market and Performance Food</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">SFM and PFGC are holding strong in a tough market, driven by innovation, cost control and growing health-conscious demand....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb877a316df6af3aba83f6336947dc80d1fd9230d941e7aab8f0347367d0b376" target="_blank" rel="noopener noreferrer">2 Natural Food Stocks Holding Steady Despite Market Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.04
+                                </span>
+                            </div>
+                            <div class="article-summary">SFM and PFGC are outperforming in a tough market, thanks to rising health trends and sharp cost strategies....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
