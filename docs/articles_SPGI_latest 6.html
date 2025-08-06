@@ -1,0 +1,1543 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>S&P Global Inc. (SPGI) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">S&P Global Inc. (SPGI)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">80</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">38</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.15</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0d5a9d4c3b73845c38a452dc44a13fb3cb8b88c5acc8f718fda5e2209fd3ea7b" target="_blank" rel="noopener noreferrer">S&P Global Mobility: U.S. auto sales expected to post modest gains in July</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Mobility projects new light vehicle sales volume in July 2025 will reach 1.33 million units. This would translate to an estimated sales pace of 15.9 million units (seasonally adjusted annua...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d62786051403f23ad07bfe24c20714ffe924871157402c0e397d77b1afdfaef4" target="_blank" rel="noopener noreferrer">Company News for Aug 1, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Companies in The News Are: SPGI, META, BBVA, MSFT...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fb501d2c2169600ebbe4ef696031ed4be48bdf34004686f45070484a55e74e83" target="_blank" rel="noopener noreferrer">TRU Stock Barely Moves Since Reporting Q2 Earnings Beat: Here's Why</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">TransUnion beats second-quarter 2025 estimates and raises guidance, but the stock barely budged. Read to know what is holding back its momentum....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8032be3437c08763352826aff3557ce25cb6f2bf31b7854bbf608fc291aed19e" target="_blank" rel="noopener noreferrer">Equities, Yields Tumble Following Jobs Report Shock; Wall Street Posts Weekly Declines</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">US equities and Treasury yields declined Friday following a weaker-than-expected jobs report and the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=86ddfe9a54caa4e13a1dd9fcb5eadd298bbd43e24a5e31f5349e384f9b7b4dca" target="_blank" rel="noopener noreferrer">Kodiak Gas Services Set to Join S&P SmallCap 600</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Kodiak Gas Services Inc. (NYSE: KGS) will replace NV5 Global Inc. (NASD: NVEE) in the S&P SmallCap 600 effective prior to the opening of trading on Wednesday, August 06. Acuren Corp. (NYSE: TIC) is ac...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5f2cafd774037e6c49bd8c167fbe16c32eeeea28f31d9ae326d25cf9025a6890" target="_blank" rel="noopener noreferrer">S&P Global Reports Second Quarter Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (NYSE: SPGI) today reported second quarter results. The Company's earnings release and supplemental materials are available at http://investor.spglobal.com/Quarterly-Earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b64dce1a1d8511d81f874892bcfc3653b9675306aac90cde885a18ccac073175" target="_blank" rel="noopener noreferrer">S&P Global: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK (AP) — S&P Global Inc. SPGI) on Thursday reported second-quarter net income of $1.07 billion. On a per-share basis, the New York-based company said it had net income of $3.50....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4bb9764ed98c6425cde023929302cdac01f12bfeec687160dbd01b809baf7195" target="_blank" rel="noopener noreferrer">Bill Eager Appointed President of S&P Global Mobility and CEO Designate of Planned Standalone Public Company</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (NYSE: SPGI) today announced the appointment of Bill Eager, Chief Executive Officer of CARFAX, as President of S&P Global Mobility ("Mobility"), effective August 15, 2025, and CEO designate...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=634958b24a96354dee5185a8a787fcf166f8aeafb5990bf79edb49cd262f80ff" target="_blank" rel="noopener noreferrer">Arcos Dorados Achieves Full Investment Grade With S&P's Initial Rating of 'BBB-'</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">MONTEVIDEO, Uruguay, July 31, 2025--Arcos Dorados Holdings Inc. (NYSE: ARCO) ("Arcos Dorados" or the "Company") announced that S&P Global Ratings (S&P) assigned an investment grade long-term issuer cr...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fada1feee30041f4d7e6d4c48a13a7c345365e18052f60a2eb3fbfc96316c07e" target="_blank" rel="noopener noreferrer">Stocks Rise Pre-Bell as Fed Keeps Rates Steady; Key Inflation Report, More Tech Earnings on Deck</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">US equity markets were tracking in the green before the opening bell Thursday following the Federal...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=614bac3509c28f3f470a96e0101f1da9faf3b514f664980e077e89522cc4c56e" target="_blank" rel="noopener noreferrer">S&P Global Inc. 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by S&amp;P Global Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a0348ccaa7b7765a6287113cda0363e5f3ac1c351fdf284efea7546f3ffec46" target="_blank" rel="noopener noreferrer">S&P Global Inc. (SPGI) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">S&amp;P Global Inc. (NYSE:SPGI) Q2 2025 Earnings Conference Call July 31, 2025 8:30 AM ETCompany ParticipantsEric Walter Aboaf - Chief Financial OfficerMark......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0d8844bdffc694a52b42e068b768f441e0a1194efc0ff0d2c26aa060fa304216" target="_blank" rel="noopener noreferrer">S&P Global (SPGI) Tops Q2 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (SPGI) delivered earnings and revenue surprises of +4.24% and +1.99%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e2b1d12a0e2ac8441bb6b0201e207d6bef217138fbe95c6e630fc0752d6347c6" target="_blank" rel="noopener noreferrer">S&P Global forecasts annual profit above estimates on strong demand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global now expects its 2025 adjusted earnings per share to be between $17.00 and $17.25, compared with its prior estimate of $16.75 to $17.25.  The company reported an adjusted profit of $1.36 bil...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=382bd1840bfbac33577a30f2f0c44d4f1fd30917863fb64e231c2b90e88a4b16" target="_blank" rel="noopener noreferrer">S&P Global (SPGI) Q2 Earnings: How Key Metrics Compare to Wall Street Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">While the top- and bottom-line numbers for S&P Global (SPGI) give a sense of how the business performed in the quarter ended June 2025, it could be worth looking at how some of its key metrics compare...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76142cac63f854c2cbea5d89e4f9c423cc420fa5ad001b9bac3d7a07b8be2006" target="_blank" rel="noopener noreferrer">S&P Global Q2 Earnings & Revenues Outpace Estimates, Increase Y/Y</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">SPGI posts 9.7% EPS growth and strong segment gains in second-quarter 2025, and raises its yearly earnings outlook....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c4fa89155ff711fb40c416f0ea7c232fd75a74212fbe5f90e56ac8700c041fb9" target="_blank" rel="noopener noreferrer">S&P Global Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2ada2c3275aecd1841a6c2ad2e8090e50cb4ffea0a360a981302d6be6b838ae1" target="_blank" rel="noopener noreferrer">Sector Update: Financial Stocks Mixed Thursday Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.02
+                                </span>
+                            </div>
+                            <div class="article-summary">Financial stocks were mixed in Thursday afternoon trading, with the NYSE Financial Index up 0.1% and...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2908a9e9238d11e07415de6208122d1bb7f32cb51013b9a54006902272506e73" target="_blank" rel="noopener noreferrer">Sector Update: Financial Stocks Retreat Late Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Financial stocks were lower late Thursday afternoon, with the NYSE Financial Index and the Financial...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=35d876f7cc8654abf2ceedee2bf06c063264a0bf647c4960e5c43a8c017b3a25" target="_blank" rel="noopener noreferrer">Why S&P Global (SPGI) Earns a Strong Buy Rating from Analysts and Dividend Investors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Inc. (NYSE:SPGI) is included among the Best Strong Buy Dividend Stocks to Invest in Now. S&P Global doesn’t operate in the spotlight like many other stocks. Instead, it functions behind the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=24e13eba5f75de9a5212257dd94c873312646fe8471f75d7ac538b39bb723fa4" target="_blank" rel="noopener noreferrer">How to Boost Your Portfolio with Top Finance Stocks Set to Beat Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">Finding stocks expected to beat quarterly earnings estimates becomes an easier task with our Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9a3fb627097031e89061413f53ecef58eafb09c76fc2b492017955b949139ebc" target="_blank" rel="noopener noreferrer">S&P CORELOGIC CASE-SHILLER INDEX RECORDS 2.3% ANNUAL GAIN IN MAY 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.04
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Dow Jones Indices (S&P DJI) today released the May 2025 results for the S&P CoreLogic Case-Shiller Indices. The leading measure of U.S. home prices recorded a 2.3% annual gain in May 2025, a sligh...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=75d316c1a36585f77d3fd008fe6efd8a913ba4c173331fb8eaa5434ae881479e" target="_blank" rel="noopener noreferrer">Nutrien: Up 33%, But Fundamentals Say Hold, Not Add</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Nutrien's risk/reward profile now appears balanced as fertilizer prices recover. Explore insights from the ALLKA 4D Rating model....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec7ca28bd6313185288059fcffdaf391f4b9de2d0ac6d5af9cf3a6d268c217c3" target="_blank" rel="noopener noreferrer">S&P Global to Report Q2 Earnings: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">SPGI's second-quarter 2025 earnings are expected to have risen on strong product demand, market positioning and recurring revenue gains....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d5bdece0e0cbaa6ecec7303039cd71c10466cef96381fdd339aa98d83bb1bfd7" target="_blank" rel="noopener noreferrer">Why I'm Starting AT&T Coverage With A 'Hold' Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why AT&T offers a balanced risk/reward profile with strong fiber revenue growth yet high net debt....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4947301a6374b3da2c0b3db427208fcf9d09b3b7d9161e636075114e0b65a542" target="_blank" rel="noopener noreferrer">Time To Take Profits On Caterpillar</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Caterpillar's stock surge diverges from its financials. Learn insights on its risk/reward profile amid U.S. housing market recovery....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53dcf3c6d494f7f96a07e07c1b3f71b6235268745b6924e261c183ccf6e22a49" target="_blank" rel="noopener noreferrer">Altria Group: Dividend King Or Smoking Illusion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.47
+                                </span>
+                            </div>
+                            <div class="article-summary">Altria Group faces falling tobacco volumes and a stock-price disconnect, but stable EBITDA and strong dividends support resilience. Read why MO stock is a hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b818b2c93014ea81c5fd835dbff766016ed154a2c4bbe70ae78d1454c570cf49" target="_blank" rel="noopener noreferrer">Verisk Set to Report Q2 Earnings: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">VRSK is set to report second-quarter 2025 results, with y/y revenue growth driven by subscriptions, pricing gains and client expansion....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=da9a47446368a5deb2b7e49b3d1fb01a4272e75100efada772f083753847fbea" target="_blank" rel="noopener noreferrer">Fidelity Strategic Dividend & Income Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Fidelity Investments highlights strong Q2 gains in convertibles and infrastructure. See how tactical shifts shaped results. Explore the full fund update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5989264fe51ddfeff71b92efc64cb84bc0ce2f06f7b48d93a21074d896da420f" target="_blank" rel="noopener noreferrer">Methane Emissions Intensity of Permian Basin Declined by More than Half in Two Years, New S&P Global Commodity Insights Analysis Finds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">The methane intensity of oil and gas production in the Permian Basin—an area responsible for half of U.S. oil production and one fifth of natural gas—declined by more than 50% during the 2022-2024 per...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9402f00318eb42b9430ba7a4b69bed7662f879a9fef880fb15515b70bbcd2223" target="_blank" rel="noopener noreferrer">S&P Global (SPGI) Earnings Expected to Grow: What to Know Ahead of Next Week's Release</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (SPGI) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bac9cec972ae14b67b6329ee97510b25ff6457aea67de3c7ffcdbbccd0b9d514" target="_blank" rel="noopener noreferrer">Nasdaq, S&P 500 Reach New Highs as Markets Track Latest Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">The Nasdaq Composite and the S&P 500 climbed to fresh highs on Thursday as traders digested the late...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1c2dc1798edfbf12ff5ece69878978f14647cfc76435eb5afc0bb59dd1052ead" target="_blank" rel="noopener noreferrer">Veracyte Set to Join S&P SmallCap 600</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Veracyte Inc. (NASD: VCYT) will replace Triumph Group Inc. (NYSE: TGI) in the S&P SmallCap 600 effective prior to the opening of trading on Tuesday, July 29. Warburg Pincus LLC and Berkshire Partners ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e138cc087d6290bfbaee10e92035733f30b68a1d2398d0dd98bf8f2b05cf152f" target="_blank" rel="noopener noreferrer">CARFAX: Fridays Pose Highest Risk for Car Accidents on U.S. Roads</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.72
+                                </span>
+                            </div>
+                            <div class="article-summary">Fridays are the riskiest day for car accidents for most U.S. drivers, according to new data from CARFAX. More accidents occur on Fridays than on any other day of the week in at least 43 states, with t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cb5f19cb23d89b8b1c4ffd547e7abb64c16ce04df36fb9718b4a854effcba0c1" target="_blank" rel="noopener noreferrer">Aristotle Focus Growth Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For Q2 of 2025, Aristotle Atlanticâs Focus Growth Composite posted a total return of 17.70% gross of fees (17.67% net of fees). Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e6252cef7ddccff3313bc33ff8ba84e58068aaf996f169e55da755c6e604bc7" target="_blank" rel="noopener noreferrer">WM Gears Up to Post Q2 Earnings: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">WM eyes a 17.4% revenue jump in the second quarter 2025, with gains across all segments and solid margins boosting EPS expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e78b3fc2cb5ac3c7dbb517f29c295738d6b4f79bd861832abc78ab5ebf11c99f" target="_blank" rel="noopener noreferrer">S&P Global and Barclays Partner on a Multi-Year Strategic Agreement</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (NYSE: SPGI) today announced the signing of a new multi-year strategic agreement with Barclays. The mutually beneficial agreement includes access to a comprehensive suite of S&P Global prod...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0e8567330e36ff9c2c73bd6d6b7c56d5f55cfe51403609adb30c2a85901254d2" target="_blank" rel="noopener noreferrer">S&P Global Inc. stock underperforms Wednesday when compared to competitors despite daily gains</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Inc. stock underperforms Wednesday when compared to competitors despite daily gains...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0abfb9a06bfcdd22331e819cff2f63c95a0a2e603f074263e23c8ab514d9f843" target="_blank" rel="noopener noreferrer">Best Dividend Kings: July 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why 14 Dividend Kings outperform the S&P 500 in 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9ea328b300e9eb8a3f85a20ea29f5628cd14d03a4a055976d48dbee6ebb14231" target="_blank" rel="noopener noreferrer">Latin America's Largest Market, Brazil, Awards Platts Dated Brent and Nine Other Platts Benchmarks as the Basis of its Royalty Calculations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Latin America's largest market, Brazil, has again awarded the benchmarks of Platts, part of S&P Global Commodity Insights, as the pricing reference in its calculations of the nation's oil and gas roya...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a1cfacfa5e3eb86b51afeda1e7ee4129f0bd49dd711e8ade970bda0809035b5" target="_blank" rel="noopener noreferrer">Dodge & Cox Stock Fund Q2 2025 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Dodge & Cox Stock Fund stays focused amid market swings, boosting value with Health Care picks. Discover how disciplined investing drives results...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=01687415a2239146715f59b566dd8c230bc8c5b20289fb8110bb72ca7d019674" target="_blank" rel="noopener noreferrer">S&P Dow Jones Indices to Acquire ARC Research, Expanding Wealth Data and Benchmarking Capabilities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.76
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Dow Jones Indices ("S&P DJI"), a division of S&P Global (NYSE: SPGI) and the world's leading index provider, today announced that it has entered into a definitive agreement to acquire ARC Research...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9b754ef528fe7b96b0cce9ccb833959abb45dd40ecee9b9f814293e42b25b101" target="_blank" rel="noopener noreferrer">GE HealthCare Stock: Hidden Winner Of Alzheimer's Drug Boom</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">GE HealthCare Technologies' market position, rising earnings, and improving financials make it an attractive investment opportunity. Read more on GEHC stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd59c042c860e1baee914fccc429a5b492c385d937c00dd0c94bae0954544ce2" target="_blank" rel="noopener noreferrer">Fiserv Set to Report Q2 Earnings: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">FI eyes y/y growth for second-quarter 2025, with EPS expected to rise 13.2% and strong gains projected across core business segments....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6e03bb56b31ac076e7f3ca1ec0ca65c5eef9603f4dcff2bf2622acff1f2afd17" target="_blank" rel="noopener noreferrer">Fair Isaac: Priced For Hyper Growth But Facing Stagnation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Fair Isaac faces growth stagnation as fee hikes erode market share. Overvalued by 137%, the stock shows significant downside risk....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2c12f5ecc76a18cd64217f5359efa736dc8e5da146c8b58c49383a686ca87f8" target="_blank" rel="noopener noreferrer">Block Set to Join S&P 500</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Block Inc. (NYSE: XYZ) will replace Hess Corp. (NYSE: HES) in the S&P 500 effective prior to the opening of trading on Wednesday, July 23. S&P 500 and S&P 100 constituent Chevron Corp. (NYSE: CVX) has...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f06211a7636441aef8813713651b9ec3ed2429fd07b7c75eed5282cdc39f47a" target="_blank" rel="noopener noreferrer">S&P Global As A Retirement Compounder: Manageable Drawdowns, Reliable Returns</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">I view S&P Global (SPGI) as a long-term retirement asset, ideal for 5-10 year horizons with stable compounding potential....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=15d82362a4102c6b1d1f88c8d44c5219052a81f8205db3cdcc94cd2b0c91e56b" target="_blank" rel="noopener noreferrer">S&P Dow Jones Indices Announces Changes to the S&P/TSX Composite Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">The shareholders of Innergex Renewable Energy Inc. (TSX: INE) have agreed to the terms of a Plan of Arrangement resulting in the acquisition by La Caisse. Each share of Innergex Renewable Energy will ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=774db475d781aa404f6149fffc96b59c019c8e78f58cbd54c875fcaf57a60aa1" target="_blank" rel="noopener noreferrer">S&P Global: High Quality, Fairly Priced</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=427532ff551e9c38a348799f320b6d70f81b606eaa88b869b20b47129f2d5b35" target="_blank" rel="noopener noreferrer">Senator Warren Has a New Target on Wall Street: Private Credit</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Sen. Elizabeth Warren sent letters Thursday to agencies including S&P Global Ratings, Moody’s Ratings and Fitch Ratings, asking for information about how they score the riskiness of private-credit pro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=69e008e9ff2304ffc506a376bf51cf0de67d3dbd415672952aa8de07abc65300" target="_blank" rel="noopener noreferrer">S&P Global Unlocks the Future of AI-driven insights with AI-Ready Metadata on S&P Global Marketplace</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (NYSE: SPGI) launched its new AI-ready Metadata on the S&P Global Marketplace, enhancing the modern discovery and search experience for customers and stakeholders. AI-ready metadata transfo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=71d6b0ae86887e15133ab87db1b6182288f1a08ade93f5621b093fdb2e52e03e" target="_blank" rel="noopener noreferrer">Senegal raises $644 million in oversubscribed domestic bond offering</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Senegal has raised 364billion CFA francs in its second public bondoffering of 2025, exceeding its initial target of 300 billionCFA francs, the West African nation's finance ministry said in......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=887fa1fb52e2f86d27202dd5cd4ecc464bf49989b2ee52d157dc6864ed4a4a14" target="_blank" rel="noopener noreferrer">Parnassus Value Select ETF Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">Parnassus Value Select ETF returned 6.38% (net of fees) for the quarter, outperforming the Russell 1000 Value Indexâs 3.79%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7f21b46d510fc34a6ca2316565655fc51487440827c8a003d40c5ac7d653cd0c" target="_blank" rel="noopener noreferrer">Parnassus Core Equity Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8da32aa99f91d77430a6333e00c9076e612b9dbc7e69491bd5ddc74be3c14dc2" target="_blank" rel="noopener noreferrer">Parnassus Value Equity Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b912e03b0cc68b8aa8025dedf940016ebf27e9f24b4b0d3e88b75ef5bd639209" target="_blank" rel="noopener noreferrer">CARFAX Canada Expands VIN Fraud Detection Efforts with New Consumer Tool and Data Source</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">LONDON, Ontario-CARFAX Canada is proud to announce its latest advancement in VIN fraud detection with the launch of a new consumer tool, Vehicle Monitoring, a first-of-its-kind tool for Canadian......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f497ba4e3baeb5037417fb084191da242506d6079bea3225d539ca8c7de4ed5e" target="_blank" rel="noopener noreferrer">S&P Global and Anthropic Announce Integration of S&P Global's Trusted Financial Data into Claude</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.47
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (NYSE: SPGI) today announced a collaboration with Anthropic to bring S&P Global's trusted financial data into Claude by Anthropic. This integration enables financial professionals to answer...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f312fd26633b339c75cc85f38a4e2f6ea08b34d90188908eecfe5e5ae8bc020f" target="_blank" rel="noopener noreferrer">Wall Street Lunch: June CPI Shows Tariff Impact On Prices</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">A mixed retail inflation report indicated that tariffs are starting to have upward pressure on prices....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ae7a67123f2387266bc8b0c970379db7e4cee68084d6af5d8d8f1d0e893bb206" target="_blank" rel="noopener noreferrer">S&P Global Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=54fac520e23f7583780b6de1cced1daefd37fbf6fbfa48bfe68e2d12194cdbf7" target="_blank" rel="noopener noreferrer">S&P Global Inc. (SPGI): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on S&P Global on FluentInQuality’s Substack. As of 14ᵗʰ July, S&P Global’s share was trading at $530.12. SPGI’s trailing and forward P/E were 41.68 and 31.54 respective...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=38f87f9cc0f3bc5eea21903b90359daf4e5f0ec64a3616850d230ef19d6477fc" target="_blank" rel="noopener noreferrer">AeroVironment Set to Join S&P MidCap 400; Victory Capital Holdings to Join S&P SmallCap 600</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">AeroVironment Inc. (NASD: AVAV) will replace ChampionX Corp. (NASD: CHX) in the S&P MidCap 400, and Victory Capital Holdings Inc. (NASD: VCTR) will replace AeroVironment in the S&P SmallCap 600 effect...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c929e5541e0ab182125dfc6f1432b1ae7619d09247ad2c888199122cf72d8bf0" target="_blank" rel="noopener noreferrer">Textbook publisher McGraw Hill targets $4.2 billion valuation in US IPO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">July 14 - U.S. publisher McGraw Hill is targeting a valuation of $4.2billion in its IPO, the company said on Monday, adding to arecent line up of public market hopefuls that are......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b48a1b6e4284211f1ba46de3a0e77accd3227f85989bf9144b76e7f1d1f6093" target="_blank" rel="noopener noreferrer">Publisher McGraw Hill targets $4.2 billion valuation in US IPO</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">U.S. publisher McGraw Hill istargeting a valuation of $4.2 billion in its IPO, the companysaid on Monday, joining other private equity-backed firmslooking to take advantage of improved investor......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7fb368ebbfdea259c568be57215065e2df113704944e847d99e83c5ddbe233b9" target="_blank" rel="noopener noreferrer">McGraw Hill and NIQ to test appetite for IPOs by mature companies with billions in sales</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">McGraw Hill and NIQ to test appetite for IPOs by mature companies with billions in sales...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b7fd925e2dd7255a7d52ed68a3cdc661b5601c2834e7f6e9f4a6239f0276cdb4" target="_blank" rel="noopener noreferrer">PE-Backed McGraw Hill, NIQ Global Intelligence Unveil IPO Terms</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Education publisher McGraw Hill and consumer-intelligence provider NIQ Global Intelligence have unveiled terms of planned initial public offerings that could give each of the private equity-backed com...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1d372b21f1b9bf1bbe66067d77d5c273e359826bf6fb525bd68b22eff7504a07" target="_blank" rel="noopener noreferrer">The Trade Desk Set to Join S&P 500</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Trade Desk Inc. (NASD: TTD) will replace ANSYS Inc. (NASD: ANSS) in the S&P 500 effective prior to the opening of trading on Friday, July 18. S&P 500 constituent Synopsys Inc. (NASD: SNPS) will ac...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7b82007ae561779ea24e3256d6a27851ed5338560deb3ac72b29e093d9711bff" target="_blank" rel="noopener noreferrer">Morgan Stanley Keeps Buy Rating on S&P Global (SPGI), Raises PT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Inc. (NYSE:SPGI) is one of the 13 Best Large Cap Stocks to Buy Right Now. On July 7, TipRanks reported that Morgan Stanley analyst Toni Kaplan raised the price target for S&P Global Inc. (N...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c65cfd4e83d29aa29c56d4dbbb1255738e02ad22138cbd9a7da3ed2cd0bc003f" target="_blank" rel="noopener noreferrer">UK's CMA considers probe into S&P Global /ORBCOMM AIS merger</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">July 11 -UK's CMA: Competition and Mkts - merger update: S&P Global/ORBCOMM AIS UK's CMA: considering whether S&P Global/ORBCOMM AIS transaction will result in creation of a relevant merger......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=71c085ea5e6b44c237044db8f38b6b14b74f2c44712c26c5e1b02eaea1f0335c" target="_blank" rel="noopener noreferrer">TARIFF PAUSE SPURS GLOBAL MANUFACTURING ACTIVITY IN JUNE, WITH GLOBAL SUPPLY CHAINS NOW OPERATING CLOSE TO FULL CAPACITY: GEP GLOBAL SUPPLY CHAIN VOLATILITY INDEX</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">GEP Global Supply Chain Volatility Index — a leading indicator tracking demand conditions, shortages, transportation costs, inventories, and backlogs based on a monthly survey of 27,000 businesses — j...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fcbf6da128ee90cf27a6dcb86605c9a5538512e5a1221c28600bcaf23defcfd8" target="_blank" rel="noopener noreferrer">CARFAX Lifetime New Car Ads Approved for GM iMR Turnkey Program</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">CARFAX has expanded its relationship with General Motors, announcing CARFAX Lifetime dealers now receive new car ad placements on CARFAX Reports, CARFAX Car Listings, and CARFAX Car Care to qualify fo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b17f69f328dd8a371a612a465799b3422f7e2ba851a733c58d474214fa50e948" target="_blank" rel="noopener noreferrer">S&P Global Earnings Preview: What to Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global is scheduled to announce its second-quarter results at the end of this month, with analysts anticipating a single-digit earnings growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=924ec444256bb1f8bb635b7704657fa57b78bad3a490ee61e2ca7a82ff70a812" target="_blank" rel="noopener noreferrer">Morningstar Treads Water, High Hopes, High Valuation, And Hidden Risks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e76430d904ec6b04f05106b9b4b47c7096d5ab472e524b3e723066de975e1a6" target="_blank" rel="noopener noreferrer">Platts plans Murban oil pricing changes in Dubai benchmark from 2026</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global Platts said onTuesday it was proposing to change the pricing mechanism forUnited Arab Emirates' Murban crude in the Dubai oil benchmarkfrom 2026 to better reflect market dynamics. ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=47b59bfb4f223da3de6e94dd11c6c5677f47de8e656eab1c615179833013688e" target="_blank" rel="noopener noreferrer">S&P Global: An Undervalued Dividend Stock With A Wide Economic Moat</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global, a US-based leading provider of credit ratings, benchmarks, analytics, and workflow solutions to various markets worldwide, is now a $159 billion financial markets behemoth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57ba9b63deef2b0d94e120d2da9e4a645263157900a5ebc10829c2bec207b03f" target="_blank" rel="noopener noreferrer">S&P Dow Jones Indices Reports U.S. Common Indicated Dividend Payments Increase of $7.4 Billion in Q2 2025 as Dividend Growth Continues to Slow</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Dow Jones Indices today announced the indicated dividend net changes (increases less decreases) for U.S. domestic common stocks increased $7.4 billion during Q2 2025, compared to the $15.3 billion...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c846a3e99fdd3b8683df6c2f64c57fe6a4fb49d462384f8779c9b98aeac77937" target="_blank" rel="noopener noreferrer">UK construction activity decline decelerates in June but optimism down</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">The contraction in activity in the UK construction sector slowed in June, but the forward-looking survey indicators were weaker than in May, data published by S&P Global showed Friday.The UK......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d3d7d537b0299b9cd8358da732681bce941ed443095742bbdf2c45d67744e0d4" target="_blank" rel="noopener noreferrer">Canada's services PMI declines in June as trade policy uncertainty clips activity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Canada's services economycontracted at a steeper pace in June as uncertainty generated byU.S. trade policy depressed activity and cost pressuresincreased, S&P Global's Canada services PMI data......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ae2c67c1f5152c43aa526898e2f847acbde29d5a01d7e4c811adf620c77b2134" target="_blank" rel="noopener noreferrer">Welfare cuts U-turn shows extent of UK's fiscal challenges, S&P says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment negative">
+                                    -0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">The inability of Britain'sgovernment to make cuts to welfare spending this weekunderscores the extent of the challenges it faces in repairingits finances, credit rating agency S&P Global said on......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c4fb2d9c007ef55f2c650bb2d772ca8251e442879bde8752aca80c3dd45dcd98" target="_blank" rel="noopener noreferrer">How to Find Strong Finance Stocks Slated for Positive Earnings Surprises</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Zacks Earnings ESP is a great way to find potential earnings surprises. Why investors should take advantage now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=17fc866e28decb052be413b831a2783b3a307e45a7d83ebfa76effd6c855bb98" target="_blank" rel="noopener noreferrer">Will S&P Global (SPGI) Beat Estimates Again in Its Next Earnings Report?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">S&P Global (SPGI) has an impressive earnings surprise history and currently possesses the right combination of the two key ingredients for a likely beat in its next quarterly report....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

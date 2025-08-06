@@ -1,0 +1,1623 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Datadog Inc. (DDOG) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Datadog Inc. (DDOG)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">85</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">37</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.09</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57f32dd5239ddd64148ddd65641fed542d2eec0417435a4d1c162e538fd438e1" target="_blank" rel="noopener noreferrer">Datadog (NASDAQ:DDOG) pulls back 4.5% this week, but still delivers shareholders notable 9.2% CAGR over 5 years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">The main point of investing for the long term is to make money. Furthermore, you'd generally like to see the share......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4193b4bb3956521fdae6fa7246b10ca5effbd225e4c448dec66e4d3c692cc76d" target="_blank" rel="noopener noreferrer">Datadog’s (DDOG) AI Growth Accelerates, Driven by OpenAI—But for How Long?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. (NASDAQ:DDOG) is one of the AI Stocks in the Spotlight Today. On July 28, Stifel analyst Brad Reback reiterated a “Hold” rating on the stock with a $135.00 price target. The firm expects...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=64d5515b4973218fdf0455ed43d5313aca4b0cd4141f5d6e74baecfb970c0e62" target="_blank" rel="noopener noreferrer">BTIG Lifts Datadog (DDOG) PT to $169 on Strong Competitive Gains, New Product Success</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog Inc. (NASDAQ:DDOG) is one of the best growth stocks to buy and hold for 3 years. On July 25, BTIG raised its price target for Datadog to $169 from $136, while maintaining a Buy rating on the c...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d757c86ba42f740ef6be93787007b1c6aacd3779ab628cd0549f796853b4b7ba" target="_blank" rel="noopener noreferrer">Franklin Small-Mid Cap Growth Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The fund underperformed the Russell Midcap Growth Index benchmark in the second quarter of 2025. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=266b1c88f710359c22838103c7072ed83dc19204028118d2c9e5653b022f4b90" target="_blank" rel="noopener noreferrer">Datadog (DDOG) Expected to Beat Earnings Estimates: Should You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (DDOG) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7a4720fb97be1d763fdc287041fdfd54015b8d0de0ac0c6765d27ea16da431f1" target="_blank" rel="noopener noreferrer">Datadog, Palo Alto Networks, Sprout Social, Monday.com, and Braze Shares Are Falling, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks fell in the afternoon session after Confluent's disappointing quarterly results signaled growing headwinds in the space....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f33851a62c67405bc6223c25555c53cd5d9d0426ad38efa8fd3bca3e87589262" target="_blank" rel="noopener noreferrer">Why Procore (PCOR) Shares Are Trading Lower Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of construction management software maker Procore (NYSE:PCOR) fell 3.1% in the afternoon session after Confluent's disappointing quarterly results signaled growing headwinds in the space....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=43013209bd710b8cccf07544d0427a6c2c83389c058587e2346b13b2de1f7390" target="_blank" rel="noopener noreferrer">Datadog (DDOG) Registers a Bigger Fall Than the Market: Important Facts to Note</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">In the closing of the recent trading day, Datadog (DDOG) stood at $139.98, denoting a -5.98% move from the preceding trading day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f1d3a86dd2f8ebe44555348dcf8a4a0fbc651ebca802b6a789a5d82de3498d46" target="_blank" rel="noopener noreferrer">Should You Buy Datadog Stock Before Aug. 7?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.52
+                                </span>
+                            </div>
+                            <div class="article-summary">This leader in cloud observability is swiftly moving into the artificial intelligence space, and it's having major success....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3091a24ed449812b8cf2504fc0df98ea060ca95d5108a1f2125b46d5ea180c59" target="_blank" rel="noopener noreferrer">Retab raises $3.5M and launches most powerful document AI platform on the market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.31
+                                </span>
+                            </div>
+                            <div class="article-summary">The developer-first platform for document automation comes out of stealth with new funding, new product, and a bold plan to become infrastructure for the next wave of vertical AI.San Francisco, July 3...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9375a7ccf81ed57c0a02ae038d782f58f61a9b878826fc9bd7a02fe58ac607ec" target="_blank" rel="noopener noreferrer">Software startup Observe raises $156 million in Sutter Hill-led fundraise</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.22
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -Observe, whose tools help detect and resolve issues in app systems, said it has raised $156 million in a funding round led by private equity firm Sutter Hill Ventures as demand rises for so...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4f787a183e69e84234e29fb8fc392d13119828197c56d5a01340bcaf11da10f4" target="_blank" rel="noopener noreferrer">Is Datadog (DDOG) a Buy as Wall Street Analysts Look Optimistic?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The average brokerage recommendation (ABR) for Datadog (DDOG) is equivalent to a Buy. The overly optimistic recommendations of Wall Street analysts make the effectiveness of this highly sought-after m...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b48e58473b45f38a60ab09b1038aca647f4fa74a94179d342062cf234d9910af" target="_blank" rel="noopener noreferrer">Datadog (DDOG): 3 Reasons We Love This Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog has been treading water for the past six months, recording a small loss of 1.2% while holding steady at $150. The stock also fell short of the S&P 500’s 5.4% gain during that period....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85351b0c5e6cd53d12683b67833ddf20df422c687e448f9e71542d270d120553" target="_blank" rel="noopener noreferrer">Datadog: A Very Vulnerable Rally Ahead Of Q2 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog trades at a premium despite slowing growth and faces Q2 risks like margin pressure and dilution after its S&P 500 inclusion. Read why DDOG stock is a sell....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9b1b3f689ae0adb55a339b610f5130395b7e02758ee745f373fa24adbc705239" target="_blank" rel="noopener noreferrer">1 High-Flying Stock to Own for Decades and 2 Facing Headwinds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Expensive stocks often command premium valuations because the market thinks their business models are exceptional. However, the downside is that high expectations are already baked into their prices, ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fb4b5ebc4126ead6c126e4135fecd1c76e8b079e5662c6f64db977ac9fb4257a" target="_blank" rel="noopener noreferrer">Datadog, Inc. (DDOG): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on Datadog, Inc. on Business Invest’s Substack by Francesco Ferrari. In this article, we will summarize the bulls’ thesis on DDOG. Datadog, Inc.’s share was trading at ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b06c60476e5a3e51b80ef103a8f8118d0d5df9d4183c06f6a9357eb3543fc94a" target="_blank" rel="noopener noreferrer">Datadog (DDOG) Beats Stock Market Upswing: What Investors Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (DDOG) closed the most recent trading day at $146.56, moving +1.78% from the previous trading session....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e9b665b33fbf630933aab4877e37d4f0e6f1dd69ac99764048ca5da907b4e14f" target="_blank" rel="noopener noreferrer">S&P 500 Is Getting More Bitcoin Exposure as Block Joins the Club</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Block, which is set to join the index today, is the second crypto company to join the S&P 500....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2739f02363d630628acac49118610c772d6eefac3a684b3edbb36b07775169e6" target="_blank" rel="noopener noreferrer">Sector Update: Tech Stocks Retreat Late Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Tech stocks were lower late Tuesday afternoon, with the Technology Select Sector SPDR Fund (XLK) fal...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=940a4947b887272e1e23cf91de38450f94f42d2595bfbb99009a70fb11b8fe18" target="_blank" rel="noopener noreferrer">Want Better Returns? Don't Ignore These 2 Computer and Technology Stocks Set to Beat Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors looking for ways to find stocks that are set to beat quarterly earnings estimates should check out the Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bac08d6440ad1973fabe969496d44065f97f6204d78c982a7072c1c1ab576ada" target="_blank" rel="noopener noreferrer">Datadog, Inc. (DDOG) Is a Trending Stock: Facts to Know Before Betting on It</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (DDOG) has been one of the stocks most watched by Zacks.com users lately. So, it is worth exploring what lies ahead for the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85f876a31e181c63032b0f0a79cece1298f412f91c132090ba404f8d34bafa4f" target="_blank" rel="noopener noreferrer">WCLD: Bets On The Next Cloud Computing Disruptors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">Gain exposure to emerging cloud computing, AI, and cybersecurity firms with WisdomTree Cloud Computing Fund ETF (WCLD). See more details here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c3395016fe77f851b7d4cbcb2cbe8442ef4430322b05242fc4fd774032701be1" target="_blank" rel="noopener noreferrer">Discover Datadog And Two Other Stocks That May Be Priced Below Estimated Value</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.46
+                                </span>
+                            </div>
+                            <div class="article-summary">The United States market has been flat over the last week but is up 14% over the past year, with earnings expected to grow by 15% per annum in the coming years. In this environment, identifying stocks...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=de3f17f75f38fb08d60ccecb37689d0baebea3f55eedd0a3127e11b188db5216" target="_blank" rel="noopener noreferrer">Should You Buy Datadog (DDOG) After Golden Cross?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Is it a good or bad thing when a stock experiences a golden cross technical event?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd6e6f2c8f23f669cd6ace2d856e61fec46dca9975933a01afefb6f7d01a7366" target="_blank" rel="noopener noreferrer">Solodev Achieves Latest AWS Government Competency, Powering Citizen Experiences with AI and Cloud Innovation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Solodev, an AWS Advanced Technology Partner, maintains its leadership in public sector innovation, helping government agencies modernize digital services, support public safety, and deliver AI-powered...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=90b3e3bab444f3f6abd0f98ea12735675225b7f4f748c810050871a3eb9f85fd" target="_blank" rel="noopener noreferrer">Exploring High Growth Tech Stocks In The US Market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">As the U.S. stock market navigates a landscape marked by record highs and mixed trading sessions, investor optimism is fueled by strong corporate earnings and resilient economic indicators, despite on...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=35495c7f1ab44717b7046d737959817ddfb9f2b531cef305f8f362c8a5c8e26c" target="_blank" rel="noopener noreferrer">2 Software Stocks Worth Investigating and 1 to Brush Off</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Software is rapidly reducing operating expenses for businesses. This secular theme makes SaaS companies attractive investment candidates but also comes with higher valuations that cause volatility. Un...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a0cc5c31f45de0ad6c25a749a91d4c3e19ab9195fe829eeffb3597915bd71c8f" target="_blank" rel="noopener noreferrer">Loop Capital Maintains ‘Buy’ Rating on Datadog, Inc. (DDOG); Raises PT</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Given the company’s popularity among hedge funds and the bullish sentiment surrounding it, Datadog, Inc. (NASDAQ:DDOG) makes it to our list of the Top 10 AI Infrastructure Stocks to Buy Now. Loop Capi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7326a526fa21de2cf46b9a85f7d058c3c1f7e9f358bd74fcf2b28034f2f5ce07" target="_blank" rel="noopener noreferrer">3 Unusually Active Cash-Secured Puts in Quality Companies for Attractive Income</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">There were 433 unusually active put options on Wednesday, including 34 with Vol/OI ratios of 10.0 or more. Many were higher-risk, money-losing businesses. However, there were three quality companies w...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8505d40fee9491135a7ae93a4e9363a3f74a0871558b5876781b87628b3ff309" target="_blank" rel="noopener noreferrer">Why Datadog (DDOG) Stock Is Up Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of cloud monitoring software company Datadog (NASDAQ:DDOG) jumped 3.4% in the afternoon session after the second quarter (2025) earnings season got off to a strong start....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=743c7b8faef52fc3d2fc6f0d52593739bdbfc8b9a1574a78a04a2cfec9278d5b" target="_blank" rel="noopener noreferrer">Datadog Versus Chronosphere Inside OpenAI</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">UBS sees rising multi?platform usage hinting at possible pricing pressure...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2b0157fbe2c888d6de10bc522839d6ee9dc29fac1466cedb3d4a51c112e53b76" target="_blank" rel="noopener noreferrer">Datadog Announces Date of Second Quarter Fiscal Year 2025 Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">NEW YORK, July 17, 2025 (GLOBE NEWSWIRE) -- Datadog, Inc. (NASDAQ:DDOG), the monitoring and security platform for cloud applications, today announced that it will report its second quarter fiscal year...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fd694f84d6a2d3ea9cf03db81b74b9c544e51077d758bccea8a19a23753ed9cd" target="_blank" rel="noopener noreferrer">Datadog : Partners with AWS to Launch Australia and New Zealand Regions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Sydney, AUSTRALIA - Datadog, Inc. , the monitoring and security platform for cloud applications, has today launched its full range of products and services on the Amazon Web Services' Asia-Pacific ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0633c8d968fe3a8f0d9aab1298e2534634dec0516b64b59eb123a8c946d4da6f" target="_blank" rel="noopener noreferrer">Datadog Partners with AWS to Launch Australia and New Zealand Regions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. , the monitoring and security platform for cloud applications, has today launched its full range of products and services on the Amazon Web Services' Asia-Pacific Region.The launch......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1ad2ecac6fcffba3ae8a6b333c00f8c90abdc75f1c2811d6cf8dcd78c2d1b64d" target="_blank" rel="noopener noreferrer">Cathie Wood Thinks AI Will Create a $13 Trillion Software Opportunity -- 2 Unstoppable Stocks to Buy if She's Right</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Cathie Wood is one of the most bullish voices on Wall Street when it comes to technologies like artificial intelligence.  A report issued by Wood's firm, Ark Investment Management, suggests AI could c...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98b5315ec55197d0877e548b36fdab032561fa9b560c60ce133dee2d7c316dfe" target="_blank" rel="noopener noreferrer">Parnassus Mid Cap Growth Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=db364370b5750e24da8eb574bf85b6e055cff894f837852a41e151ddc517de6b" target="_blank" rel="noopener noreferrer">AppLovin Stock Drops After S&P 500 Snub. Where Shares Are Heading Next.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors hoping for  AppLovin’s  long-awaited inclusion in the S&P 500 will have to wait, again.  While two of its software peers,  Datadog  and Trade Desk got the nod so far in July, AppLovin was sh...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98a89c36656e903b6f436f7b851c4f82a238ae128e6784707558b37652de4c8a" target="_blank" rel="noopener noreferrer">Will Datadog (DDOG) Beat Estimates Again in Its Next Earnings Report?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (DDOG) has an impressive earnings surprise history and currently possesses the right combination of the two key ingredients for a likely beat in its next quarterly report....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9a9fbab6be4bf21a816fa403de6dd37d4f7d5f1f9e07bc00433551706704a334" target="_blank" rel="noopener noreferrer">Datadog (DDOG) Rises Higher Than Market: Key Facts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (DDOG) concluded the recent trading session at $138.81, signifying a +1.05% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1efadd479eca05655242c4c4c30a537a0620791be54bc064330e6773b226731e" target="_blank" rel="noopener noreferrer">Datadog (DDOG) Tumbles 11.4% on Analyst’s “Sell” Reco</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. (NASDAQ:DDOG) is one of the stocks drowned heavily. Are you holding any? Datadog fell by 11.4 percent week-on-week as investors unloaded portfolios following a brokerage firm’s “sell” re...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fc2f7de2ac51ae81dfab4d279c3f0b3a85c3d9e63df4aadf3522709976ee3fe5" target="_blank" rel="noopener noreferrer">Jim Cramer Says He Likes Datadog but its not “What I Want to Recommend Anymore”</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. (NASDAQ:DDOG) is one of the stocks that Jim Cramer shed light on. A caller asked why Cramer assigned a Sell rating on the stock during Squawk on the Street, and he replied: “Alright, I a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=51944d4810108ab7a51816a589a42b3fb9ac96fb9a0f69b8e3d4d9fdd21b3913" target="_blank" rel="noopener noreferrer">Fast-growing tech company is the newest S&P 500 stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">An AI leader is now part of the world's most widely followed index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c93c037c6f4a08c223da691a77157409fa2f4ab11b28e4c677408a5e04494ab" target="_blank" rel="noopener noreferrer">Datadog, Inc. (DDOG) Is Competing With The Rise Of AI, Says Jim Cramer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-12</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published Jim Cramer’s Fresh 14 Stocks & Thoughts About Market Performance. Datadog, Inc. (NASDAQ:DDOG) is one of the stocks Jim Cramer recently discussed. Datadog, Inc. (NASDAQ:DDOG) is a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4da2cc02c421dc53b7f748e47cd00a3183c7b971279060fdbd05f4bf2dd32abc" target="_blank" rel="noopener noreferrer">2 Cash-Heavy Stocks to Own for Decades and 1 to Approach with Caution</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">A cash-heavy balance sheet is often a sign of strength, but not always. Some companies avoid debt because they have weak business models, limited expansion opportunities, or inconsistent cash flow....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f11f9b500bcbfcfc40f01959100839cdf5e6a584498227b3ba98ae786adbfdf6" target="_blank" rel="noopener noreferrer">Prediction: After Datadog's S&P 500 Debut, These Stocks Could Be Next in Line</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Given its size and growth, Robinhood looks like a solid candidate to be the next stock added to the S&P 500.  Despite recent short reports targeting the company, AppLovin still deserves a spot in the ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1236b161d1bdb562689883ff89068e14f24fd016ca213508d6a7ecf8e18ecfba" target="_blank" rel="noopener noreferrer">Datadog to Post Q2 Beat on Rapid Innovation, Traction With the AI Ecosystem, Morgan Stanley Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (DDOG) is likely to post a Q2 beat with a slight increase on H2 estimates on signs of market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e75b44bcb8759c74cdf363f62e1bb388ec11d982af2f80389eb5fe79fa83908c" target="_blank" rel="noopener noreferrer">Datadog Named a Leader in the 2025 Gartner(R) Magic Quadrant(TM) for Observability Platforms</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">Positioned based on its Ability to Execute and Completeness of Vision New York, New York--(Newsfile Corp. - July 10, 2025) - Datadog, Inc. (NASDAQ: DDOG), the monitoring and security platform for clou...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bd6e061e1ba52a37e5ccd6fd86bd8d2ced68ff98f755647b71e1e72c6743b1e8" target="_blank" rel="noopener noreferrer">This Artificial Intelligence (AI) Stock Is Surging After Joining the S&P 500. Can It Continue to Skyrocket?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog stock has gone parabolic in the past three months, and it recently shot up following the news of its inclusion in the S&P 500 index.  Datadog's lucrative addressable opportunity suggests that ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98048f5000a48f0458348639552f7b2ec4c0a36b41633c7026948d3010c750b6" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500 Equal Weighted</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500 Equal Weighted......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d907bf06e9fe8bb76a1909983d866229885ccad9f5fcb5fedbe6efb6a267b084" target="_blank" rel="noopener noreferrer">The Newest AI Stock in the S&P 500 Is Up 300% Since 2020 and It's Still a Buy Today, According to a Wall Street Analyst</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog joined the S&P 500 on July 9; the average company in the last decade has seen its share price increase 12.3% during the year following its inclusion in the index.  Datadog is a recognized lead...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a7037f962fcecf018295918902f9e0e1d0d4f3828d64be026ad5888eb0e4ab4b" target="_blank" rel="noopener noreferrer">Datadog (DDOG) Joins S&P 500 — TD Cowen Reiterates Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. (NASDAQ:DDOG) is one of the Top 10 AI Stocks in the Spotlight. On July 3, TD Cowen analyst Andrew Sherman reiterated a “Buy” rating on the stock with a $150.00 price target. The rating a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=85304ee979b65e467af5b4024aced73c4c6f101406fbaa06068ea13336e64da9" target="_blank" rel="noopener noreferrer">Datadog Joins the S&P 500 Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">New York, New York--(Newsfile Corp. - July 9, 2025) - Datadog, Inc. (NASDAQ: DDOG), the monitoring and security platform for cloud applications, announced its inclusion on the S&P 500 Index, effective...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a860abf663f638e46984ec387ae409134f10fcccd43382f5dd2798c565fc693" target="_blank" rel="noopener noreferrer">Datadog, Inc. (DDOG) is Attracting Investor Attention: Here is What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching Datadog (DDOG) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=284fa56ac7adde84bcfd534ca34948f9a7350bc6b1151ebc5cec2aa0f22c6035" target="_blank" rel="noopener noreferrer">Reflectiz Joins the Datadog Marketplace</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Reflectiz, a leading cybersecurity company specializing in web exposure management, today announced a new integration with Datadog, Inc., the monitoring and security platform for cloud applications....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8050aaebf1d8ba854baba91758430ec090ddd33152614d115c266b117e245ffe" target="_blank" rel="noopener noreferrer">Datadog (NasdaqGS:DDOG) Joins S&P 500 Equal Weighted Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (NasdaqGS:DDOG) recently experienced a significant milestone by being added to the S&P 500 Equal Weighted Index. This development aligns with an impressive 57% increase in the company's share ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dd1d961447095aeb7554261a90b8c982bf1ceae47209b49090f49e558bd3f368" target="_blank" rel="noopener noreferrer">Datadog’s (DDOG) Strong Q2 Can’t Hide What’s Coming: OpenAI May Walk Away</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. (NASDAQ:DDOG) is one of the 10 AI Stocks Investors Are Watching This Week. On July 8, Guggenheim cut the stock’s rating to “Sell” from Neutral on a target price of $105. The firm has war...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1efee8b2f6581c92ee6f191eb5171250a931cb56ae56c8e42f410753857adb19" target="_blank" rel="noopener noreferrer">Datadog, the cloud outsider, joins the ranks of the giants</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">As the world continues to shift deeper into the virtualization of its activities, companies are moving rapidly toward digitalization. Cloud computing, hybrid infrastructures, connected applications,.....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f0059859a509970a5b1e23b6d9f8a87f981687d1833ac5ead28bf80e4512d1fb" target="_blank" rel="noopener noreferrer">Circle initiated, CoreWeave downgraded: Wall Street's top analyst calls</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Circle initiated, CoreWeave downgraded: Wall Street's top analyst calls...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=804638b3a208e297649bdfc4b75e85a3bf82c790a82ca9e178726d03f6008520" target="_blank" rel="noopener noreferrer">Guggenheim downgrades Datadog on fears that OpenAI will cut spending</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Guggenheim cut Datadog (NASDAQ:DDOG) rating to Sell from Neutral on a target price of $105, warning the software company could suffer a sharp revenue hit if OpenAI, which is its bigge...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d29a49f8d1c8e3e2fb3762b7c2a95d33d691b6d08463f6a4ff5aaa4103c01fac" target="_blank" rel="noopener noreferrer">Datadog Stock Falls on Downgrade to Sell. Analysts Fret Over OpenAI Optimization Risk.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog  stock was downgraded at Guggenheim Securities with analysts sounding the alarm about the potential withdrawal of one of its artificial intelligence-native customers and the resulting hit on r...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7ce63606b2c7bec2a090447c3248365a238ab1ccd03c06c44829e360ce61e6f7" target="_blank" rel="noopener noreferrer">These Stocks Are Moving the Most Today: Tesla, Amazon, Exxon, Sunrun, Enphase, SoFi, Datadog, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Stocks traded mostly to the downside Tuesday after President Donald Trump extended the date when his so-called reciprocal tariffs would take effect to Aug. 1 from July 9.  Equities tumbled Monday foll...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2c1e53c3a9963a3aec5161093c5f5c0e1e1d2bff563867231996a2f77e59dda0" target="_blank" rel="noopener noreferrer">Stocks Stabilize on Trade Talk Optimism</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.10
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.07%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is down -0.10%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.14%. September E-mini S&P futures...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f276bd9e391a29c7b52eadaa6dfc69d0af0341593eead37e540583e695ddeee5" target="_blank" rel="noopener noreferrer">Boeing jet deliveries, Circle & Datadog Sell ratings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Julie Hyman takes a closer look at what's driving US stock moves on Yahoo Finance's Market Minute. Boeing (BA) reports strong delivery numbers, a positive signal for the plane maker. Circle (CRCL) get...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fd77f37dbf4bfa9782fddd27af90644fa20a2234acd5bc2a1f56bd39800e25af" target="_blank" rel="noopener noreferrer">Why Datadog (DDOG) Stock Is Trading Lower Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of cloud monitoring software company Datadog (NASDAQ:DDOG) fell 4.2% in the afternoon session after Guggenheim downgraded the stock to Sell from Neutral, citing risks related to its largest cus...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8f2bd77faca114f55a08e31c4bcd296456339c186359160dced73e91bf135ae4" target="_blank" rel="noopener noreferrer">Top Midday Decliners</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">SunRun (RUN) was slumping nearly 12%, leading declines among the shares of solar and wind energy com...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=131ef62726fdc6d67003424729fd89e9df66b0b09c2cc97afa4b3b6e00adcef6" target="_blank" rel="noopener noreferrer">Why Datadog Fell Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog was downgraded to "sell" by a sell-side analyst firm today.  This threat to Datadog has wider implications for the broader enterprise software world.  Shares of Datadog (NASDAQ: DDOG) fell on ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9276b265e87de766c909efeb2ecbd8da4040a0e9cbc9e6058934ab58017efb4a" target="_blank" rel="noopener noreferrer">Boeing, Robinhood & EU, Datadog downgrade: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Boeing's (BA) second quarter jet deliveries marked the company's highest quarterly deliveries number since 2023. Robinhood's (HOOD) new tokenized US stocks and private company stakes face scrutiny in ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bdae4098a9128a9e1ad7696894ec90a42fec7750d23645e89408c31484336893" target="_blank" rel="noopener noreferrer">These Stocks Moved the Most Today: Tesla, Amazon, Moderna, Fair Isaac, Exxon, Sunrun, SoFi, Datadog, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">Stocks were mixed on Tuesday after President Donald Trump said he wouldn’t delay the date when his tariffs will take effect.  CEO Elon Musk announced over the weekend that he would form a new politica...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5a179f8da2dd545f8aca2b9cd6f84ac04202e6526d12dd0c75774a7ed778f2d7" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73a99fef9673c048862e5c8e763b854049f92ee0f73269cce0fb904725ccb231" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P Composite 1500</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P Composite 1500......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d1e44fed91c63ee3dd0d9f669a40ee2f6c522c272f9eb1af0a356ab876aa6639" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500 Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500 Growth......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=66226552617f2dff9957ba0c504733a163784a8f330a7cb584aaf715a1450ccc" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500 Information Technology</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500 Information Technology ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0815b968d96481e6e34d106af90ba17172882be6322831321374bf5bd2bfaacb" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500 Software</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500 Software ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=04d480cd936a7169bd2ea798d5b6487234c72d32af74f480d9e371965743e495" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500 Software & Services (Industry Group)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500 Software & Services ......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=be92691450bbe84ea1b30ed591c2c13524121c9814c4da24f3fae38e72820587" target="_blank" rel="noopener noreferrer">Datadog, Inc.(NasdaqGS: DDOG) added to S&P 500 Ex-Financials, Real Estate, Utilities and Transportation Index</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog, Inc. added to S&P 500 Ex-Financials, Real Estate, Utilities and Transportation Index......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2cff6cde14676873b3784cddf5c4941c4cec67d2fb64c78c6b5abf34c84530b7" target="_blank" rel="noopener noreferrer">Watch These Datadog Price Levels After Stock Soars on News of S&P 500 Inclusion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog shares remain in focus after soaring to a six-month high at the end of last week on news that the cloud monitoring company will be joining the S&P 500 on July 9. Monitor these key chart levels...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ae494183a17b8fd8b9161f22a55831f84c30084432ca771d9796c5dce777d5f8" target="_blank" rel="noopener noreferrer">Company News for Jul 7, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Companies in The News Are: SNPS, DDOG, MSFT, TRIP...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=27693068a2199fb44621dc765277a3c9a6a539f8b2b6156d2793cfbfed6940f1" target="_blank" rel="noopener noreferrer">The Top 5 Analyst Questions From Datadog’s Q1 Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog’s first quarter performance reflected strong customer demand for its cloud monitoring and security platform, as well as continued expansion within enterprise accounts. CEO Olivier Pomel highli...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7c1d864acf32716e612180ea89f50655aa7758178342cf1b9ffd9e0dabd36d67" target="_blank" rel="noopener noreferrer">Transcript : Datadog, Inc., Q1 2025 Earnings Call, May 06, 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Presentation Operator MessageOperator Good day, and thank you for standing by. Welcome to the Q1 2025 Datadog Earnings Conference Call. [Operator Instructions] Please be advised that today's......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ed0fd5914652eceb8bdaf85b64bfd3eb4161c118cd86c9ac1caf62fa4f58fb00" target="_blank" rel="noopener noreferrer">Figma Heats Up Summer IPO Market Amid Software Listing Drought</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Figma Inc.’s expected US initial public offering is shaping up as a potential summer blockbuster first-time stock sale, as investors look to back a rare debut from a fast-growing softwa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bf88a5a85592efcff2c4f363f47cb7451ddc4bb3c66736ed875aabb49073651a" target="_blank" rel="noopener noreferrer">Analyst resets Datadog stock price target after surprise addition to S&P 500</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Here’s what could be next for the AI stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bc87822e3bfb348eee4a63f1b3ad526d80d9ab9730a3002106c02911e50aba04" target="_blank" rel="noopener noreferrer">The Newest Stock in the S&P 500 Has Soared 315% Since Its 2019 IPO, and It's a Buy Right Now, According to Wall Street</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">This company has a strong history of growth and a long runway ahead....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=17d34e11d3688bc7593dbae814de2c0d14135c82abc93a4ddc3c199469ad4686" target="_blank" rel="noopener noreferrer">Datadog Earns Forbes Global 2000 Spot, Unveils New AI, Observability Features at DASH 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog Inc. (NASDAQ:DDOG) is one of the best NASDAQ growth stocks to buy for the next 3 years. On June 20, Datadog announced its inclusion on the Forbes Global 2000 and Forbes Global 2000 United Stat...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a9dd0677da3049e2bbb21541e64c125f8e838a3e49f2afa233837a2d21ebb493" target="_blank" rel="noopener noreferrer">Latest News In Cloud AI - Healthcare Embraces GenAI Amid Infrastructure Challenges</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">A recent study by Nutanix has highlighted the accelerated adoption of Generative AI (GenAI) and containerization within the healthcare sector, while also identifying significant challenges in the mode...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e0aff64f03917c2013abcc023a66dbe8f5b463cf0d40878094b9ea511d734a63" target="_blank" rel="noopener noreferrer">Datadog (NasdaqGS:DDOG) Sees 76% Price Surge Over Last Quarter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Datadog (NasdaqGS:DDOG) recently amended its Certificate of Incorporation, aligning its governance structure with current regulatory standards. This development comes amidst a substantial share price ...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
