@@ -1,0 +1,599 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Standard Motor Products Inc. (SMP) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Standard Motor Products Inc. (SMP)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">21</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.12</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=234b8917a6c2462f4982d3db927e342de3ac304fe84751cac716b0703873b5cc" target="_blank" rel="noopener noreferrer">Standard Motor Products, Inc. Releases Second Quarter 2025 Results and Quarterly Dividend</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products, Inc. (NYSE: SMP), a leading automotive parts manufacturer and distributor, reported today its consolidated financial results for the three and six months ended June 30, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5f5852fbd8d3f6ed189b44e62f0bfce66e88dbf377e11fe9493e221f085b9759" target="_blank" rel="noopener noreferrer">Standard Motor Products: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">LONG ISLAND CITY, N.Y. (AP) — Standard Motor Products Inc. SMP) on Tuesday reported second-quarter profit of $25.2 million. On a per-share basis, the Long Island City, New York-based company said it h...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=134ed6d92f2f18e3692b65ab51a715b794b7772eec64669a8e38b2534cb02a81" target="_blank" rel="noopener noreferrer">Standard Motor Products, Inc. 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Standard Motor Products, Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cfcb9141fae584b5548c2e43a8c8604998e8b9464e8fc4813fb4211107379b3f" target="_blank" rel="noopener noreferrer">Standard Motor Products, Inc. (SMP) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products, Inc. (NYSE:SMP) Q2 2025 Earnings Conference Call August 5, 2025 11:00 AM ETCompany ParticipantsAnthony Francis Cristello - Vice......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=31d4c078a29d6413b9cc1246ca944c31f91d20995d5bd2055da3b2a585e5a32b" target="_blank" rel="noopener noreferrer">Standard Motor Products (SMP) Surpasses Q2 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products (SMP) delivered earnings and revenue surprises of +32.99% and +9.75%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3ec173f3e58b4bfc7d3eb39889eb460317df00eae8debf1aaa2997827eefac51" target="_blank" rel="noopener noreferrer">Standard Motor Products (SMP) Q2 Earnings: How Key Metrics Compare to Wall Street Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Although the revenue and EPS for Standard Motor Products (SMP) give a sense of how its business performed in the quarter ended June 2025, it might be worth considering how some key metrics compare wit...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=67ad702e485ab35dacb6fb36707b40a60338e84914851dea38d68dfe6bbcc3dc" target="_blank" rel="noopener noreferrer">Dorman Products (DORM) Q2 Earnings and Revenues Beat Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">Dorman Products (DORM) delivered earnings and revenue surprises of +17.05% and +4.53%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=618562ebf899e5b94c6a32021705f19c9b8c2d3323985e857b7e1f3062cad6df" target="_blank" rel="noopener noreferrer">Standard Motor Products, Inc. Announces Second Quarter 2025 Earnings Conference Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products, Inc. (NYSE: SMP), a leading automotive parts manufacturer and distributor, is scheduled to report its earnings for the three and six months ended June 30, 2025, before the mar...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=02f9ea9a43694e68c05e09cc228c22e55f511cce2967a4eb57f4b4dd9b90f7a5" target="_blank" rel="noopener noreferrer">Standard Motor Products (NYSE:SMP) investors are sitting on a loss of 25% if they invested three years ago</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.18
+                                </span>
+                            </div>
+                            <div class="article-summary">While it may not be enough for some shareholders, we think it is good to see the Standard Motor Products, Inc......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3cf99be806d4bddb1a0ea8917577c8ad9888abc06312d43d885f0fd38137ce34" target="_blank" rel="noopener noreferrer">China Automotive Systems: Tariffs, Cheap Multiples</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">China Automotive Systems is well-positioned for EV growth, investing heavily in R&D. Find out how CAAS stock checks a lot of boxes for a value investor....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c78ef1ee921c2e2a3f62f0626d4bf8371c3852a5602e6dbca74decb2b91c45e6" target="_blank" rel="noopener noreferrer">LKQ (LKQ) Lags Q2 Earnings Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">LKQ (LKQ) delivered earnings and revenue surprises of -6.45% and +0.87%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10ea005b28c14b52f8b25561667f64a847aee942dd6c3a9a64fe6a7f641e657f" target="_blank" rel="noopener noreferrer">Standard Motor Products Expands Turbocharger Program</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products, Inc. (SMP) has added to its extensive Turbocharger program with the recent introduction of Turbocharger Kits and related components for gas and diesel-powered vehicles. Standa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8426cbc9073bab4d5bacf3845ae879d282478bf73d0797f4b946370b6b4f34b" target="_blank" rel="noopener noreferrer">Fox Factory: Shares Have Dropped Too Far (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4d2c35bd065d4305c3b921639a8c76db6da63d7c02b4d21823c8e7766ce0f985" target="_blank" rel="noopener noreferrer">Here's Why Standard Motor Products (SMP) is a Strong Momentum Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Whether you're a value, growth, or momentum investor, finding strong stocks becomes easier with the Zacks Style Scores, a top feature of the Zacks Premium research service....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=44eb70c56ad4fd76e8596a2cf0476d4a6b77abfbae5f89dc87847bc41b080c63" target="_blank" rel="noopener noreferrer">3 Undervalued Small Caps With Insider Action In Global Markets</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.06
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last 7 days, the United States market has remained flat, yet it has seen a 13% increase over the past year with earnings forecasted to grow by 15% annually. In this environment, identifying s...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0249f7fa6aa265cb145fdb693932e193088a98806ccf398b5409d6364f434c06" target="_blank" rel="noopener noreferrer">Exploring 3 Undervalued Small Caps With Insider Activity Across Global Markets</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last 7 days, the United States market has remained flat, yet it has experienced a 12% increase over the past year with earnings anticipated to grow by 15% annually in the coming years. In thi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b9fb440624928e9d46256a00ddbe64aa78607cf33a4db125640df0f11c82598a" target="_blank" rel="noopener noreferrer">Undervalued Small Caps With Insider Action In July 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.12
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last 7 days, the United States market has remained flat, though it has experienced a 13% increase over the past year with earnings forecasted to grow by 15% annually. In this context, identif...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a51f435bc4e65348bc6a7a185c8380ca908acfd38f665e8d2d98fb817d1094ca" target="_blank" rel="noopener noreferrer">Exploring Three Undervalued Small Caps With Notable Insider Action</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.69
+                                </span>
+                            </div>
+                            <div class="article-summary">In the last week, the United States market has been flat, yet it has seen a 13% increase over the past year with earnings forecasted to grow by 15% annually. In this environment, identifying stocks th...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=de98c501e9c5a690ef107b45afb116efc09080321e06e9c328e6eaf292425dc1" target="_blank" rel="noopener noreferrer">Undervalued Small Caps With Insider Buying In Global Markets July 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">The United States market has experienced a notable uptick, climbing 1.8% in the last seven days and showing a robust 14% increase over the past year, with earnings projected to grow by 15% annually. I...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0f3a67581c4aa157ec6feadf625b710ce616bfe62cfefd04ca676d989432e6a6" target="_blank" rel="noopener noreferrer">Standard Motor Products, Inc. Releases New Numbers in 35 Categories</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products, Inc. announced that it has released new part numbers across 35 product categories in second quarter of 2025. This includes new applications from SMP's Vehicle Control and......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=66bacb9077c7d2b028c4308f0e4dae526af9472dea0dd0fa2f6a157525adbf62" target="_blank" rel="noopener noreferrer">Standard Motor Products Releases New Numbers in 35 Categories</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Standard Motor Products, Inc. (SMP) is pleased to announce that it has released new part numbers across 35 product categories in Q2 of 2025. This includes new applications from SMP's Vehicle Control a...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

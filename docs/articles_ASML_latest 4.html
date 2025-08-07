@@ -1,0 +1,2855 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title> ASML Holding N.V. (ASML) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title"> ASML Holding N.V. (ASML)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">162</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">53</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">60</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.05</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c90ea9ee8940d33762e7115ddae3fb4bcf97bb70d8ae9e8325781de2f9c7b807" target="_blank" rel="noopener noreferrer">Fabless future no longer unthinkable for Intel</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.47
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Intel’s latest earnings report has reignited debate around a future without its own manufacturing. The company warned last week that it may stop pursuing nodes beyond its 18A process ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bb480de0a68c131ed6716f42d353a4e0f27b222e208c1ebb4786affd51f58712" target="_blank" rel="noopener noreferrer">The Smartest Artificial Intelligence (AI) Stocks to Buy With $1,000 Right Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">TSMC and ASML are both essential AI infrastructure plays trading at reasonable valuations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b8cd7ceefdf2593e6f13214c50c0affe3e65fc7cc7abd3e6f5d4ca4e64845066" target="_blank" rel="noopener noreferrer">AI Chips Today - Revolutionizing Business Processes With AI-Driven Solutions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">Momba, a budding AI technology company, has launched an innovative agentic AI solution aimed at revolutionizing the roles of business analysts and project teams. This new tool is designed to significa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea90cf46a7bee6f346b7c95429b375b8ceedd618a44f8d53699f313e93d938d1" target="_blank" rel="noopener noreferrer">Semiconductor Industry Updates: Hyperscalers Go Vertical And Policy Clouds Linger</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.14
+                                </span>
+                            </div>
+                            <div class="article-summary">Meta and Amazon unveiled new AI chip strategies, while traditional players like Marvell and Micron are seeing momentum in HBM and connectivity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=28b7e8d6f592d8320282abdba7378b93f30bb10255b19cb972277b80f3e2118d" target="_blank" rel="noopener noreferrer">Franklin International Growth Equity ADR SMA Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">US trade policy seems likely to drive further volatility in the coming quarter, particularly given the expected expiry of the reciprocal tariff postponement....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=12e7eed83592bbeabc2a85c5332b230855f0864a89d7e5a2beaa36c60a5a7451" target="_blank" rel="noopener noreferrer">Texas Instruments and ASML Are Falling. Could Other AI Growth Stocks Be Next?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.35
+                                </span>
+                            </div>
+                            <div class="article-summary">These two dividend-paying chip stocks could be worth a closer look in August....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=09c9439ba769c5932626be8d884adbef6940997430144d901da871d18212721a" target="_blank" rel="noopener noreferrer">ASML: Seems Overvalued And Faces Growing Structural Risks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML's Q2 performance doesn't offset its overvaluation and rising structural risks. ASML's strategic position in the chip supply chain is undeniable. See more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d08b5d77a12686af1a2ac43ecea17c88eba6859242fe07ccd441834eec81b0cc" target="_blank" rel="noopener noreferrer">Why Did Lam Research Stock Drop Today?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">Lam Research delivered terrific news last night, but investors remain nervous about artificial intelligence (AI) demand....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=582b53c3c26e505360b893dcc3a2d8cbd1792c47cc799dd3ed4b19e82888e32d" target="_blank" rel="noopener noreferrer">Lam Research, Qualcomm, FormFactor, Applied Materials, and KLA Corporation Shares Are Falling, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks fell in the afternoon session after a series of divergent earnings reports highlighted a clear split in the semiconductor industry, with investors rewarding companies exposed to the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4428eed751e4c6ba8127d7df96d9dac377c0e7b34f24ebf815a7ac147aa7451e" target="_blank" rel="noopener noreferrer">VXUS Tops $100B as ETF Investors Embrace International Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">- VXUS reached $100 billion in assets under management as of July 25. - The international stock index ETF has attracted $9.9B in inflows this year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=52b1cbc6429b1b1c12f624908ed54303a3e2404069d676b6d22607d32d86e771" target="_blank" rel="noopener noreferrer">After Crashing 10%, Should You Buy the Dip on This Critical Artificial Intelligence (AI) Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">AI would look completely different without ASML....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f1c0be8e31a95742157f81f849ea1f7f9585b14230434c12815795dcef5de98e" target="_blank" rel="noopener noreferrer">AI Chips Today - BluSky Expands with Strategic Delta Data Center Land Acquisition</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">BluSky AI Inc. has announced a significant step in its strategic expansion by signing a non-binding letter of intent to acquire 25 acres of land within Creekstone Energy LLC's Delta Data Center Develo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e452e8427d0fc8daaf8803a0edc468d878381fcaf054b4f98730c6be59fbf9d9" target="_blank" rel="noopener noreferrer">The One Tech Company Selling Picks and Shovels to the AI Gold Rush</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Investors may not fully appreciate the company that helps make AI possible....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=42385f228027fa52435a6672242f1f9969c12acc5e80317e2fbd5cc47f9e45d8" target="_blank" rel="noopener noreferrer">Lam Research forecasts upbeat quarterly revenue on strong chip equipment demand</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Lam Research forecast first-quarter revenue above Wall Street expectations on Wednesday, driven by strong demand for its specialized chip-making equipment used in developing advanced artificial intell...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d730bd35fd859316ba279c1e81468016420d68ecb8a92780a278bc42b31e1d83" target="_blank" rel="noopener noreferrer">ClearBridge International Growth ADR Portfolios Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">ClearBridge International Growth ADR Portfolios underperformed their MSCI EAFE benchmark on a gross basis as weakness in the U.K. and an overweight to emerging markets....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=13bb1e32d2d2d8e58aaac0abbc4957522ac2318a0ca71718e8a63e4edc639c6d" target="_blank" rel="noopener noreferrer">Heard in the Street Monday Recap: Done Deal</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.48
+                                </span>
+                            </div>
+                            <div class="article-summary">President Trump reached a trade deal with the European Union over the weekend. The deal imposes a 15% baseline tariff on products imported from the bloc, including cars. The EU agreed to buy $750 bill...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=22f31eb75174009e61feb850d89ae1ede9ea395b998030c1283b80dc97155f90" target="_blank" rel="noopener noreferrer">ASML Slides From Buy to Hold — Analyst Cites Slower Growth Ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the Trending AI Stocks on Wall Street. On July 23, Erste Group analyst Hans Engel downgraded the stock from Buy to Hold due to uncertainty revolving around it...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0ee78c77b7a74ca2e55312761eff5f71a65f058ee23f033c527081a12d51ad95" target="_blank" rel="noopener noreferrer">Why Marvell Technology (MRVL) Stock Is Up Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of networking chips designer Marvell Technology (NASDAQ: MRVL) jumped 3.3% in the morning session after it announced a collaboration with South Korean AI semiconductor company Rebellions to dev...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=92585dca11381ce8c13ef0b36cab643d72b6425470956128d72b65a0ce77c5a5" target="_blank" rel="noopener noreferrer">ASML: Our Best AI Investment Idea For H2 2025</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f778c531fa47831b9402e53f33ccf56a3f04ece711802781f81e9dd873323c73" target="_blank" rel="noopener noreferrer">Latest News In AI Chips - AI Meets Blockchain Highlighted At Malaysia's Technological Innovation Event</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.44
+                                </span>
+                            </div>
+                            <div class="article-summary">Recent developments in AI chip technology were highlighted during Malaysia Blockchain Week, where the potential integration of AI and Web3 technologies was a focal point. The event attracted over 3,30...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a4d278837a8cda927678c1d3b6f4131929d81a763c7c335f912858c70b3c6739" target="_blank" rel="noopener noreferrer">This chip name emerges as a key winner in U.S.-EU trade deal</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- One chip name has emerged as a major beneficiary of the new U.S.-EU trade agreement, according to Lynx Equity Strategies, with semiconductor capital equipment imports from the Europea...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e8bbbc7572c228e8083c192ed0101904f65cace15b1d17db1553abfa8202ee29" target="_blank" rel="noopener noreferrer">Microsoft has to hit its earnings out of the park: Opening Bid top takeaway</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Can Microsoft deliver the goods come earnings day?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=588677fce14e65f912f04649e2ea64764117347ff68f551934db4fb344e359ac" target="_blank" rel="noopener noreferrer">These Stocks Are Moving the Most Today: Tesla, AMD, ASML, Nike, Revvity, Charter, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Tesla rises after President Donald Trump says he struck a deal to set 15% tariffs on goods from the European Union, including automobiles....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9911470943ae32ae4c23c8cd00d3db92a24b9698ab7aae376bf5572c1129c401" target="_blank" rel="noopener noreferrer">Tesla, Samsung, energy stocks, & European semiconductors climb</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Yahoo Finance's John Hyland outlines some of the top stories on Wall Street as part of Yahoo Finance's Market Minute. Energy stocks, like Cheniere Energy (LNG) and Venture Global (VG), are moving high...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=10d929919114584910b3f6038a892237b9a2a227dcfc8f830bccaa8b5174033a" target="_blank" rel="noopener noreferrer">Stocks to Watch Monday: Cheniere, TSM, Nike, Tesla</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">↗️ Cheniere Energy (LNG): The European Union agreed to buy $750 billion of U.S. energy products, including liquefied natural gas, under the new trade deal. Shares of LNG provider Cheniere were up mode...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8c6640ffaa4ea545a883ef4e2c6e7030c7fc5e58bae812be1a6d1c228facae4" target="_blank" rel="noopener noreferrer">These Stocks Moved the Most Today: Tesla, AMD, ASML, Nike, Revvity, Charter, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Tesla rises after President Donald Trump says he struck a deal to set 15% tariffs on goods from the European Union, including automobiles....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5720b680ecb26acea6263ce947d57137ca91c21735d5d550934a29c99195d297" target="_blank" rel="noopener noreferrer">Heard on the Street Recap: Done Deal</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.40
+                                </span>
+                            </div>
+                            <div class="article-summary">President Trump reached a trade deal with the EU.  The deal imposes a 15% baseline tariff on products imported from the European Union to the U.S., including cars.  The EU agreed to buy $750 billion o...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91d59104dde1f2dec2e6f24ba3fd23cd3002a4c7f5fd75bd5698a580b99aa1bd" target="_blank" rel="noopener noreferrer">Fidelity International Capital Appreciation Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=edbcddfa37e8cd98b8a44f839caae90f54b608214e89f2fc733076f288e51ca9" target="_blank" rel="noopener noreferrer">Love Palantir Technologies? These 3 Artificial Intelligence Stocks Could Have Much More Upside.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">It could be time to jump off the Palantir train. Here are three stocks you may want to land on instead....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a02ce5766407588de41589241a017b34401a5bb4aa61485140c4cbc2faff61d6" target="_blank" rel="noopener noreferrer">ClearBridge International Growth ADR ESG Portfolios Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0dbb01f4eaf241c537cc98865c4b175a6065ef2657c9955a19082dab421ea9c6" target="_blank" rel="noopener noreferrer">MCN: The Yield Is Nice, But This Fund Is Hard To Recommend</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover insights on the XAI Madison Equity Premium Income Fund's 11.5% yield, NAV performance, and sustainability challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f544b30a69e2dd7c470e7564b8d3562b1da85a59c4e26c8cc20a5c94b75ddf99" target="_blank" rel="noopener noreferrer">ASML: Limited China Risk, Leading-Edge Exposure Could Drive Outperformance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.17
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the AI Stocks Making Waves on Wall Street. On July 24, New Street Research upgraded the stock to “Buy” with a €790 price target driven by ASML’s strong positi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b84eef2afd2bad655c0823bfbe72a29a657a6b40f8a260bdbccb47b67afe268a" target="_blank" rel="noopener noreferrer">Fidelity International Growth Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Fidelity International Growth Fund reviews Q2 gains, key stock moves, and global trends. See how itâs positioned for long-term growth. Read the full update now....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=649488b1cbf33843087ddfe92a7abbb3ea4cef722e87024613c7f2d87c9f9e44" target="_blank" rel="noopener noreferrer">What Moved Markets This Week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-26</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=652314538aaebb5d7dafc738f6bf54e67652a9f41a437bc79a2df8d5acf30c78" target="_blank" rel="noopener noreferrer">ASML: 2030 Guidance At Risk - High NA Machines Lacking Customer Traction</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. faces uncertainty for 2026 due to slow adoption of high NA EUV tools. Click for insights on market hesitations, Q2 results, and ASML's outlook....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4a960e73898f47f23fd3a66fe769ea22e0cd7790512c3316666c8c9a37c998d1" target="_blank" rel="noopener noreferrer">This Week In AI Chips - Mintlify Advances AI-Driven Knowledge Retrieval with Key Acquisition</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.76
+                                </span>
+                            </div>
+                            <div class="article-summary">Mintlify's recent acquisition of Trieve marks a significant development in the realm of AI chip-driven knowledge retrieval systems. This move is set to enhance the efficiency and accessibility of prod...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21a4400e9a41f385b41c120f36ee5db60ba8b879239c63bc63415c04f802e890" target="_blank" rel="noopener noreferrer">Should You Forget Tesla and Buy These 2 Artificial Intelligence (AI) Stocks Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Tesla’s star is fading -- here’s why two AI powerhouses with stronger growth and better valuations deserve your attention instead....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6522408b9ee82ad50282ae2e3dd44f071e7777b0a88df8039cb896a23db3c99e" target="_blank" rel="noopener noreferrer">Intel Casts Doubts on Next-Gen Chip Manufacturing. What It Means for TSMC and ASML Stock.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">The future of its chip-manufacturing business looks uncertain. It could have major consequences for TSMC and ASML....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fc0cb8e0bb2a3e289db4043df58d2d3f3d3908fc9c1b7d6e89d0b6048d1c458a" target="_blank" rel="noopener noreferrer">Solid Corporate Earnings Results Support Stocks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.25%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.25%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.19%. September E-mini S&P futures (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=432766fdb5e418845b438b338a2025eb10e0055dc557cd89efa2eb8784433e26" target="_blank" rel="noopener noreferrer">Does the ASML Stock Sell-Off Signal Trouble for Nvidia and Broadcom?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">The semiconductor industry could face challenges even if AI demand remains strong.  ASML (NASDAQ: ASML) stock was down over 11% at one point during the trading day July 16 before closing the session d...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=123adca406a36563b9cd7ddbbe8442d409a8e2eec946760ac41ca94388194f9b" target="_blank" rel="noopener noreferrer">EU Wrestles With China’s Chokehold Over Crucial Defense Supplies</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- European metals traders are engaged in an increasingly frantic scramble to secure rare-earth metal supplies after it became all but impossible to directly source them from China.Most Re...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c7d7307df45921c52140e544981a2ee9a14c36c3d24200ab73bd367c5f63b9b7" target="_blank" rel="noopener noreferrer">My Top AI Growth Stock to Buy Now and Hold Through at Least 2030</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML is powering important advancements in artificial intelligence.  Alternatively, you can invest in a company like ASML Holding (NASDAQ: ASML), which benefits from the growth of AI, regardless of it...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d44991cee97fb85efba395dcf43e3cd3bd07b8610ecae05636e1e45e2801ce22" target="_blank" rel="noopener noreferrer">Low IV Alert: Stocks that Could be Ready to Pop</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Market volatility has dropped since the April correction, but with plenty of items on the news front, we could see a volatility spike at any point....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a4856efa0fbc45adaccc7a5cce4af0205258e7f11f29a1f0ff8b99aa1a0e5ae0" target="_blank" rel="noopener noreferrer">Analyst Explains Why Nvidia China News Could be ‘Huge’ for ASML Holding (ASML)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the 10 Stocks to Buy and Sell in 2025: Top Analyst Calls. Joe Tigay from Equity Armor Investment said in a recent program on Schwab Network that the US govern...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=92147f2b2d0b8b536136cac63e0e1350976fccaed3ebb65df9dade303ca72bef" target="_blank" rel="noopener noreferrer">ASML best positioned for 2026 in the Semicap pack: New Street Research</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- New Street Research upgraded ASML (AS:ASML) to Buy with a €790 price target in a note to clients on Thursday....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a109761d882f9d46c64f478be8dae693fd18e5719e9d822e647a5e47405c4db8" target="_blank" rel="noopener noreferrer">Down 18%, Should You Buy the Dip on ASML Holding?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.03
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML stock fell following the release of its latest quarterly report thanks to a cloudy 2026 outlook.  ASML trades at an attractive valuation, and the company should still be able to deliver healthy g...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=889d584dd886eac5fe24cab46d137349c47ec62f575be25f4b1ac629982fe001" target="_blank" rel="noopener noreferrer">Fidelity Diversified International Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Fidelity Investments reviews Q2 results for its Diversified International Fund. Discover how global trends and durable picks shaped strategy. Read on....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=92a18c82a841db6cece5b2cb5522c199cd72aaf14efca2d4bb2176803639ca73" target="_blank" rel="noopener noreferrer">ASML: The Case For 2026 Growth (Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML's Q2 beats expectations, but a cautious outlook spooks markets. Click here for a full investment analysis....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e37551a65b34d71693ecb0e9c716ce246dbaf76b3460e2449289a77b2f4080b2" target="_blank" rel="noopener noreferrer">Should You Double Up on ASML Stock Despite Growth Concerns?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML's revolutionary technology continues to push the bounds of AI and semiconductor manufacturing.  The commercialization of ASML's High-NA EUV systems should lead to sustained revenue and margin exp...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33b9d971a73e63e53e73e63a1708a54b508886842ce08e3029e44590181804f1" target="_blank" rel="noopener noreferrer">SAP Falls as Trade War Concerns Temper Strong Cloud Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- SAP SE shares fell after the German software company flagged concerns about tariff insecurities and currency fluctuations even as cloud revenue posted solid growth. Most Read from Bloom...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0fa8c128a5ba52d54fefe2e2fb7c3380b6116d5b5a1f03e524094ed7f0d29c6f" target="_blank" rel="noopener noreferrer">TSMC: Time To Hedge With Options (Rating Downgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Taiwan Semiconductor Manufacturing Company Limited stays strong despite challenges. Click for our updated look at TSM stock post Q2 earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c6cb45acc19381c8f670d9accaab9a50dce7f289ec8c99a8c9650526b93521d4" target="_blank" rel="noopener noreferrer">This Week In AI Chips - WeRide Lenovo NVIDIA Unveil Groundbreaking Autonomous Driving Platform</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">In a significant development for the AI chips sector, WeRide, in collaboration with Lenovo and NVIDIA, has introduced the HPC 3.0 high-performance computing platform. This platform, powered by NVIDIA'...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9e25879b495bc2e728eb8a793d46504d2ff6b9e4b6f9630dac24358eeff71b2f" target="_blank" rel="noopener noreferrer">ASML Holding N.V. (ASML) Is a Trending Stock: Facts to Know Before Betting on It</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching ASML (ASML) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e086aebb3acef282cf101236a6fa7226fd03ce3ddb7f6cc1a4ba2467417e955a" target="_blank" rel="noopener noreferrer">Why Texas Instruments (TXN) Shares Are Sliding Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of analog chip manufacturer Texas Instruments (NASDAQ:TXN) fell 12.3% in the afternoon session after it issued a weaker-than-expected forecast for the third quarter, sparking concerns about fut...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=08d12ca30a5276d9956cb075664e0562b6fc668e1a737c448244769c59c373e4" target="_blank" rel="noopener noreferrer">ASML Just Quietly Booked Billions for Its EUV Machines. Is It Time to Buy the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML's management doesn't know for sure whether it's going to grow next year, and this unsettles investors.  Many people have never heard of ASML (NASDAQ: ASML), and fewer could explain what the compa...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e1253f35fc5ea3e4a16dcf26e45b8b8a741add4b38e3d6cd3c1cf49bab739f0d" target="_blank" rel="noopener noreferrer">Infinitesima Begins Project to Further Develop the Capabilities of the Metron3D 300 mm In-line Wafer Metrology System</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">ABINGDON, United Kingdom, July 22, 2025 (GLOBE NEWSWIRE) -- Infinitesima is pleased to announce a three-year development project with partners including ASML. The Metron3D 300 mm in-line wafer metrolo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bf62d76fba28bbb11358a17e6c743ebf68850793de1db1574f6dea1868836a07" target="_blank" rel="noopener noreferrer">After Falling on Earnings, Should You Buy the Dip in ASML Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML has struggled over the past year due to export restrictions on China and order delays.  On the surface, ASML Holding's (NASDAQ: ASML) competitive advantages are clear.  It's the world's only make...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=75f69ffefcfa761fbf4fc8340ae04becb5e7377722f1d73b95b26f26e0557ccb" target="_blank" rel="noopener noreferrer">Oakmark International Strategy Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Oakmark sees global value stocks gaining ground as U.S. growth fades. See how theyâre tapping overlooked opportunities across Europe and Asia....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7e423cfca704aaed367b5b9b244d739992b44a20688698360e124e33c0149e00" target="_blank" rel="noopener noreferrer">ASML Earnings "Miss": What the Market Got Wrong</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Today, ASML, the monopoly semiconductor equipment giant, reported its highly anticipated earnings results.  In the quarter the company reported an astonishing 54% gross margin as ASML displays its nea...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eee20449838097df47f6f3274d127ed4587e189c3b3ff1dcaaeeeeaf5b977981" target="_blank" rel="noopener noreferrer">Stocks to Watch Tuesday: Coca-Cola, GM, RTX</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">? Coca-Cola (KO): The beverage maker reported mixed quarterly results, but nudged up its annual adjusted earnings outlook. Shares fell more than 1%. ↘️ RTX (RTX): Quarterly results from the aerospace ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8fa390de28e02258340fb040ccee5000a2858c74929ad1e411a5680b055b80eb" target="_blank" rel="noopener noreferrer">Oakmark International Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Oakmark International Fund (Investor Share Class) outperformed the benchmark, the MSCI World ex USA Index, for the quarter and since inception. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7713c3469b5d293a16374eae52e977c6ba44f13fc6dd0863aa44736900c296a1" target="_blank" rel="noopener noreferrer">ASML Shares Tumble. Time to Run for the Hills or Buy the Dip?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML's stock dropped after the company was uncertain about its 2026 growth outlook.  The company reported strong Q2 results, driven by the continued growth of AI chips.  With a virtual monopoly on the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a7dcded26820f32036f051587268e637cd41cb0d0ad0fd32e2b328120869c870" target="_blank" rel="noopener noreferrer">ASML: Solid Buying Opportunity Before The Market Realizes It (Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.67
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V.'s dip amid semiconductor highs could be a great opportunity. Learn how AI infrastructure growth might boost future prospects. Click for my update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dc679ae687dd5e91f5256631be3f593f4cfb5047ce59ccde817fba4b3fba9c59" target="_blank" rel="noopener noreferrer">This Week In AI Chips - Reshoring Boosts Manufacturing Amid Strategic Partnerships and Acquisitions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Recent developments in the AI chip industry have underscored the strategic importance of precision manufacturing in supporting critical supply chains. PMGC Holdings Inc. recently completed the acquisi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=754d878ebcfd084074a56a415b8692af9c9ba074374dc900073d9731031f376f" target="_blank" rel="noopener noreferrer">ASML Holding Q2 Earnings: I Will Bottom Fish At $640</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding reported strong Q2 results, but geopolitical risks cloud 2026 growth. Click for insights on ASML stock trends, risks, and long-term opportunities....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4a8f2703aa64b556fd0d14bf45b96fd98a989c08e177109e4b587bd353129582" target="_blank" rel="noopener noreferrer">ASML reports transactions under its current share buyback program</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML reports transactions under its current share buyback program VELDHOVEN, the Netherlands – ASML Holding N.V. (ASML) reports the following transactions, conducted under ASML's current share buyback...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2df5d5546fcb75829aad10674f424d8f8b87e725a8dfeac5cb27670114909ddb" target="_blank" rel="noopener noreferrer">ASML: Fundamentals Are Fully Intact, Strong Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML beats Q2 estimates driven by AI chip demand. With strong margins, unique positioning, and 15% growth forecast, discover why it's a top AI stock pick!...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=71ee008147c3e35f732c090ef3f67b86cf9c6e4d4f2ec27bfbf1f9f42d9f2288" target="_blank" rel="noopener noreferrer">Prediction: 3 Stocks That Will Be Worth More Than Palantir 5 Years From Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Palantir's stock price has risen much faster than its business has grown.  ASML, Salesforce, and IBM all have strong investments in AI.  Palantir Technologies (NASDAQ: PLTR) experienced a significant ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8dfcb70fd08d722c997d7ee833a764ae3e4c1a74ea44acdd03a593601562145c" target="_blank" rel="noopener noreferrer">Want $1 Million in Retirement? Invest $100,000 in These 3 Stocks and Wait a Decade.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML has a monopoly in a subset of semiconductor manufacturing equipment machines.  Alphabet is the leading company in AI infrastructure and distribution.  Airbnb has many avenues to grow around the g...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ea0b28093eb3b367d5d3ab8ebd646bd0af1167d7c89f8d2351f0601ad20e0386" target="_blank" rel="noopener noreferrer">ASML’s Q2 Beat Fails to Impress as Bernstein Flags Order Weakness</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.71
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the AI Stocks Investors Are Watching Closely. On July 16, Bernstein lowered the firm’s price target on the stock to $743 from $806 and kept a “Market Perform”...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=df9d7bd368be44d4e3390361b98644515140954329f6484734b382a2fc3a7dd9" target="_blank" rel="noopener noreferrer">ASML (ASML) Gets EUR700 Price Target From Deutsche Bank — Analysts Stick With ‘Buy’ Despite Headwinds</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-19</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.29
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the AI Stocks on Wall Street’s Radar. On July 17, Deutsche Bank analyst Robert Sanders lowered the price target on the stock to EUR700.00 (from EUR750.00) whi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bc3fc555f6d5360a8dbf8c886e71608160cd9800875520ebc176607823e255ea" target="_blank" rel="noopener noreferrer">5 Artificial Intelligence (AI) Stocks You Can Buy and Hold for the Next Decade</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia, TSMC, and ASML are all great long-term plays on AI infrastructure.  Alphabet should not be overlooked for what the company is doing in AI.  Artificial intelligence (AI) isn't just a technology...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c3f5bafea3d0b77b5444917138b48595423d6ca924fc4651aa0ba7259eabd7c7" target="_blank" rel="noopener noreferrer">Is Europe losing the AI race? Magnificent Seven widen gap over Europe's giants</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">The US ‘Magnificent Seven’ have pulled far ahead of Europe’s corporate giants, driven by massive AI growth. While US tech surges, Europe’s top firms—mostly in traditional sectors—struggle to keep pace...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1835806be822686b79f4b157064a4d9c12bca62b14e3c08be85996b894be6f8e" target="_blank" rel="noopener noreferrer">AI Chips Update - Powering AI Growth with Sustainable Energy Innovations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">The recent announcement of over $90 billion in commitments to artificial intelligence and energy initiatives underscores the growing importance of robust data center infrastructure in supporting U.S. ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21b981eed851191307fc7f7f37dfb40d3cc0b38e68764adacfd66589e9030e10" target="_blank" rel="noopener noreferrer">ASML Stock Declines 9% After Q2 Earnings: Should You Hold or Fold?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.84
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding stock tumbles 9.5% despite strong Q2 results as weak guidance and 2026 uncertainty spook investors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8e9ce76905a68ad7d129efbb176bebb36b561bd62cabb83a5d6fe049fc4a6fa0" target="_blank" rel="noopener noreferrer">Stock Market Hits Highs On Nvidia AI Chip News, Taiwan Semi Earnings, Economic Data: Weekly Review</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">The stock market marched to fresh highs with Nvidia, Taiwan Semiconductor and AI chipmakers leading and economic data solid. Online brokers also are hot....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=08208f73ac37e09c94ffc5bec6aa101477cec6ba9c125efe1abca9683c37a71e" target="_blank" rel="noopener noreferrer">ASML Is Still Undervalued - Time To Be Greedy (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b94395f9244561a756ec5f4d2ed8124999fa6eb8ff9a3a4877f6ab3b6790cca9" target="_blank" rel="noopener noreferrer">Podcast: U.S. Stocks Recover After Talk of Firing Federal Reserve Chair Gave a Jolt</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Banks Goldman Sachs, Bank of America and Morgan Stanley reported stronger-than-forecast profits, as tariff-related market turbulence boosted trading revenue. Plus: Shares in car companies Ford, Renaul...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5c597402dd651379bb20755051e019d542d0501127645407834a2f32f8f25a42" target="_blank" rel="noopener noreferrer">Nvidia Supplier SK Hynix Dips as Goldman Sees Competition Rising</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- SK Hynix Inc. shares declined Thursday after Goldman Sachs Group Inc. downgraded the Korean chipmaker for the first time in over three years, on expectations it may suffer as competitor...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=30aaadc3be2d304e5c28a5773db2179613d5e717599f0ef3e6dbc07088840448" target="_blank" rel="noopener noreferrer">Applied Materials, Inc. (AMAT) “Is About To Have A Renaissance,” Says Jim Cramer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published 11 Stocks Jim Cramer Just Discussed As He Shared Why Stocks Are Rising. Applied Materials, Inc. (NASDAQ:AMAT) is one of the stocks Jim Cramer recently discussed. Applied Material...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57dc8c806a51fe1928cdb7528ffa881b336a974f6b1d9fd5d58ed0e8b75f1159" target="_blank" rel="noopener noreferrer">3 'Sleep Well At Night' Picks For Mom</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3a355e5232e52a885346de838de4de10988f255ca77c3066220b5acea9f54b3f" target="_blank" rel="noopener noreferrer">ASML Holding NV (ASML) Q2 2025 Earnings Call Highlights: Strong Sales and Margin Performance ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding NV (ASML) reports robust Q2 2025 results with net sales reaching EUR7.7 billion, while navigating macroeconomic challenges and geopolitical uncertainties....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6d13d8fa3c127699ac5d0995998f1d8b8e9e60f6521b4eb8b07a162bcb62986b" target="_blank" rel="noopener noreferrer">Synopsys CEO Sassine Ghazi took us inside his $35 billion acquisition of Ansys, which closes today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Also: All the news and watercooler chat from Fortune....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f864c56bd76c48906ffc129171324f1c83471f0d3a067ce1121d4e383c76260f" target="_blank" rel="noopener noreferrer">ASML Holding: Q2 Earnings Confirm My Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding's Q2 earnings exceeded expectations with strong sales, high gross margins, and robust share buybacks. Read why I rate ASML stock a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=92a43422b9f933ddb7e0dbb407fabddcbaea2ca369fd89948a9c620312010b05" target="_blank" rel="noopener noreferrer">ASML: Of Course It's Little Down</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding remains a Hold as valuation concerns, tariff impacts, and supply chain risks weigh on growth prospects. Learn more on ASML stock here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7b7e3dae67fb2fa7e3202193b92cdc0b9ec37579d9acf288dec019d59f19529f" target="_blank" rel="noopener noreferrer">ASML Bulls Beware: The Data Points To Prolonged Weakness Ahead</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. faces zero-growth risks in 2026 amid falling new machine demand & pressure on margins. Click for my updated post earnings look at ASML stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=303d728c907863b1a894d020dd17f6f22354f73e4540939b3afb3b451cab8215" target="_blank" rel="noopener noreferrer">Social Buzz: Wallstreetbets Stocks Mostly Higher Premarket Thursday; Opendoor Technologies, Taiwan Semiconductor to Advance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.69
+                                </span>
+                            </div>
+                            <div class="article-summary">The most-talked-about stocks in the Reddit subforum Wallstreetbets were mostly higher hours before T...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8960e033382848f0a339b10811dac1344aaf2cd467191137cab333e2ed86434" target="_blank" rel="noopener noreferrer">Tech, Media & Telecom Roundup: Market Talk</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Find insight on Taiwan Semiconductor Manufacturing, Tencent, Disney and more in the latest Market Talks covering Technology, Media and Telecom....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b079a6d9d3d57f35d2fbc10d2096b60b313357d3f8afd5a09a9eba3d0a359b29" target="_blank" rel="noopener noreferrer">Dow Jones Futures: Nvidia Chipmaker Taiwan Semiconductor, GE Aerospace Rise On Earnings; Netflix Looms</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">Nvidia chipmaker Taiwan Semiconductor jumped on strong earnings, lifting chips. GE Aerospace also rallied. Netflix looms....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e400f279c482189adc2bfc9be868b0e35625000b0aedb94889b9cdf905332624" target="_blank" rel="noopener noreferrer">Why Investors Need to Take Advantage of These 2 Computer and Technology Stocks Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Finding stocks expected to beat quarterly earnings estimates becomes an easier task with our Zacks Earnings ESP....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=270aaa33a317206b3ac413a72c30a83907b36c0a34e586d04dab2db66625c8dc" target="_blank" rel="noopener noreferrer">ASML Stock Keeps Sinking. Why It’s Not a Bargain Yet.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML has slumped after warning growth isn't guaranteed in 2026. Wall Street isn't keen to catch the falling knife....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ec56b6403444fff24d080d38143d86e02f92d9d29ece911fffa002262d565fe3" target="_blank" rel="noopener noreferrer">TSMC Raises 2025 Outlook in a Big Boost for AI Demand Hopes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.16
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Taiwan Semiconductor Manufacturing Co. raised its outlook for 2025 revenue growth, shoring up investors’ confidence in the momentum of the global AI spending spree.Most Read from Bloomb...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f7a8637ac782f6e0c15363a5ece0be665137525109edbef93fa3518015a4cb85" target="_blank" rel="noopener noreferrer">ASML Holding Q2 Earnings and Revenues Surpass Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML posts a 47% jump in Q2 EPS and beats both earnings and revenue estimates, driven by strong Systems and Services growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ffeee5c19cf70ca3e406d6b4c39bf84a8ab3e604cc11e166e0c3adfe5a192e3e" target="_blank" rel="noopener noreferrer">ASML Stock: Strong Q2, but 2026 Growth Outlook Underwhelms</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the AI Stocks Gaining Attention on Wall Street. ASML reported its second-quarter earnings on Wednesday, July 16th. Investors were hopeful that the chip-making...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ecbe2b6bac8339baa51a4be47aa9ad3172a7914a8e8a131d7c405975f4d8f220" target="_blank" rel="noopener noreferrer">ASML Q2 2025: Numbers Hold Up, Narrative Cracks; I Sell</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML's Q2 shines, but weakened guidance and rising risks signal caution. Read why I rate ASML a Sell and prefer to wait for more clarity before reconsidering....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=47827143c10a5be5060336515b0d21a8a6dfc980538e75ce117fc715195511d8" target="_blank" rel="noopener noreferrer">3 Core Investments In Our Growth Portfolio</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">I have classified a few of the most important investments in our portfolio into Defense, Core, and Offense. Check out the investments in each group....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=00d423735e55076b1e8c0407e692fe4a381089f7aebc14dfbf4374dd99ebf6a8" target="_blank" rel="noopener noreferrer">ASML: Your Chance To Buy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why ASML Holding N.V.'s strong earnings, AI-driven demand, and market dominance make it a long-term growth opportunity. Click for my ASML earnings update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b195ba6ea0a5e872d6062ee24448200cf30769971fe336e7963f9b32a788be7c" target="_blank" rel="noopener noreferrer">3 Flaws Of Dividend Investing That Limit Returns</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f8e8fb2a8c3d782813733fe1e1573649fb1e9be186e32d4561979fe686bc6305" target="_blank" rel="noopener noreferrer">ASML Shares Slump as Tariff Uncertainty Prompts Growth Warning</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">The chip-making equipment supplier, whose clients include Intel, issued a warning days after Trump’s threat of 30% tariffs on the EU....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=028f674d176e21b6705adaf7d1a7ab995f4ef4214506ee5e0bc5062b71cb94cb" target="_blank" rel="noopener noreferrer">ASML: Celebrate The Lowered FY 2025 Guidance - Rare Dip-Buying Opportunity</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.25
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. remains a strong long-term investment despite near-term volatility. Click here to find out why ASML stock is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=185365540bd6eb5bf4daf556eccac9f926e9df1620840e3ca85f17f45a7a387f" target="_blank" rel="noopener noreferrer">ASML: Freak Out Now Means FOMO Later - Buying Post-Earnings Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.34
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. sees strong past performance but faces growth uncertainty amid U.S.-China trade tensions and export controls. Click for our ASML earnings update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=669a7ba076a9fa702ac781fb35ecb3a7dabfa9a9592814cb601fb51491a40eaf" target="_blank" rel="noopener noreferrer">EU trade chief heads to Washington in search of tariffs solution</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">BRUSSELS/BERLIN (Reuters) -EU trade chief Maros Sefcovic headed to Washington on Wednesday for tariff talks, an EU spokesperson told Reuters, adding that he will meet U.S. Commerce Secretary Howard Lu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=998c436cf9df23b6280aeaa84133f2edf0ee2c562a0c7586264f181aaf5d06dd" target="_blank" rel="noopener noreferrer">Chip Gear Leader ASML Beats Q2 Targets But Gives Cautious Outlook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Semiconductor equipment giant ASML beat second-quarter earnings estimates. But ASML stock tumbled on disappointing guidance....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6c3012645475d6107b031fbb62c0612c77ab883efb97b2dce27dece7db65018c" target="_blank" rel="noopener noreferrer">Chip Gear Maker ASML Can't Guarantee Growth This Year. Its Stock Is Falling.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding shares are dropping in premarket trading Wednesday after the Dutch semiconductor-gear manufacturer said it couldn’t guarantee growth in the coming year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=afcaba7de8f069f51abfb0a2a6b88d86d92d5587baa52dbb9409c5ec4c02070b" target="_blank" rel="noopener noreferrer">Tariffs Are Showing Up in Inflation. Why Trump Can’t Afford to Ditch Powell.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.67
+                                </span>
+                            </div>
+                            <div class="article-summary">House deals a blow to “Crypto Week,” ASML warns on 2026 growth, a promising Chinese weight-loss drug, and more news to start your day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=90fbf22750186d74cd27e03d91f544520bb18ac10d47dab702efc80ee8e73256" target="_blank" rel="noopener noreferrer">Trump Flags Tariffs of More Than 10% on Some Countries. Here’s the Latest Trade News.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Several minor U.S. trading partners are about to get hit by levies, Trump told reporters late Tuesday....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76f1a58c4ff3dacde70ab808b535f971c476fbfc30dbf43a0e0095a03309650f" target="_blank" rel="noopener noreferrer">ASML Stock Dives After Growth Warning in Earnings. Tariffs Are Rattling Investors.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">The chip tool maker said it couldn't guarantee growth in 2026 due to the uncertainty caused by U.S. tariffs....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=721b8cfbc2fb517bd9033ca087da128b42ddf0edeb14c4d6cd9d9c0db0155e14" target="_blank" rel="noopener noreferrer">ASML Hedges Growth Outlook for 2026 as Trade Wars Weigh on Sales</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- ASML Holding NV Chief Executive Officer Christophe Fouquet walked back the company’s sales forecast for next year, blaming trade disputes and global tensions.Most Read from BloombergThe...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eb803f551884b713da9d5a3b2da0ca5507f3eb3bf4809089bc30125415533c84" target="_blank" rel="noopener noreferrer">Stocks Mostly Down Pre-Bell as Traders Await Producer Prices Data, More Bank Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">The main US stock measures were mostly trending downwards in Wednesday's premarket activity, as inve...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9997512f20745f030160f4af6ec55d94acdd2238f9150587b41111b6ba0f2153" target="_blank" rel="noopener noreferrer">Tariff timeline, chip stock slide, inflation jitters: 3 things</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">Yahoo Finance Reporter Josh Schafer highlights three market-moving stories to watch on Wednesday, July 16, on Morning Brief: Market Sunrise. Stock futures (ES=F, NQ=F, YM=F)  are flat to lower as inve...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b04b8eea719054ec0d1aaeecc93b8ddf619e0687a530ecbf53726c26b994ac20" target="_blank" rel="noopener noreferrer">Market Overreacts To ASML Q2 Earnings, Calm Heads Won't</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. beats Q2 expectations with strong bookings and 2025 guidance. Click for my updated look at ASML earnings and why I remain bullish on the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d2270f73b56256c79cb6baee74ae316f87fafb44d80c953b6e693c8b8e30660c" target="_blank" rel="noopener noreferrer">5 Things to Know Before the Stock Market Opens</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">News of the day for July 16, 2025...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6e8a63bb59abc97b16c5fb24f54f1258da9c7ff6a346c7db56ae0c0522d81f48" target="_blank" rel="noopener noreferrer">These Stocks Are Moving the Most Today: Nvidia, ASML, J&J, Bank of America, Goldman, Palantir, Brighthouse, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML falls sharply after issuing a growth warning, while Goldman Sachs, Morgan Stanley, and Bank of America post better-than-expected quarterly earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c52f0d785e5935a29a9063a9f44317ca70d57cf78b874ea9a51cfc8ba0503ae9" target="_blank" rel="noopener noreferrer">ASML Warning Caps European Bourses Midday</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.78
+                                </span>
+                            </div>
+                            <div class="article-summary">European bourses tracked sideways midday Wednesday after Dutch technology giant ASML said that macro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=633c632653c14e8322147e9c75929deaa0b06928dba1202440b4a064609d23bc" target="_blank" rel="noopener noreferrer">Dow Jones Futures: ASML Dives, Goldman Beats After Nvidia, AMD Can't Hide Market Woes; 3 Stocks In Buy Areas</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.88
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML dived on guidance before the open, while Goldman Sachs beat. On Tuesday, Nvidia, AMD and CoreWeave jumped on AI news, but masked broader stock market weakness....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c29f30c2207edf80f9b529d221b328ad79d0a05c376ab48e3b28dad685243376" target="_blank" rel="noopener noreferrer">Exchange-Traded Funds Lower, Equity Futures Mixed Pre-Bell Wednesday Ahead of Additional Inflation Data</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">The broad market exchange-traded fund SPDR S&P 500 ETF Trust (SPY) was marginally lower and the acti...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0d74486a509df0a877ba382fef42875b59cc83c326422e6954b9a70c08187840" target="_blank" rel="noopener noreferrer">Stocks to Watch Wednesday: J&J, Bank of America, UnitedHealth, Goldman</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">↗️ Johnson & Johnson (JNJ): J&J boosted its annual outlook, after posting better-than-expected quarterly profit and sales. Shares rose nearly 2% in premarket trading. ↗️ Goldman Sachs (GS): The Wall S...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=54822b5997843a0cef184550f55be047c6454d6840c0388bd6ec2846c20ece18" target="_blank" rel="noopener noreferrer">Trump’s AI Ambitions Need Tariff Certainty. It’s Not Coming.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">President Donald Trump wants the U.S. to advance its lead in artificial intelligence, but it could be complicated by his messaging on world trade....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7192c8ea8025821fa91fbb5a024606ddd592c65682fe5a185c65a4f69881172a" target="_blank" rel="noopener noreferrer">Stock Market Today: Indexes Rise On Surprise Inflation Data; ASML Plunges On This Warning (Live Coverage)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Futures on the Dow Jones Industrial Average and other major indexes were mostly higher Wednesday, as Wall Street digested cooler-than-expected inflation data. Meanwhile, chip stock ASML plunged on the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2495506392666d64108870785db75bf836beac6600630cbba08970826d868c8d" target="_blank" rel="noopener noreferrer">ASML Stock Falls on CEO's Warning: 2026 May Be a Flat Year</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Tariff Fears Cloud ASML's Future Despite Strong Q2 Bookings...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e7f42bc287d42e7d8e72da846a582288619cd7050257fcf290c07c677f1ea4ce" target="_blank" rel="noopener noreferrer">ASML Holding N.V. 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=350b81d2bd78a4f3b108607f6aa283e27b3e71edca6a7495c6fba06e33b2ca6e" target="_blank" rel="noopener noreferrer">ASML Holding N.V. (ASML) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2b10582701757a4e25c28afd31052107c27958d45e77cd2437c3206d5480e82d" target="_blank" rel="noopener noreferrer">ASML: Why I Am Buying The Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d9e867d8940fa59fa4ee3c7a3dcf34bb9f7c473543c5f1ed2745e89963e06bc2" target="_blank" rel="noopener noreferrer">ASML: A Solid Quarter, But 2026 Looks Cloudy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.27
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1cb5ddabb023095be3bce216e73a44d693add6fb2ca37545f48c0f88463d63d5" target="_blank" rel="noopener noreferrer">ASML: It's An Expectations Game</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=633b9d7a5e2e6f66247f851589cd247144c7ed48555a26ddcee55011ef400db4" target="_blank" rel="noopener noreferrer">The Risk/Reward Of ASML Was Good Already, Now It's Even Better</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bf0aa764d94e63961fda7b2d27ebb88a39cc310bda61c9f139f577da28266185" target="_blank" rel="noopener noreferrer">ASML: Sell-Off Justified, Now A Buy In Tranches On Weakness</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.23
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e967caec3ebadfedd3a241ffd8d2bf8daa7c543d4b107d3abb573040e50ac9cd" target="_blank" rel="noopener noreferrer">One of the most critical AI companies in the world just said it ‘cannot confirm’ growth in 2026, wiping out $30 billion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of ASML, the Dutch semiconductor equipment giant, tumbled 11% after it reported earnings. It's not just any company....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=77d2e481d152b49037b289b6395d207672302bf1686ec2949af4f0ad797bea72" target="_blank" rel="noopener noreferrer">Sector Update: Tech Stocks Higher Late Afternoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Tech stocks were up late Wednesday afternoon, with the Technology Select Sector SPDR Fund (XLK) up 0...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=de425428127c9d30a3fdd63182b22ce096b82f9b095fa072036d8b3620d92446" target="_blank" rel="noopener noreferrer">J&J results a good sign for market, advisor says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">STORY: ASML, the world's biggest supplier of computer chip-making equipment, warned on Wednesday that it may not achieve revenue growth in 2026 as chipmakers building factories in the U.S. await clari...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=381a0f3785b2d0589b6d8780f498f6504dd7f8d71371518f02c9d98a877edcb3" target="_blank" rel="noopener noreferrer">ASML cuts outlook, Palantir & ARM upgraded: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Here are some of the stocks on the move on Wednesday, July 16. ASML (ASML) stock is under pressure after the company narrowed its 2025 guidance, citing rising tariff uncertainty and geopolitical tensi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4fe3317655b2c7b8cdde021fc8a6572001146aef225e6702527ee8c4c264cdbf" target="_blank" rel="noopener noreferrer">Trump's Tough Stance on Semiconductor Tariffs Could Soften, Wedbush Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.15
+                                </span>
+                            </div>
+                            <div class="article-summary">President Donald Trump said late Tuesday that new tariffs on semiconductors could be coming soon. Wedbush analysts said his stance could soften....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4fecee356d2b1467f121e83354870682bfa3855536c32c12ddfa3e16d2ffd41a" target="_blank" rel="noopener noreferrer">These Stocks Moved the Most Today: ASML, J&J, Global Payments, Morgan Stanley, Ford, Palantir, Brighthouse, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML falls sharply after issuing a growth warning, while Goldman Sachs, Morgan Stanley, and Bank of America post better-than-expected quarterly earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e2b153ca4d3aff7d5972f5c95d839d832085d6567e756d091107460978a83a6a" target="_blank" rel="noopener noreferrer">Stocks to Watch Recap: J&J, UnitedHealth, Goldman Sachs, Ford</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">↗️ Johnson & Johnson (JNJ): J&J posted better-than-expected results and boosted its annual outlook. Shares rose 6.2%. ? Goldman Sachs (GS), Bank of America (BAC), Morgan Stanley (MS): The banks report...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ae641bc8806f861dcdf811ab6ac472a83311c60cc2533f49c0a6bc91fa735dfd" target="_blank" rel="noopener noreferrer">ASML's 2026 growth outlook hinges on second-quarter bookings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">VELDHOVEN (Reuters) -Investors are hoping that ASML's bookings are robust enough to support its 2026 growth ambitions when the world's biggest chip-making equipment supplier reports its second-quarter...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8ec65fb5791a8926881b2ee37698c3f7289d7fd8997db8809c0e93fef327274b" target="_blank" rel="noopener noreferrer">Harding Loevner Global Equity Q2 2025 Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">The Global Equity composite rose 10.3% gross of fees in the second quarter, lagging the 11.7% gain in the MSCI ACWI Index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=714d30a4efdd3696887af91d5e8a5c7ddb0dc0b30acef028eac1ced30af4579c" target="_blank" rel="noopener noreferrer">Stock market today: Dow, S&P 500, Nasdaq slip as tariff concerns mount ahead of key inflation data</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Markets are dropping off from record highs with Trump's tariffs in focus as key inflation data and earnings season loom....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0ba08d3f6af2f55bf12c27df201adcf82480773e75b05897d34cf15973a42c23" target="_blank" rel="noopener noreferrer">Stock market today: Dow, S&P 500, Nasdaq futures slide as tariff concerns mount ahead of key inflation data</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Markets are dropping off from record highs with Trump's tariffs in focus as key inflation data and earnings season loom....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=049b03e5a6c755d08032b142793c5f773ffa4f33bc4bcb5b1aec81aae6301880" target="_blank" rel="noopener noreferrer">ASML: Bull Run May Speed Up After Q2 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. Q2 earnings results may surprise the Street's expectations. Click here to find out why I upgraded ASML stock to a buy rating ahead of Q2 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=206ba164221c4d08a009fa39a4b89798a0c3c7a7d45ac497ccb0f4177934d55b" target="_blank" rel="noopener noreferrer">Option Volatility And Earnings Report For July 14 - 18</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Earnings season kicks into gear this week with banks and tech stocks taking center stage. This week we have NFLX, BAC, TSM, JPM, WFC, C, MS, GS, JNJ and ASML all reporting in what shapes as a busy and...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dfcca6a0634832c963b3173e76910fc03dee84774f5dd0808d8a7684b3f29e96" target="_blank" rel="noopener noreferrer">ASML Likely to Beat Q2 Earnings Estimates: How to Play the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding is expected to beat Q2 earnings as strong AI chip demand boosts EUV sales, but China export curbs pose a looming risk....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a21bc2098697583ee6d522c482ad3d986716a55e3710268806ed7d5d1665528" target="_blank" rel="noopener noreferrer">Will ALD and Etch Deal Wins Anchor LRCX's Systems Revenue Growth?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Lam Research posts strong systems growth fueled by wins for Halo, Striker, and Akara in NAND and DRAM markets....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=307b7f2b824b52aa1cdd60039ed97d521e3eba0f84cccd038fd6e97f7ccef881" target="_blank" rel="noopener noreferrer">Morningstar Expects ASML Holding (ASML) to Remain Top Lithography Equipment Provider</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.73
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the 10 Best Semiconductor Stocks to Buy According to Reddit. Morningstar believes that the company will remain the top lithography equipment provider in semic...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0099fa6bcad56b500d807b72462472a2ea6a13ddee478a80fd8683ed9074238e" target="_blank" rel="noopener noreferrer">Inflation data, big bank earnings, and Netflix results: What to watch this week</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-13</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">A busy week ahead for investors will see inflation data, the debate about the Fed's next move, and the start of second quarter earnings season all come into focus after a flurry of trade activity last...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f047f4fa8c8dc235112baae33d39bf5d751e9b92a8b16a4e97bffd76411143d" target="_blank" rel="noopener noreferrer">ASML Q2 Preview: Don't Expect Elite Growth From An Established Moat</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-12</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML offers resilient, moat-driven returns with cyclical upside, though growth is capped by adoption pace and geopolitical risks. See why ASML stock is a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e1c5adf82bcb65141509df0f2478bb9b1cb9c2c2f46c014de60a061e931826f3" target="_blank" rel="noopener noreferrer">Why ASML Should Crush Q2 Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=50318dc9bef322c6bb1b2ed0f642589c1d04f102da3a1a6486f872362233ee4e" target="_blank" rel="noopener noreferrer">Stocks to watch next week: Goldman Sachs, Netflix, TSMC, ASML and Burberry</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Earnings preview of key companies reporting in the coming week and what to look out for....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2cb00c4c83a47c8238af02d7c55f925868385b477c0e7a4b5ada42e69efb5871" target="_blank" rel="noopener noreferrer">2 Undervalued AI Stocks Poised for Explosive Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">These stocks are the rare AI companies trading at a reasonable valuation....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7ba3578653d7324461e83fb00c08bbaadbb4b5809e2fe988b8567d414b38e1e1" target="_blank" rel="noopener noreferrer">TSMC: Get In Before We See New All-Time Highs</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Taiwan Semiconductor Manufacturing Company Limited's sales soar 39% YoY, fueled by AI-driven growth. Click for my TSM stock update....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=80996dea1bcecb0ad6d68984f797bde1e1664f6c3a3b4a35395f673a73399ee0" target="_blank" rel="noopener noreferrer">ASML Holding (ASML) Maintains Buy Rating Despite 2026 Risks and Price Target Cut</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) ranks among the 20 best fast growth stocks to invest in. On July 1, Bank of America reduced its price target for ASML Holding N.V. (NASDAQ:ASML) from €795 to €759. The ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2d4a084199594349051d8c8366a8b9a29e250e25863cacf542fe011def2ccce2" target="_blank" rel="noopener noreferrer">DUV Demand Powers ASML Holding in China: Will Export Curbs Cut It Off?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">Strong demand for DUV lithography systems is driving sales in China, but export curbs and trade tensions threaten future momentum....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f713e20d0459818d28d4b189c862a0f8dee28fa838f7e22ecd9ac12a933a6713" target="_blank" rel="noopener noreferrer">Former ASML employee gets jail sentence for leaking tech files to Russian contact</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">ROTTERDAM (Reuters) -A Dutch court on Thursday sentenced a former employee of semiconductor firms ASML and NXP to three years in prison for sharing sensitive company technology with a contact in Russi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=59507c0eede60b63552b609f78f30b723179ab8e08d30ad9608cb8897696f57f" target="_blank" rel="noopener noreferrer">Investors Heavily Search ASML Holding N.V. (ASML): Here is What You Need to Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML (ASML) has been one of the stocks most watched by Zacks.com users lately. So, it is worth exploring what lies ahead for the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c0bfedbd0be8acf598c9a2dda880e6561406a61e6c270ec0d34a91adf73f6d8f" target="_blank" rel="noopener noreferrer">Bank of America Cuts ASML PT, Keeps Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">ASML Holding N.V. (NASDAQ:ASML) is one of the 11 Best Foreign Stocks to Buy According to Hedge Funds. On July 1, Bank of America reduced its price target for ASML Holding N.V. (NASDAQ:ASML) from €795 ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b13d9e299276e8cd39f9397d41c6d60aad8c6650cb1f9065da00d8cd2d097d6d" target="_blank" rel="noopener noreferrer">Ideal Portfolio For A 60+ Year Old</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Individual stock picking might not be the most efficient strategy for part-time investors. Check out the ideal investment mix for 60+ year old investors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e91302157447005e3c4a1bbb18a4013487bd076d740715d3ba317f276b0c429b" target="_blank" rel="noopener noreferrer">Latest News In AI Chips - BluSky AI Expands with Central Utah Data Center Initiative</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">BluSky AI Inc. has successfully secured its first operational site in Central Utah, acquiring 9.3 megawatts of power to establish a flagship data center. This initiative is part of an agreement with D...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4ebaccb02f54bf99dc0f4e87c6f878cd2a7a01e07ba53b729df0f86837a757ce" target="_blank" rel="noopener noreferrer">ASML scraps inclusion and diversity targets in the US</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.76
+                                </span>
+                            </div>
+                            <div class="article-summary">AMSTERDAM (Reuters) -Dutch semiconductor equipment supplier ASML has dropped its inclusion and diversity targets in the U.S. to comply with regulations there, it said on Wednesday.  The world's larges...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eea9d39d541ade822b533dcf99a9d3512cdab37ebd211b32a6ff8b1c5f69a3c8" target="_blank" rel="noopener noreferrer">2 Growth Stocks to Invest $1,000 in Right Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-09</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Twilio and ASML have both witnessed a nice acceleration in growth thanks to AI.  The stock market has gained impressive momentum of late following a difficult start to the year, with the tech-laden Na...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7449299e67f70ee7b5a816ddcfa3ca984dac5ea9bb424724e33eef5eea9cf2d5" target="_blank" rel="noopener noreferrer">Stock Picks From Seeking Alpha's June 2025 New Analysts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.51
+                                </span>
+                            </div>
+                            <div class="article-summary">June welcomed 48 new Seeking Alpha analysts with bold stock ideas and diverse insights across sectors....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=937e9e025a5b31ceb3517b0af598f2eef3b55edec081b62ee34b1f68c27e2c32" target="_blank" rel="noopener noreferrer">Semiconductor Photolithography Equipment Market Forecasts Report 2025-2030 - Growth Opportunities, Challenges, Supply Chain Outlook, Regulatory Framework, and Trend Analysis</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The global semiconductor photolithography equipment market is projected to grow at a CAGR of 4.12% by 2030. Driven by advancements in consumer electronics, ICT, and automotive sectors, the demand is s...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=20ac2e820a3e44b2b434b0b5b14569103cc21ad0bcd8128147c3bdcf72475a58" target="_blank" rel="noopener noreferrer">ASML (ASML) Gains As Market Dips: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">In the most recent trading session, ASML (ASML) closed at $794.1, indicating a +1.15% shift from the previous trading day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e1d8c65892131944333060fb30a4dd1de9b7ace764b92cac6f4b9daab4bc60fa" target="_blank" rel="noopener noreferrer">EU says it will continue rolling out AI legislation on schedule</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The European Union said it will stick to its timeline for rolling out its AI legislation, ignoring calls by tech companies to delay the bloc's AI rules....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
