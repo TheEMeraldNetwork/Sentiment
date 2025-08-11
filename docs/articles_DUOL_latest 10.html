@@ -1,0 +1,1431 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Duolingo Inc. (DUOL) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Duolingo Inc. (DUOL)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">73</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">31</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">19</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.15</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3ff04d663259517f1b84e687934bcaca60088cc6a619554367d80a038404853f" target="_blank" rel="noopener noreferrer">Duolingo went ‘AI-first’ and then came the consumer backlash</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">CEO Luis von Ahn acknowledged that the company’s customer growth, while still impressive, was dampened by his AI commentary....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f11cc853b8b90b3d30563d5704f2a5c191c52a1b3af40a5985b33493638e9953" target="_blank" rel="noopener noreferrer">Duolingo's Pushy Paywall Play: Smart or Risky?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Is Duolingo's premium push annoying or brilliant, and how might this strategy shape the company's future?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b1d3b57a5c943dee1713d633ac7c9c1f7aaa242165d29f09f9fc6d37712d4338" target="_blank" rel="noopener noreferrer">Duolingo: Premium Tiers And New Courses Are Driving Acceleration (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Duolingo's growth and innovations balance valuation risks, but high costs and retention challenges suggest a cautious investment approach....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=aabe080557ef2ce2cc565c21fb04b6cc0871275c4db6350a340ea677b0e0190c" target="_blank" rel="noopener noreferrer">3 Growth Companies With High Insider Ownership And 15% Revenue Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">As the Nasdaq Composite reaches a record high driven by surging chip stocks, the broader market reflects a mixed sentiment with the S&P 500 losing some momentum due to ongoing economic concerns and ta...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c9ea04343f27a85749c00db9274c61410780161750b62ff75b9d9ab7e4ec487e" target="_blank" rel="noopener noreferrer">Duolingo Q2: The Price Level I Load Up At (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Read the latest analysis on Duolingo stock and its recent earnings report here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b7bf3a3c7992ad9a1380d8e5ea6a6ceb5dc87d8c5f597ad9778183e1bb4abe32" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL) Tops Q2 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo (DUOL) delivered earnings and revenue surprises of +65.45% and +4.87%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=91af170f9b19b4b0bc6104380fb5df8e111b86da62e9b6833eed2cb754437d9a" target="_blank" rel="noopener noreferrer">Compared to Estimates, Duolingo (DUOL) Q2 Earnings: A Look at Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">While the top- and bottom-line numbers for Duolingo (DUOL) give a sense of how the business performed in the quarter ended June 2025, it could be worth looking at how some of its key metrics compare t...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a2ec45898ea3c6837487ce402b6f468f04451de9e40d36104e1208245f14d6b" target="_blank" rel="noopener noreferrer">Trending tickers: Apple, Shopify, Duolingo, Airbnb, Deliveroo</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The latest investor updates on stocks that are trending on Thursday....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c45bfd746f2beef8862454974a9d17b6636c7b82092cd261a0453b4897fd7727" target="_blank" rel="noopener noreferrer">Stocks to Watch Thursday: Eli Lilly, Apple, Corning, Duolingo</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">↗️ Apple (AAPL): Shares of the iPhone maker rose nearly 3% in premarket trading, after rallying last session. Apple announced an extra $100 billion U.S. manufacturing commitment on Wednesday, gaining ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5894614111540c9b93eb67c91d0c7cc02d28feee184f7016fab13c0026115e07" target="_blank" rel="noopener noreferrer">These Stocks Are Moving the Most Today: Eli Lilly, Fortinet, AppLovin, Sunrun, Airbnb, Duolingo, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">A slew or company results were causing big market moves ahead of the opening bell Thursday, and for many, earnings-beat wasn’t enough to prevent a selloff....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33501c8937339c5fcac70813eea640b3eb89c480f213406c695131799ad4d6e8" target="_blank" rel="noopener noreferrer">3 Stocks With Estimated Discounts Up To 49.7% Below Intrinsic Value</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">As the U.S. stock market navigates through a mix of earnings reports and tariff news, investors are keenly analyzing opportunities amidst fluctuating indices. In this environment, identifying underval...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a78ff5d1fd74eb1a33b6d2b1fa07e9edad312f956dd83c3bf7c8fa245cfbeec2" target="_blank" rel="noopener noreferrer">Artisan Mid Cap Fund’s Investment in Duolingo (DUOL) Quickly Rewarded</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Artisan Partners, an investment management company, released its “Artisan Mid Cap Fund” second-quarter 2025 investor letter. A copy of the letter can be downloaded here. In the second quarter, the fun...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f60f5d20b8f8e491c4829897b10a10118d2d94e17685f5e5fd96ee15d015340" target="_blank" rel="noopener noreferrer">5 Things to Know Before the Stock Market Opens</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">News of the day for August 7, 2025...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3087091410130978d8391da1bba47eb2a13c4140b91b9bf78092ecb29c601cef" target="_blank" rel="noopener noreferrer">Duolingo surges as AI-led growth, forecast raise boost investor confidence</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -Duolingo (DUOL) shares surged nearly 30% before the bell on Thursday, after its annual forecast increase buoyed investor confidence in its ability to drive user growth through AI features a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=01a38276c49eae300630ab38c558728175d4e5f26db97af3e20a39ff5ec17671" target="_blank" rel="noopener noreferrer">Trump's Semiconductor Tariff Carveout Drives Premarket Gains for US Equity Futures</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">US equity futures were up ahead of Thursday's opening bell after President Donald Trump suggested a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b53300069d45c055eb2221a24e05f48a1b65412533909a1f3df5a4a65ebc119" target="_blank" rel="noopener noreferrer">Duolingo, Fortinet, Celsius: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo (DUOL) stock is soaring after the company beat second quarter expectations, raised its full-year forecast. Fortinet (FTNT) stock is under pressure as the company cut its full-year services re...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=23b56a3af716a013268ab4246e0c4499d03ba2e2848f5dcd57b20a11ad8be5c2" target="_blank" rel="noopener noreferrer">Stocks Rally on Positive Tariff News ad Rate Cut Hopes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is up +0.48%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.39%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.71%. September E-mini S&P futures (...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=21579f64ba4f0f494544e999f136126eb97d5689094a703b4b56284403dd3c2e" target="_blank" rel="noopener noreferrer">Duolingo Stock Soars 35% as Language-Learning Firm Adds Subscribers, Bookings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of Duolingo rocketed higher Thursday, a day after the language-learning platform easily beat profit and sales estimates and boosted its outlook on strong user growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c4068ae778d11e00b713e43f12e1f877ffa0e8824ff6fb50dc87e39e03d4e77" target="_blank" rel="noopener noreferrer">Duolingo Stock Surges After Earnings. Why the Market Is Going Bonkers Over the Numbers.</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">The language-learning platform beat expectations and raised its outlook for the third quarter and full year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f05bc6273073c0dae3085938a71b86d7d639982cf36b399d5856cca0865ce52d" target="_blank" rel="noopener noreferrer">The backlash against Duolingo going ‘AI-first’ didn’t even matter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo faced significant backlash for announcing that it would become an "AI-first" company -- and yet, the app posted strong financials this quarter....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0143f5a423a86b714d767cf533d66e02269d50222818791cb7edf46258431ae6" target="_blank" rel="noopener noreferrer">Duolingo's Q2 User Growth Tops Expectations as Structural Tailwinds Remain 'Strong,' Morgan Stanley Says</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo's (DUOL) Q2 daily active users were "well-ahead" of expectations, as US weakness appears te...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5b7e19dbdbb52c463c232b5ff9a1a826092e6a39ecd1d5dfbcc7765078312579" target="_blank" rel="noopener noreferrer">Eli Lilly setback, Firefly Nasdaq debut, Duolingo skyrockets</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.12
+                                </span>
+                            </div>
+                            <div class="article-summary">Yahoo Finance's John Hyland tracks Thursday's top moving stocks and market movers in this Market Minute. Eli Lilly (LLY) stock plunges after its obesity pill trial data disappointed Wall Street, overs...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1e98881cca21db4a8832146f6d76622b240b8062e83823454338c406dd2ea85e" target="_blank" rel="noopener noreferrer">Inter & Co Leads 3 Stocks That May Be Trading Below Estimated Value</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">In a market where the S&P 500 is nearing record highs and the Nasdaq Composite continues to climb, investors are keenly observing shifts influenced by tariffs and economic outlooks. Amid this environm...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a7f7eee73e0dc7d8b9fc2e78ac0e9395de081d0797d62fd27c4e966e29095b8a" target="_blank" rel="noopener noreferrer">Should You Buy the Post-Earnings Surge in Duolingo Stock or Is It Too Late?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo stock soars on a strong Q2 release and raised guidance for the full year. But is now the right time to load up on DUOL shares?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=19d6dc79eb6de2976f650d6f2bf171495109d08f9e19a6b19f31747acc561d33" target="_blank" rel="noopener noreferrer">How Duolingo Stock Jumped 36% Thursday Morning</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo crushed another batch of analyst targets in Q2 2025. Here's how....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bdce22b3fc66ee8d81b3c72f357856265d6fb2123bb8f77c5c03f8214d594b26" target="_blank" rel="noopener noreferrer">Duolingo stock soars after earnings, forfeits roughly half its gains after OpenAI GPT-5 demo</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.17
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo shares, up on the day following a strong earnings report, gave up gains on Thursday afternoon after OpenAI debuted its newest GPT-5 model....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d7991f7e9c64d88c7fe1f28c95808e682597cc4be1744d5eba7ff1af7d90e3ad" target="_blank" rel="noopener noreferrer">Duolingo, Eli Lilly, Airbnb: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo (DUOL) stock is surging on a strong second quarter beat and raised guidance. Eli Lilly (LLY) stock is plunging as disappointing trial results for its weight-loss pill overshadowed solid perfo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8437f05f425368be32854f1dbd9f62e12f5e8bbe8726916d3cd20c8756629c6b" target="_blank" rel="noopener noreferrer">These Stocks Moved the Most Today: Eli Lilly, Fortinet, AppLovin, Sunrun, Airbnb, Duolingo, and More</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">A slew or company results were causing big market moves ahead of the opening bell Thursday, and for many, earnings-beat wasn’t enough to prevent a selloff....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=17fe6f507daece5e7d64361b6b20f81ddf6d6c8e4c0dc77e5f0fa0c37da50991" target="_blank" rel="noopener noreferrer">Baron Opportunity Fund Q2 2025 Shareholder Letter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Baron Opportunity Fund posted solid gains for the quarter, outperforming its benchmark, the Russell 3000 Growth Index. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=bff251470f82d87a2469745d0f47f298cb5bcb4ac0e0baf64397f82cff382e48" target="_blank" rel="noopener noreferrer">3 Stocks Estimated To Be Trading At Up To 49.3% Below Intrinsic Value</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">In recent weeks, the U.S. stock market has experienced fluctuations as concerns about tariffs and economic indicators have impacted investor sentiment, with major indices like the S&P 500 and Nasdaq C...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6232f32659b2c58aa842f81044639b7030cc91ae099c0075f4e32f9f92e9f242" target="_blank" rel="noopener noreferrer">'Walk Out of a Meeting'—Elon Musk's Rule That Defines Billionaire Success</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">"Walk out of a meeting or drop off a call as soon as it is obvious you aren't adding value," Tesla Inc. (NASDAQ:TSLA) CEO Elon Musk once wrote in a company-wide email in 2018. "It is not rude to leave...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=28b747f0a6a856f212927eff878185b5707807f9ba672576d1036728a7956144" target="_blank" rel="noopener noreferrer">3 Stocks Estimated To Be Trading At A Discount Of Up To 49.4%</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">As the U.S. stock market navigates a surge in earnings reports and ongoing tariff discussions, major indices like the Dow Jones and S&P 500 are showing resilience with recent gains. In this environmen...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48b12eb44927112623383d8c9d3759353442a05e67d5084776a8eb7923f15744" target="_blank" rel="noopener noreferrer">Duolingo Doubles Down on Delight with Acquisition of Music Gaming Startup NextBeat’s Innovative Team</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.04
+                                </span>
+                            </div>
+                            <div class="article-summary">London-based team brings deep expertise in music games, licensing, and interactive designPITTSBURGH, Aug. 06, 2025 (GLOBE NEWSWIRE) -- Duolingo, Inc. (Nasdaq: DUOL), the world’s leading mobile learnin...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=59b73eab32668ba9aa5dac4c4e1aed316143d1ac32b9919d8c5192f5d701f7ac" target="_blank" rel="noopener noreferrer">Duolingo Reports 41% Revenue Growth, 46% Subscription Revenue Growth and Record Profitability in Second Quarter 2025; Raises Full-Year Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">PITTSBURGH, Aug. 06, 2025 (GLOBE NEWSWIRE) -- Duolingo, Inc. (NASDAQ: DUOL) announced results for the second quarter ended June 30, 2025 in a shareholder letter that is posted on its Investor Relation...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=72a20e1cb435eb365fe211a67d2ff9dd1c88c3972455b5dc41f99e810d44b34c" target="_blank" rel="noopener noreferrer">Duolingo raises 2025 revenue forecast as AI tools boost user engagement</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -Language-learning app Duolingo raised its annual revenue forecast and beat second-quarter revenue estimates on Wednesday, anticipating broader adoption of its AI-enhanced subscription tier ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1deecb37d34a5f6ead469b01c5652c122ba6c17dc12b9981f9a234e94c5a6529" target="_blank" rel="noopener noreferrer">Duolingo Second-Quarter Profit Up, Revenue Climbs on Rise in Bookings, Active Monthly Users</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo  posted higher revenue in the second quarter after the company saw a surge in total bookings and active monthly users.  “We exceeded our own high expectations for bookings and revenue this qu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6f5ce5efe46b7fa45d23b0a0eec7d80f67379d4f367ab9455f97d19a7a4b8601" target="_blank" rel="noopener noreferrer">Duolingo surges as user growth, AI, and premium upsell drive blowout quarter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">Investing.com -- Shares of Duolingo Inc (NASDAQ:DUOL) soared 22.8% in after-hours trading Wednesday after the language-learning app reported first quarter earnings that surpassed analyst expectations ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6b6751c0d16734d6949438f505c88a8c2ff90704fa4d0cfe06bae0e83c1dca66" target="_blank" rel="noopener noreferrer">Duolingo (NASDAQ:DUOL) Surprises With Q2 Sales, Stock Jumps 10.8%</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Language-learning app Duolingo (NASDAQ:DUOL) reported Q2 CY2025 results exceeding the market’s revenue expectations, with sales up 41.5% year on year to $252.3 million. Guidance for next quarter’s rev...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2a1c21460674c02f6651ccfedad2062abce549dd8ce5f0f1357008de9620c0bc" target="_blank" rel="noopener noreferrer">Duolingo Stock Surges as User Growth Takes Flight</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">The language-learning platform beat expectations and raised its outlook for the third quarter and full year....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6d86ff7c0adfefdee34c558b36693a897b2fb7a414dadf0ea4006a9a65091465" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo, Inc. (NASDAQ:DUOL) Q2 2025 Earnings Conference Call August 6, 2025 5:30 PM ETCompany ParticipantsDeborah Belevan - VP of Investor RelationsLuis......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0d220d86dd02ade107642c8d195a3f466b0a331155c0a6f90858e57982f06a5b" target="_blank" rel="noopener noreferrer">What To Expect From Duolingo’s (DUOL) Q2 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Language-learning app Duolingo (NASDAQ:DUOL) will be reporting earnings this Wednesday afternoon. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1108238a760c718bf062a173ebf002eefc0c096b0d099df8484e06fe2e65af02" target="_blank" rel="noopener noreferrer">What's Dragging Duolingo Down 35% Before Q2?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Street expects $0.59 EPS on $241 million revenue as user growth, margin execution, and fraud claims weigh on sentiment....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=152a5b9647ca269a84aa7ac3f7d3692c65550a1b53b2c5c84742e1797990a810" target="_blank" rel="noopener noreferrer">VNT vs. DUOL: Which Stock Should Value Investors Buy Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">VNT vs. DUOL: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c3dd1d745f255742a9bb3623d4406a0c591adfbc1854fb71739940b101bc5487" target="_blank" rel="noopener noreferrer">Snap, Duolingo, Udemy, Coursera, and Teladoc Shares Skyrocket, What You Need To Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">A number of stocks jumped in the afternoon session after markets rebounded following a sharp sell-off in the previous trading session as a weaker-than-expected U.S. jobs report fueled speculation that...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f20f1a79f0919491924e3f11c28405b2831113da6ad1a35a5dbdcd95c2d0ea94" target="_blank" rel="noopener noreferrer">Insights Into Duolingo (DUOL) Q2: Wall Street Projections for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Looking beyond Wall Street's top-and-bottom-line estimate forecasts for Duolingo (DUOL), delve into some of its key metrics to gain a deeper insight into the company's potential performance for the qu...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd30b458786ad5f5b4980c6120e3178c97739ccae0fb3db2eb3be964662ba008" target="_blank" rel="noopener noreferrer">Duolingo Gears Up to Report Q2 Earnings: What's in the Cards?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">DUOL eyes 35% revenue growth in Q2, fueled by surging subscriptions, but an earnings beat may be out of reach....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a0d7e06fa3a09bd3c3c51ae5079879596e7a89c21469ee05a30edd1ca4182cb4" target="_blank" rel="noopener noreferrer">Viant (DSP) Moves 7.2% Higher: Will This Strength Last?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Viant (DSP) witnessed a jump in share price last session on above-average trading volume. The latest trend in earnings estimate revisions for the stock doesn't suggest further strength down the road....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d34074e69ee4401cd37891e2d09c4cbb5136218a7a407fe28aa9f36aa5f549c3" target="_blank" rel="noopener noreferrer">Figma set to debut as blockbuster US IPO lifts revival hopes</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">(Reuters) -Design software firm Figma will begin trading later on Thursday after raising $1.22 billion in a blowout U.S. float, setting the stage for a flurry of high-growth tech listings and strength...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9f3616e05e649e010581fc42d74cb6381d0d760e8a80ca8666b1f86518bbeb2c" target="_blank" rel="noopener noreferrer">3 Reasons We Love Duolingo (DUOL)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Over the last six months, Duolingo’s shares have sunk to $334.99, producing a disappointing 7.8% loss - a stark contrast to the S&P 500’s 5% gain. This might have investors contemplating their next mo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1e03e8fe4145b5d14cba9c74b6312025326799251092eb5e20368cbbdfbfbea2" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL) Earnings Expected to Grow: Should You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo (DUOL) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0a6e417d718e71db63b876d06897725d39bef09d340df390a463dc6296a1189e" target="_blank" rel="noopener noreferrer">JPMorgan Trims Duolingo Target to $500 Amid DAU Slowdown</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.77
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo, Inc. (NASDAQ:DUOL) is one of the best multibagger stocks according to hedge funds. On July 17, 2025, JPMorgan analyst Bryan Smilek lowered his price target for Duolingo from $580 to $500 whi...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=99b4025bb241f02bda53200e9cccc3dcf5a5c2aba2a8fc17f0e085ffbc760b8e" target="_blank" rel="noopener noreferrer">Three Growth Stocks With Strong Insider Confidence</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">The United States market has shown positive momentum, climbing by 1.4% over the past week and up 17% over the last 12 months, with earnings forecast to grow by 15% annually. In this environment, growt...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b600a914922bfece8e81f2a3e17c7fcb7929c9555e638a32000a579d654d1eb3" target="_blank" rel="noopener noreferrer">3 Prominent Stocks Estimated To Be Up To 37.9% Below Intrinsic Value</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.13
+                                </span>
+                            </div>
+                            <div class="article-summary">The United States market has shown a robust performance, climbing by 1.4% over the past week and rising 17% over the past year, with earnings forecasted to grow by 15% annually. In such an environment...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8778307236106db348b2a37eb9dbb830399932e3e04d5cc502a4604898098513" target="_blank" rel="noopener noreferrer">Is Duolingo (DUOL) a Buy as Wall Street Analysts Look Optimistic?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The average brokerage recommendation (ABR) for Duolingo (DUOL) is equivalent to a Buy. The overly optimistic recommendations of Wall Street analysts make the effectiveness of this highly sought-after ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=11fe543833de9fa239491e35fe89092ac5568fe3305f3c158cc40e93f2281265" target="_blank" rel="noopener noreferrer">Why Duolingo (DUOL) Stock Is Falling Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of language-learning app Duolingo (NASDAQ:DUOL) fell 6.9% in the morning session after JMP Securities lowered its price target on the stock, citing concerns about slowing user engagement ahead ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=12bce59b36740c483c9932046543871ad467b02a0427d20e87e1c816d60fca6d" target="_blank" rel="noopener noreferrer">PayPal, Duolingo, Meta: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">PayPal (PYPL) is in focus after the company announced plans to enable crypto payments for over 100 digital currencies, allowing merchants to accept options like bitcoin (BTC-USD) and ethereum (ETH-USD...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e037bbe19d45d73dd53aab762878df45dc409bb4e823d66ef9d26ae22907788f" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL) Stock Sinks As Market Gains: What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.24
+                                </span>
+                            </div>
+                            <div class="article-summary">In the most recent trading session, Duolingo, Inc. (DUOL) closed at $340.49, indicating a -6.48% shift from the previous trading day....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=79db05b8a08a1210e264a11b3ecbce8c0ffde59d35bce0e515cdac504c604e92" target="_blank" rel="noopener noreferrer">The Smartest Growth Stocks to Buy With $500 Right Now</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">These two companies have strong fundamentals and are in growing industries....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1856d7f5578d1d54b1ae5b42f0605df8bf142244988ccf6df9d4c14f3764b500" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on Duolingo, Inc. on Stock Analysis Compilation’s Substack. In this article, we will summarize the bulls’ thesis on DUOL. Duolingo, Inc.’s share was trading at $359.79 ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6a3917a0b88d6a7c1c471269c0c5db2921910e5a7919f58051e290b54dc3c0ae" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL) is Attracting Investor Attention: Here is What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-25</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Zacks.com users have recently been watching Duolingo (DUOL) quite a bit. Thus, it is worth knowing the facts that could determine the stock's prospects....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c8ce511d4d06e52e4ac13b2e0af4d6318b0b5d070af3e89e1950d615fa17109" target="_blank" rel="noopener noreferrer">XMHQ: The Recent Portfolio Rebalance Fuels Price Returns, But Still Appears Unattractive</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">XMHQ's current portfolio positions it to capitalize on the potential uptrend while taking a lower risk factor. Find out why the Fund is a Buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8bed1e95d7981353b3f9d4623aa55bd536b3082d3358ab7fdd2844f50f2e3c40" target="_blank" rel="noopener noreferrer">Greenhouse Ranked Best ATS in the Overall, Enterprise, and Mid-Market G2 Summer 2025 Reports</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Greenhouse, the leading hiring platform, announced it is ranked number one in Grid Report for Applicant Tracking Systems (ATS), Enterprise Grid Report for Applicant Tracking Systems (ATS), Enterprise ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=07e7f6d588e5e4577be84dabb9be6e8ac531a96cfef03d927cdefa15ac1d3b72" target="_blank" rel="noopener noreferrer">Game-based Learning Market Forecast Report 2025-2030, with Case Studies of Hyundai, Clifton Public Schools, University of Illinois, Kahoot!, Maruti Suzuki and Tenneo'</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">Driven by the demand for digital tools and engaging content, the game-based learning market sees rapid growth in neurodiversity education, fueled by inclusive education initiatives. Meanwhile, languag...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=684c868a6d7bb0325a937cc8985ced440cb32432cf35f5241c8fc1b6e11be11a" target="_blank" rel="noopener noreferrer">GEN or DUOL: Which Is the Better Value Stock Right Now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">GEN vs. DUOL: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5a71c574634cadaaf08f6705402cd48bd02f6624d18a442c74780ed4698e2a5d" target="_blank" rel="noopener noreferrer">Duolingo Set For Q2 Bookings Beat, Guidance Likely Conservative</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo shares have tumbled 24% in the past month amid concerns over slowing growth and rising churn, despite strong global brand momentum. The company will announce its results for the second quarte...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9daece084a5734fc0381413833a3d171c4cb0cf84961e2d8f47f0b6ad1416696" target="_blank" rel="noopener noreferrer">Duolingo Stock Posing Attractive Entry Points for Bulls</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.82
+                                </span>
+                            </div>
+                            <div class="article-summary">DUOL is testing a historically bullish trendline...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=411d01d17397e7be24c9180d4369ff83affd7a0fbb788466494e63efb4033e99" target="_blank" rel="noopener noreferrer">Duolingo (DUOL) Stock Trades Down, Here Is Why</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.85
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of language-learning app Duolingo (NASDAQ:DUOL) fell 4.2% in the afternoon session after the stock continued its downtrend as investors weighed concerns over slowing user growth and the sustain...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=29f9cc5ffc036ea44eb8ebf0c3e762e353d04de88fd122df6bad953256814da5" target="_blank" rel="noopener noreferrer">Duolingo: Here's Why I'm Not Buying The Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d90f92340eaf5bca838166b229d9fa060e10056942090d3d27ef03250a7a489f" target="_blank" rel="noopener noreferrer">2 Growth Stocks to Add to Your Roster and 1 to Approach with Caution</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Growth boosts valuation multiples, but it doesn’t always last forever. Companies that cannot maintain it are often penalized with large declines in market value, a lesson ingrained in investors who lo...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=799a3feca2382b2158ce4e062117e94f44bb82c2a6d9cb210306ae70c31dc0df" target="_blank" rel="noopener noreferrer">Jim Cramer Worries Meta’s Ray-Bans “May Hurt Duolingo’s Business”</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo, Inc. (NASDAQ:DUOL) is one of the stocks Jim Cramer shared his thoughts on. Referring to Cramer’s regard for subscription-based businesses, a caller asked about the company, and he replied: “...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ba8495362da83e52c54f898ae887b46e0f98efa7f2cbe17c9332e07b4af2b792" target="_blank" rel="noopener noreferrer">Duolingo, Inc. (DUOL) Rises Higher Than Market: Key Facts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Duolingo, Inc. (DUOL) concluded the recent trading session at $376.42, signifying a +1.51% move from its prior day's close....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f1501ed3faf473a86894425f2fe272c6820ce0e22956e69bdc74238bdbacae5e" target="_blank" rel="noopener noreferrer">Brokers Suggest Investing in Duolingo (DUOL): Read This Before Placing a Bet</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Based on the average brokerage recommendation (ABR), Duolingo (DUOL) should be added to one's portfolio. Wall Street analysts' overly optimistic recommendations cast doubt on the effectiveness of this...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3cf5830652927ff277432886c07b5d478f37f5c94ac2210d69094728fde6c2d9" target="_blank" rel="noopener noreferrer">Spacelift Raises $51M Series C to Redefine Enterprise Infrastructure Automation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-10</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Spacelift, a leading infrastructure orchestration platform, today announced it has raised $51 million in a Series C funding round. The round was led by Five Elms Capital, with participation from Endea...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
