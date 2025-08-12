@@ -1,0 +1,1383 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Enerflex Ltd. (EFX) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Enerflex Ltd. (EFX)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">70</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">32</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">22</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.08</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7c5943cfc7e36e6cf5d3da1a2fd3e46bd6624e173c9c1fdd2cbe40c0c7b0e816" target="_blank" rel="noopener noreferrer">Equifax: Substantial Execution, But Valuation Is Stretched - A Hold</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax faces growth headwinds, premium valuation, and flat price action despite AI and cloud investments, with limited upside. Find out why EFX stock is a hold....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=916b57e820267f46517e6d16ee56a71df0fd9cf96b086c7d3337a7c4d1f8b354" target="_blank" rel="noopener noreferrer">FICO Stock Has Plunged By Over 20% Since White House Announced Decision Allowing Mortgage Lenders To Use Alternative Credit Reports</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">The Federal Housing Finance Agency's recent decision to allow government-backed mortgage lenders to use alternative credit reports on mortgage applications had a dramatically negative impact on Fair I...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cb616f1ef6b600f8834bcf920e96d1634dc4495a23724ab92e69fd07bf96abaf" target="_blank" rel="noopener noreferrer">Tracking William Von Mueffling's Cantillon Capital Management Portfolio - Q2 2025 Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.41
+                                </span>
+                            </div>
+                            <div class="article-summary">William von Muefflingâs Cantillon Capital grew to $17.34B by smartly balancing high-conviction stocks, trimming gains, and maintaining focus. See more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=33cf50b4c66ffd2fbb2f510eeea07c6c787320364ffe207864e049466b691c83" target="_blank" rel="noopener noreferrer">3 Stocks Estimated To Be Up To 37.5% Undervalued Offering Intriguing Opportunities</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.75
+                                </span>
+                            </div>
+                            <div class="article-summary">As the United States market rebounds from a recent sell-off, with major indices like the S&P 500 and Nasdaq Composite showing significant gains, investors are keenly observing opportunities amid fluct...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ce191227434a0460d654191d1d6e1f5479d7c3bc0c47e5866e09db6faae94e8e" target="_blank" rel="noopener noreferrer">Equifax Inc. stock underperforms Tuesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock underperforms Tuesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=93d2f496b25298e29e86205ff9311db922b61a3a077260f932c4fcbeb7086bc0" target="_blank" rel="noopener noreferrer">Wavering US Consumer and Job Market Show Risks to Economy</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- Last week’s economic data caught up with the kind of economy that company executives and consumers have long described this year: flashing some warning signs. Most Read from BloombergSe...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5cff1c8ec9244d68688cb2f32b8f2dd058d8f8ccce1b0435780e153e219d52ab" target="_blank" rel="noopener noreferrer">CRAI vs. EFX: Which Stock Is the Better Value Option?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">CRAI vs. EFX: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8f6165e6a4e72f00deb58b7acd42bcdee2f6b81898221476a97a9d0ea50138ba" target="_blank" rel="noopener noreferrer">Equifax Inc. stock rises Monday, still underperforms market</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock rises Monday, still underperforms market...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3782ac51316c0cbc52fed79e4537d56561c1d1a920a91a4b50fc16a957b00c29" target="_blank" rel="noopener noreferrer">What Companies Have Said About Jobs in the Past Quarter</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">On Thursday, Moderna executives said the biotech company would reduce its headcount by the end of the year to under 5,000, down from 5,800 at the beginning of this year.  In July, Microsoft said it is...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=43362ef8e3852fe9f1bf7c4a258830b97d0b0d931ac1b338909bd58ac3a68bf4" target="_blank" rel="noopener noreferrer">What Is Equifax Inc.'s (NYSE:EFX) Share Price Doing?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Let's talk about the popular Equifax Inc. ( NYSE:EFX ). The company's shares saw a decent share price growth of 12% on......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=84f46f04536316bcabe686a8b2a9bf3ceddac04622bd3306aca3a04ae215266b" target="_blank" rel="noopener noreferrer">Equifax National Market Pulse Data Shows U.S. Consumers Continuing to Spend, Avoiding Delinquency</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax® (NYSE: EFX) has released its Market Pulse Second Quarter U.S. Consumer Credit Trends, which includes U.S. national consumer credit data and trends through June 2025 sourced from Equifax data....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=edd2e70dcb62f38e055386bdfa7aacc93a346d7736adf0dd98471e8bafa7ef63" target="_blank" rel="noopener noreferrer">Verisk Earnings & Revenues Surpass Estimates in Q2, Increase Y/Y</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">VRSK posts 8.1% y/y EPS growth in second-quarter 2025, and lifts its revenue and EBITDA guidance despite a lowered EPS outlook....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d2535c6e9e21fab2c199b8b158a4c9c8806a4f3e161403f72e13ae64b99d23b2" target="_blank" rel="noopener noreferrer">Equifax Inc. stock underperforms Wednesday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock underperforms Wednesday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d4271dd722b18b7679bf34c000dd1fe5ac9d2c81f10a6314bd1e38ce14ccb87d" target="_blank" rel="noopener noreferrer">The Top 5 Analyst Questions From Equifax’s Q2 Earnings Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax’s second quarter results drew a negative market reaction, with management pointing to a combination of higher-than-expected mortgage revenues and ongoing challenges in government and hiring-re...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d50439e3a85bb5fc0d94e48ef3439f5b7833d58c4f06be67e4e766bbf33a9be6" target="_blank" rel="noopener noreferrer">Waste Connections Q2 Earnings & Revenues Surpass Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.15
+                                </span>
+                            </div>
+                            <div class="article-summary">WCN beats second-quarter 2025 estimates with 7.1% revenue growth and higher EPS, but trims yearly revenue forecast below the consensus estimate....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9c006af3820df941ce524836ecb7070b86ccff0c0ac8997da1b800cff23c18f8" target="_blank" rel="noopener noreferrer">Fiserv Q2 Earnings Beat Estimates on Strong Margins, Revenues Miss</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.20
+                                </span>
+                            </div>
+                            <div class="article-summary">FI tops second-quarter 2024 earnings estimates on strong margins and segment growth. However, its shares drop 15.7% on the revenue miss....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cf0ccad9687b29d2baa38aa3f699e6c79d4b4f1da9ae658d2a1fa4b9a49e8e6b" target="_blank" rel="noopener noreferrer">Equifax Inc. stock outperforms competitors on strong trading day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock outperforms competitors on strong trading day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b23a2ce08729e62438c2e6156793ffe5448c35f0b3ac1f861e66c9543844fed7" target="_blank" rel="noopener noreferrer">Research shows LLMs can conduct sophisticated attacks without humans</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The project, launched by Carnegie Mellon in collaboration with Anthropic, simulated the 2017 Equifax data breach....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5a0bca9832c75678b9bc5e77a6704f76211500a87a16df1f1b212b85360e4684" target="_blank" rel="noopener noreferrer">Don't Overlook Equifax (EFX) International Revenue Trends While Assessing the Stock</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Examine Equifax's (EFX) international revenue patterns and their implications on Wall Street's forecasts and the prospective trajectory of the stock....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=57a67221ae111a831120445b869bd97fce1a74c78c704841381f730021b0dd5e" target="_blank" rel="noopener noreferrer">Equifax Inc. stock underperforms Monday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock underperforms Monday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98247edec2de3a2b4515267b127cd97caff59bbefbf197f763b8b16b883b9d42" target="_blank" rel="noopener noreferrer">Jerome Dodson's Strategic Moves: Royal Caribbean Group Takes Center Stage with 2.37% Portfolio Share</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Exploring the Investment Strategies of Jerome Dodson (Trades, Portfolio) in Q2 2025...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd6a17651e553fdf2c62b1e76b1d50487e145808e403d5a5b8fbedeb2c041597" target="_blank" rel="noopener noreferrer">Equifax and Qlarifi Partner to Study Impact of Buy Now, Pay Later on Credit Risk and Fraud</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax® (NYSE: EFX) a global data, analytics and technology company, and Qlarifi, the first real-time consumer credit database purpose built for Buy Now, Pay Later lending, are partnering to conduct ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=717380862f9b2cad1db64cd7345caa0a7eb9a69e3d9685320de866fc49099d8b" target="_blank" rel="noopener noreferrer">Equifax (NYSE:EFX) Is Experiencing Growth In Returns On Capital</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-26</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">To find a multi-bagger stock, what are the underlying trends we should look for in a business? Firstly, we'll want to......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=46d58bbc148ce5c2c5404ffd9027ba4ab55733521db9a8ab9f0375e4e674c0db" target="_blank" rel="noopener noreferrer">Carnegie Mellon Researchers Demonstrate That LLMs Can Autonomously Plan and Execute Real-World Cyberattacks</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">PITTSBURGH, July 24, 2025--In a major advance in the fields of cybersecurity and artificial intelligence, researchers from Carnegie Mellon University, in collaboration with Anthropic, have demonstrate...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=48f93d2c3a5a7def4aec2bc73806c11c31dc5e8885024a71b2a1267e47521ab5" target="_blank" rel="noopener noreferrer">EFX Q2 Deep Dive: Mixed Outlook as Mortgage Gains Offset by Government and Hiring Uncertainty</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.18
+                                </span>
+                            </div>
+                            <div class="article-summary">Credit reporting giant Equifax (NYSE:EFX) announced better-than-expected revenue in Q2 CY2025, with sales up 7.4% year on year to $1.54 billion. On the other hand, next quarter’s revenue guidance of $...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=58e0990e5c978420653d4a1138d3eeec5ebab924404b72dc9a7c36538524b42b" target="_blank" rel="noopener noreferrer">Equifax: Further Validation That Near-Term Performance Is Extremely Uncertain</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax's 2Q25 growth impresses, driven by cloud innovation, yet macro concerns and cautious guidance suggest holding amid valuation risks....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=908774afd5518818266bc88793e6646710108eacac47e42d4ac8184d9efa2c4b" target="_blank" rel="noopener noreferrer">Equifax Inc (EFX) Q2 2025 Earnings Call Highlights: Record Revenue and Strategic Growth Amid ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc (EFX) reports robust revenue growth and strategic advancements, despite facing economic uncertainties and market headwinds....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5796ea773c121ed8560b1efbf6d3eb756ffcaca974a592a02d86ce0da21dbdb9" target="_blank" rel="noopener noreferrer">A judge blocked a rule to drop medical debt from credit reports. What now?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.79
+                                </span>
+                            </div>
+                            <div class="article-summary">A federal judge blocked a rule from the Consumer Financial Protection Bureau that would have stopped medical bills from appearing on credit reports and barred lenders from using such data to make lend...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dfe8da3c745c8715ab36ec00ce101de7e237e36bb584206cb8a580d83f516e7f" target="_blank" rel="noopener noreferrer">Tampa woman turns to Ramsey Show hosts after her brother refused to repay a car loan she took out to help him</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Here’s why the Ramsey Show hosts got frustrated with her about this ‘disrespectful transaction’....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=97bf6d143783817cb3b79ef8b0abdab677e9a452e43cfd7cf4647a27f9aea5ee" target="_blank" rel="noopener noreferrer">Equifax 2Q Profit Up, Boosts 2025 Guidance on Forex Trends</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax 2Q Profit Up, Boosts 2025 Guidance on Forex Trends...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fac5b043c8c515c4d1fd01ee98ad11cdf7fa0de7ab55243356be0421f197c2d5" target="_blank" rel="noopener noreferrer">Equifax Delivers Above Guidance Second Quarter Results; Returns Approximately $190 Million Cash to Shareholders</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax® (NYSE: EFX) today announced financial results for the quarter ended June 30, 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8288d87e5f207f9b06eadace813ace1408d1dc0c5d7cc2551620800808fa1be" target="_blank" rel="noopener noreferrer">Equifax: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">The average estimate of 15 analysts surveyed by Zacks Investment Research was for earnings of $1.92 per share. The credit reporting company posted revenue of $1.54 billion in the period, also topping ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f1ad659c3bc572e24af7c43497455804ba5ef8d34631ecb6dee9040d676e3229" target="_blank" rel="noopener noreferrer">Equifax’s (NYSE:EFX) Q2: Beats On Revenue</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.43
+                                </span>
+                            </div>
+                            <div class="article-summary">Credit reporting giant Equifax (NYSE:EFX) beat Wall Street’s revenue expectations in Q2 CY2025, with sales up 7.4% year on year to $1.54 billion. On the other hand, next quarter’s revenue guidance of ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=23e9d07b03d38c1bf073b61db04d92335542c7bb4c295fbd4cdf0ce340b24e15" target="_blank" rel="noopener noreferrer">Equifax Profit Up, Boosts 2025 Guidance on Forex Trends</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.91
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax’s second-quarter net income rose sharply as the mortgage market rebounded, but the company’s boost to earnings and revenue projections for the year primarily reflected foreign-exchange trends ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=02c075ba9ac1969650fe0df46d3e375f7d23b8c4772114b6d4ea908c5ae9fe45" target="_blank" rel="noopener noreferrer">Equifax (EFX) Surpasses Q2 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax (EFX) delivered earnings and revenue surprises of +4.17% and +1.51%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=27c0f22a71d61fa051471bd184de273f5a0c4b9c77339a52db25bffe69466c63" target="_blank" rel="noopener noreferrer">Equifax beats quarterly profit estimate, raises annual revenue forecast</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Mortgage inquiries buoyed Equifax's second-quarter results in an otherwise subdued mortgage market, with the 30-year mortgage rate — the interest rate for the most popular U.S. home loan — at lower le...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fa9abfed9a897d00cb5e107e5dadb94f2a2898d977722c44e2852c6dcdd8eeaa" target="_blank" rel="noopener noreferrer">Equifax Inc. (EFX) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. (NYSE:EFX) Q2 2025 Earnings Conference Call July 22, 2025 8:30 AM ETCompany ParticipantsJohn W....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=13f6f67316281ac45cd9f9082b3ae4a151105577c18247d4cf6b352d1528efbb" target="_blank" rel="noopener noreferrer">Equifax Inc. 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by Equifax Inc....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f2b9a2d02e263b276bdee6925a38fba936bada943a697ad6b9f109b73d3be5b4" target="_blank" rel="noopener noreferrer">Here's What Key Metrics Tell Us About Equifax (EFX) Q2 Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">While the top- and bottom-line numbers for Equifax (EFX) give a sense of how the business performed in the quarter ended June 2025, it could be worth looking at how some of its key metrics compare to ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=eee20449838097df47f6f3274d127ed4587e189c3b3ff1dcaaeeeeaf5b977981" target="_blank" rel="noopener noreferrer">Stocks to Watch Tuesday: Coca-Cola, GM, RTX</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">? Coca-Cola (KO): The beverage maker reported mixed quarterly results, but nudged up its annual adjusted earnings outlook. Shares fell more than 1%. ↘️ RTX (RTX): Quarterly results from the aerospace ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7cf137b5d75a79cd9ea1a8e7002e78c215405377994efd55d057ec5b6b6e5b66" target="_blank" rel="noopener noreferrer">Stocks to Watch Tuesday: RTX, Lockheed Martin, Coca-Cola, GM</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">? Coca-Cola (KO): The soda maker reported mixed quarterly results, but nudged up its annual earnings outlook. The company confirmed it will roll out a cane-sugar Coke option. ↘️ RTX (RTX): Results fro...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=647a919760fc5ad91378031668b8c3dd7baee82dbdbf99b981827f940bc94f99" target="_blank" rel="noopener noreferrer">Stocks Pressured by Chip Stock Weakness</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">The S&P 500 Index ($SPX ) (SPY ) today is down -0.14%, the Dow Jones Industrials Index ($DOWI ) (DIA ) is up +0.26%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.36%. September E-mini S&P futur...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4e4c293a0ce5044ab228055dbc9747d641d30745f4306a0b91135d661fdb0d10" target="_blank" rel="noopener noreferrer">Equifax Slips; Full-Year Outlook Mainly Increased on Forex Trends</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.87
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Slips; Full-Year Outlook Mainly Increased on Forex Trends...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=20249d4947133d2f3ceffa81cc1412f63f65f697c356cb20a09c3dd50998826e" target="_blank" rel="noopener noreferrer">Equifax Q2 Earnings & Revenues Surpass Estimates, Increase Y/Y</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">EFX posts strong second-quarter 2025 results, with earnings up 9.9% and revenues climbing 7.7%, prompting raised outlooks for the third quarter and 2025....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=14afdb61b06c1421261060179a00843c783c5c6eca586213be2a125dda346b2d" target="_blank" rel="noopener noreferrer">Railroad stocks, Microsoft, Equifax: Trending Tickers</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Railroad stocks, like Union Pacific (UNP), Norfolk Southern (NSC), and CSX Corp (CSX), are climbing on reports of railway mergers. Berkshire Hathaway (BRK-B, BRK-A) CEO Warren Buffett has denied repor...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=64ea994957ea2eb83ec4286257bcb847e8b1e7c908336ba8b593c455b3c0150f" target="_blank" rel="noopener noreferrer">Equifax (EFX) Reports Q2 Growth and Raises 2025 Revenue Guidance</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax (EFX) recently raised its full-year 2025 earnings guidance and reported strong Q2 results, with sales increasing to $1,537 million and net income rising to $191 million. During the last quarte...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0c448bd71d0e6b40338bd6e54d51efcf9c61d017d6bf34a489c8de394088979c" target="_blank" rel="noopener noreferrer">Stocks to Watch Recap: Kohl’s, Lockheed Martin, Coca-Cola, GM</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">↗️Kohl's (KSS): Shares in the retailer jumped 38% as investors discussed whether it was the next meme stock. The heavily-shorted shares are still down nearly 30% over the past year. Target (TGT) share...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=23358a8fbd32a5c0cb6041d50bcbb2f785efbf7eb934d60f9a75501c90d46fc3" target="_blank" rel="noopener noreferrer">Equifax (EFX) Reports Earnings Tomorrow: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Credit reporting giant Equifax (NYSE:EFX) will be announcing earnings results this Tuesday before market open. Here’s what you need to know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9ccf6005a594d1fd80551aea582482c3e58527f96954bc11ca309577e183eb46" target="_blank" rel="noopener noreferrer">Rollins Gears Up to Report Q2 Earnings: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">ROL set to report Q2 results, with earnings and revenues expected to rise nearly 7.4% and 9.8% year over year on broad segment growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=931f9babd11daf540e1f16a7cc1140c5a2fcc7229b299ec3f693b4a34581635f" target="_blank" rel="noopener noreferrer">Why Equifax Might Surprise This Earnings Season</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">EFX is seeing favorable earnings estimate revision activity and has a positive Zacks Earnings ESP heading into earnings season....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1b6176906e6608b119b7bb274d26280cf2f2cd5d8a51fd429b7b818fdb4e4b99" target="_blank" rel="noopener noreferrer">Equifax Inc.'s (NYSE:EFX) Stock Has Shown A Decent Performance: Have Financials A Role To Play?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax's (NYSE:EFX) stock is up by 7.3% over the past three months. As most would know, long-term fundamentals have a......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd59c042c860e1baee914fccc429a5b492c385d937c00dd0c94bae0954544ce2" target="_blank" rel="noopener noreferrer">Fiserv Set to Report Q2 Earnings: Here's What You Should Know</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">FI eyes y/y growth for second-quarter 2025, with EPS expected to rise 13.2% and strong gains projected across core business segments....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6e03bb56b31ac076e7f3ca1ec0ca65c5eef9603f4dcff2bf2622acff1f2afd17" target="_blank" rel="noopener noreferrer">Fair Isaac: Priced For Hyper Growth But Facing Stagnation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">Fair Isaac faces growth stagnation as fee hikes erode market share. Overvalued by 137%, the stock shows significant downside risk....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b2132ae185d24825223cdc381127f84a04e75c83395b1a98096b52d9e842a814" target="_blank" rel="noopener noreferrer">Donald Trump faces frosty reception on Aberdeen golf trip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-20</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.32
+                                </span>
+                            </div>
+                            <div class="article-summary">Hello and welcome to the working week.I must start with a thank you to my colleague Harvey for stepping in for me last week while I took an early......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5dca242d6837767f35a00d5a15fa3031e1da4a6d083fccdf2e2066931268a3d8" target="_blank" rel="noopener noreferrer">3 Profitable Stocks That Concern Us</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Even if a company is profitable, it doesn’t always mean it’s a great investment. Some struggle to maintain growth, face looming threats, or fail to reinvest wisely, limiting their future potential....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=268cf6ed5b55731c90efde6747af93d953205bb44582bfd8be17810a1b5c596d" target="_blank" rel="noopener noreferrer">Stocks to watch next week: Tesla, Alphabet, Intel, Lloyds and JD Wetherspoon</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Earnings preview of key companies reporting in the coming week and what to look out for...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=83c8cd33aab77c53db460642035d20577dcc306e3d68a658c27de82178564fa9" target="_blank" rel="noopener noreferrer">Booz Allen Hamilton (BAH) Reports Next Week: Wall Street Expects Earnings Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">Booz Allen (BAH) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4e95948a15172f4987f5c2514537eef4fd5fdba0d55e2eab7fca80ec68578e64" target="_blank" rel="noopener noreferrer">Unveiling Equifax (EFX) Q2 Outlook: Wall Street Estimates for Key Metrics</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Evaluate the expected performance of Equifax (EFX) for the quarter ended June 2025, looking beyond the conventional Wall Street top-and-bottom-line estimates and examining some of its key metrics for ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3d340cbc9092ac78dbee501e6b0f87e175d7570ebc2fc232926294d1d69dd967" target="_blank" rel="noopener noreferrer">Equifax Gears Up to Report Q2 Earnings: What's in the Offing?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">EFX is set to report Q2 results on July 22, with EPS and revenues expected to rise on solid USIS, international and Workforce Solutions gains....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=47fdae9efd281fcb65c7a7704db8deb88963538409dd5669681b6a7b114bdc40" target="_blank" rel="noopener noreferrer">IQVIA Gears Up to Report Q2 Earnings: What's in Store for the Stock?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.57
+                                </span>
+                            </div>
+                            <div class="article-summary">IQV is set to report Q2 results on July 22, with both earnings and revenues expected to rise on strong demand across segments....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=251a1759e22850b44ba71e5c7dc4ea7d2d976971554b4d9803805f174a4aa4c0" target="_blank" rel="noopener noreferrer">Interpublic Group to Report Q2 Earnings: What's in the Offing?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.59
+                                </span>
+                            </div>
+                            <div class="article-summary">IPG to report Q2 results on July 22, with earnings and revenues expected to decline amid segment weakness....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5d28eaacd6b80665bf4c20edeb3d2e2b5d7f2a57b2a790429f5cfc1527d034c1" target="_blank" rel="noopener noreferrer">TransUnion (TRU): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on TransUnion on Valueinvestorsclub.com by sirisaiah623. In this article, we will summarize the bulls’ thesis on TRU. TransUnion’s share was trading at $88.00 as of Jun...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=da200ae7611b7efb916d5b495bb463054e8372bcbf262a451621edb647b13090" target="_blank" rel="noopener noreferrer">Equifax : Consumer Auto Trends Create Growth Opportunities For Credit Unions</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Finnhub</span>
+                                <span class="article-sentiment positive">
+                                    0.83
+                                </span>
+                            </div>
+                            <div class="article-summary">CHANGES IN CONSUMER BEHAVIOR ARE PRESENTING NEW OPPORTUNITIES FOR LENDERS IN THE AUTO FINANCING INDUSTRY. Despite most auto loans still originating from captive lenders - those tied to automakers -......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=98b5315ec55197d0877e548b36fdab032561fa9b560c60ce133dee2d7c316dfe" target="_blank" rel="noopener noreferrer">Parnassus Mid Cap Growth Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f16431c3b04fba96a3e8d3c713f85076efb0dd949a6b66286ea5d617b368c3d1" target="_blank" rel="noopener noreferrer">Equifax (EFX) Earnings Expected to Grow: Should You Buy?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax (EFX) possesses the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9bac0b2fe68bb87bf83d7cf31dbdfb819651a48c3c2d1eccc5ca6e8d5f88aaa7" target="_blank" rel="noopener noreferrer">Cintas Gears Up to Report Q4 Earnings: What's in the Offing?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">CTAS' Q4 results are likely to reflect solid segment growth and M&A synergies, though rising SG&A costs are likely to have weighed on margins....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=32dd6318c21e753b1b6f3153e6c0c15264355d69d93eaee9857d7a2d1d2588ea" target="_blank" rel="noopener noreferrer">Equifax Inc. stock outperforms competitors despite losses on the day</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock outperforms competitors despite losses on the day...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e4eaafda331c65d4f06eb4034e67e1db850f13f6b9e051fd40a1d62e2a2077a9" target="_blank" rel="noopener noreferrer">Will Equifax (EFX) Beat Estimates Again in Its Next Earnings Report?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.56
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax (EFX) has an impressive earnings surprise history and currently possesses the right combination of the two key ingredients for a likely beat in its next quarterly report....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=87348a91c28d3b3a23c337bb0eea57439c8215557ccf45fad0bc7bba9538091e" target="_blank" rel="noopener noreferrer">Pulte’s Social Media Posts Become Must-Follow for Stock Traders</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">(Bloomberg) -- For years, investors have found themselves at the whim of President Donald Trump’s social-media posts. Now, traders are being forced to pay attention to an unlikely official: Federal Ho...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ddf92d4264ed34cee84a9730cbce25e0ce20ff402c1b5acccb2a268e9b4d7518" target="_blank" rel="noopener noreferrer">Equifax Inc. stock underperforms Friday when compared to competitors</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-11</span>
+                                <span>MarketWatch</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">Equifax Inc. stock underperforms Friday when compared to competitors...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        

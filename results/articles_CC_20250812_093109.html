@@ -1,0 +1,519 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Cameco Corporation (CC) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">Cameco Corporation (CC)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">16</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.12</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=347c608073c928c09a2200bd2293e06c57ba87742274c76e6a282d045ac02229" target="_blank" rel="noopener noreferrer">Chemours: Solid Q2 And Legal Progress Are Bullish (Rating Upgrade)</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Chemours is a 'buy' with Opteon growth, legal clarity, and improving cash flow despite industry challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9db2596bde212ceb8f6c5a85884c05843c45e9f827cef07188b63e04593dab8b" target="_blank" rel="noopener noreferrer">The Chemours Co (CC) Q2 2025 Earnings Call Highlights: Strong Growth in Opteon Refrigerants and ...</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">The Chemours Co (CC) reports robust second-quarter results with significant growth in Opteon refrigerants and a major settlement in New Jersey, despite facing operational challenges....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1a87897854c44d7970e82c527fefdf5d0e787aa0aedee7efcaf4683d72096366" target="_blank" rel="noopener noreferrer">Chemours Swings to Loss, Despite Higher Revenue</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.89
+                                </span>
+                            </div>
+                            <div class="article-summary">The Wilmington, Del.-based chemicals company’s loss was primarily driven by litigation-related charges tied to an environmental settlement with New Jersey and related tax impacts....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e37c476a107ba09b070a2d38bd28b2934b67b35626e869b1fd5cdbe365a52ac2" target="_blank" rel="noopener noreferrer">Chemours (CC) Tops Q2 Earnings and Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemours (CC) delivered earnings and revenue surprises of +26.09% and +2.98%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=14053c10d27fb6e57db62f47f1caca79799204cb1d9d48249ccf4fda18d615fc" target="_blank" rel="noopener noreferrer">Chemours (CC) Reports Q2 Earnings: What Key Metrics Have to Say</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The headline numbers for Chemours (CC) give insight into how the company performed in the quarter ended June 2025, but it may be worthwhile to compare some of its key metrics to Wall Street estimates ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8b07e5b357bc43aee1e2c5321739fa1f54d45cd67166fb0ebb9b51a86eff859b" target="_blank" rel="noopener noreferrer">The Chemours Company (CC) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Chemours Company (NYSE:CC) Q2 2025 Earnings Conference Call August 6, 2025 8:00 AM ETCompany ParticipantsBrandon Ontjes - Vice President of Investor......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c8d11708151e1f6614748916a33126a27c027a4c552b2e7f722b35161805d436" target="_blank" rel="noopener noreferrer">The Chemours Company 2025 Q2 - Results - Earnings Call Presentation</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The following slide deck was published by The Chemours Company in conjunction with their 2025 Q2 earnings call....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=73d6db4700cb1d2f07286942dc078fb1b7cbfea0f7924e527c591238b03fc840" target="_blank" rel="noopener noreferrer">Chemours: Refrigerants Make This Company A Buy Before Q2 2025 Report</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Chemours' cyclical low presents a buying opportunity. Explore growth prospects, leadership in technology, and long-term investment potential....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3012242d51c38f509da8b113e1767f8cfc1de6057fe87f7d309f0156013f82c7" target="_blank" rel="noopener noreferrer">DuPont, Corteva and Chemours reach $875M PFAS settlement with New Jersey</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.01
+                                </span>
+                            </div>
+                            <div class="article-summary">The state is expected to recover more than $3 billion from its lawsuits against other chemical manufacturers such as 3M and Solvay....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4039f82bbf8ff7dbeff7b7f62019a8d60069aab1b79e0501d1e22b33b6c06ee7" target="_blank" rel="noopener noreferrer">The Chemours Company Reports Second Quarter 2025 Results</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">WILMINGTON, Del., August 05, 2025--The Chemours Company Reports Second Quarter 2025 Results...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=2e3e350568ae5e0a789f76fec24197f0c46deeaa6875aaaaefa4962497b9b9b8" target="_blank" rel="noopener noreferrer">Chemours: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.81
+                                </span>
+                            </div>
+                            <div class="article-summary">WILMINGTON, Del. AP) — Chemours Co. (CC) on Tuesday reported a second-quarter loss of $381 million, after reporting a profit in the same period a year earlier. The Wilmington, Delaware-based company s...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=defc41f84c54039d526736bcc3be2926647fd62e3fff0b064220fddc0d9ad7bc" target="_blank" rel="noopener noreferrer">Chemours, DuPont and Corteva Reach Agreement with the State of New Jersey to Comprehensively Resolve All Environmental Claims Including PFAS</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.92
+                                </span>
+                            </div>
+                            <div class="article-summary">WILMINGTON, Del., August 04, 2025--Chemours, DuPont and Corteva Reach Agreement with the State of New Jersey to Comprehensively Resolve All Environmental Claims Including PFAS...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9d09fecf1545884ebab4b5338ece29661a5f39c3a4aa2f95f314b4dbc5b41a0a" target="_blank" rel="noopener noreferrer">Chemours, DuPont, Corteva to Pay $875 Million to Resolve New Jersey Contamination Claims</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.50
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemours (CC), DuPont (DD) and Corteva (CTVA) said Monday they have agreed to pay $875 million to th...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=dfaab52afcadf0cf2aa11ad6935be449ec865bf29df9b5e7c8a7393fde625714" target="_blank" rel="noopener noreferrer">Huntsman (HUN) Reports Q2 Loss, Misses Revenue Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Huntsman (HUN) delivered earnings and revenue surprises of -33.33% and -1.26%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3f429b3b08bedf496b365fa78d5bfcae7e15be72afc2c953c23be521eeda85ef" target="_blank" rel="noopener noreferrer">Chemours Announces Dates for Second Quarter 2025 Earnings Release and Webcast Conference Call</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">WILMINGTON, Del., July 29, 2025--Chemours Announces Dates for Second Quarter 2025 Earnings Release and Webcast Conference Call...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7b8323e60c8439232ed33c7cb5ab054806189ab5f0da1a83b9136099ba17fdda" target="_blank" rel="noopener noreferrer">Refrigerants Industry Company Evaluation Report 2025 | Honeywell and Chemours Lead Global Market with Strategic Initiatives, Linde PLC Strengthens Position through Innovation and Expansion</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">The Refrigerants Companies Quadrant offers an in-depth analysis of the global refrigerants market, revealing key players, technological innovations, and industry trends. Notable companies like Honeywe...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
