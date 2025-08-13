@@ -1,0 +1,759 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>chemed corporation (che) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title">chemed corporation (che)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">31</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.06</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a1e7e046b32270ca43b9c62a87b37d73c2d7d186d2792795e8c7eda867893444" target="_blank" rel="noopener noreferrer">Ave Maria Rising Dividend Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For the three months ended June 30, 2025, the total return on the Ave Maria Rising Dividend Fund was -0.12. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=76b912021ed5c8d782d1b3ada03948c1c7fe9a8913b6d1cce28acde53591ba3b" target="_blank" rel="noopener noreferrer">Ave Maria Value Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Ave Maria Value Fund had a total return of 0.43% for the three months ended June 30, 2025. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b549651892368de0f6aa9fb1ea80f10ab424f6b14ec14a8b557f5edd94efe55" target="_blank" rel="noopener noreferrer">Ave Maria Growth Focused Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For the three months ended June 30, 2025, the total return on the Ave Maria Growth Focused Fund was 15.31%. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b14738820b592f93e3afff518697f70e697f9545f96fdf9d975f62ae54b55d7b" target="_blank" rel="noopener noreferrer">Ave Maria Value Focused Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">For the three months ended June 30, 2025, the total return on the Ave Maria Value Focused Fund was -3.59%. Click here to read more....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a74a4d0c1c358e2bc4f3a436fdec5c6a93bd9b381d91b04bd89f34541d84aa39" target="_blank" rel="noopener noreferrer">LRT Capital Management July 2025 Investor Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.33
+                                </span>
+                            </div>
+                            <div class="article-summary">LRT Global Opportunities is a systematic long/short strategy that seeks to generate positive returns whileÂ controlling downside risks and maintaining low net exposure to the equity markets....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9ef026ddd49191eb49e169c788ee04e167bc47e0c4adcb94bb5783a3c9f6a152" target="_blank" rel="noopener noreferrer">Dividend Champion, Contender, And Challenger Highlights: Week Of August 3</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-02</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">See more weekly updates on Dividend Champions, Contenders & Challengers, including dividend changes, ex-dividend dates, and upcoming payment schedules....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=653d3f7cf6d5ed58683fd50da0c6d804b2c051753180988b01a408d1e98cf7f8" target="_blank" rel="noopener noreferrer">Earnings Miss: Chemed Corporation Missed EPS By 23% And Analysts Are Revising Their Forecasts</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-02</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.16
+                                </span>
+                            </div>
+                            <div class="article-summary">There's been a notable change in appetite for Chemed Corporation ( NYSE:CHE ) shares in the week since its......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6b3f3fd89148599fff018b70d1cd278dfa183551339d360a28868e0417afa849" target="_blank" rel="noopener noreferrer">Chemed Corporation Board of Directors Authorizes an Additional $300 Million for Stock Repurchase and Declares Quarterly Dividend of 60 Cents</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-01</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.36
+                                </span>
+                            </div>
+                            <div class="article-summary">CINCINNATI, August 01, 2025--Chemed Corporation (NYSE:CHE) announced today that the Board of Directors has formally authorized an additional $300 million for stock repurchase under Chemed’s existing s...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9fc69f7b5184ec68052695bd734e70a92b1a21324d55c2dbc025268c791f8db5" target="_blank" rel="noopener noreferrer">Chemed Corp (CHE) Q2 2025 Earnings Call Highlights: Navigating Challenges and Strategic Growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed Corp (CHE) reports mixed results with VITAS revenue growth and Roto-Rooter margin pressures, while adjusting strategies for future stability....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=4dc4abe9e3d12e28254304aba3ccc337090afd0e7626bcc92ea77f15378bb398" target="_blank" rel="noopener noreferrer">Chemed Second Quarter 2025 Earnings: EPS Misses Expectations</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.42
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed ( NYSE:CHE ) Second Quarter 2025 Results Key Financial Results Revenue: US$618.8m (up 3.8% from 2Q 2024). Net......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d2ae9bd6e5454c756582c500989e47dcbf4719d76472c57e16c6a29a35d4b77d" target="_blank" rel="noopener noreferrer">Altria Among 6 Dividend Kings To Announce Annual Payout Increases In August</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-31</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.30
+                                </span>
+                            </div>
+                            <div class="article-summary">We saw 10%+ increases from several companies. Read here for expert predictions on upcoming dividend increases from top companies with long-term growth....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b028f6dc78225b896d701b0aeabdf36d3b8c8c3b426147e738b6160fe8ddb91b" target="_blank" rel="noopener noreferrer">Chemed (CHE) Q2 Earnings Miss Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.39
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed (CHE) delivered earnings and revenue surprises of -10.67% and +0.45%, respectively, for the quarter ended June 2025. Do the numbers hold clues to what lies ahead for the stock?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=e136d7fd41bbd6fb98d8a7842eef63e20973452be5c324fb644d1c605597788e" target="_blank" rel="noopener noreferrer">Chemed’s (NYSE:CHE) Q2 Earnings Results: Revenue In Line With Expectations But Stock Drops</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.93
+                                </span>
+                            </div>
+                            <div class="article-summary">Healthcare services company Chemed Corporation (NYSE:CHE) met Wall Street’s revenue expectations in Q2 CY2025, with sales up 3.8% year on year to $618.8 million. Its non-GAAP profit of $4.27 per share...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7286b4451102f58f14a2dd131e9505cef4a2af730cd4c0f5e8558d22fb4a7bfc" target="_blank" rel="noopener noreferrer">Chemed Corporation (CHE) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed Corporation (NYSE:CHE) Q2 2025 Earnings Conference Call July 30, 2025 10:00 AM ETCompany ParticipantsHolley Schmidt - Corporate ParticipantKevin J....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=589ee2332ced2408f2d0fa4c88423f480f4dbbed2b12ea28da7a34c8b862681d" target="_blank" rel="noopener noreferrer">Why Chemed (CHE) Stock Is Trading Lower Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of healthcare services company Chemed Corporation (NYSE:CHE) fell 9% in the afternoon session after the company reported disappointing second-quarter results which missed analysts' EPS and EBIT...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a01b567f7a49838267a57bfdd8cb4b81df9a0e42e8cf22d0b4b311f3da5d09bd" target="_blank" rel="noopener noreferrer">Why Chemed Stock Is Plummeting Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.95
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed missed expectations on both the top and bottom lines with its second-quarter earnings....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f3ab3ba887e9c0234b65de846bd857ab9f722639c03f100e1ab96dec6d39cfed" target="_blank" rel="noopener noreferrer">VITAS® Healthcare Announces CEO Transition and Appointment of New Chief Executive Officer</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-30</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">MIRAMAR, Fla., July 30, 2025 (GLOBE NEWSWIRE) -- VITAS Healthcare, one of the nation’s leading providers of hospice and palliative care, and a subsidiary of Chemed Corporation (NYSE: CHE), today annou...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8807ceeac07f48e1d44b07d9406eb89a3ec74a1ba1502f09ffdf95f8d7d2c0ac" target="_blank" rel="noopener noreferrer">Aristotle Small/Mid Cap Equity Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8be90a469344b8249ad3d7e21858874637b262864147cd1f129413c11202a523" target="_blank" rel="noopener noreferrer">Chemed Reports Second-Quarter 2025 Results and Announces Executive Management Departure</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.44
+                                </span>
+                            </div>
+                            <div class="article-summary">CINCINNATI, July 29, 2025--Chemed Corporation (Chemed) (NYSE: CHE), which operates VITAS Healthcare Corporation (VITAS), one of the nation’s largest providers of end-of-life care, and Roto-Rooter, the...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=20da27e7ef37c6446aeae4250d49b282376c41fbafc09b16c07a6470a6a18a64" target="_blank" rel="noopener noreferrer">Chemed: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-29</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.28
+                                </span>
+                            </div>
+                            <div class="article-summary">CINCINNATI (AP) — Chemed Corp. CHE) on Tuesday reported second-quarter net income of $52.5 million. On a per-share basis, the Cincinnati-based company said it had net income of $3.57....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=7d08ddb9c831aa060c5d71b486f5cc805f059f70de6ca883ec9c2137a1f121dc" target="_blank" rel="noopener noreferrer">Chemed (CHE) Q2 Earnings: What To Expect</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Healthcare services company Chemed Corporation (NYSE:CHE) will be reporting results this Tuesday after market hours. Here’s what to expect....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d50850472327fb18acdc1c42523c8d402c14df8204b64d2c9bbdba6a11d5874c" target="_blank" rel="noopener noreferrer">ASTH vs. CHE: Which Stock Is the Better Value Option?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">ASTH vs. CHE: Which Stock Is the Better Value Option?...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cd0c1cf74437106d0c7bc0b0f437c963b5db1ccc22f93ccfde03bc478c0922f2" target="_blank" rel="noopener noreferrer">Chemed updates 2025 forecast as Q1 revenue shows continued growth</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    -0.13
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed Corporation (NYSE:CHE) is one of the 11 Best Long Term Low Risk Stocks to Invest in. Analysts are dropping the price target on the stock after the company lowered its earnings guidance for 2025...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c57d758dcb3a9ae21fb94729a2bb2457230b9614603e60e6e66d1d2fc6e5fff" target="_blank" rel="noopener noreferrer">Chemed Corporation (CHE): A Bull Case Theory</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-24</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">We came across a bullish thesis on Chemed Corporation on Stock Analysis Compilation’s Substack. In this article, we will summarize the bulls’ thesis on CHE. Chemed Corporation’s share was trading at $...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fa755c8f8c9e555445d2cc948545bab3edfe7672e8daed06fc4bc967ec0e01a5" target="_blank" rel="noopener noreferrer">Chemed (CHE) Fell due to Concerns Over Potential Medicare Cap Limits</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.10
+                                </span>
+                            </div>
+                            <div class="article-summary">Aristotle Capital Boston, LLC, an investment advisor, released its “Small Cap Equity Strategy” second quarter 2025 investor letter. A copy of the letter can be downloaded here. The second quarter star...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=53567c333397778a842aac2b48c6f7826a58446ae737c8c537bcf31c8a229f48" target="_blank" rel="noopener noreferrer">Aristotle Small Cap Equity Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.53
+                                </span>
+                            </div>
+                            <div class="article-summary">For Q2 2025, Aristotle Small Cap Equity Composite posted a total return of 3.25% net of fees (3.41% gross of fees), underperforming the 8.50% total return of the Russell 2000 Index....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ffd0591e6ce26d0e1081bdc969a67383e0b1f88e6913ef9fced29724d36f0a76" target="_blank" rel="noopener noreferrer">Analysts Estimate Chemed (CHE) to Report a Decline in Earnings: What to Look Out for</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.38
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed (CHE) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1ae9dc212b9638147008d092c2ec77661dedc64d1cd1c6469acb314d4f6be355" target="_blank" rel="noopener noreferrer">Chemed Corporation: Short-Term Headwinds But Long-Term Growth Potential</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.70
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemedâs strength across VITAS and Roto-Rooter, solid Q1 results, and 50% upside potential underscore its long-term appeal. See why CHE stock is a buy....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=619f44990f1e18114d076027cd4e6d68d4353087e3c15474c27f216f66225bba" target="_blank" rel="noopener noreferrer">RBC Capital Lowered Firm’s PT on Chemed Corporation (CHE), Kept a Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-17</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">Chemed Corporation (NYSE:CHE) is one of the Best 52-Week Low Stocks to Buy According to Analysts. On June 30, RBC Capital analyst Ben Hendrix lowered the firm’s price target on Chemed Corporation (NYS...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=cc391d1ef7aa5b8cc45d4fcb868b53d0ce51ca70209418f9b95ab16642b4be2c" target="_blank" rel="noopener noreferrer">Chemed Corporation (NYSE:CHE) Stock's Been Sliding But Fundamentals Look Decent: Will The Market Correct The Share Price In The Future?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-15</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.94
+                                </span>
+                            </div>
+                            <div class="article-summary">With its stock down 21% over the past three months, it is easy to disregard Chemed (NYSE:CHE). However, the company's......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=31ac7e1d2cc1ef3249f07f90b4148b8c88fbb0ade4b615bf9ff5f74bc0f61941" target="_blank" rel="noopener noreferrer">LRT Capital Management June 2025 Investor Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-14</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">During the month of June the LRT Global Opportunities strategy returned -1.30% net of fees. Year-to-date, the strategy has returned +8.12%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
