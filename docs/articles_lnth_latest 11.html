@@ -1,0 +1,663 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title> lantea holdings inc (lnth) - Articles</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                :root {
+                    --primary-color: #000000;
+                    --secondary-color: #666666;
+                    --accent-color: #d5001c;
+                    --text-color: #2c3e50;
+                    --border-color: #e0e0e0;
+                    --hover-color: #f8f9fa;
+                }
+                
+                body { 
+                    font-family: "Porsche Next", "Segoe UI", Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    color: var(--text-color);
+                    background-color: #f5f6fa;
+                    line-height: 1.6;
+                }
+                
+                .header {
+                    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                    padding: 25px 0;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+                    pointer-events: none;
+                }
+                
+                .header-content {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding: 0 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .header-title {
+                    font-size: 28px;
+                    font-weight: 300;
+                    color: #fff;
+                    margin: 0;
+                    letter-spacing: 1px;
+                }
+                
+                .back-btn {
+                    background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    padding: 10px 20px;
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: translateY(-2px);
+                }
+                
+                .container {
+                    max-width: 1400px;
+                    margin: 40px auto;
+                    padding: 0 30px;
+                }
+                
+                .stats-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .stat-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    padding: 25px;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: transform 0.3s ease;
+                }
+                
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .stat-value {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: var(--primary-color);
+                    margin-bottom: 10px;
+                }
+                
+                .stat-label {
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .articles-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                    gap: 30px;
+                    margin-top: 40px;
+                }
+                
+                .article-card {
+                    background: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    transition: all 0.3s ease;
+                }
+                
+                .article-card:hover {
+                    transform: translateY(-5px);
+                }
+                
+                .article-content {
+                    padding: 25px;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 400;
+                    margin: 0 0 15px;
+                    line-height: 1.4;
+                }
+                
+                .article-title a {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                }
+                
+                .article-title a:hover {
+                    color: var(--accent-color);
+                }
+                
+                .article-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    margin-bottom: 15px;
+                    font-size: 14px;
+                    color: var(--secondary-color);
+                }
+                
+                .article-sentiment {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+                
+                .article-sentiment.positive {
+                    background: rgba(40,167,69,0.1);
+                    color: #28a745;
+                }
+                
+                .article-sentiment.negative {
+                    background: rgba(220,53,69,0.1);
+                    color: #dc3545;
+                }
+                
+                .article-sentiment.neutral {
+                    background: rgba(108,117,125,0.1);
+                    color: #6c757d;
+                }
+                
+                .article-summary {
+                    font-size: 14px;
+                    color: var(--text-color);
+                    line-height: 1.6;
+                    margin-top: 15px;
+                    opacity: 0.8;
+                }
+                
+                @media (max-width: 768px) {
+                    .header-content {
+                        padding: 0 20px;
+                    }
+                    
+                    .header-title {
+                        font-size: 20px;
+                    }
+                    
+                    .container {
+                        padding: 0 20px;
+                        margin: 20px auto;
+                    }
+                    
+                    .articles-grid {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                    }
+                    
+                    .stat-card {
+                        padding: 20px;
+                    }
+                    
+                    .stat-value {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="header-content">
+                    <h1 class="header-title"> lantea holdings inc (lnth)</h1>
+                    <a href="sentiment_report_latest.html" class="back-btn">← Back to Dashboard</a>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">25</div>
+                        <div class="stat-label">Total Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Positive Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Negative Articles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">-0.24</div>
+                        <div class="stat-label">Average Sentiment</div>
+                    </div>
+                </div>
+                
+                <div class="articles-grid">
+        
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=5278c2a48b90ff5f2a15c9407892ffd39210660ef75c57d5ecbc2e0be2b124b9" target="_blank" rel="noopener noreferrer">Lantheus Holdings, Inc. Just Reported A Surprise Profit And Analysts Updated Their Estimates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-08</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.45
+                                </span>
+                            </div>
+                            <div class="article-summary">NasdaqGM:LNTH 1 Year Share Price vs Fair Value Explore Lantheus Holdings's Fair Values from the Community and select......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=1fbcfe050c266616319c41a569e94d123f60dc035805ee056556cb3b8e3e2ac6" target="_blank" rel="noopener noreferrer">Lantheus Holdings (LNTH) Announces US$400 Million Buyback Amid FDA and Earnings Updates</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.86
+                                </span>
+                            </div>
+                            <div class="article-summary">Lantheus Holdings (LNTH) recently unveiled a $400 million share repurchase program and reported second-quarter financials with a net income increase but a decline in sales year-over-year. Despite thes...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=ac17387eb9da5d5bc1899664341f917e31e229fb683ed3a1de0e87beedd0d313" target="_blank" rel="noopener noreferrer">LNTH: Competition Escalates in PSMA Imaging</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">By John Vandermosten, CFA NASDAQ:LNTH READ THE FULL LNTH RESEARCH REPORT Lantheus Holdings, Inc. (NASDAQ:LNTH) reported second quarter 2025 financial and operational results on August 6 th , producing...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=9bfe0e80d352ba50e0660c79de5c770cf8b32df24da04ad4edaae23249440d78" target="_blank" rel="noopener noreferrer">Lantheus Holdings (LNTH) Dives 28.6% on Tempered Growth Outlook</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-07</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">We recently published 10 Stocks Taking the Worst Hit. Lantheus Holdings, Inc. (NASDAQ:LNTH) is one of the worst-performing stocks on Wednesday. Lantheus Holdings saw its share prices decline by 28.58 ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=856612c0e709a938f0951b2e75ed489c5b18a7b8e8d07df8936ed7dea0ce340f" target="_blank" rel="noopener noreferrer">Janus Henderson Opportunistic Alpha Managed Account Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">The Portfolio returned 12.38% (gross) and the S&P 500Â® Index returned 10.94%....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=05446f222d72b3912677240195a9602b68522533ab5be342346f93ce80175fa4" target="_blank" rel="noopener noreferrer">Lantheus Holdings: Reassessing The Buy Thesis</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Discover why Lantheus' recent stock decline offers a unique investor opportunity....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=742a94f2b47d88b897c480eccc64dd38ca82c5c066799619b86b579d453f14f8" target="_blank" rel="noopener noreferrer">Lantheus Announces FDA Acceptance of NDA for New Formulation for Market-Leading PSMA PET Imaging Agent</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.90
+                                </span>
+                            </div>
+                            <div class="article-summary">Designed to expand PSMA PET imaging access for patients by increasing batch size by ~50% and enhancing supply resiliencePDUFA date set for March 6, 2026 BEDFORD, Mass., Aug. 06, 2025 (GLOBE NEWSWIRE) ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=467f098b0a4f4991e6095dde4acc8e42cef52b685ab6de104650c4b0da615abf" target="_blank" rel="noopener noreferrer">Lantheus Reports Second Quarter 2025 Financial Results and Provides Business Update</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment positive">
+                                    0.54
+                                </span>
+                            </div>
+                            <div class="article-summary">Recorded second quarter 2025 worldwide revenue of $378.0 million, GAAP fully diluted earnings per share of $1.12, adjusted fully diluted earnings per share of $1.57 and free cash flow of $79.1 million...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f04f2e6541bd71393142e74d7fdd2893ec3b8ae3dfe3593b77eba15b406a6174" target="_blank" rel="noopener noreferrer">Lantheus Holdings: Q2 Earnings Snapshot</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">The Bedford, Massachusetts-based company said it had profit of $1.12 per share. Earnings, adjusted for one-time gains and costs, were $1.57 per share. The results fell short of Wall Street expectation...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=26d1e415b6e2e65edf5b183c3926838759759ccbc0e46ba62f367fb92606769e" target="_blank" rel="noopener noreferrer">Lantheus (NASDAQ:LNTH) Reports Sales Below Analyst Estimates In Q2 Earnings, Stock Drops 20.8%</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Radiopharmaceutical company Lantheus Holdings (NASDAQ:LNTH) fell short of the market’s revenue expectations in Q2 CY2025, with sales falling 4.1% year on year to $378 million. The company’s full-year ...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6af1d42d1634e35f87cca9159fe12c43e72d68b8de206627f85832a08afc45e5" target="_blank" rel="noopener noreferrer">Why Lantheus (LNTH) Stock Is Falling Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.97
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of radiopharmaceutical company Lantheus Holdings (NASDAQ:LNTH) fell 29.8% in the afternoon session after the company reported disappointing second-quarter financial results and slashed its full...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=deb1f84b1708f57136749864a0a1be0d19fb45a6bddecf947f476d80041f5a5d" target="_blank" rel="noopener noreferrer">Lantheus Holdings, Inc. (LNTH) Q2 2025 Earnings Call Transcript</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-06</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Lantheus Holdings, Inc. (NASDAQ:LNTH) Q2 2025 Earnings Conference Call August 6, 2025 8:00 AM ETCompany ParticipantsBrian A....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=c6151e8c0ec1d1a67b8116c2c012715c08a0e67160f7a38226791429e5d017ac" target="_blank" rel="noopener noreferrer">Lantheus (LNTH) Reports Q2: Everything You Need To Know Ahead Of Earnings</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Radiopharmaceutical company Lantheus Holdings (NASDAQ:LNTH) will be reporting earnings this Wednesday before market hours. Here’s what investors should know....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=43278605299a51388bd3eed265ac982c872aaf1763e0851ee415ae42adb8f45e" target="_blank" rel="noopener noreferrer">Janus Henderson Global Life Sciences Diversified ADR Managed Account Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-05</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Janus Henderson Global Life Sciences Diversified ADR Managed Account returned -3.68% (gross) and the MSCI World Health Care Index returned -3.96%. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card positive">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a126cc40226cb31ecdd9c51da5fda8d44c183321657b121dca84eff3c4d1998c" target="_blank" rel="noopener noreferrer">Janus Henderson Contrarian Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment positive">
+                                    0.37
+                                </span>
+                            </div>
+                            <div class="article-summary">Janus Henderson highlights strong Q2 gains led by AI and industrials. Explore how contrarian stock picks can help diversify and strengthen your portfolio....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=0b87039d99d7e9cf0a9a88ab06e6861b276113fa4e554693cfbacf40d7eb67b3" target="_blank" rel="noopener noreferrer">Janus Henderson Global Life Sciences Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">Janus Henderson reviews Q2 healthcare headwinds and standout biotech picks. Learn how the fund is navigating policy shifts and finding innovation upside....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=a4319a7e87d8d01a164ae5c80b3b1dc7a998ea199ba30c773fc5a664bdc790ff" target="_blank" rel="noopener noreferrer">Janus Henderson Triton Fund Q2 2025 Commentary</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment negative">
+                                    -0.49
+                                </span>
+                            </div>
+                            <div class="article-summary">Triton Fund returned 8.56% and the Russell 2500 Growth Index returned 11.31%. Stock selection in the industrials sector detracted from relative performance. Read more here....</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=3c198f2a4c1847eb996eaa78b58678d01aeaae66ba5a69d8e71187bf7249780a" target="_blank" rel="noopener noreferrer">Lantheus Holdings (NASDAQ:LNTH) shareholders have earned a 39% CAGR over the last five years</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-08-04</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.26
+                                </span>
+                            </div>
+                            <div class="article-summary">Some Lantheus Holdings, Inc. ( NASDAQ:LNTH ) shareholders are probably rather concerned to see the share price fall 33......</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=8485f1e26896631e8fd6d777a768ab71e38d6c8a0edc2b3b100847c51eb1c3ed" target="_blank" rel="noopener noreferrer">Riley Reduces Lantheus Holdings (LNTH) PT to $109, Maintains Buy Rating</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-28</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.55
+                                </span>
+                            </div>
+                            <div class="article-summary">Lantheus Holdings Inc. (NASDAQ:LNTH) is one of the most undervalued stocks to buy and hold for 3 years. Earlier on June 23, B. Riley analyst Yuan Zhi reduced the firm’s price target on Lantheus from $...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=6364890f31d97e9da98d4a277924a46cbddfeebb6e76450ad7234181171f247e" target="_blank" rel="noopener noreferrer">Lantheus Holdings Expands Alzheimer’s Diagnostics Despite Recent Stock Dip</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-27</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.21
+                                </span>
+                            </div>
+                            <div class="article-summary">Lantheus Holdings, Inc. (NASDAQ:LNTH) is one of the 11 Best Long Term Low Risk Stocks to Invest in. The company completes the acquisition of Life Molecular Imaging Limited amid a fall in the monthly a...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=fb62638bc72df40c02c47e653816934340f0331dcb9c15dc7cbaf627974aebbf" target="_blank" rel="noopener noreferrer">Lantheus to Host Second Quarter 2025 Earnings Conference Call and Webcast on August 6, 2025, at 8:00 a.m. Eastern Time</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-23</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">BEDFORD, Mass., July 23, 2025 (GLOBE NEWSWIRE) -- Lantheus Holdings, Inc. (the “Company”) (NASDAQ: LNTH) today announced that it will host a conference call and webcast at 8:00 a.m. ET on Wednesday, A...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=f6cdd4faef6fd52f3a634b44a1b54f1397792a560e27a998e876f599ca972a40" target="_blank" rel="noopener noreferrer">Lantheus Completes Acquisition of Life Molecular Imaging and Appoints Dr. Ludger Dinkelborg as Head of R&D</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-22</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">BEDFORD, Mass., July 22, 2025 (GLOBE NEWSWIRE) -- Lantheus Holdings, Inc. ("Lantheus" or the "Company") (NASDAQ: LNTH), today announced the successful completion of its previously disclosed acquisitio...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card neutral">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=399d09859a46276695ad90cd69dea8716d73acbce3cf1a3bacc22f418e8f16f7" target="_blank" rel="noopener noreferrer">Lantheus Holdings: Forget The Short Term Noise</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-21</span>
+                                <span>SeekingAlpha</span>
+                                <span class="article-sentiment neutral">
+                                    0.00
+                                </span>
+                            </div>
+                            <div class="article-summary">nan...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=d3c821bb4225013324bb0db56006d729e82e867d1edf2ab5c805737ba16b9684" target="_blank" rel="noopener noreferrer">Lantheus (LNTH): Buy, Sell, or Hold Post Q1 Earnings?</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-18</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.58
+                                </span>
+                            </div>
+                            <div class="article-summary">What a brutal six months it’s been for Lantheus. The stock has dropped 21.9% and now trades at a new 52-week low of $73.50, rattling many shareholders. This was partly driven by its softer quarterly r...</div>
+                        </div>
+                    </div>
+            
+                    <div class="article-card negative">
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="https://finnhub.io/api/news?id=b36e65a7df652b5bdc96262cfacf1dd461130c5b0d69b6f92947c9aa650807d2" target="_blank" rel="noopener noreferrer">Why Lantheus (LNTH) Stock Is Down Today</a>
+                            </h3>
+                            <div class="article-meta">
+                                <span>2025-07-16</span>
+                                <span>Yahoo</span>
+                                <span class="article-sentiment negative">
+                                    -0.96
+                                </span>
+                            </div>
+                            <div class="article-summary">Shares of radiopharmaceutical company Lantheus Holdings (NASDAQ:LNTH) fell 7.7% in the morning session after the stock hit a new 52-week low amid persistent investor concerns over rising competition a...</div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
